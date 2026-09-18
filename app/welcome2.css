@@ -32,6 +32,7 @@
   letter-spacing: var(--text-display--letter-spacing);
 }
 .a02-h1 span { display: block; }
+.a02-h1 span + span { margin-top: var(--spacing-4); }
 .a02-accent {
   background-image: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-accent-tint) 100%);
   -webkit-background-clip: text;
@@ -139,6 +140,7 @@
     line-height: var(--text-display-desktop--line-height);
     letter-spacing: var(--text-display-desktop--letter-spacing);
   }
+  .a02-h1 span + span { margin-top: var(--spacing-6); }
   .a02-copy { margin-top: 36px; max-width: 480px; font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); }
   .a02-cta { margin-top: var(--spacing-12); height: 64px; padding: 0 44px; font-size: 17px; }
   .a02-note { margin-top: 18px; text-align: left; font-size: 14px; }

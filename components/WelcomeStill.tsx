@@ -75,7 +75,7 @@ export default function WelcomeStill() {
         <h1 className="a02-h1">
           <span>Places near you.</span>
           <span>What lives there.</span>
-          <span className="a02-accent">What is changing.</span>
+          <span className="a02-accent">What is happening to them.</span>
         </h1>
         <p className="a02-copy">
           A map of wild places in Berlin and Brandenburg, the species recorded
