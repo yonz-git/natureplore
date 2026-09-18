@@ -3,15 +3,17 @@
 import dynamic from "next/dynamic";
 import { useSyncExternalStore } from "react";
 
-// The liquid layer over A0's green field: the pointer stirs slow, broad flows of olive green (never white), the field's
-// own colour stays underneath because the canvas is transparent. Colours come from the design tokens.
+// The liquid layer over A0's green field: the pointer stirs slow, broad flows that lighten the field
+// towards a light green. app/welcome.css screens the layer over the field, so it never goes white, grey
+// or darker than the field, and the canvas is transparent, so the field's own colour stays underneath.
+// The colour comes from the design tokens.
 // Tuned for calm: a wide brush on a coarse grid gives few large shapes, viscosity and plain advection
 // (no BFECC) take the smoke-like wisps out, a gentle force and a small time step keep it slow.
 // Not mounted for a person who asked for reduced motion. three is loaded after the page, not with it.
 
 const LiquidEther = dynamic(() => import("@/components/LiquidEther"), { ssr: false });
 
-const TOKENS = ["--color-field-olive-deep", "--color-field-olive", "--color-field-olive"]; // slow to fast flow, never white
+const TOKENS = ["--color-field-flow", "--color-field-flow"]; // one green: the flow speed alone sets how much of it shows
 const MOTION_OK = "(prefers-reduced-motion: no-preference)";
 
 // LiquidEther stores its palette in linear light and draws it without converting back, so a colour comes

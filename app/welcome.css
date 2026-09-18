@@ -93,7 +93,9 @@
   );
 }
 /* the liquid layer (components/WelcomeEther.tsx), between the blobs and the grain */
-.a0-ether { position: absolute; inset: 0; }
+/* screen: the layer can only lighten what is under it, towards its green, and fades out into the field
+   with no dark or grey edge */
+.a0-ether { position: absolute; inset: 0; mix-blend-mode: screen; }
 .a0-ether .liquid-ether-container { touch-action: auto; }
 .a0-grain {
   position: absolute;
