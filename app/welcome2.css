@@ -40,12 +40,6 @@
 .a0-l3b { position: absolute; inset: 0; transform: translate(0, 100%); }
 .a0-ghost { visibility: hidden; }
 .a0-w { display: inline-block; }
-.a02-copy {
-  margin: var(--spacing-7) 0 0;
-  font-size: var(--text-body);
-  line-height: var(--text-body--line-height);
-  color: rgb(255 255 255 / 0.8);
-}
 .a02-cta {
   margin-top: var(--spacing-10);
   height: 58px;
@@ -61,13 +55,6 @@
   transition: transform 160ms ease-out;
 }
 .a02-cta:active { transform: scale(0.97); }
-.a02-note {
-  margin: var(--spacing-4) 0 0;
-  text-align: center;
-  font-size: var(--text-caption);
-  line-height: var(--text-caption--line-height);
-  color: rgb(255 255 255 / 0.8);
-}
 .a02 :focus-visible { outline: 2px solid var(--color-on-ground); outline-offset: 3px; }
 
 .a02-card {
@@ -141,9 +128,7 @@
     letter-spacing: var(--text-display-desktop--letter-spacing);
   }
   .a02-h1 > span + span { margin-top: var(--spacing-6); }
-  .a02-copy { margin-top: 36px; max-width: 480px; font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); }
   .a02-cta { margin-top: var(--spacing-12); height: 64px; padding: 0 44px; font-size: 17px; }
-  .a02-note { margin-top: 18px; text-align: left; font-size: 14px; }
   .a02-card {
     position: absolute;
     left: 55.5%;

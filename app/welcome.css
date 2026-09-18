@@ -161,11 +161,9 @@
     .a0s :is(.a0-rule, .a0-cue) { animation: a0s-leave linear both; animation-timeline: scroll(root); animation-range: 0% 8%; }
 
     /* the rest arrives, the map last and only fading */
-    .a0s :is(.a02-nav, .a02-copy, .a02-cta, .a02-note) { animation: a0s-rise linear both; animation-timeline: scroll(root); }
+    .a0s :is(.a02-nav, .a02-cta) { animation: a0s-rise linear both; animation-timeline: scroll(root); }
     .a0s .a02-nav { animation-range: 52% 66%; }
-    .a0s .a02-copy { animation-range: 54% 68%; }
-    .a0s .a02-cta { animation-range: 59% 73%; }
-    .a0s .a02-note { animation-range: 64% 78%; }
+    .a0s .a02-cta { animation-range: 58% 72%; }
     .a0s .a02-card { animation: a0s-fade linear both; animation-timeline: scroll(root); animation-range: 80% 98%; }
 
     /* a link that takes keyboard focus must be visible: jump to the end state */

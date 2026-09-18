@@ -3,7 +3,8 @@ import MapSketch from "@/components/MapSketch";
 
 // A0 · Welcome and A0-2 · Welcome as one page. It opens as A0: the green field and the three
 // statements, which blur in word by word. Scrolling moves the statements to their A0-2 places,
-// opens the forest photograph in a growing circle with a glowing rim, brings in the rest, and fades the map in last.
+// opens the forest photograph in a growing circle with a glowing rim, brings in the nav and the
+// green action, and fades the map in last.
 // With `still` it is A0-2 alone, nothing moves.
 // Layout: app/welcome2.css. Field, intro and scroll choreography: app/welcome.css. Glass: app/glass.css.
 // Boards: "A0 · Welcome, version 4 (animated)" and "A0-2 · Welcome, version 6", phone and desktop.
@@ -141,14 +142,9 @@ export default function Welcome({ still = false }: { still?: boolean }) {
               <Rule n={2} />
             </span>
           </h1>
-          <p className="a02-copy">
-            A map of wild places in Berlin and Brandenburg, the species recorded
-            there by season, and ways to protect them.
-          </p>
           <Link href="/map" className="a02-cta">
             See the map
           </Link>
-          <p className="a02-note">No account needed to look around</p>
         </main>
 
         <div className="a02-card glass glass-card glass-top glass-clip" aria-hidden="true">
