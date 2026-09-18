@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useSyncExternalStore } from "react";
 
-// The liquid layer over A0's green field: the pointer stirs slow, broad flows that lift the field to a
+// The liquid layer over A0's green field: the pointer, and the layer itself when the pointer rests, stir slow, broad flows that lift the field to a
 // slightly brighter green of the same tone. app/welcome.css screens the layer over the field, so it
 // never goes darker than the field, and the canvas is transparent, so the field's own colour stays
 // underneath. The colour comes from the design tokens.
@@ -42,11 +42,11 @@ export default function WelcomeEther() {
       BFECC={false}
       dt={0.006}
       isBounce={false}
-      autoDemo={false}
-      autoSpeed={1}
+      autoDemo // the layer also stirs itself, so the field moves when the mouse rests
+      autoSpeed={0.7}
       autoIntensity={3.1}
       takeoverDuration={0.25}
-      autoResumeDelay={3000}
+      autoResumeDelay={1500}
       autoRampDuration={0.6}
     />
   );
