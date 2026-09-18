@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MapSketch from "@/components/MapSketch";
+import WelcomeEther from "@/components/WelcomeEther";
 import WelcomeScroll from "@/components/WelcomeScroll";
 
 // A0 · Welcome and A0-2 · Welcome as one page. It opens as A0: the green field and the three
@@ -82,6 +83,9 @@ export default function Welcome({ still = false }: { still?: boolean }) {
             <div className="a0-blob a0-blob-b a0-blob-2" />
             <div className="a0-blob a0-blob-3" />
             <div className="a0-blob a0-blob-b a0-blob-4" />
+            <div className="a0-ether">
+              <WelcomeEther />
+            </div>
             <svg className="a0-grain">
               <filter id="a0-grain">
                 <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch" />

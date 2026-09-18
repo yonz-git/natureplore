@@ -33,6 +33,7 @@
 @keyframes a0s-fade { from { opacity: 0; } }
 @keyframes a0s-leave { from { opacity: 1; } }
 @keyframes a0s-hide { to { visibility: hidden; } }
+@keyframes a0s-away { to { transform: translateY(-200%); } }
 
 .a0s {
   --a0-ease: cubic-bezier(0.23, 1, 0.32, 1);
@@ -91,6 +92,9 @@
     transparent 100%
   );
 }
+/* the liquid layer (components/WelcomeEther.tsx), between the blobs and the grain */
+.a0-ether { position: absolute; inset: 0; }
+.a0-ether .liquid-ether-container { touch-action: auto; }
 .a0-grain {
   position: absolute;
   inset: 0;
@@ -136,7 +140,7 @@
   .a0s .a02 { position: sticky; top: 0; height: 100dvh; min-height: 0; container-type: size; }
   .a0s :is(.a0-field, .a0-orb) { display: block; }
 
-  .a0s :is(.a0-field, .a02-h1, .a0-l1, .a0-l2, .a0-l3, .a0-l3b, .a0-rule, .a0-cue, .a02-nav, .a02-cta, .a02-card) {
+  .a0s :is(.a0-field, .a0-ether, .a02-h1, .a0-l1, .a0-l2, .a0-l3, .a0-l3b, .a0-rule, .a0-cue, .a02-nav, .a02-cta, .a02-card) {
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-fill-mode: both;
@@ -144,6 +148,8 @@
     animation-delay: calc((var(--a0-s) - var(--a0-p)) / (var(--a0-e) - var(--a0-s)) * 1s);
   }
   .a0s .a0-field { animation-name: a0s-hide; --a0-s: 0.7; --a0-e: 0.71; }
+  /* once the field is covered the liquid layer steps out of it, which is what pauses its simulation */
+  .a0s .a0-ether { animation-name: a0s-away; --a0-s: 0.7; --a0-e: 0.71; }
   /* The photograph opens in a circle between --a0-s and --a0-e of the scroll. The lens is that circle at
      its final size, 150% of hypot(w, h) / sqrt(2), enough to clear every corner. WelcomeScroll scales
      the lens up from nothing, scales the photograph inside it by the inverse so it stays put, and scales
