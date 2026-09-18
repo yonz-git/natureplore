@@ -1,6 +1,6 @@
-import WelcomeStill from "@/components/WelcomeStill";
+import Welcome from "@/components/Welcome";
 
-// A0-2 · Welcome, the still version of the opening page.
+// A0-2 · Welcome on its own, the still end state of the opening page.
 export default function WelcomeTwo() {
-  return <WelcomeStill />;
+  return <Welcome still />;
 }
