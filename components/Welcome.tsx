@@ -7,9 +7,9 @@ import MapSketch from "@/components/MapSketch";
 // Board: "A0 · Welcome, version 4 (animated)", phone and desktop, on the design system test canvas.
 
 const STATEMENTS = [
-  "places near you, on a map",
-  "what is recorded there",
-  "what is happening to them",
+  "Places near you, on a map",
+  "What is recorded there",
+  "What is happening to them",
 ];
 
 // index of the first word of each statement, so the words come in one after another across lines
