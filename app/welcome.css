@@ -43,6 +43,10 @@
   --a0-rise: 24px;
   --a0-cx: 50%;
   --a0-cy: 78%;
+  /* the whole stage. Container units measure the content box, and on the phone the stage has padding
+     (72px on top, the screen inset at the sides), so it is added back. No padding on desktop. */
+  --a0-w: calc(100cqw + var(--spacing-inset-screen) * 2);
+  --a0-h: calc(100cqh + 72px);
 }
 
 /* the green field, under the photograph */
@@ -76,7 +80,7 @@
   z-index: -1;
   left: var(--a0-cx);
   top: var(--a0-cy);
-  width: calc(hypot(100cqw, 100cqh) * 2.1213 / 0.8 / var(--a0-rim));
+  width: calc(hypot(var(--a0-w), var(--a0-h)) * 2.1213 / 0.8 / var(--a0-rim));
   aspect-ratio: 1;
   translate: -50% -50%;
   border-radius: 50%;
@@ -112,8 +116,8 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 100cqw;
-  height: 100cqh;
+  width: var(--a0-w);
+  height: var(--a0-h);
   background: var(--a02-photo) center / cover;
   will-change: transform;
 }
@@ -188,7 +192,7 @@
     inset: auto;
     left: var(--a0-cx);
     top: var(--a0-cy);
-    width: calc(hypot(100cqw, 100cqh) * 2.1213);
+    width: calc(hypot(var(--a0-w), var(--a0-h)) * 2.1213);
     aspect-ratio: 1;
     translate: -50% -50%;
     border-radius: 50%;
@@ -198,8 +202,8 @@
     inset: auto;
     left: 50%;
     top: 50%;
-    width: 100cqw;
-    height: 100cqh;
+    width: var(--a0-w);
+    height: var(--a0-h);
     translate: calc(var(--a0-cx) * -1) calc(var(--a0-cy) * -1);
     transform-origin: var(--a0-cx) var(--a0-cy);
   }
@@ -233,6 +237,8 @@
       --a0-drift-y: 50px;
       --a0-cx: 76%;
       --a0-cy: 58%;
+      --a0-w: 100cqw;
+      --a0-h: 100cqh;
     }
     /* A0 on desktop: the block sits a little above the middle, rows 6px apart, the first row indented,
        the last one on a single row against the right inset */
