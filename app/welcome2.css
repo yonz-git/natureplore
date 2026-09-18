@@ -1,0 +1,148 @@
+/* A0-2 · Welcome. The still welcome: the forest photograph behind its filter, the three statements,
+   one green action, and a glass card with the map sketch. Phone first, split desktop layout from 1024px. */
+
+.a02 {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 72px var(--spacing-inset-screen) 0;
+  background: var(--color-ground);
+  color: var(--color-on-ground);
+}
+/* the lens is only a plain full-size box here, app/welcome.css turns it into the growing circle */
+.a0-lens { position: absolute; inset: 0; z-index: -1; }
+.a02-photo { position: absolute; inset: 0; background: url(/img/forest-olena-bohovyk.jpg) center / cover; }
+.a02-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-scrim) 55%, transparent) 0%, color-mix(in srgb, var(--color-scrim) 20%, transparent) 38%, color-mix(in srgb, var(--color-scrim) 60%, transparent) 100%),
+    rgb(0 0 0 / 0.39);
+}
+
+.a02-mark { font-size: 15px; line-height: 1.2; }
+.a02-nav { display: none; }
+.a02-main { display: flex; flex-direction: column; }
+.a02-h1 {
+  margin: 60px 0 0;
+  font-size: min(var(--text-display), 9.4vw); /* "What is happening" stays on one row down to 320px */
+  line-height: var(--text-display--line-height);
+  font-weight: var(--text-display--font-weight);
+  letter-spacing: var(--text-display--letter-spacing);
+}
+/* one row per statement, the last one breaks before "to them." (see components/Welcome.tsx) */
+.a02-h1 > span { position: relative; display: block; width: max-content; white-space: nowrap; }
+.a02-h1 > span + span { margin-top: var(--spacing-4); }
+.a0-l3 { padding-bottom: 1lh; }
+.a0-l3a { position: relative; display: inline-block; }
+.a0-l3b { position: absolute; inset: 0; transform: translate(0, 100%); }
+.a0-ghost { visibility: hidden; }
+.a0-w { display: inline-block; }
+.a02-cta {
+  margin-top: var(--spacing-10);
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 50%, var(--color-primary-deep) 100%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 10px 30px rgb(0 0 0 / 0.25);
+  color: var(--color-on-primary);
+  font-size: var(--text-label-lg);
+  font-weight: var(--text-label-lg--font-weight);
+  transition: transform 160ms ease-out;
+}
+.a02-cta:active { transform: scale(0.97); }
+.a02 :focus-visible { outline: 2px solid var(--color-on-ground); outline-offset: 3px; }
+
+.a02-card {
+  flex-grow: 1;
+  min-height: 220px;
+  margin-top: var(--spacing-12);
+  overflow: hidden;
+  border-bottom: 0;
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+}
+.a02-map { display: block; width: 100%; height: 100%; position: absolute; inset: 0; }
+.a02-map .ms-water { stroke: color-mix(in srgb, var(--color-map-water) 40%, transparent); }
+.a02-map .ms-river-1 { stroke-width: 5; }
+.a02-map .ms-river-2 { stroke-width: 4; }
+.a02-map .ms-river-3 { stroke-width: 3; }
+.a02-map .ms-lakes { fill: color-mix(in srgb, var(--color-map-water) 40%, transparent); }
+.a02-map .ms-roads,
+.a02-map .ms-lanes { stroke: var(--color-map-road); opacity: 0.6; }
+.a02-map .ms-roads { stroke-width: 3; }
+.a02-map .ms-lanes { stroke-width: 1.6; }
+.a02-map .ms-places { fill: var(--color-on-ground); }
+.a02-map-wide { display: none; }
+
+@media (min-width: 1024px) {
+  .a02 {
+    --a02-inset: clamp(48px, 6.67vw, var(--spacing-inset-desktop));
+    display: block;
+    padding: 0;
+  }
+  .a02-photo::after {
+    background:
+      linear-gradient(90deg, color-mix(in srgb, var(--color-scrim) 60%, transparent) 0%, color-mix(in srgb, var(--color-scrim) 25%, transparent) 55%, color-mix(in srgb, var(--color-scrim) 45%, transparent) 100%),
+      rgb(0 0 0 / 0.39);
+  }
+  .a02-mark { position: absolute; top: 44px; left: var(--a02-inset); font-size: 20px; }
+  .a02-nav {
+    position: absolute;
+    top: 28px;
+    right: 40px;
+    z-index: 2;
+    height: 56px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: var(--radius-full);
+  }
+  .a02-tab {
+    height: 46px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: var(--radius-full);
+    font-size: 14px;
+    line-height: 1;
+    color: rgb(255 255 255 / 0.72);
+  }
+  .a02-tab[aria-current="page"] { color: var(--color-on-ground); font-weight: 500; }
+  .a02-main {
+    position: absolute;
+    left: var(--a02-inset);
+    top: 200px;
+    width: min(640px, 46vw);
+    align-items: flex-start;
+  }
+  .a02-h1 {
+    margin: 0;
+    font-size: clamp(48px, 5vw, var(--text-display-desktop));
+    line-height: var(--text-display-desktop--line-height);
+    letter-spacing: var(--text-display-desktop--letter-spacing);
+  }
+  .a02-h1 > span + span { margin-top: var(--spacing-6); }
+  .a02-cta { margin-top: var(--spacing-12); height: 64px; padding: 0 44px; font-size: 17px; }
+  .a02-card {
+    position: absolute;
+    left: 55.5%;
+    top: 140px;
+    right: -120px;
+    bottom: -100px;
+    min-height: 0;
+    margin: 0;
+    border-bottom: 1px solid rgb(255 255 255 / 0.55);
+    border-radius: var(--radius-hero);
+    --glass-ring: var(--glass-ring-full);
+  }
+  .a02-map-tall { display: none; }
+  .a02-map-wide { display: block; }
+}

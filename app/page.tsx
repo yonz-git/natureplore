@@ -1,5 +1,6 @@
-import { redirect } from "next/navigation";
+import Welcome from "@/components/Welcome";
 
+// A0 · Welcome, which scrolls into A0-2 · Welcome. "See the map" goes on to the tabbed app.
 export default function Home() {
-  redirect("/map");
+  return <Welcome />;
 }
