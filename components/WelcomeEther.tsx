@@ -3,13 +3,15 @@
 import dynamic from "next/dynamic";
 import { useSyncExternalStore } from "react";
 
-// The liquid layer over A0's green field: the pointer stirs flows of light and dark green, the field's own
-// colour stays underneath because the canvas is transparent. Colours come from the design tokens.
+// The liquid layer over A0's green field: the pointer stirs slow, broad flows of olive green (never white), the field's
+// own colour stays underneath because the canvas is transparent. Colours come from the design tokens.
+// Tuned for calm: a wide brush on a coarse grid gives few large shapes, viscosity and plain advection
+// (no BFECC) take the smoke-like wisps out, a gentle force and a small time step keep it slow.
 // Not mounted for a person who asked for reduced motion. three is loaded after the page, not with it.
 
 const LiquidEther = dynamic(() => import("@/components/LiquidEther"), { ssr: false });
 
-const TOKENS = ["--color-accent-tint", "--color-field-glow", "--color-field-deep"]; // slow to fast flow
+const TOKENS = ["--color-field-olive-deep", "--color-field-olive", "--color-field-olive"]; // slow to fast flow, never white
 const MOTION_OK = "(prefers-reduced-motion: no-preference)";
 
 // LiquidEther stores its palette in linear light and draws it without converting back, so a colour comes
@@ -36,13 +38,15 @@ export default function WelcomeEther() {
   return (
     <LiquidEther
       colors={TOKENS.map((name) => asShown(root.getPropertyValue(name).trim()))}
-      mouseForce={7}
-      cursorSize={60}
-      isViscous={false}
-      viscous={8}
+      mouseForce={4} // the push of the pointer: higher is stronger, faster and more opaque
+      cursorSize={80} // in grid cells: about a fifth of the width at this resolution
+      isViscous
+      viscous={30}
       iterationsViscous={32}
       iterationsPoisson={19}
-      resolution={0.45}
+      resolution={0.25}
+      BFECC={false}
+      dt={0.006}
       isBounce={false}
       autoDemo={false}
       autoSpeed={1}
