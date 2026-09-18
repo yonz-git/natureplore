@@ -3,7 +3,7 @@ import MapSketch from "@/components/MapSketch";
 
 // A0 · Welcome and A0-2 · Welcome as one page. It opens as A0: the green field and the three
 // statements, which blur in word by word. Scrolling moves the statements to their A0-2 places,
-// opens the forest photograph in a growing circle, brings in the rest, and fades the map in last.
+// opens the forest photograph in a growing circle with a glowing rim, brings in the rest, and fades the map in last.
 // With `still` it is A0-2 alone, nothing moves.
 // Layout: app/welcome2.css. Field, intro and scroll choreography: app/welcome.css. Glass: app/glass.css.
 // Boards: "A0 · Welcome, version 4 (animated)" and "A0-2 · Welcome, version 6", phone and desktop.
@@ -90,6 +90,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
           </div>
         )}
         <div className="a02-photo" aria-hidden="true" />
+        {!still && <div className="a0-orb" aria-hidden="true" />}
 
         <div className="a02-mark">natureplore</div>
         <nav aria-label="Main" className="a02-nav glass glass-nav">

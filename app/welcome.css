@@ -34,8 +34,10 @@
 @keyframes a0s-leave { from { opacity: 1; } }
 @keyframes a0s-open {
   from { clip-path: circle(0% at var(--a0-cx) var(--a0-cy)); }
-  to { clip-path: circle(105% at var(--a0-cx) var(--a0-cy)); }
+  to { clip-path: circle(150% at var(--a0-cx) var(--a0-cy)); }
 }
+/* by the end the rim is far outside the page, so it goes with the last step */
+@keyframes a0s-swell { from { transform: scale(0); } 99% { visibility: visible; } to { visibility: hidden; } }
 @keyframes a0s-hide { to { visibility: hidden; } }
 
 .a0s {
@@ -69,6 +71,31 @@
 .a0-blob-2 { left: 10%; top: -18%; width: 138%; aspect-ratio: 1.12; background: radial-gradient(closest-side, rgb(255 255 255 / 0.24), transparent); }
 .a0-blob-3 { left: 28%; top: 50%; width: 159%; background: radial-gradient(closest-side, color-mix(in srgb, var(--color-field-mid) 80%, transparent), transparent); }
 .a0-blob-4 { left: -46%; top: 64%; width: 138%; aspect-ratio: 1.17; background: radial-gradient(closest-side, color-mix(in srgb, var(--color-field-glow) 70%, transparent), transparent); }
+/* the rim of the circle the photograph opens in: light gathering inside the edge, one pale green line
+   on the edge itself, a halo outside it. The edge of the clip sits at 80% of this element's radius,
+   and the element is sized to the circle at the end of the scroll: 150% of hypot(w, h) / sqrt(2). */
+.a0-orb {
+  display: none;
+  position: absolute;
+  z-index: -1;
+  left: var(--a0-cx);
+  top: var(--a0-cy);
+  width: calc(hypot(100cqw, 100cqh) * 2.6517);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    transparent 50%,
+    color-mix(in srgb, var(--color-field-glow) 35%, transparent) 70%,
+    color-mix(in srgb, var(--color-accent-tint) 60%, transparent) 77.5%,
+    color-mix(in srgb, var(--color-accent-tint-soft) 85%, transparent) 80%,
+    color-mix(in srgb, var(--color-accent-tint) 40%, transparent) 82.5%,
+    color-mix(in srgb, var(--color-field-glow) 22%, transparent) 90%,
+    transparent 100%
+  );
+}
 .a0-map {
   position: absolute;
   inset: 0;
@@ -120,7 +147,9 @@
     .a0s { height: 300vh; }
     .a0s .a02 { position: sticky; top: 0; height: 100dvh; min-height: 0; container-type: size; }
     .a0s .a0-field { display: block; animation: a0s-hide linear both; animation-timeline: scroll(root); animation-range: 70% 71%; }
-    .a0s .a02-photo { animation: a0s-open linear both; animation-timeline: scroll(root); animation-range: 4% 68%; }
+    .a0s .a02-photo { animation: a0s-open linear both; animation-timeline: scroll(root); animation-range: 4% 78%; }
+    /* same range and both linear, so the rim stays on the edge of the clip */
+    .a0s .a0-orb { display: block; animation: a0s-swell linear both; animation-timeline: scroll(root); animation-range: 4% 78%; }
 
     /* the statements move from their A0 places, phone: lower and further apart */
     .a0s :is(.a02-h1, .a0-l1, .a0-l2, .a0-l3, .a0-l3b) { animation: a0s-move linear both; animation-timeline: scroll(root); animation-range: 6% 55%; }
