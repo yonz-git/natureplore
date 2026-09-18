@@ -57,17 +57,6 @@ export default function Welcome() {
         >
           natureplore
         </button>
-        <nav aria-label="Main" className="a0-nav">
-          <Link href="/learn" className="a0-navlink a0-ui" style={ui(1)}>
-            Learn
-          </Link>
-          <Link href="/notebook" className="a0-navlink a0-ui" style={ui(2)}>
-            Notebook
-          </Link>
-          <Link href="/map" className="a0-navlink a0-ghost a0-ui" style={ui(3)}>
-            See the map
-          </Link>
-        </nav>
       </header>
 
       <h1 className="a0-h1">
@@ -97,11 +86,11 @@ export default function Welcome() {
       </h1>
 
       <div className="a0-foot">
-        <p className="a0-copy a0-ui" style={ui(4)}>
+        <p className="a0-copy a0-ui" style={ui(1)}>
           A map of wild places in Berlin and Brandenburg, the species recorded
           there by season, and ways to protect them.
         </p>
-        <div className="a0-action a0-ui" style={ui(5)}>
+        <div className="a0-action a0-ui" style={ui(2)}>
           <Link href="/map" className="a0-cta">
             See the map
             <svg width="22" height="12" viewBox="0 0 22 12" aria-hidden="true">
