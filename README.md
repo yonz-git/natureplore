@@ -34,6 +34,7 @@ started. No streaks, no engagement prompts.
 
 ## Layout
 
+- `app/page.tsx` is A0 · Welcome, the animated opening page (`components/Welcome.tsx`, keyframes in `app/welcome.css`). One markup, phone layout first and the staggered desktop layout from 1024px. "See the map" goes on to `/map`, and the wordmark replays the intro.
 - `app/(app)/` is the tabbed shell: `map`, `learn`, `notebook`, each a stub screen for now.
 - `components/` holds shared pieces, `TabBar` is the fixed bottom navigation.
 - `app/tokens.css` is generated; `app/globals.css` is hand written.
