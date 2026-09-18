@@ -1,6 +1,7 @@
 import Link from "next/link";
 import MapSketch from "@/components/MapSketch";
 import WelcomeEther from "@/components/WelcomeEther";
+import WelcomeReveal from "@/components/WelcomeReveal";
 import WelcomeScroll from "@/components/WelcomeScroll";
 
 // A0 · Welcome and A0-2 · Welcome as one page. It opens as A0: the green field and the three
@@ -83,6 +84,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
             <div className="a0-blob a0-blob-b a0-blob-2" />
             <div className="a0-blob a0-blob-3" />
             <div className="a0-blob a0-blob-b a0-blob-4" />
+            <WelcomeReveal />
             <div className="a0-ether">
               <WelcomeEther />
             </div>

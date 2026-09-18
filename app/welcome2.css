@@ -11,10 +11,11 @@
   padding: 72px var(--spacing-inset-screen) 0;
   background: var(--color-ground);
   color: var(--color-on-ground);
+  --a02-photo: url(/img/forest-olena-bohovyk.jpg);
 }
 /* the lens is only a plain full-size box here, app/welcome.css turns it into the growing circle */
 .a0-lens { position: absolute; inset: 0; z-index: -1; }
-.a02-photo { position: absolute; inset: 0; background: url(/img/forest-olena-bohovyk.jpg) center / cover; }
+.a02-photo { position: absolute; inset: 0; background: var(--a02-photo) center / cover; }
 .a02-photo::after {
   content: "";
   position: absolute;

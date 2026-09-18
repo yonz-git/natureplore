@@ -92,6 +92,32 @@
     transparent 100%
   );
 }
+/* the photograph showing through around the mouse (components/WelcomeReveal.tsx), under the liquid layer.
+   The mask makes the circle soft all the way out, there is no edge to see. */
+.a0-reveal {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 420px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  opacity: 0;
+  -webkit-mask-image: radial-gradient(closest-side, black, transparent);
+  mask-image: radial-gradient(closest-side, black, transparent);
+  transition: opacity 400ms ease;
+  will-change: transform;
+}
+.a0-reveal[data-on] { opacity: 0.55; }
+.a0-reveal-photo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100cqw;
+  height: 100cqh;
+  background: var(--a02-photo) center / cover;
+  will-change: transform;
+}
+
 /* the liquid layer (components/WelcomeEther.tsx), between the blobs and the grain */
 /* screen: the layer can only lighten what is under it, towards its green, and fades out into the field
    with no dark or grey edge */
