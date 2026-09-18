@@ -1,5 +1,7 @@
 /* eslint-disable */
-// LiquidEther from React Bits (reactbits.dev), copied in unchanged as the library intends, MIT + Commons Clause.
+// LiquidEther from React Bits (reactbits.dev), copied in as the library intends, MIT + Commons Clause.
+// One change, marked "Natureplore": the output material is premultiplied, so a flow fades in evenly with
+// its speed. Unchanged, the colour was multiplied by the alpha twice and slow flows all but vanished.
 // A WebGL fluid simulation on a transparent canvas, needs three. Used by components/WelcomeEther.tsx.
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
@@ -987,6 +989,7 @@ const color_frag = `
             vertexShader: face_vert,
             fragmentShader: color_frag,
             transparent: true,
+            premultipliedAlpha: true, // Natureplore: the shader already multiplies the colour by its alpha
             depthWrite: false,
             uniforms: {
               velocity: { value: this.simulation.fbos.vel_0!.texture },
