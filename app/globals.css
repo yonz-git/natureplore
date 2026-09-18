@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "./tokens.css";
+@import "./glass.css";
 @import "./welcome.css";
+@import "./welcome2.css";
 
 html,
 body {

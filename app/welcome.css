@@ -68,7 +68,7 @@
   filter: blur(1px);
   stroke: var(--color-on-field);
 }
-.a0-map * { vector-effect: non-scaling-stroke; }
+.a0-map * { vector-effect: non-scaling-stroke; stroke-width: 1; }
 .a0-grain {
   position: absolute;
   inset: 0;

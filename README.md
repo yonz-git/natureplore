@@ -35,6 +35,8 @@ started. No streaks, no engagement prompts.
 ## Layout
 
 - `app/page.tsx` is A0 · Welcome, the animated opening page (`components/Welcome.tsx`, keyframes in `app/welcome.css`). One markup, phone layout first and the staggered desktop layout from 1024px. "See the map" goes on to `/map`, and the wordmark replays the intro.
+- `app/welcome/page.tsx` is A0-2 · Welcome, the still welcome over the forest photograph (`components/WelcomeStill.tsx`, styles in `app/welcome2.css`): statements, one green action and a glass card with the map sketch, split layout with the glass nav pill from 1024px.
+- `app/glass.css` is the liquid glass recipe from the design system as classes: `glass` plus a tier (`glass-pill`, `glass-nav`, `glass-card`), `glass-top` for surfaces lit from the top only, `glass-clip` for clipped ones. `components/MapSketch.tsx` is the hand-drawn Berlin sketch both welcome screens use.
 - `app/(app)/` is the tabbed shell: `map`, `learn`, `notebook`, each a stub screen for now.
 - `components/` holds shared pieces, `TabBar` is the fixed bottom navigation.
 - `app/tokens.css` is generated; `app/globals.css` is hand written.

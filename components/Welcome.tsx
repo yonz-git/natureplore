@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import MapSketch from "@/components/MapSketch";
 
 // A0 · Welcome (first open only), animated. Styles and keyframes: app/welcome.css.
 // Board: "A0 · Welcome, version 4 (animated)", phone and desktop, on the design system test canvas.
@@ -36,38 +37,7 @@ export default function Welcome() {
         <div className="a0-blob a0-blob-b a0-blob-2" />
         <div className="a0-blob a0-blob-3" />
         <div className="a0-blob a0-blob-b a0-blob-4" />
-        <svg
-          className="a0-map"
-          viewBox="-150 20 640 400"
-          preserveAspectRatio="xMidYMid slice"
-          fill="none"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <g>
-            <path d="M352 -260C340 -120 362 -20 348 60S364 200 352 290S366 380 356 440" />
-            <path d="M136 -40C146 40 132 120 150 170S152 230 122 236S72 236 52 206S26 150 -20 136" />
-            <path d="M292 348C268 312 246 268 222 226S180 212 150 214" />
-            <ellipse cx="146" cy="98" rx="7" ry="6" />
-            <ellipse cx="116" cy="136" rx="3" ry="9" />
-            <ellipse cx="206" cy="122" rx="3" ry="9" />
-            <ellipse cx="244" cy="112" rx="7" ry="4" />
-            <ellipse cx="222" cy="218" rx="6" ry="4" />
-            <ellipse cx="262" cy="262" rx="4" ry="10" />
-            <ellipse cx="134" cy="238" rx="6" ry="4" />
-            <ellipse cx="192" cy="208" rx="60" ry="38" />
-            <path d="M150 180 96 140 40 100-20 58" />
-            <path d="M226 176 252 128 282 62 312 -60" />
-            <path d="M252 214 304 222 410 232" />
-            <path d="M232 240 262 292 300 362 332 440" />
-            <path d="M160 242 130 300 98 380 72 440" />
-            <path d="M132 212 72 222-20 240" />
-            <path d="M195 170 200 100 206 -60" />
-            <path d="M304 222 342 176 410 140" />
-            <path d="M96 140 60 190 20 300" />
-          </g>
-        </svg>
+        <MapSketch className="a0-map" viewBox="-150 20 640 400" />
         <svg className="a0-grain">
           <filter id="a0-grain">
             <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch" />
