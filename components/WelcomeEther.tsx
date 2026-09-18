@@ -13,19 +13,10 @@ import { useSyncExternalStore } from "react";
 
 const LiquidEther = dynamic(() => import("@/components/LiquidEther"), { ssr: false });
 
-const TOKENS = ["--color-field-flow", "--color-field-flow"]; // one green: the flow speed alone sets how much of it shows
+// One saturated green: the flow speed alone sets how much of it shows. It has to be saturated, a pale or
+// olive green screens out to grey and white over the field.
+const TOKENS = ["--color-field-flow", "--color-field-flow"];
 const MOTION_OK = "(prefers-reduced-motion: no-preference)";
-
-// LiquidEther stores its palette in linear light and draws it without converting back, so a colour comes
-// out darker than it was given. Giving it the sRGB encoding of the token's values cancels that: what
-// shows on screen is the token.
-const asShown = (hex: string) => {
-  const channels = [1, 3, 5].map((i) => {
-    const v = parseInt(hex.slice(i, i + 2), 16) / 255;
-    return Math.round(255 * (v <= 0.0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - 0.055));
-  });
-  return `rgb(${channels.join(", ")})`;
-};
 
 const subscribe = (onChange: () => void) => {
   const query = matchMedia(MOTION_OK);
@@ -39,7 +30,7 @@ export default function WelcomeEther() {
   const root = getComputedStyle(document.documentElement);
   return (
     <LiquidEther
-      colors={TOKENS.map((name) => asShown(root.getPropertyValue(name).trim()))}
+      colors={TOKENS.map((name) => root.getPropertyValue(name).trim())}
       mouseForce={4} // the push of the pointer: higher is stronger, faster and more opaque
       cursorSize={80} // in grid cells: about a fifth of the width at this resolution
       isViscous
