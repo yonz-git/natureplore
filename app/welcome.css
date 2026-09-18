@@ -1,7 +1,7 @@
 /* A0 · Welcome, and the scroll from it into A0-2 · Welcome (components/Welcome.tsx).
    The page is laid out as A0-2 (app/welcome2.css). This file adds the green field, the intro
    (words blur in one by one, two rules wipe in) and the scroll choreography: every A0 position
-   is the "from" of a scroll-driven animation, so at the end of the scroll nothing is left but A0-2.
+   is the "from" of an animation scrubbed by the scroll, so at the end of the scroll nothing is left but A0-2.
    Colours are tokens only. */
 
 @keyframes a0-word {
@@ -25,19 +25,13 @@
   to { transform: translate3d(calc(var(--a0-drift-x) * -1.2), calc(var(--a0-drift-y) * -0.8), 0) scale(1); }
 }
 
-/* scroll-driven, each one only names the A0 end */
+/* scrubbed by the scroll, each one only names the A0 end */
 @keyframes a0s-move { from { transform: var(--a0-from); } }
 /* "to them." drops to its own row first, then slides left under the row above, so the two never cross */
 @keyframes a0s-drop { from { transform: var(--a0-from); } 30% { transform: var(--a0-mid); } }
 @keyframes a0s-rise { from { opacity: 0; transform: translate(0, var(--a0-rise)); } }
 @keyframes a0s-fade { from { opacity: 0; } }
 @keyframes a0s-leave { from { opacity: 1; } }
-@keyframes a0s-open {
-  from { clip-path: circle(0% at var(--a0-cx) var(--a0-cy)); }
-  to { clip-path: circle(150% at var(--a0-cx) var(--a0-cy)); }
-}
-/* by the end the rim is far outside the page, so it goes with the last step */
-@keyframes a0s-swell { from { transform: scale(0); } 99% { visibility: visible; } to { visibility: hidden; } }
 @keyframes a0s-hide { to { visibility: hidden; } }
 
 .a0s {
@@ -72,15 +66,16 @@
 .a0-blob-3 { left: 28%; top: 50%; width: 159%; background: radial-gradient(closest-side, color-mix(in srgb, var(--color-field-mid) 80%, transparent), transparent); }
 .a0-blob-4 { left: -46%; top: 64%; width: 138%; aspect-ratio: 1.17; background: radial-gradient(closest-side, color-mix(in srgb, var(--color-field-glow) 70%, transparent), transparent); }
 /* the rim of the circle the photograph opens in: light gathering inside the edge, one pale green line
-   on the edge itself, a halo outside it. The edge of the clip sits at 80% of this element's radius,
-   and the element is sized to the circle at the end of the scroll: 150% of hypot(w, h) / sqrt(2). */
+   on the edge itself, a halo outside it. The edge of the lens sits at 80% of this element's radius.
+   It is laid out at a quarter of its final size and scaled up (--a0-rim), so the layer stays small. */
 .a0-orb {
+  --a0-rim: 4;
   display: none;
   position: absolute;
   z-index: -1;
   left: var(--a0-cx);
   top: var(--a0-cy);
-  width: calc(hypot(100cqw, 100cqh) * 2.6517);
+  width: calc(hypot(100cqw, 100cqh) * 2.1213 / 0.8 / var(--a0-rim));
   aspect-ratio: 1;
   translate: -50% -50%;
   border-radius: 50%;
@@ -139,53 +134,89 @@
 .a0s .a02-mark,
 .a0s .a0-cue span { animation: a0-arrive 800ms var(--a0-ease) 2300ms both; }
 
-/* ponytail: native scroll-driven animations only. A browser without them, or a person who asked for
-   reduced motion, gets A0-2 as a still page with the words fading in. If that is not enough,
-   a scroll listener that sets one progress value is the upgrade. */
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: scroll()) {
-    .a0s { height: 300vh; }
-    .a0s .a02 { position: sticky; top: 0; height: 100dvh; min-height: 0; container-type: size; }
-    .a0s .a0-field { display: block; animation: a0s-hide linear both; animation-timeline: scroll(root); animation-range: 70% 71%; }
-    .a0s .a02-photo { animation: a0s-open linear both; animation-timeline: scroll(root); animation-range: 4% 78%; }
-    /* same range and both linear, so the rim stays on the edge of the clip */
-    .a0s .a0-orb { display: block; animation: a0s-swell linear both; animation-timeline: scroll(root); animation-range: 4% 78%; }
+/* The scroll choreography. components/WelcomeScroll.tsx writes --a0-p on each of these elements: the
+   scroll progress from 0 to 1, eased so the page glides after the scroll instead of stepping with it.
+   Every animation here is paused and one second long, and its delay places it: an element with
+   --a0-s 0.06 and --a0-e 0.55 plays its second between 6% and 55% of the scroll.
+   A person who asked for reduced motion, or a browser without scripting, gets A0-2 as a still page. */
+@property --a0-p { syntax: "<number>"; inherits: false; initial-value: 0; }
 
-    /* the statements move from their A0 places, phone: lower and further apart */
-    .a0s :is(.a02-h1, .a0-l1, .a0-l2, .a0-l3, .a0-l3b) { animation: a0s-move linear both; animation-timeline: scroll(root); animation-range: 6% 55%; }
-    .a0s .a02-h1 { --a0-from: translate(0, 26px); }
-    .a0s .a0-l1 { --a0-from: translate(0, 0); }
-    .a0s .a0-l2 { --a0-from: translate(0, 29px); }
-    .a0s .a0-l3 { --a0-from: translate(0, 58px); }
-    .a0s .a0-l3b { --a0-from: translate(0, 100%); --a0-mid: translate(0, 100%); animation-name: a0s-drop; }
-    .a0s :is(.a0-rule, .a0-cue) { animation: a0s-leave linear both; animation-timeline: scroll(root); animation-range: 0% 8%; }
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .a0s { height: 300vh; }
+  .a0s .a02 { position: sticky; top: 0; height: 100dvh; min-height: 0; container-type: size; }
+  .a0s :is(.a0-field, .a0-orb) { display: block; }
 
-    /* the rest arrives, the map last and only fading */
-    .a0s :is(.a02-nav, .a02-cta) { animation: a0s-rise linear both; animation-timeline: scroll(root); }
-    .a0s .a02-nav { animation-range: 52% 66%; }
-    .a0s .a02-cta { animation-range: 58% 72%; }
-    .a0s .a02-card { animation: a0s-fade linear both; animation-timeline: scroll(root); animation-range: 80% 98%; }
+  .a0s :is(.a0-field, .a02-h1, .a0-l1, .a0-l2, .a0-l3, .a0-l3b, .a0-rule, .a0-cue, .a02-nav, .a02-cta, .a02-card) {
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-play-state: paused;
+    animation-delay: calc((var(--a0-s) - var(--a0-p)) / (var(--a0-e) - var(--a0-s)) * 1s);
+  }
+  .a0s .a0-field { animation-name: a0s-hide; --a0-s: 0.7; --a0-e: 0.71; }
+  /* The photograph opens in a circle between --a0-s and --a0-e of the scroll. The lens is that circle at
+     its final size, 150% of hypot(w, h) / sqrt(2), enough to clear every corner. WelcomeScroll scales
+     the lens up from nothing, scales the photograph inside it by the inverse so it stays put, and scales
+     the rim with the lens. Only transforms change, so nothing is repainted while the circle grows. */
+  .a0s .a0-lens {
+    --a0-s: 0.04;
+    --a0-e: 0.78;
+    inset: auto;
+    left: var(--a0-cx);
+    top: var(--a0-cy);
+    width: calc(hypot(100cqw, 100cqh) * 2.1213);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .a0s .a02-photo {
+    inset: auto;
+    left: 50%;
+    top: 50%;
+    width: 100cqw;
+    height: 100cqh;
+    translate: calc(var(--a0-cx) * -1) calc(var(--a0-cy) * -1);
+    transform-origin: var(--a0-cx) var(--a0-cy);
+  }
+  .a0s :is(.a0-lens, .a02-photo, .a0-orb) { will-change: transform; }
+  .a0s :is(.a0-lens, .a0-orb) { visibility: hidden; } /* until WelcomeScroll places them */
 
-    /* a link that takes keyboard focus must be visible: jump to the end state */
-    .a0s:has(a:focus-visible) :is(*, *::after) { animation: none !important; }
+  /* the statements move from their A0 places, phone: lower and further apart */
+  .a0s :is(.a02-h1, .a0-l1, .a0-l2, .a0-l3, .a0-l3b) { animation-name: a0s-move; --a0-s: 0.06; --a0-e: 0.55; }
+  .a0s .a02-h1 { --a0-from: translate(0, 26px); }
+  .a0s .a0-l1 { --a0-from: translate(0, 0); }
+  .a0s .a0-l2 { --a0-from: translate(0, 29px); }
+  .a0s .a0-l3 { --a0-from: translate(0, 58px); }
+  .a0s .a0-l3b { --a0-from: translate(0, 100%); --a0-mid: translate(0, 100%); animation-name: a0s-drop; }
+  .a0s :is(.a0-rule, .a0-cue) { animation-name: a0s-leave; --a0-s: 0; --a0-e: 0.08; }
 
-    @media (min-width: 1024px) {
-      .a0s {
-        --a0-inset: clamp(48px, 6.67vw, var(--spacing-inset-desktop));
-        --a0-gap: clamp(36px, 5vw, 72px);
-        --a0-drift-x: 90px;
-        --a0-drift-y: 50px;
-        --a0-cx: 76%;
-        --a0-cy: 58%;
-      }
-      /* A0 on desktop: the block sits a little above the middle, rows 6px apart, the first row indented,
-         the last one on a single row against the right inset */
-      .a0s .a02-h1 { --a0-from: translate(0, calc(47cqh - 200px - 1.5lh - 6px)); }
-      .a0s .a0-l1 { --a0-from: translate(var(--a0-inset), 0); }
-      .a0s .a0-l2 { --a0-from: translate(0, -18px); }
-      .a0s .a0-l3 { --a0-from: translate(calc(100cqw - var(--a0-inset) * 2 - 100%), -36px); }
-      .a0s .a0-l3b { --a0-from: translate(calc(100% + 0.25em), 0); --a0-mid: translate(calc(90% + 0.25em), 100%); }
+  /* the rest arrives, the map last and only fading */
+  .a0s .a02-nav { animation-name: a0s-rise; --a0-s: 0.52; --a0-e: 0.66; }
+  .a0s .a02-cta { animation-name: a0s-rise; --a0-s: 0.58; --a0-e: 0.72; }
+  .a0s .a02-card { animation-name: a0s-fade; --a0-s: 0.8; --a0-e: 0.98; }
+
+  /* a link that takes keyboard focus must be visible: jump to the end state */
+  .a0s:has(a:focus-visible) :is(*, *::after) { animation: none !important; }
+  .a0s:has(a:focus-visible) :is(.a0-lens, .a02-photo) { transform: none !important; visibility: visible !important; }
+  .a0s:has(a:focus-visible) .a0-orb { visibility: hidden !important; }
+
+  @media (min-width: 1024px) {
+    .a0s {
+      --a0-inset: clamp(48px, 6.67vw, var(--spacing-inset-desktop));
+      --a0-gap: clamp(36px, 5vw, 72px);
+      --a0-drift-x: 90px;
+      --a0-drift-y: 50px;
+      --a0-cx: 76%;
+      --a0-cy: 58%;
     }
+    /* A0 on desktop: the block sits a little above the middle, rows 6px apart, the first row indented,
+       the last one on a single row against the right inset */
+    .a0s .a02-h1 { --a0-from: translate(0, calc(47cqh - 200px - 1.5lh - 6px)); }
+    .a0s .a0-l1 { --a0-from: translate(var(--a0-inset), 0); }
+    .a0s .a0-l2 { --a0-from: translate(0, -18px); }
+    .a0s .a0-l3 { --a0-from: translate(calc(100cqw - var(--a0-inset) * 2 - 100%), -36px); }
+    .a0s .a0-l3b { --a0-from: translate(calc(100% + 0.25em), 0); --a0-mid: translate(calc(90% + 0.25em), 100%); }
   }
 }
 

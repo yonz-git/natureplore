@@ -1,12 +1,14 @@
 import Link from "next/link";
 import MapSketch from "@/components/MapSketch";
+import WelcomeScroll from "@/components/WelcomeScroll";
 
 // A0 · Welcome and A0-2 · Welcome as one page. It opens as A0: the green field and the three
 // statements, which blur in word by word. Scrolling moves the statements to their A0-2 places,
 // opens the forest photograph in a growing circle with a glowing rim, brings in the nav and the
 // green action, and fades the map in last.
 // With `still` it is A0-2 alone, nothing moves.
-// Layout: app/welcome2.css. Field, intro and scroll choreography: app/welcome.css. Glass: app/glass.css.
+// Layout: app/welcome2.css. Field, intro and scroll choreography: app/welcome.css, fed by
+// components/WelcomeScroll.tsx. Glass: app/glass.css.
 // Boards: "A0 · Welcome, version 4 (animated)" and "A0-2 · Welcome, version 6", phone and desktop.
 
 const TABS = [
@@ -90,7 +92,9 @@ export default function Welcome({ still = false }: { still?: boolean }) {
             </svg>
           </div>
         )}
-        <div className="a02-photo" aria-hidden="true" />
+        <div className="a0-lens" aria-hidden="true">
+          <div className="a02-photo" />
+        </div>
         {!still && <div className="a0-orb" aria-hidden="true" />}
 
         <div className="a02-mark">natureplore</div>
@@ -157,6 +161,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
             <span>Scroll</span>
           </div>
         )}
+        {!still && <WelcomeScroll />}
       </div>
     </div>
   );
