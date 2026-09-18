@@ -82,7 +82,6 @@ export default function Welcome({ still = false }: { still?: boolean }) {
             <div className="a0-blob a0-blob-b a0-blob-2" />
             <div className="a0-blob a0-blob-3" />
             <div className="a0-blob a0-blob-b a0-blob-4" />
-            <MapSketch className="a0-map" viewBox="-150 20 640 400" />
             <svg className="a0-grain">
               <filter id="a0-grain">
                 <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch" />
