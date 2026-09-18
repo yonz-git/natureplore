@@ -32,7 +32,7 @@ export default function WelcomeEther() {
   return (
     <LiquidEther
       colors={TOKENS.map((name) => root.getPropertyValue(name).trim())}
-      mouseForce={4} // the push of the pointer: higher is stronger, faster and more opaque
+      mouseForce={6} // the push of the pointer: higher is stronger, faster and more opaque
       cursorSize={80} // in grid cells: about a fifth of the width at this resolution
       isViscous
       viscous={30}
