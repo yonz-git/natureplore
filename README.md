@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Natureplore prototype
 
-## Getting Started
-
-First, run the development server:
+The v1 prototype: find nature near you, understand its state, and help it.
+Next.js (App Router) and TypeScript, Tailwind v4, deployed on Vercel.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run tokens   # regenerate app/tokens.css from the design system
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where things come from
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Thing | Source |
+| --- | --- |
+| Design tokens | `../docs/design.md` frontmatter, generated into `app/tokens.css` by `scripts/tokens.mjs`. Edit the design system, never `tokens.css`. |
+| Base map data | `public/base-geo.js`, copied from `../design flow/base-geo.js`. Regenerate it from `../design flow/base-geo-src/`. Vector data from OpenStreetMap, no tile server. |
+| Background photograph | `public/img/forest-olena-bohovyk.jpg`, from `../docs/assets/`. |
+| Screens and states | The wireframe canvas, https://claude.ai/artifact/S5XrKyZEsHDqYnrxfLM98F (phone, tablet and desktop boards, codes A0 to K7). |
+| Flows | `../design flow/Natureplore_User_Flows_v1.md`, generated from `../design flow/flows-src/`. |
+| Brand | `../BRAND.md`. |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scope
 
-## Learn More
+v1 only. Three tabs: Map, Learn, Notebook. No booking, no guided walks, no
+guides, no payments, those are v2 (flows G to K, reporting a sighting included).
 
-To learn more about Next.js, take a look at the following resources:
+There is no sign-in. Where v1 asks for an account, the prototype acts as if the
+person is already signed in, so joining an action completes straight away.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Notifications only ever report a change of state in something the person
+started. No streaks, no engagement prompts.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Layout
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/(app)/` is the tabbed shell: `map`, `learn`, `notebook`, each a stub screen for now.
+- `components/` holds shared pieces, `TabBar` is the fixed bottom navigation.
+- `app/tokens.css` is generated; `app/globals.css` is hand written.
