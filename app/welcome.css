@@ -1,18 +1,10 @@
-/* A0 · Welcome (animated). Words blur in on a pale wash, a green field fades up,
-   the headline turns to on-field, two rules wipe in, then the interface arrives.
+/* A0 · Welcome (animated). The green field is there from the start. Words blur in one by one,
+   two rules wipe in, then the interface arrives.
    Phone layout first, the staggered desktop layout from 1024px. Colours are tokens only. */
 
 @keyframes a0-word {
   from { opacity: 0; filter: blur(14px); transform: translateY(10px); }
   to { opacity: 1; filter: blur(0); transform: translateY(0); }
-}
-@keyframes a0-ink {
-  from { color: transparent; }
-  to { color: var(--color-on-field); }
-}
-@keyframes a0-field {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 @keyframes a0-rule {
   from { clip-path: inset(0 100% 0 0); }
@@ -43,7 +35,7 @@
   display: flex;
   flex-direction: column;
   padding: 56px var(--a0-inset) 48px;
-  background: var(--color-wash);
+  background: var(--color-field);
   color: var(--color-on-field);
 }
 
@@ -55,7 +47,6 @@
   overflow: hidden;
   pointer-events: none;
   background: linear-gradient(160deg, var(--color-field-light) 0%, var(--color-field) 40%, var(--color-field-deep) 100%);
-  animation: a0-field 1400ms ease 2300ms both;
 }
 .a0-blob {
   position: absolute;
@@ -133,11 +124,7 @@
 .a0-line { display: flex; flex-direction: column; }
 .a0-w {
   display: inline-block;
-  background-image: linear-gradient(180deg, var(--color-primary) 0%, var(--color-marker) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: a0-word 1100ms var(--a0-ease) both, a0-ink 1400ms ease both;
+  animation: a0-word 1100ms var(--a0-ease) both;
 }
 .a0-rule {
   display: block;

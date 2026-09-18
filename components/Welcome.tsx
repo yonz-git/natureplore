@@ -16,8 +16,8 @@ const FIRST_WORD = STATEMENTS.map((_, i) =>
   STATEMENTS.slice(0, i).join(" ").split(" ").filter(Boolean).length,
 );
 
-const T_FIELD = 2300; // ms, the green field starts to fade up and the words turn to on-field
-const T_UI = 3100; // ms, the interface starts to arrive
+const T_RULES = 1800; // ms, the rules start to wipe in, once most words have landed
+const T_UI = 2300; // ms, the interface starts to arrive
 
 function replay() {
   document.getAnimations().forEach((a) => {
@@ -108,7 +108,7 @@ export default function Welcome() {
                 <span key={i}>
                   <span
                     className="a0-w"
-                    style={{ animationDelay: `${300 + (FIRST_WORD[line] + i) * 85}ms, ${T_FIELD}ms` }}
+                    style={{ animationDelay: `${300 + (FIRST_WORD[line] + i) * 85}ms` }}
                   >
                     {w}
                   </span>{" "}
@@ -119,7 +119,7 @@ export default function Welcome() {
               <span
                 aria-hidden="true"
                 className="a0-rule"
-                style={{ animationDelay: `${T_FIELD + 150 + line * 150}ms` }}
+                style={{ animationDelay: `${T_RULES + (line - 1) * 150}ms` }}
               />
             )}
           </span>
