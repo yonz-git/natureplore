@@ -1,29 +1,32 @@
-/* A1 · Start panel, desktop: from 1024px the sheet becomes the 440 side panel, the map fills the
+/* A1 · Start panel, desktop: from 64rem the sheet becomes the 440 side panel, the map fills the
    screen behind it, and the tab bar has moved to the nav pill (app/tabbar.css). */
 
-.a1-mark { display: none; align-self: flex-start; font-size: 18px; line-height: 1.2; color: var(--color-on-ground); text-decoration: none; }
+.a1-mark { display: none; align-self: flex-start; font-size: 1.125rem; line-height: 1.2; color: var(--color-on-ground); text-decoration: none; }
 
-@media (min-width: 1024px) {
+@media (min-width: 64rem) {
   .a1 { max-width: none; }
   .a1-map { height: 100%; }
 
   .a1-sheet {
-    inset: 24px auto 24px 24px;
-    width: 440px;
-    padding: 36px 36px 32px;
+    inset: 1.5rem auto 1.5rem 1.5rem;
+    max-height: calc(100dvh - 3rem);
+    overflow-y: auto;
+    width: clamp(20rem, 30vw, 27.5rem);
+    padding: 2.25rem 2.25rem 2rem;
     border: 0.2px solid rgb(255 255 255 / 0.55);
     border-radius: var(--radius-panel);
   }
   .a1-handle { display: none; }
   .a1-mark { display: block; }
-  .a1-title { margin-top: 72px; font-size: var(--text-h1-desktop); line-height: var(--text-h1-desktop--line-height); }
+  /* the h1 token is fluid already, so the panel only gives it room */
+  .a1-title { margin-top: clamp(2rem, 6vh, 4.5rem); }
   .a1-actions { margin-top: var(--spacing-10); }
   .a1-field,
-  .a1-btn { height: 58px; border-radius: 29px; }
-  .a1-note { margin-top: auto; padding-top: 24px; text-align: left; }
+  .a1-btn { height: 3.625rem; border-radius: 1.8125rem; }
+  .a1-note { margin-top: auto; padding-top: 1.5rem; text-align: left; }
 
   /* the cluster sits right of the panel and spreads over the full height */
   .a1-pin,
   .a1-label { left: calc((38 + var(--x) * 0.52) * 1%); top: calc((10 + var(--y) * 1.9) * 1%); }
-  .a1-pin { width: 52px; height: 52px; font-size: 15px; }
+  .a1-pin { width: 3.25rem; height: 3.25rem; font-size: 0.9375rem; }
 }

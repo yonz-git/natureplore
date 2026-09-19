@@ -1,16 +1,16 @@
-/* The tab bar: a floating glass pill on phone, the nav pill at the top right from 1024px.
+/* The tab bar: a floating glass pill on phone, the nav pill at the top right from 64rem.
    The current tab is white, the others white at 72%: no capsule behind either. */
 
-.tabbar { position: fixed; inset: auto 16px 24px; z-index: 20; display: flex; justify-content: center; }
+.tabbar { position: fixed; inset: auto 1rem 1.5rem; z-index: 20; display: flex; justify-content: center; }
 .tabbar-pill {
   width: 100%;
-  max-width: 520px;
-  height: 68px;
-  padding: 5px;
+  max-width: min(100%, 32.5rem);
+  height: 4.25rem;
+  padding: 0.3125rem;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 4px;
+  gap: 0.25rem;
   border-radius: var(--radius-full);
   list-style: none;
   margin: 0;
@@ -21,7 +21,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 0.125rem;
   border-radius: var(--radius-full);
   color: rgb(255 255 255 / 0.72);
   font-size: var(--text-tab);
@@ -31,19 +31,19 @@
 }
 .tabbar-tab.is-current { color: var(--color-on-ground); font-weight: 500; }
 
-@media (min-width: 1024px) {
-  .tabbar { inset: 28px 40px auto auto; justify-content: flex-end; }
+@media (min-width: 64rem) {
+  .tabbar { inset: 1.75rem 2.5rem auto auto; justify-content: flex-end; }
   .tabbar-pill {
     width: auto;
-    height: 56px;
-    padding: 4px;
+    height: 3.5rem;
+    padding: 0.25rem;
     display: flex;
     align-items: center;
   }
   .tabbar-tab {
-    height: 46px;
-    padding: 0 20px;
+    height: 2.875rem;
+    padding: 0 1.25rem;
     flex-direction: row;
-    gap: 8px;
+    gap: 0.5rem;
   }
 }

@@ -38,6 +38,14 @@ Run the `/impeccable` skill for design work, and keep these whatever the task is
   (`--ease-out`), under 300ms for a control and under 400ms for a screen,
   `transform` and `opacity` only, and a shorter fade under
   `prefers-reduced-motion`.
+- **rem, never px.** Every size, space, radius and type step is in rem, so the
+  screens follow the reader's own font size. The only px left are hairlines,
+  `0.2px` rims and `1px` rules, which have to stay one line whatever the zoom.
+  Values live in `../docs/design.md` and are generated, so change them there
+  and run `npm run tokens`.
+- **Fluid before breakpoints.** A screen has to hold at any width, not at three
+  of them: `clamp()` on type and page margins, proportions and `min()` on
+  widths, and a breakpoint only where the layout truly changes shape, at 64rem.
 - **Every screen has both sizes.** Phone first, then the desktop layout from
   1024px that follows the matching desktop board.
 - **A change to one element is a change to all of them.** The same control,

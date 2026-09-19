@@ -1,5 +1,5 @@
 /* A0-2 · Welcome. The still welcome: the forest photograph behind its filter, the three statements,
-   one green action, and a glass card with the map sketch. Phone first, split desktop layout from 1024px. */
+   one green action, and a glass card with the map sketch. Phone first, split desktop layout from 64rem. */
 
 .a02 {
   position: relative;
@@ -8,7 +8,7 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: 72px var(--spacing-inset-screen) 0;
+  padding: 4.5rem var(--spacing-inset-screen) 0;
   background: var(--color-ground);
   color: var(--color-on-ground);
   --a02-photo: url(/img/forest-olena-bohovyk.jpg);
@@ -25,12 +25,12 @@
     rgb(0 0 0 / 0.39);
 }
 
-.a02-mark { font-size: 15px; line-height: 1.2; }
+.a02-mark { font-size: 0.9375rem; line-height: 1.2; }
 .a02-nav { display: none; }
 .a02-main { display: flex; flex-direction: column; }
 .a02-h1 {
-  margin: 60px 0 0;
-  font-size: min(var(--text-display), 9.4vw); /* "What is happening" stays on one row down to 320px */
+  margin: 3.75rem 0 0;
+  font-size: min(var(--text-display), 9.4vw); /* "What is happening" stays on one row down to 20rem */
   line-height: var(--text-display--line-height);
   font-weight: var(--text-display--font-weight);
   letter-spacing: var(--text-display--letter-spacing);
@@ -45,24 +45,24 @@
 .a0-w { display: inline-block; }
 .a02-cta {
   margin-top: var(--spacing-10);
-  height: 58px;
+  height: 3.625rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-full);
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 50%, var(--color-primary-deep) 100%);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 10px 30px rgb(0 0 0 / 0.25);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
   color: var(--color-on-primary);
   font-size: var(--text-label-lg);
   font-weight: var(--text-label-lg--font-weight);
   transition: transform 160ms ease-out;
 }
 .a02-cta:active { transform: scale(0.97); }
-.a02 :focus-visible { outline: 2px solid var(--color-on-ground); outline-offset: 3px; }
+.a02 :focus-visible { outline: 0.125rem solid var(--color-on-ground); outline-offset: 0.1875rem; }
 
 .a02-card {
   flex-grow: 1;
-  min-height: 220px;
+  min-height: 13.75rem;
   margin-top: var(--spacing-12);
   overflow: hidden;
   border-bottom: 0;
@@ -81,9 +81,9 @@
 .a02-map .ms-places { fill: var(--color-on-ground); }
 .a02-map-wide { display: none; }
 
-@media (min-width: 1024px) {
+@media (min-width: 64rem) {
   .a02 {
-    --a02-inset: clamp(48px, 6.67vw, var(--spacing-inset-desktop));
+    --a02-inset: clamp(3rem, 6.67vw, var(--spacing-inset-desktop));
     display: block;
     padding: 0;
   }
@@ -92,27 +92,27 @@
       linear-gradient(90deg, color-mix(in srgb, var(--color-scrim) 60%, transparent) 0%, color-mix(in srgb, var(--color-scrim) 25%, transparent) 55%, color-mix(in srgb, var(--color-scrim) 45%, transparent) 100%),
       rgb(0 0 0 / 0.39);
   }
-  .a02-mark { position: absolute; top: 44px; left: var(--a02-inset); font-size: 20px; }
+  .a02-mark { position: absolute; top: 2.75rem; left: var(--a02-inset); font-size: 1.25rem; }
   .a02-nav {
     position: absolute;
-    top: 28px;
-    right: 40px;
+    top: 1.75rem;
+    right: 2.5rem;
     z-index: 2;
-    height: 56px;
-    padding: 4px;
+    height: 3.5rem;
+    padding: 0.25rem;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 0.25rem;
     border-radius: var(--radius-full);
   }
   .a02-tab {
-    height: 46px;
-    padding: 0 20px;
+    height: 2.875rem;
+    padding: 0 1.25rem;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.5rem;
     border-radius: var(--radius-full);
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 1;
     color: rgb(255 255 255 / 0.72);
   }
@@ -120,24 +120,24 @@
   .a02-main {
     position: absolute;
     left: var(--a02-inset);
-    top: 200px;
-    width: min(640px, 46vw);
+    top: 12.5rem;
+    width: min(40rem, 46vw);
     align-items: flex-start;
   }
   .a02-h1 {
     margin: 0;
-    font-size: clamp(48px, 5vw, var(--text-display-desktop));
+    font-size: clamp(3rem, 5vw, var(--text-display-desktop));
     line-height: var(--text-display-desktop--line-height);
     letter-spacing: var(--text-display-desktop--letter-spacing);
   }
   .a02-h1 > span + span { margin-top: var(--spacing-6); }
-  .a02-cta { margin-top: var(--spacing-12); height: 56px; padding: 0 44px; font-size: 17px; }
+  .a02-cta { margin-top: var(--spacing-12); height: 3.5rem; padding: 0 2.75rem; font-size: 1.0625rem; }
   .a02-card {
     position: absolute;
     left: 55.5%;
-    top: 140px;
-    right: -120px;
-    bottom: -100px;
+    top: 8.75rem;
+    right: -7.5rem;
+    bottom: -6.25rem;
     min-height: 0;
     margin: 0;
     border-bottom: 1px solid rgb(255 255 255 / 0.55);
