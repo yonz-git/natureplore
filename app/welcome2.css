@@ -140,7 +140,7 @@
     bottom: -100px;
     min-height: 0;
     margin: 0;
-    border-bottom: 1px solid rgb(255 255 255 / 0.55);
+    border-bottom: 1px solid rgb(255 255 255 / 0.28);
     border-radius: var(--radius-hero);
     --glass-ring: var(--glass-ring-full);
   }
