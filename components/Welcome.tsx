@@ -156,7 +156,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
           </Link>
         </main>
 
-        <div className="a02-card glass glass-card glass-top glass-clip" aria-hidden="true">
+        <div className="a02-card glass glass-card" aria-hidden="true">
           <MapSketch className="a02-map a02-map-tall" viewBox="30 60 330 250" places />
           <MapSketch className="a02-map a02-map-wide" viewBox="-20 30 420 480" places />
         </div>
