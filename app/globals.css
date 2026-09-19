@@ -4,6 +4,8 @@
 @import "./welcome.css";
 @import "./welcome2.css";
 @import "./a1.css";
+@import "./a1-desktop.css";
+@import "./tabbar.css";
 
 html,
 body {

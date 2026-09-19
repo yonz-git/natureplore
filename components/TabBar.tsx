@@ -41,11 +41,8 @@ export default function TabBar() {
   const pathname = usePathname();
 
   return (
-    <nav
-      aria-label="Tabs"
-      className="fixed inset-x-0 bottom-0 z-20 flex justify-center pb-6"
-    >
-      <ul className="flex h-[68px] items-center gap-1 rounded-full bg-ground/90 p-1 backdrop-blur-xl">
+    <nav aria-label="Tabs" className="tabbar">
+      <ul className="tabbar-pill glass glass-nav">
         {TABS.map((tab) => {
           const current = pathname.startsWith(tab.href);
           return (
@@ -53,11 +50,7 @@ export default function TabBar() {
               <Link
                 href={tab.href}
                 aria-current={current ? "page" : undefined}
-                className={`flex h-[58px] w-[104px] flex-col items-center justify-center gap-1 rounded-full text-tab ${
-                  current
-                    ? "bg-primary text-on-primary"
-                    : "text-on-ground-soft"
-                }`}
+                className={`tabbar-tab${current ? " is-current" : ""}`}
               >
                 <svg
                   width="22"

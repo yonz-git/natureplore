@@ -15,8 +15,11 @@
 .a1-map .ms-lanes { stroke-width: 1.6; }
 
 /* a count pin sits at a share of the map box, so the cluster holds its shape at any width */
+/* --x and --y are the pin's share of the screen; the desktop block narrows the band to the map */
 .a1-pin {
   position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
   width: 44px;
   height: 44px;
   transform: translate(-50%, -50%);
@@ -29,6 +32,8 @@
 }
 .a1-label {
   position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
   transform: translate(-50%, 0);
   font-size: var(--text-micro); line-height: var(--text-micro--line-height);
   color: var(--color-on-ground-soft);
@@ -89,3 +94,5 @@
   box-shadow: inset 2px 2px 6px -3px rgb(255 255 255 / 0.3), inset -2px -2px 6px -3px rgb(0 0 0 / 0.18);
 }
 .a1-note { margin: 22px 0 0; text-align: center; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
+
+

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import MapSketch from "@/components/MapSketch";
 
 // A1 · Start sheet, the first open of the map: the region with its count pins, and the sheet
@@ -27,18 +29,21 @@ export default function MapHome() {
           key={pin.count}
           type="button"
           className="a1-pin glass glass-pin"
-          style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
+          style={{ "--x": pin.x, "--y": pin.y } as React.CSSProperties}
           aria-label={`${pin.count} places, zoom in`}
         >
           {pin.count}
         </button>
       ))}
-      <span className="a1-label" style={{ left: "50%", top: "28%" }}>
+      <span className="a1-label" style={{ "--x": 50, "--y": 28 } as React.CSSProperties}>
         Berlin
       </span>
 
-      <div className="a1-sheet glass glass-top">
+      <div className="a1-sheet glass glass-top glass-card">
         <div className="a1-handle" aria-hidden="true" />
+        <Link href="/" className="a1-mark">
+          natureplore
+        </Link>
         <h1 className="a1-title">
           See what lives <em>around you</em>
         </h1>
