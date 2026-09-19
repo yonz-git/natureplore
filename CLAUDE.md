@@ -40,6 +40,9 @@ Run the `/impeccable` skill for design work, and keep these whatever the task is
   `prefers-reduced-motion`.
 - **Every screen has both sizes.** Phone first, then the desktop layout from
   1024px that follows the matching desktop board.
+- **A change to one element is a change to all of them.** The same control,
+  label or tile appears on several screens and at both sizes. Change every
+  instance in the same pass, and say which ones were touched.
 - **Accessibility ships with the screen.** Real `button`, `a href`, `input` with
   a label, 44px targets, 4.5:1 on body text, visible focus, and the
   `prefers-reduced-transparency` fallback that turns glass solid.
