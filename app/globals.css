@@ -6,6 +6,7 @@
 @import "./a1.css";
 @import "./a1-desktop.css";
 @import "./tabbar.css";
+@import "./transitions.css";
 
 html,
 body {

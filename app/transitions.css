@@ -1,0 +1,22 @@
+/* Screen transitions. Next renders a fresh template per navigation, so this enter runs once each
+   time a screen arrives. Opacity only: the map screen is a fixed overlay, and a transform on an
+   ancestor would become its containing block for the length of the animation and shift it. */
+
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.screen-enter { animation: screen-enter 220ms var(--ease-out); }
+
+/* tabs are switched many times a day: the same move, short enough to pass unnoticed */
+.screen-enter-tab { animation-duration: 150ms; }
+
+@keyframes screen-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen-enter,
+  .screen-enter-tab { animation-duration: 120ms; }
+}
