@@ -152,7 +152,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
             </span>
           </h1>
           <Link href="/map" className="a02-cta">
-            See the map
+            Go to map
           </Link>
         </main>
 
