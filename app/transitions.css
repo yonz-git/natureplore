@@ -2,9 +2,13 @@
    screen arrives, and the parts of a screen start a beat apart so it settles rather than appearing
    all at once.
 
-   Nothing fades the wrapper: an ancestor at opacity below 1 becomes a backdrop root, which switches
-   off backdrop-filter on everything inside it, so the glass would render flat for the length of the
-   animation and then pop into frost. Each layer fades itself instead, which keeps its own frost. */
+   Nothing animates an ancestor of glass. Two things make an ancestor a backdrop root, and both
+   switch off backdrop-filter on everything inside it: opacity below 1, and a transform. A transform
+   is the trap, because `transform: none` in a keyframe computes to the identity matrix, which counts
+   as a transform, and `both` keeps the last keyframe applied after the animation is over. So a
+   finished fade on a wrapper leaves the glass inside it flat for good, not just while it runs.
+   Each layer animates itself instead, which keeps its own frost: an element's own transform is
+   fine, it is only an ancestor's that breaks it. */
 
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -16,8 +20,10 @@
 .screen-enter .a1-label { animation: fade-in 380ms var(--ease-out) 40ms both; }
 .screen-enter .a1-sheet { animation: sheet-in 360ms var(--ease-out) 60ms both; }
 
-/* every other screen is one block of content */
-.screen-enter > section { animation: sheet-in 320ms var(--ease-out) both; }
+/* every other screen is one block of content: its parts carry the animation, not the section, so a
+   glass surface anywhere inside still frosts. Equal delays, so the block still arrives as one.
+   .a1 is left out, its layers are animated above. */
+.screen-enter > section:not(.a1) > * { animation: sheet-in 320ms var(--ease-out) both; }
 
 @keyframes fade-in {
   from { opacity: 0; }
@@ -39,5 +45,5 @@
   .screen-enter .a1-pin,
   .screen-enter .a1-label,
   .screen-enter .a1-sheet,
-  .screen-enter > section { animation: fade-in 160ms var(--ease-out) both; }
+  .screen-enter > section:not(.a1) > * { animation: fade-in 160ms var(--ease-out) both; }
 }
