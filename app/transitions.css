@@ -1,22 +1,44 @@
-/* Screen transitions. Next renders a fresh template per navigation, so this enter runs once each
-   time a screen arrives. Opacity only: the map screen is a fixed overlay, and a transform on an
-   ancestor would become its containing block for the length of the animation and shift it. */
+/* Screen transitions. Next renders a fresh template per navigation, so these run once each time a
+   screen arrives. The wrapper only fades: the map screen is a fixed overlay, and a transform on an
+   ancestor would take over as its containing block for the length of the animation. The parts
+   inside a screen carry the movement instead, and they start a beat apart so the screen settles
+   rather than appearing all at once. */
 
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --screen-in: 280ms;
 }
 
-.screen-enter { animation: screen-enter 220ms var(--ease-out); }
-
-/* tabs are switched many times a day: the same move, short enough to pass unnoticed */
-.screen-enter-tab { animation-duration: 150ms; }
+.screen-enter { animation: screen-enter var(--screen-in) var(--ease-out) both; }
+/* tabs are switched many times a day, so their fade is shorter */
+.screen-enter-tab { --screen-in: 200ms; }
 
 @keyframes screen-enter {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
+/* the layers of the map screen: the map settles first, the sheet follows it up from below */
+.screen-enter .a1-map { animation: layer-in 380ms var(--ease-out) both; }
+/* the pins keep their own centring transform, so they only fade */
+.screen-enter .a1-pin,
+.screen-enter .a1-label { animation: screen-enter 380ms var(--ease-out) 40ms both; }
+.screen-enter .a1-sheet { animation: sheet-in 360ms var(--ease-out) 60ms both; }
+
+@keyframes layer-in {
+  from { opacity: 0; transform: scale(1.03); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes sheet-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .screen-enter,
-  .screen-enter-tab { animation-duration: 120ms; }
+  .screen-enter .a1-map,
+  .screen-enter .a1-pin,
+  .screen-enter .a1-label,
+  .screen-enter .a1-sheet { animation: screen-enter 160ms var(--ease-out) both; }
 }
