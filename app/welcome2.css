@@ -131,7 +131,7 @@
     letter-spacing: var(--text-display-desktop--letter-spacing);
   }
   .a02-h1 > span + span { margin-top: var(--spacing-6); }
-  .a02-cta { margin-top: var(--spacing-12); height: 64px; padding: 0 44px; font-size: 17px; }
+  .a02-cta { margin-top: var(--spacing-12); height: 56px; padding: 0 44px; font-size: 17px; }
   .a02-card {
     position: absolute;
     left: 55.5%;
