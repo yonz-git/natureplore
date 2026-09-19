@@ -31,9 +31,19 @@ Run the `/impeccable` skill for design work, and keep these whatever the task is
 - **Never hand-write `-webkit-backdrop-filter`.** The build adds prefixes. Written
   next to the standard property it makes the build keep only the prefixed one,
   which Chrome ignores, and every frosted surface silently goes flat.
-- **Never animate opacity on an ancestor of glass.** An ancestor below opacity 1
-  becomes a backdrop root and switches the frost off for the length of the
-  animation. Animate each layer instead, as `app/transitions.css` does.
+- **Never animate opacity or transform on an ancestor of glass.** Either one makes
+  the ancestor a backdrop root and switches the frost off on everything inside it.
+  Transform is the worse half: `transform: none` in a keyframe computes to the
+  identity matrix, which still counts as a transform, and `animation-fill-mode:
+  both` keeps the last keyframe applied forever, so a *finished* animation leaves
+  the glass flat permanently, not just while it runs. This is what broke the map
+  panel: `.screen-enter > section` was animating `.a1`, the wrapper around the
+  sheet and pins. Animate each layer instead, as `app/transitions.css` does. An
+  element's own transform is fine, only an ancestor's breaks it.
+- **If a CSS change seems ignored, the build cache is stale.** Restarting the dev
+  server is not always enough: Turbopack has served an old stylesheet from
+  `.next` across a restart. Delete `.next` and start again before debugging the
+  CSS, and check the served bytes, not just the file on disk.
 - **Every screen change animates.** Layered enter, strong ease-out
   (`--ease-out`), under 300ms for a control and under 400ms for a screen,
   `transform` and `opacity` only, and a shorter fade under
