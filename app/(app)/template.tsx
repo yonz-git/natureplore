@@ -1,18 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-
-// Next renders a fresh template on every navigation, so the enter animation in app/transitions.css
-// runs once per screen. Tab switches are shorter: they happen many times a day.
-const TABS = ["/map", "/learn", "/notebook"];
-
+// Next renders a fresh template on every navigation, so the enter animations in
+// app/transitions.css run once per screen. The wrapper itself never animates: it would become a
+// backdrop root and switch off the frost on the glass inside it.
 export default function ScreenTransition({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const isTab = TABS.includes(pathname);
-
-  return (
-    <div className={`screen-enter${isTab ? " screen-enter-tab" : ""}`}>
-      {children}
-    </div>
-  );
+  return <div className="screen-enter">{children}</div>;
 }

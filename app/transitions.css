@@ -1,29 +1,28 @@
 /* Screen transitions. Next renders a fresh template per navigation, so these run once each time a
-   screen arrives. The wrapper only fades: the map screen is a fixed overlay, and a transform on an
-   ancestor would take over as its containing block for the length of the animation. The parts
-   inside a screen carry the movement instead, and they start a beat apart so the screen settles
-   rather than appearing all at once. */
+   screen arrives, and the parts of a screen start a beat apart so it settles rather than appearing
+   all at once.
+
+   Nothing fades the wrapper: an ancestor at opacity below 1 becomes a backdrop root, which switches
+   off backdrop-filter on everything inside it, so the glass would render flat for the length of the
+   animation and then pop into frost. Each layer fades itself instead, which keeps its own frost. */
 
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --screen-in: 280ms;
 }
 
-.screen-enter { animation: screen-enter var(--screen-in) var(--ease-out) both; }
-/* tabs are switched many times a day, so their fade is shorter */
-.screen-enter-tab { --screen-in: 200ms; }
+/* the map screen in layers: the map settles first, the pins follow, the sheet rises into place */
+.screen-enter .a1-map { animation: layer-in 380ms var(--ease-out) both; }
+.screen-enter .a1-pin,
+.screen-enter .a1-label { animation: fade-in 380ms var(--ease-out) 40ms both; }
+.screen-enter .a1-sheet { animation: sheet-in 360ms var(--ease-out) 60ms both; }
 
-@keyframes screen-enter {
+/* every other screen is one block of content */
+.screen-enter > section { animation: sheet-in 320ms var(--ease-out) both; }
+
+@keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-
-/* the layers of the map screen: the map settles first, the sheet follows it up from below */
-.screen-enter .a1-map { animation: layer-in 380ms var(--ease-out) both; }
-/* the pins keep their own centring transform, so they only fade */
-.screen-enter .a1-pin,
-.screen-enter .a1-label { animation: screen-enter 380ms var(--ease-out) 40ms both; }
-.screen-enter .a1-sheet { animation: sheet-in 360ms var(--ease-out) 60ms both; }
 
 @keyframes layer-in {
   from { opacity: 0; transform: scale(1.03); }
@@ -36,9 +35,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .screen-enter,
   .screen-enter .a1-map,
   .screen-enter .a1-pin,
   .screen-enter .a1-label,
-  .screen-enter .a1-sheet { animation: screen-enter 160ms var(--ease-out) both; }
+  .screen-enter .a1-sheet,
+  .screen-enter > section { animation: fade-in 160ms var(--ease-out) both; }
 }
