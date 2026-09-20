@@ -52,11 +52,17 @@ const LABELS: [string, number, number, "nature" | "water"][] = [
 ];
 
 const DESKTOP = "(min-width: 64rem)";
-// Berlin and Brandenburg at the zoom the region was drawn for. A phone cannot hold the whole
-// region above a sheet this tall, so the view is anchored on Berlin and the nearer clusters and
-// the outer ones are a pan away, which is what the map is for.
+// The region is fitted to whatever space the sheet leaves free rather than shown at one fixed
+// zoom, so a wide window frames Berlin and Brandenburg instead of half of northern Europe.
+// REGION_ZOOM_MIN is the zoom the phone has always used: the band above a sheet that tall cannot
+// hold the whole region, so the view sits on Berlin and the nearer clusters and the outer ones
+// are a pan away, which is what the map is for.
+const REGION_ZOOM_MIN = 8.25;
+const REGION_ZOOM_MAX = 10;
+// room for the outermost count pin inside the free box
+const REGION_PAD = 56;
+// where the view sits when the box is too small to hold the region, which is the phone
 const REGION: [number, number] = [52.55, 13.15];
-const REGION_ZOOM = 8.25;
 
 type Pin = { count: number; where: string; lat: number; lon: number; x: number; y: number; free: boolean };
 
@@ -86,14 +92,16 @@ function loadGeo(): Promise<Geo> {
 // is hidden, so nothing the sheet covers is left clickable or in the tab order.
 // offsetTop and offsetHeight are used rather than a client rect, because they ignore the sheet's
 // enter animation, which is still sliding the sheet when the map first measures it.
-function freeBox(host: HTMLElement, sheet: HTMLElement | null, desktop: boolean) {
+function freeBox(host: HTMLElement, sheet: HTMLElement | null, nav: HTMLElement | null, desktop: boolean) {
   const w = host.offsetWidth;
   const h = host.offsetHeight;
   if (!sheet) return { x: 0, y: 0, w, h };
   const right = sheet.offsetLeft + sheet.offsetWidth;
-  return desktop
-    ? { x: right, y: 0, w: Math.max(180, w - right), h }
-    : { x: 0, y: 0, w, h: Math.max(180, sheet.offsetTop) };
+  if (!desktop) return { x: 0, y: 0, w, h: Math.max(180, sheet.offsetTop) };
+  // on desktop the nav pill floats over the top of the same space, so the band it sits in is not
+  // free either: without this a count pin can land behind it, where it cannot be seen or clicked
+  const top = nav ? nav.offsetTop + nav.offsetHeight : 0;
+  return { x: right, y: top, w: Math.max(180, w - right), h: Math.max(180, h - top) };
 }
 
 // half a pin, so one is hidden before it slides under the edge of the glass
@@ -137,8 +145,8 @@ export default function RegionMap({ className, still = false }: { className?: st
         // the bounds have to be larger than the viewport at minZoom on both axes, or Leaflet
         // re-centres and throws away the offset that keeps the region clear of the sheet
         maxBounds: [
-          [50.7, 10.5],
-          [54.2, 15.8],
+          [50.2, 9.6],
+          [54.7, 16.7],
         ],
         maxBoundsViscosity: 0.85,
         zoomAnimation: !calm,
@@ -147,7 +155,7 @@ export default function RegionMap({ className, still = false }: { className?: st
       });
       mapRef.current = map;
       // a layer added before the map has a view throws, so put it somewhere first and fit below
-      map.setView(REGION, REGION_ZOOM, { animate: false });
+      map.setView(REGION, REGION_ZOOM_MIN, { animate: false });
       if (!still) host.setAttribute("aria-label", "Map of Berlin and Brandenburg. Arrow keys move it.");
 
       const fill = (name: string) => () => ({
@@ -229,11 +237,12 @@ export default function RegionMap({ className, still = false }: { className?: st
       };
 
       const sheetEl = () => (host.parentElement?.querySelector(".a1-sheet") as HTMLElement | null) ?? null;
+      const navEl = () => (document.querySelector(".tabbar-pill") as HTMLElement | null) ?? null;
       const wide = matchMedia(DESKTOP);
 
       const placePins = () => {
         if (still) return;
-        const box = freeBox(host, sheetEl(), wide.matches);
+        const box = freeBox(host, sheetEl(), navEl(), wide.matches);
         setPins(
           CLUSTERS.map(([count, lat, lon, where]) => {
             const p = map.latLngToContainerPoint([lat, lon]);
@@ -253,39 +262,78 @@ export default function RegionMap({ className, still = false }: { className?: st
       // screen, so neither the region nor a cluster you tapped ends up under the glass.
       const centreOn = (lat: number, lon: number, zoom: number, animate: boolean) => {
         const r = { width: host.offsetWidth, height: host.offsetHeight };
-        const box = freeBox(host, sheetEl(), wide.matches);
+        const box = freeBox(host, sheetEl(), navEl(), wide.matches);
         const off = L.point(r.width / 2 - (box.x + box.w / 2), r.height / 2 - (box.y + box.h / 2));
         map.setView(map.unproject(map.project([lat, lon], zoom).add(off), zoom), zoom, { animate });
       };
-      centreRef.current = still ? null : centreOn;
+      // moving the map from a pin hands it over, the same as dragging it
+      let taken = false;
+      centreRef.current = still
+        ? null
+        : (lat, lon, zoom, animate) => {
+            taken = true;
+            centreOn(lat, lon, zoom, animate);
+          };
+      map.on("dragstart", () => {
+        taken = true;
+      });
       // the welcome card has no sheet over it, so the whole region fits inside it
       const cluster = L.latLngBounds(CLUSTERS.map(([, lat, lon]) => [lat, lon] as [number, number]));
+      // the zoom at which the nine clusters fit the box, on whichever axis runs out first
+      const zoomForBox = (box: { w: number; h: number }) => {
+        const nw = map.project(cluster.getNorthWest(), 0);
+        const se = map.project(cluster.getSouthEast(), 0);
+        const w = Math.max(80, box.w - REGION_PAD * 2);
+        const h = Math.max(80, box.h - REGION_PAD * 2);
+        // down to the zoomSnap step, so the view is the same on every reload
+        const z = Math.log2(Math.min(w / (se.x - nw.x), h / (se.y - nw.y)));
+        return Math.min(REGION_ZOOM_MAX, Math.floor(z * 4) / 4);
+      };
       const fit = still
         ? () => map.fitBounds(cluster, { animate: false, padding: L.point(28, 28) })
-        : () => centreOn(REGION[0], REGION[1], REGION_ZOOM, false);
+        : () => {
+            const box = freeBox(host, sheetEl(), navEl(), wide.matches);
+            const z = zoomForBox(box);
+            // a box that cannot hold the region keeps the anchor the phone was drawn around,
+            // rather than centring on clusters half of which would be off the band anyway
+            const middle = z >= REGION_ZOOM_MIN ? cluster.getCenter() : L.latLng(REGION[0], REGION[1]);
+            centreOn(middle.lat, middle.lng, Math.max(REGION_ZOOM_MIN, z), false);
+          };
 
       map.on("move zoomend", placePins);
       map.on("zoomstart", () => setZooming(true));
       map.on("zoomend", () => setZooming(false));
       map.on("zoomend", showLabels);
 
-      fit();
+      // The box the sheet leaves free is what the region is centred in, so the fit is only right
+      // for the box it was measured against. The sheet can still be settling when the map first
+      // measures it, and invalidateSize keeps the centre rather than the offset, so refit whenever
+      // that box changes rather than only when the 64rem breakpoint flips. Once the person has
+      // moved the map themselves it is theirs, and a resize must not pull it back.
+      const boxKey = () => {
+        const b = freeBox(host, sheetEl(), navEl(), wide.matches);
+        return `${b.x}:${b.y}:${b.w}:${b.h}`;
+      };
+      let fitted = "";
+      const refit = () => {
+        fit();
+        fitted = boxKey();
+      };
+
+      refit();
       showLabels();
       placePins();
 
-      // The sheet becomes a side panel at 64rem, so the free box moves. Refit on that change,
-      // and only tell Leaflet its size changed on an ordinary resize, so a pan is not thrown away.
-      let desktop = wide.matches;
       const onResize = () => {
         map.invalidateSize({ animate: false });
-        if (wide.matches !== desktop) {
-          desktop = wide.matches;
-          fit();
-        }
+        if (!taken && boxKey() !== fitted) refit();
         placePins();
       };
+      // the sheet is watched too: it can change width while the map's own box does not
       const ro = new ResizeObserver(onResize);
       ro.observe(host);
+      const sheet = sheetEl();
+      if (sheet) ro.observe(sheet);
       map.once("unload", () => ro.disconnect());
     })().catch((err) => {
       console.error("[RegionMap]", err);
