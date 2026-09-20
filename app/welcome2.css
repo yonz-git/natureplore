@@ -126,11 +126,14 @@
     align-items: center;
     gap: 0.5rem;
     border-radius: var(--radius-full);
-    font-size: 0.875rem;
-    line-height: 1;
+    font-size: var(--text-nav-desktop);
+    line-height: var(--text-nav-desktop--line-height);
+    font-weight: var(--text-nav-desktop--font-weight);
+    letter-spacing: var(--text-nav-desktop--letter-spacing);
     color: rgb(255 255 255 / 0.72);
   }
-  .a02-tab[aria-current="page"] { color: var(--color-on-ground); font-weight: 500; }
+  /* the current tab is marked by colour alone here, the weight is the heading step */
+  .a02-tab[aria-current="page"] { color: var(--color-on-ground); }
   .a02-main {
     position: absolute;
     left: var(--a02-inset);
