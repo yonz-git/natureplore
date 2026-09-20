@@ -45,7 +45,7 @@
 .a0-w { display: inline-block; }
 .a02-cta {
   margin-top: var(--spacing-10);
-  height: 3.625rem;
+  height: 3.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,7 +145,7 @@
     letter-spacing: var(--text-display-desktop--letter-spacing);
   }
   .a02-h1 > span + span { margin-top: var(--spacing-6); }
-  .a02-cta { margin-top: var(--spacing-12); height: 3.5rem; padding: 0 2.75rem; font-size: 1.0625rem; }
+  .a02-cta { margin-top: var(--spacing-12); height: 3.125rem; padding: 0 2.75rem; font-size: 1.0625rem; }
   .a02-credit { bottom: 1.25rem; }
   .a02-card {
     position: absolute;

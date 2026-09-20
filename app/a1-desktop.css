@@ -18,7 +18,7 @@
   .a1-title { margin-top: clamp(2rem, 6vh, 4.5rem); }
   .a1-actions { margin-top: var(--spacing-10); }
   .a1-field,
-  .a1-btn { height: 3.625rem; border-radius: 1.8125rem; }
+  .a1-btn { height: 3.25rem; border-radius: 1.625rem; }
   .a1-note { margin-top: auto; padding-top: 1.5rem; text-align: left; }
 
   /* the map already keeps the region clear of the panel, the pins only grow */
