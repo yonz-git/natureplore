@@ -23,13 +23,14 @@
   justify-content: center;
   gap: 0.125rem;
   border-radius: var(--radius-full);
-  color: rgb(255 255 255 / 0.72);
+  color: rgb(255 255 255 / 0.65);
   font-size: var(--text-tab);
   line-height: var(--text-tab--line-height);
-  font-weight: var(--text-tab--font-weight);
+  /* a tab you can go to is one weight down from the one you are on, as on the boards */
+  font-weight: 400;
   text-decoration: none;
 }
-.tabbar-tab.is-current { color: var(--color-on-ground); font-weight: 500; }
+.tabbar-tab.is-current { color: var(--color-on-ground); font-weight: var(--text-tab--font-weight); }
 
 @media (min-width: 64rem) {
   .tabbar { inset: 1.75rem 2.5rem auto auto; justify-content: flex-end; }
@@ -52,5 +53,5 @@
     font-weight: var(--text-nav-desktop--font-weight);
     letter-spacing: var(--text-nav-desktop--letter-spacing);
   }
-  .tabbar-tab.is-current { font-weight: var(--text-nav-desktop--font-weight); }
+  .tabbar-tab.is-current { font-weight: var(--text-nav-desktop-active--font-weight); }
 }
