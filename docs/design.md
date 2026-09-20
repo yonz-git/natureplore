@@ -124,6 +124,12 @@ typography:
     fontWeight: 300
     lineHeight: 1
     letterSpacing: -0.02em
+  nav-desktop-active:
+    fontFamily: Space Grotesk
+    fontSize: 0.875rem
+    fontWeight: 500
+    lineHeight: 1
+    letterSpacing: -0.02em
   micro:
     fontFamily: Space Grotesk
     fontSize: 0.625rem
@@ -271,7 +277,7 @@ It must never become a dense dashboard, a stack of grey cards, or a neon dark th
 
 There is one hue. `primary` (#5A7C58) with `primary-mid` and `primary-deep` forms the diagonal gradient on filled actions, and white text on it clears 4.5:1. `accent-tint` and `accent-tint-soft` are pale greens used only for the gradient on emphasised words in headings, fading from white. `marker` is the deep green core of the "You are here" dot.
 
-Everything else is white at different strengths on top of the photograph. `on-ground` is pure white for headings, labels and icons. `on-ground-soft` is white at 80% (shown here as its solid equivalent) for body copy and captions. `on-ground-mute` is white at 60% to 72% for inactive tabs and unmapped search results. Do not go below 60% for any text.
+Everything else is white at different strengths on top of the photograph. `on-ground` is pure white for headings, labels and icons. `on-ground-soft` is white at 80% (shown here as its solid equivalent) for body copy and captions. `on-ground-mute` is white at 60% to 72% for unmapped search results, and inactive tabs sit at 65%. Do not go below 60% for any text.
 
 The photograph is always filtered before anything sits on it: a vertical `scrim` gradient (55% at the top, 20% in the upper middle, 60% at the bottom) plus an even black layer at 39%. That filter is what keeps white text at or above 4.5:1 over the brightest tree crowns, so it is part of the colour system, not decoration. `ground` is the solid colour behind the photo while it loads. `glass-solid` replaces every glass fill when the viewer asks for reduced transparency. `map-road` is drawn at 60% and `map-water` at 40% over the photo, like a satellite layer, which is the hand-drawn sketch on the welcome screens and nothing else. The real map on the Map tab is its own surface rather than a layer over the photograph, so it has its own set: `basemap-land` behind everything, `basemap-wood`, `basemap-urban` and `basemap-water` for the areas, `basemap-motorway`, `basemap-trunk`, `basemap-road` and `basemap-rail` for the lines, `basemap-border` for the dashed state edge, and four label inks, `basemap-label` for towns, `basemap-label-strong` for cities, `basemap-label-nature` for reserves and landscapes and `basemap-label-water` for lakes and rivers, each carried by a `basemap-halo` glow so a name stays readable wherever it falls. Every one of those inks clears 4.5:1 on the surface it sits on. The set is deliberately dim: the map is the quietest thing on the screen, so the glass sheet and the count pins read as the foreground. The animated welcome page (A0) is the one screen without the photograph. It opens straight on a green field, and the words blur in one by one: a diagonal gradient from `field-light` through `field` to `field-deep`, with slow drifting patches of `field-shade`, `field-mid`, `field-glow` and soft white, and grain. The pointer stirs a liquid layer over it, slow broad flows of `field-flow`, a dark green that is screened over the field, so all it can do is lift the field a little, to a step above `field-glow` where the flow is fastest: the same green tone, just a bit brighter, never white, grey, neon or darker than the field. Text and rules on the field are `on-field`, a green-tinted off-white, and the one button is a white pill (`on-primary` to `accent-tint-soft`) with `marker` ink.
 
@@ -281,7 +287,7 @@ There are no state colours (error, success, warning) yet. Add them when the firs
 
 Space Grotesk carries everything, in three weights. Headings are weight 300 with slightly tight tracking, large and quiet. Body is 400 at a relaxed 1.6 line height. Labels, buttons, row titles and the active tab are 500. The one exception is the desktop nav, whose three labels are set in the heading weight so the top of the screen reads in one voice. Nothing is bolder than 500 and nothing is set in capitals.
 
-The scale is short on purpose. `display` opens the welcome screen, `h1` is the start sheet heading, `h2` is for state sheets such as "not mapped yet" and "no connection", `h3` is for list sheets and messages over the map. `body` is the default paragraph, `caption` is for helper lines and row details, `chip` for chips and pins, `tab` for the tab bar, `micro` only for placeholder tags. Desktop adds `display-desktop`, `h1-desktop`, `body-lg` and `nav-desktop`, which is the heading treatment at 14, weight 300 with the heading tracking.
+The scale is short on purpose. `display` opens the welcome screen, `h1` is the start sheet heading, `h2` is for state sheets such as "not mapped yet" and "no connection", `h3` is for list sheets and messages over the map. `body` is the default paragraph, `caption` is for helper lines and row details, `chip` for chips and pins, `tab` for the tab bar, `micro` only for placeholder tags. Desktop adds `display-desktop`, `h1-desktop`, `body-lg`, `nav-desktop` and `nav-desktop-active`, the heading treatment at 14 with the heading tracking, weight 300 for a tab you can go to and 400 for the one you are on.
 
 One phrase per heading may carry the white to pale green gradient ("around you", "near you", "isn't mapped yet"). It marks the meaning of the screen, so use it once per screen and never on body text. The system location dialog is the one exception to the typeface: it uses the platform font, because it belongs to the operating system.
 
@@ -336,7 +342,7 @@ Nothing has a sharp corner. Radius grows with the size of the surface: `md` (18)
 
 `sheet` rises from the bottom edge with a 40 by 4 handle, then heading, caption, optional chips, a list and one text action. `list-row` has a 56 photo tile with radius `md`, a `label` title on one line, up to two `caption` lines, and a 44 bookmark target; rows are divided by 1px lines at white 22%, and the last row in a card has no line. `card` groups search results under a `caption` heading with 44 round icon discs. `dialog` is 302 wide on phone and 380 on desktop, centred, with the sheet's glass fill; the system dialog keeps platform type and stacked full-width choices.
 
-`tab-bar` is a floating glass pill with three equal tabs. `tab-active` is pure white in weight 500 with no capsule behind it; the other tabs are white at 72% in weight 400. On desktop the same pill sits at the top right with icon and label side by side, and its three labels take `nav-desktop` rather than `tab`. Because both states share that weight, the current tab there is marked by colour alone, white against white at 72%, carried by `aria-current` for anyone not reading the colour.
+`tab-bar` is a floating glass pill with three equal tabs. `tab-active` is pure white in weight 500 with no capsule behind it; the other tabs are white at 65% in weight 400. On desktop the same pill sits at the top right with icon and label side by side, and its three labels take `nav-desktop` rather than `tab`, with `nav-desktop-active` on the one you are on. The tab you can go to stays in the heading weight, so the nav keeps the heading voice, and the current one steps up two weights, from 300 to 500, alongside the step from white at 65% to full white. Two cues rather than one, because a single step of either was too quiet on glass over a photograph. `aria-current` carries it for anyone reading neither.
 
 ## Do's and Don'ts
 

@@ -91,6 +91,10 @@
   --text-nav-desktop--line-height: 1;
   --text-nav-desktop--font-weight: 300;
   --text-nav-desktop--letter-spacing: -0.02em;
+  --text-nav-desktop-active: 0.875rem;
+  --text-nav-desktop-active--line-height: 1;
+  --text-nav-desktop-active--font-weight: 500;
+  --text-nav-desktop-active--letter-spacing: -0.02em;
   --text-micro: 0.625rem;
   --text-micro--line-height: 1.2;
   --text-micro--font-weight: 400;
