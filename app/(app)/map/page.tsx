@@ -1,49 +1,16 @@
-import Link from "next/link";
+import RegionMap from "@/components/RegionMap";
 
-import MapSketch from "@/components/MapSketch";
-
-// A1 · Start sheet, the first open of the map: the region with its count pins, and the sheet
-// that offers location, search or browsing. Glass recipe: app/glass.css, layout: app/a1.css.
-
-// counts sit at a share of the screen, inside the map band above the sheet, so the
-// cluster keeps its shape at any width
-const PINS = [
-  { count: 164, x: 50, y: 24 },
-  { count: 48, x: 57, y: 12 },
-  { count: 36, x: 69, y: 33 },
-  { count: 27, x: 39, y: 27 },
-  { count: 21, x: 26, y: 21 },
-  { count: 18, x: 20, y: 27 },
-  { count: 30, x: 65, y: 7 },
-  { count: 23, x: 30, y: 34 },
-  { count: 9, x: 79, y: 20 },
-];
+// A1 · Start sheet, the first open of the map: Berlin and Brandenburg with their count pins, and
+// the sheet that offers location, search or browsing. The map is real OSM geometry drawn by
+// Leaflet (components/RegionMap.tsx), the glass recipe is app/glass.css, the layout app/a1.css.
 
 export default function MapHome() {
   return (
     <section className="a1">
-      <MapSketch className="a1-map" viewBox="0 0 390 560" places={false} />
-
-      {PINS.map((pin) => (
-        <button
-          key={pin.count}
-          type="button"
-          className="a1-pin glass glass-pin"
-          style={{ "--x": pin.x, "--y": pin.y } as React.CSSProperties}
-          aria-label={`${pin.count} places, zoom in`}
-        >
-          {pin.count}
-        </button>
-      ))}
-      <span className="a1-label" style={{ "--x": 50, "--y": 28 } as React.CSSProperties}>
-        Berlin
-      </span>
+      <RegionMap className="a1-map" />
 
       <div className="a1-sheet glass glass-top glass-card">
         <div className="a1-handle" aria-hidden="true" />
-        <Link href="/" className="a1-mark">
-          natureplore
-        </Link>
         <h1 className="a1-title">
           See what lives <em>around you</em>
         </h1>

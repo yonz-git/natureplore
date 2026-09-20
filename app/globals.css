@@ -8,6 +8,13 @@
 @import "./tabbar.css";
 @import "./transitions.css";
 
+/* The room a screen leaves above its first element. A status bar only exists when the app is
+   installed, so the allowance comes from the safe area rather than a fixed value: in a browser,
+   on a laptop or a phone, this is the same offset the desktop layout uses and nothing is wasted. */
+:root {
+  --top-chrome: calc(1.75rem + env(safe-area-inset-top, 0px));
+}
+
 html,
 body {
   height: 100%;

@@ -1,0 +1,329 @@
+"use client";
+
+// The real Berlin and Brandenburg map behind A1, drawn by Leaflet from the vector geometry in
+// public/base-geo.js. There is no tile server: every road, wood, lake and state edge is an OSM
+// shape rendered to one canvas in the basemap tokens, so the map follows the design system and
+// works offline. Colours: docs/design.md, the basemap set.
+//
+// The count pins are React siblings of the Leaflet container, not Leaflet markers. A marker lives
+// inside .leaflet-map-pane, which always carries a transform, and a transformed ancestor is a
+// backdrop root: the frost on a glass pin would switch off. So the pins sit outside the map and
+// are placed from map.latLngToContainerPoint on every move. The place names are plain text, so
+// they stay ordinary markers.
+
+import { useEffect, useRef, useState } from "react";
+import type { Map as LeafletMap, GeoJSON as LeafletGeoJSON } from "leaflet";
+
+import "leaflet/dist/leaflet.css";
+
+type Geo = Record<string, GeoJSON.GeoJsonObject>;
+
+declare global {
+  interface Window {
+    NP_GEO?: Geo;
+  }
+}
+
+// [places, lat, lon, where]
+const CLUSTERS: [number, number, number, string][] = [
+  [164, 52.59, 13.22, "around Berlin"],
+  [48, 52.95, 13.6, "in Schorfheide-Chorin"],
+  [36, 51.88, 13.97, "in the Spreewald"],
+  [27, 52.465, 12.94, "around Potsdam"],
+  [21, 52.63, 12.7, "in Havelland"],
+  [18, 52.475, 12.41, "around Brandenburg an der Havel"],
+  [30, 53.18, 13.85, "in the Uckermark"],
+  [23, 52.0, 12.8, "in the Fläming"],
+  [9, 52.66, 14.25, "in the Oderbruch"],
+];
+
+// Names the OSM place data does not carry: reserves, landscapes and water. [text, lat, lon, kind]
+const LABELS: [string, number, number, "nature" | "water"][] = [
+  ["Schorfheide", 52.885, 13.6, "nature"],
+  ["Havelland", 52.565, 12.7, "nature"],
+  ["Spreewald", 51.815, 13.97, "nature"],
+  ["Uckermark", 53.115, 13.85, "nature"],
+  ["Fläming", 51.935, 12.8, "nature"],
+  ["Oderbruch", 52.595, 14.25, "nature"],
+  ["Müggelsee", 52.405, 13.66, "water"],
+  ["Scharmützelsee", 52.235, 14.14, "water"],
+  ["Oder", 52.47, 14.66, "water"],
+  ["Havel", 52.44, 12.88, "water"],
+];
+
+const DESKTOP = "(min-width: 64rem)";
+// Berlin and Brandenburg at the zoom the region was drawn for. A phone cannot hold the whole
+// region above a sheet this tall, so the view is anchored on Berlin and the nearer clusters and
+// the outer ones are a pan away, which is what the map is for.
+const REGION: [number, number] = [52.55, 13.15];
+const REGION_ZOOM = 8.25;
+
+type Pin = { count: number; where: string; lat: number; lon: number; x: number; y: number; free: boolean };
+
+const token = (name: string) =>
+  getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+const esc = (s: string) =>
+  s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
+// one request per page, whatever React does with the effect
+let geoPromise: Promise<Geo> | null = null;
+
+function loadGeo(): Promise<Geo> {
+  if (window.NP_GEO) return Promise.resolve(window.NP_GEO);
+  return (geoPromise ??= new Promise((resolve, reject) => {
+    const el = document.createElement("script");
+    el.src = "/base-geo.js";
+    el.onload = () =>
+      window.NP_GEO ? resolve(window.NP_GEO) : reject(new Error("base-geo.js carried no NP_GEO"));
+    el.onerror = () => reject(new Error("base-geo.js failed to load"));
+    document.head.append(el);
+  }));
+}
+
+// The part of the map the sheet leaves free: above it on the phone, beside it on the desktop,
+// where the sheet is a panel down the left. The region is centred in that box and a pin outside it
+// is hidden, so nothing the sheet covers is left clickable or in the tab order.
+// offsetTop and offsetHeight are used rather than a client rect, because they ignore the sheet's
+// enter animation, which is still sliding the sheet when the map first measures it.
+function freeBox(host: HTMLElement, sheet: HTMLElement | null, desktop: boolean) {
+  const w = host.offsetWidth;
+  const h = host.offsetHeight;
+  if (!sheet) return { x: 0, y: 0, w, h };
+  const right = sheet.offsetLeft + sheet.offsetWidth;
+  return desktop
+    ? { x: right, y: 0, w: Math.max(180, w - right), h }
+    : { x: 0, y: 0, w, h: Math.max(180, sheet.offsetTop) };
+}
+
+// half a pin, so one is hidden before it slides under the edge of the glass
+const PIN_EDGE = 24;
+
+// `still` is the welcome card: the same map, no dragging, no zooming, no pins, nothing to focus.
+export default function RegionMap({ className, still = false }: { className?: string; still?: boolean }) {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<LeafletMap | null>(null);
+  const [pins, setPins] = useState<Pin[]>([]);
+  const [zooming, setZooming] = useState(false);
+  // set once the map exists: puts a point in the middle of the free space, not the screen
+  const centreRef = useRef<((lat: number, lon: number, zoom: number, animate: boolean) => void) | null>(null);
+
+  useEffect(() => {
+    let live = true;
+
+    (async () => {
+      const [{ default: L }, geo] = await Promise.all([import("leaflet"), loadGeo()]);
+      const host = hostRef.current;
+      if (!live || !host || mapRef.current) return;
+
+      const calm = still || matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const map = L.map(host, {
+        ...(still && {
+          dragging: false,
+          touchZoom: false,
+          scrollWheelZoom: false,
+          doubleClickZoom: false,
+          boxZoom: false,
+          keyboard: false,
+        }),
+        zoomControl: false,
+        attributionControl: false,
+        renderer: L.canvas({ padding: 0.5 }),
+        minZoom: 7.75,
+        maxZoom: 12,
+        zoomSnap: 0.25,
+        zoomDelta: 0.5,
+        wheelPxPerZoomLevel: 120,
+        // the bounds have to be larger than the viewport at minZoom on both axes, or Leaflet
+        // re-centres and throws away the offset that keeps the region clear of the sheet
+        maxBounds: [
+          [50.7, 10.5],
+          [54.2, 15.8],
+        ],
+        maxBoundsViscosity: 0.85,
+        zoomAnimation: !calm,
+        inertia: !calm,
+        fadeAnimation: false,
+      });
+      mapRef.current = map;
+      // a layer added before the map has a view throws, so put it somewhere first and fit below
+      map.setView(REGION, REGION_ZOOM, { animate: false });
+      if (!still) host.setAttribute("aria-label", "Map of Berlin and Brandenburg. Arrow keys move it.");
+
+      const fill = (name: string) => () => ({
+        stroke: false,
+        fillColor: token(name),
+        fillOpacity: 1,
+      });
+      const line = (name: string, weight: number, extra: object = {}) => () => ({
+        color: token(name),
+        weight,
+        fill: false,
+        lineCap: "round" as const,
+        lineJoin: "round" as const,
+        ...extra,
+      });
+      const styles = {
+        wood: fill("--color-basemap-wood"),
+        urban: fill("--color-basemap-urban"),
+        water: fill("--color-basemap-water"),
+        waterway: line("--color-basemap-water", 2),
+        states: line("--color-basemap-border", 1.2, { dashArray: "6 4" }),
+      };
+      const roadStyle = (f?: GeoJSON.Feature) =>
+        ({
+          motorway: { color: token("--color-basemap-motorway"), weight: 3 },
+          trunk: { color: token("--color-basemap-trunk"), weight: 2.5 },
+          primary: { color: token("--color-basemap-road"), weight: 2 },
+          rail: { color: token("--color-basemap-rail"), weight: 1, dashArray: "5 4" },
+        })[f?.properties?.class as string] ?? {};
+
+      for (const k of ["wood", "urban", "water", "waterway", "states"] as const) {
+        L.geoJSON(geo[k], { style: styles[k], interactive: false }).addTo(map);
+      }
+      L.geoJSON(geo.roads, { style: roadStyle, interactive: false }).addTo(map);
+
+      // Names, thinned as the map zooms out so they never pile up
+      const labels: { marker: LeafletGeoJSON | ReturnType<typeof L.marker>; from: number }[] = [];
+      const label = (lat: number, lon: number, kind: string, text: string, from: number) => {
+        const marker = L.marker([lat, lon], {
+          interactive: false,
+          keyboard: false,
+          icon: L.divIcon({
+            className: "a1-lbl-anchor",
+            iconSize: [0, 0],
+            html: `<span class="a1-lbl a1-lbl-${kind}" aria-hidden="true">${esc(text)}</span>`,
+          }),
+        }).addTo(map);
+        labels.push({ marker, from });
+      };
+      const places = geo.place as GeoJSON.FeatureCollection<GeoJSON.Point, { name: string; rank: number }>;
+      for (const f of still ? [] : places.features) {
+        const [lon, lat] = f.geometry.coordinates;
+        const r = f.properties.rank;
+        label(lat, lon, r <= 7 ? "city" : "town", f.properties.name, r <= 7 ? 0 : r <= 11 ? 8 : r <= 12 ? 9 : r <= 13 ? 10 : 11);
+      }
+      for (const [text, lat, lon, kind] of still ? [] : LABELS) label(lat, lon, kind, text, kind === "water" ? 9 : 0);
+
+      // the card's clusters: dots on the same canvas, the biggest one larger, no counts to read
+      if (still) {
+        for (const [count, lat, lon] of CLUSTERS) {
+          L.circleMarker([lat, lon], {
+            radius: count >= 100 ? 6 : 3.5,
+            stroke: false,
+            fillColor: token("--color-on-ground"),
+            fillOpacity: 1,
+            interactive: false,
+          }).addTo(map);
+        }
+      }
+
+      const showLabels = () => {
+        const z = map.getZoom();
+        for (const { marker, from } of labels) {
+          const el = (marker as { getElement(): HTMLElement | undefined }).getElement()?.firstChild as
+            | HTMLElement
+            | undefined;
+          el?.classList.toggle("is-hidden", z < from);
+        }
+      };
+
+      const sheetEl = () => (host.parentElement?.querySelector(".a1-sheet") as HTMLElement | null) ?? null;
+      const wide = matchMedia(DESKTOP);
+
+      const placePins = () => {
+        if (still) return;
+        const box = freeBox(host, sheetEl(), wide.matches);
+        setPins(
+          CLUSTERS.map(([count, lat, lon, where]) => {
+            const p = map.latLngToContainerPoint([lat, lon]);
+            // inside the free box on both axes, with half a pin of margin on the side the
+            // sheet is on, so a pin is never clipped by the screen edge or covered by the glass
+            const free =
+              p.x >= box.x + (wide.matches ? PIN_EDGE : 0) &&
+              p.x <= box.x + box.w &&
+              p.y >= box.y &&
+              p.y <= box.y + box.h - (wide.matches ? 0 : PIN_EDGE);
+            return { count, where, lat, lon, x: p.x, y: p.y, free };
+          }),
+        );
+      };
+
+      // Put a point in the middle of the space the sheet leaves free, not the middle of the
+      // screen, so neither the region nor a cluster you tapped ends up under the glass.
+      const centreOn = (lat: number, lon: number, zoom: number, animate: boolean) => {
+        const r = { width: host.offsetWidth, height: host.offsetHeight };
+        const box = freeBox(host, sheetEl(), wide.matches);
+        const off = L.point(r.width / 2 - (box.x + box.w / 2), r.height / 2 - (box.y + box.h / 2));
+        map.setView(map.unproject(map.project([lat, lon], zoom).add(off), zoom), zoom, { animate });
+      };
+      centreRef.current = still ? null : centreOn;
+      // the welcome card has no sheet over it, so the whole region fits inside it
+      const cluster = L.latLngBounds(CLUSTERS.map(([, lat, lon]) => [lat, lon] as [number, number]));
+      const fit = still
+        ? () => map.fitBounds(cluster, { animate: false, padding: L.point(28, 28) })
+        : () => centreOn(REGION[0], REGION[1], REGION_ZOOM, false);
+
+      map.on("move zoomend", placePins);
+      map.on("zoomstart", () => setZooming(true));
+      map.on("zoomend", () => setZooming(false));
+      map.on("zoomend", showLabels);
+
+      fit();
+      showLabels();
+      placePins();
+
+      // The sheet becomes a side panel at 64rem, so the free box moves. Refit on that change,
+      // and only tell Leaflet its size changed on an ordinary resize, so a pan is not thrown away.
+      let desktop = wide.matches;
+      const onResize = () => {
+        map.invalidateSize({ animate: false });
+        if (wide.matches !== desktop) {
+          desktop = wide.matches;
+          fit();
+        }
+        placePins();
+      };
+      const ro = new ResizeObserver(onResize);
+      ro.observe(host);
+      map.once("unload", () => ro.disconnect());
+    })().catch((err) => {
+      console.error("[RegionMap]", err);
+    });
+
+    return () => {
+      live = false;
+      mapRef.current?.remove();
+      mapRef.current = null;
+      centreRef.current = null;
+    };
+  }, [still]);
+
+  return (
+    <>
+      <div ref={hostRef} className={className} />
+      {!still &&
+        pins.map((pin) => (
+        <button
+          key={pin.count}
+          type="button"
+          className="a1-pin glass glass-pin"
+          style={{
+            left: `${pin.x}px`,
+            top: `${pin.y}px`,
+            // the enter animation keeps opacity applied, and an animation beats an inline style,
+            // so a pin that is off the free space or mid-zoom hides with visibility instead
+            visibility: zooming || !pin.free ? "hidden" : undefined,
+          }}
+          aria-label={`${pin.count} places ${pin.where}, zoom in`}
+          onClick={() =>
+            centreRef.current?.(pin.lat, pin.lon, 10.5, !matchMedia("(prefers-reduced-motion: reduce)").matches)
+          }
+        >
+          {pin.count}
+          </button>
+        ))}
+      <p className={still ? "a02-credit" : "a1-credit"}>Map data © OpenStreetMap contributors</p>
+    </>
+  );
+}

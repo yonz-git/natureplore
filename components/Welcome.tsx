@@ -1,5 +1,6 @@
 import Link from "next/link";
-import MapSketch from "@/components/MapSketch";
+import Logo from "@/components/Logo";
+import RegionMap from "@/components/RegionMap";
 import WelcomeEther from "@/components/WelcomeEther";
 import WelcomeReveal from "@/components/WelcomeReveal";
 import WelcomeScroll from "@/components/WelcomeScroll";
@@ -7,7 +8,8 @@ import WelcomeScroll from "@/components/WelcomeScroll";
 // A0 · Welcome and A0-2 · Welcome as one page. It opens as A0: the green field and the three
 // statements, which blur in word by word. Scrolling moves the statements to their A0-2 places,
 // opens the forest photograph in a growing circle with a glowing rim, brings in the nav and the
-// green action, and fades the map in last.
+// green action, and fades the map card in last. The card holds the same map as the Map tab,
+// fitted to the region and fixed: it is a picture of where you are going, not a control.
 // With `still` it is A0-2 alone, nothing moves.
 // Layout: app/welcome2.css. Field, intro and scroll choreography: app/welcome.css, fed by
 // components/WelcomeScroll.tsx. Glass: app/glass.css.
@@ -102,7 +104,9 @@ export default function Welcome({ still = false }: { still?: boolean }) {
         </div>
         {!still && <div className="a0-orb" aria-hidden="true" />}
 
-        <div className="a02-mark">natureplore</div>
+        <div className="a02-mark">
+          <Logo />
+        </div>
         <nav aria-label="Main" className="a02-nav glass glass-nav">
           {TABS.map((tab) => (
             <Link
@@ -157,8 +161,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
         </main>
 
         <div className="a02-card glass glass-card" aria-hidden="true">
-          <MapSketch className="a02-map a02-map-tall" viewBox="30 60 330 250" places />
-          <MapSketch className="a02-map a02-map-wide" viewBox="-20 30 420 480" places />
+          <RegionMap className="a02-map" still />
         </div>
 
         {!still && (
