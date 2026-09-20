@@ -18,7 +18,19 @@
 .screen-enter .a1-map { animation: layer-in 380ms var(--ease-out) both; }
 .screen-enter .a1-pin,
 .screen-enter .a1-credit { animation: fade-in 380ms var(--ease-out) 40ms both; }
-.screen-enter .a1-sheet { animation: sheet-in 360ms var(--ease-out) 60ms both; }
+.screen-enter .a1-sheet:not(.search-panel) { animation: sheet-in 360ms var(--ease-out) 60ms both; }
+
+/* A2 to A7 put glass over the map and inside the panel. Each pane arrives on its own: animating
+   the bar, the tool stack or the search panel would make it a backdrop root and switch the frost
+   off inside it for good. The search panel is only a column on the phone, so it is the panes in
+   it that move, not the column. */
+.screen-enter .map-top .a1-field,
+.screen-enter .map-chip,
+.screen-enter .map-state,
+.screen-enter .map-tools > *,
+.screen-enter .search-head .search-back,
+.screen-enter .search-head .a1-field,
+.screen-enter .search-panel > *:not(.search-head) { animation: sheet-in 360ms var(--ease-out) 60ms both; }
 
 /* every other screen is one block of content: its parts carry the animation, not the section, so a
    glass surface anywhere inside still frosts. Equal delays, so the block still arrives as one.
@@ -44,6 +56,13 @@
   .screen-enter .a1-map,
   .screen-enter .a1-pin,
   .screen-enter .a1-credit,
-  .screen-enter .a1-sheet,
+  .screen-enter .a1-sheet:not(.search-panel),
+  .screen-enter .map-top .a1-field,
+  .screen-enter .map-chip,
+  .screen-enter .map-state,
+  .screen-enter .map-tools > *,
+  .screen-enter .search-head .search-back,
+  .screen-enter .search-head .a1-field,
+  .screen-enter .search-panel > *:not(.search-head),
   .screen-enter > section:not(.a1) > * { animation: fade-in 160ms var(--ease-out) both; }
 }

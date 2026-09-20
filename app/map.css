@@ -1,0 +1,515 @@
+/* A2 to A7: the map screens that follow A1. They reuse A1's screen layer (.a1), its sheet
+   (.a1-sheet, which is also what the map measures the free space against) and its controls
+   (.a1-field, .a1-btn), so a field or a button reads the same wherever it appears. What is here is
+   only what A1 does not have: the bar over the map, the map's own controls, the place list, the
+   search results and the permission dialog. The desktop layout is at the end of the file. */
+
+/* The desktop panel, in one place: the sheet, the bar that moves into it and the line that sits
+   beside it are all laid out from these three. */
+.map-screen,
+.search-screen,
+.notmapped-screen {
+  --panel-inset: 1.5rem;
+  --panel-pad: 2.25rem;
+  --panel-w: clamp(20rem, 30vw, 27.5rem);
+}
+
+/* ── the bar over the map: the field, then the group filter, then A5's location line ───────── */
+
+.map-top {
+  position: absolute;
+  top: var(--top-chrome);
+  left: var(--spacing-inset-float);
+  right: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+/* the field stops short of the controls in the corner, the rows below it scroll past them */
+.map-top .map-search { margin-right: 5.5rem; }
+/* the tint is dropped for any field carrying a glass tier, in app/a1.css */
+.map-clear {
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-right: -0.875rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 0;
+  color: var(--color-on-ground-soft);
+  cursor: pointer;
+}
+
+/* A row of chips wraps, it never scrolls. Scrolling one axis makes the browser compute the other
+   to auto, so the row could be dragged up and down as well as sideways, and a scroll container is
+   a backdrop root: the frost on the chips inside it sampled the container instead of the map and
+   painted a hard edged grey band behind the row. Wrapping costs a line only when the text needs
+   one, and every group stays reachable without a drag. */
+.map-chips,
+.map-season {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.map-chip {
+  position: relative;
+  flex-shrink: 0;
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  border-radius: var(--radius-full);
+  color: var(--color-on-ground);
+  font-size: var(--text-chip);
+  line-height: var(--text-chip--line-height);
+  font-weight: var(--text-chip--font-weight);
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+/* the chip is drawn at 36 as on the boards, and takes the finger at 44 */
+.map-chip::before { content: ""; position: absolute; inset: -0.25rem 0; }
+.map-chip:active { transform: scale(0.97); }
+/* the chip you are on is the solid green control, so it has no rim of its own */
+.map-chip.is-on {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 50%, var(--color-primary-deep) 100%);
+  border: 0;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
+}
+/* inside the sheet the glass is already behind it, so a season chip is a tint, not a pane */
+.map-chip.is-quiet {
+  height: 2rem;
+  padding: 0 0.875rem;
+  background: rgb(255 255 255 / 0.12);
+  border: 0.2px solid rgb(255 255 255 / 0.55);
+  box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
+}
+.map-chip.is-quiet::before { inset: -0.375rem 0; }
+
+/* A5 names its own state rather than leaving the person to work out why the map is not on them */
+.map-state {
+  align-self: flex-start;
+  white-space: nowrap;
+  margin: 0.375rem 0 0;
+  height: 2.75rem;
+  padding: 0 1rem 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: var(--text-caption);
+  line-height: 1;
+}
+.map-state-action {
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--color-on-ground);
+  font: inherit;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 0.1875rem;
+  cursor: pointer;
+}
+
+/* A6 has no map and no controls over it, so the field takes the whole width */
+.notmapped-screen .map-top { right: var(--spacing-inset-float); }
+.notmapped-screen .map-top .map-search { margin-right: 0; }
+
+/* ── the map's own controls, in the corner the sheet never reaches ────────────────────────── */
+
+.map-tools {
+  position: absolute;
+  top: var(--top-chrome);
+  right: var(--spacing-inset-float);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+.map-tool {
+  height: 3.125rem;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: var(--radius-full);
+  color: var(--color-on-ground);
+  font-size: var(--text-caption);
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+.map-tool:active { transform: scale(0.97); }
+/* on the phone the label is the icon's alternative, not a second thing to read */
+.map-tool-label { display: none; }
+.map-tool.is-round { width: 2.75rem; height: 2.75rem; padding: 0; justify-content: center; }
+.map-tool.is-on {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 50%, var(--color-primary-deep) 100%);
+  border: 0;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
+}
+/* the control that recentres the map belongs to the map, so it sits down in it, clear of the bar */
+.map-tool.is-round { margin-top: 7.125rem; }
+.map-tool.is-round + .map-tool { margin-top: 0; }
+
+/* ── the sheet: what the map is showing, as a list ────────────────────────────────────────── */
+
+/* The boards run the list off the bottom of the frame. A screen cannot, so the sheet takes a
+   little under two thirds of the height and scrolls, which leaves the map the band the boards
+   draw it in and keeps every row reachable. */
+.map-sheet { max-height: 62dvh; overflow-y: auto; overscroll-behavior: contain; }
+/* the sheet is a flex column, and a column with a ceiling squeezes its rows: nothing in it gives */
+.map-sheet > * { flex-shrink: 0; }
+
+.map-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
+.map-sub,
+.notmapped-note {
+  margin: 0.5rem 0 0;
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  color: var(--color-on-ground-soft);
+}
+.notmapped-note { font-size: var(--text-body); line-height: var(--text-body--line-height); }
+.map-season { margin-top: 1.5rem; }
+.map-season-label {
+  flex-shrink: 0;
+  margin-right: 0.125rem;
+  font-size: var(--text-caption);
+  color: var(--color-on-ground-soft);
+}
+
+.map-list { margin: 0.5rem 0 0; padding: 0; list-style: none; }
+.map-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 0; }
+.map-row-open {
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  color: var(--color-on-ground);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+.map-row-open:active { transform: scale(0.99); }
+/* a tint, not a pane: the sheet behind it is already frosted, and a frost inside a surface the
+   screen animates would be switched off for good */
+.map-row-tile {
+  flex-shrink: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: rgb(255 255 255 / 0.12);
+  border: 0.2px solid rgb(255 255 255 / 0.55);
+  box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
+}
+.map-row-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.map-row-text { min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.map-row-name {
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  font-weight: var(--text-label--font-weight);
+}
+.map-row-meta,
+.map-row-notable {
+  font-size: var(--text-caption);
+  line-height: 1.35;
+  color: var(--color-on-ground-soft);
+}
+/* one long name must not push the counts out of the row */
+.map-row-name,
+.map-row-meta,
+.map-row-notable { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.map-row-save {
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-full);
+  color: var(--color-on-ground);
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+.map-row-save:active { transform: scale(0.92); }
+
+.map-all { margin-top: 0.75rem; }
+
+/* ── A2 and A3: the search over the map ───────────────────────────────────────────────────── */
+
+/* the results are their own surface, so the panel behind them stays the screen and the card the
+   thing being read: on the phone that is the whole screen, on the desktop the side panel */
+.search-panel {
+  top: var(--top-chrome);
+  bottom: auto;
+  max-height: calc(100dvh - var(--top-chrome) - var(--spacing-tabbar-clearance));
+  overflow-y: auto;
+  padding-top: 0;
+  background: none;
+  backdrop-filter: none;
+  border: 0;
+  box-shadow: none;
+}
+.search-head { display: flex; align-items: center; gap: 0.75rem; }
+.search-back {
+  flex-shrink: 0;
+  width: 3.125rem;
+  height: 3.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  color: var(--color-on-ground);
+  text-decoration: none;
+  transition: transform 160ms var(--ease-out);
+}
+.search-back:active { transform: scale(0.97); }
+.search-form { flex-grow: 1; min-width: 0; }
+
+
+.search-instead {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  height: 3rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: none;
+  border: 0;
+  color: var(--color-on-ground);
+  font-size: var(--text-label);
+  font-weight: var(--text-label--font-weight);
+  cursor: pointer;
+}
+.search-instead span { text-decoration: underline; text-underline-offset: 0.1875rem; }
+
+.search-title { margin-top: 0.5rem; font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
+.search-note {
+  margin: 0.75rem 0 0;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  color: var(--color-on-ground-soft);
+}
+
+.search-results {
+  margin-top: 1rem;
+  padding: 1.25rem 1.5rem 0.5rem;
+  border-radius: var(--radius-xl);
+}
+.search-results-label {
+  margin: 0;
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  color: var(--color-on-ground-soft);
+}
+.search-results ul { margin: 0.5rem 0 0; padding: 0; list-style: none; border-top: 1px solid rgb(255 255 255 / 0.22); }
+.search-result {
+  min-height: 4.75rem;
+  padding: 0.75rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.22);
+  color: var(--color-on-ground);
+  text-decoration: none;
+}
+.search-results li:last-child .search-result { border-bottom: 0; }
+/* a place with nothing recorded is still worth reaching, and says so before it is opened */
+.search-result.is-empty { color: var(--color-on-ground-mute); }
+.search-result-mark {
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: rgb(255 255 255 / 0.12);
+  border: 0.2px solid rgb(255 255 255 / 0.55);
+  box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
+}
+.search-result-text { min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.search-result-name {
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  font-weight: var(--text-label--font-weight);
+}
+.search-result-meta { font-size: var(--text-caption); line-height: 1.35; color: inherit; opacity: 0.8; }
+
+/* ── the permission dialog ────────────────────────────────────────────────────────────────── */
+
+.dialog-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  padding: 0;
+  border: 0;
+  background: rgb(6 18 9 / 0.55);
+  cursor: default;
+  animation: fade-in 200ms var(--ease-out) both;
+}
+.dialog {
+  position: fixed;
+  inset: auto 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 41;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  border-radius: var(--radius-sheet);
+  /* the sheet comes up from the edge it is attached to, and leaves the same way */
+  animation: dialog-in 280ms var(--ease-out) both;
+}
+.dialog-title { margin: 0; font-size: var(--text-body-lg); line-height: 1.35; font-weight: 500; }
+.dialog-note {
+  margin: 0;
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  color: var(--color-on-ground-soft);
+}
+.dialog-actions { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.dialog-btn {
+  height: 3.125rem;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background: rgb(255 255 255 / 0.12);
+  border: 0.2px solid rgb(255 255 255 / 0.55);
+  box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
+  color: var(--color-on-ground);
+  font-size: var(--text-label-lg);
+  line-height: var(--text-label-lg--line-height);
+  font-weight: var(--text-label-lg--font-weight);
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+.dialog-btn:active { transform: scale(0.97); }
+.dialog-btn.is-strong {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 50%, var(--color-primary-deep) 100%);
+  border: 0;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
+  color: var(--color-on-primary);
+}
+
+@keyframes dialog-in {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes dialog-pop {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog,
+  .dialog-scrim { animation: fade-in 160ms var(--ease-out) both; }
+  .map-chip,
+  .map-tool,
+  .map-row-open,
+  .map-row-save,
+  .search-back,
+  .dialog-btn { transition: none; }
+}
+
+/* ── from 64rem the sheet becomes the side panel, as it does on A1 ────────────────────────── */
+
+@media (min-width: 64rem) {
+  .map-sheet,
+  .search-panel {
+    inset: var(--panel-inset) auto var(--panel-inset) var(--panel-inset);
+    max-width: none;
+    max-height: calc(100dvh - var(--panel-inset) * 2);
+    margin-inline: 0;
+    width: var(--panel-w);
+    padding: var(--panel-pad) var(--panel-pad) 2rem;
+    overflow-y: auto;
+    border: 0.2px solid rgb(255 255 255 / 0.55);
+    border-radius: var(--radius-panel);
+  }
+  /* the panel is the glass here, so the search screen stops being a plain column */
+  .search-panel {
+    background: linear-gradient(135deg, rgb(255 255 255 / 0.22) 0%, rgb(255 255 255 / 0.07) 100%), rgb(10 28 14 / 0.3);
+    backdrop-filter: blur(30px) saturate(1.8);
+    box-shadow: inset 6px 6px 16px -8px rgb(255 255 255 / 0.35), inset -6px -6px 16px -8px rgb(0 0 0 / 0.22), 0 1px 2px rgb(0 0 0 / 0.3), 0 24px 60px rgb(0 0 0 / 0.32);
+  }
+  .map-sheet .a1-handle { display: none; }
+
+  /* The bar moves into the panel, laid over it rather than inside it: the panel is a glass
+     surface the screen animates, and a frosted field inside an animated surface loses its frost
+     for good. It is placed on the panel's own padding, and the panel keeps that height clear.
+     3.25rem field + 0.875rem gap + two 2.25rem chip lines with their 0.5rem gap is what it
+     stands at the narrowest panel: change one, change this. */
+  .map-top {
+    left: calc(var(--panel-inset) + var(--panel-pad));
+    top: calc(var(--panel-inset) + var(--panel-pad));
+    right: auto;
+    width: calc(var(--panel-w) - var(--panel-pad) * 2);
+    z-index: 4;
+    gap: 0.875rem;
+    align-content: flex-start;
+  }
+  .map-sheet { padding-top: calc(var(--panel-pad) + 9.125rem + 1.5rem); }
+  /* A6 has no filter under its field, so it only keeps the field's height clear */
+  .notmapped-screen .map-sheet { padding-top: calc(var(--panel-pad) + 3.25rem + 1.5rem); }
+  .map-top .map-search { margin-right: 0; }
+  .map-chip { padding: 0 0.6875rem; }
+
+  /* what is left over the map: the state line beside the panel, the controls under the nav */
+  .map-state {
+    position: absolute;
+    left: calc(100% + 4rem);
+    top: 0;
+    margin: 0;
+    font-size: var(--text-body);
+  }
+  .map-tools { top: 6.5rem; right: 2.5rem; }
+  .map-tool { height: 2.75rem; padding: 0 1rem 0 0.75rem; gap: 0.5rem; }
+  .map-tool-label { display: inline; }
+  .map-tool.is-round { margin-top: 0; width: 2.75rem; padding: 0; }
+
+  /* A1 gives its one big line room in an empty panel; a map screen's panel is full, so the
+     heading starts where the bar above it ends */
+  .map-title,
+  .search-title { margin-top: 0; font-size: var(--text-h2); }
+  .map-sub { font-size: var(--text-body); }
+  .map-row-tile { width: 3.75rem; height: 3.75rem; }
+
+  .search-panel { display: flex; flex-direction: column; }
+  .search-head { gap: 0.875rem; }
+  /* the panel is its own way back, so the arrow makes way for the field */
+  .search-back { width: 2.75rem; height: 2.75rem; background: none; border: 0; box-shadow: none; backdrop-filter: none; }
+  .search-results { margin-top: 1.25rem; padding: 0; background: none; backdrop-filter: none; border: 0; box-shadow: none; }
+  .search-results ul { border-top: 0; }
+  .search-result { min-height: 0; padding: 0.6875rem 0; border-bottom: 0; }
+
+  /* the browser asks in the middle of the window, not at an edge */
+  .dialog {
+    inset: 50% auto auto 50%;
+    width: min(23.75rem, calc(100vw - 3rem));
+    padding: 1.75rem;
+    border-radius: var(--radius-xl);
+    transform: translate(-50%, -50%);
+    animation: dialog-pop 240ms var(--ease-out) both;
+  }
+  .dialog-btn { height: 3rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dialog { animation: fade-in 160ms var(--ease-out) both; }
+  }
+}

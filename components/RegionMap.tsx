@@ -11,7 +11,7 @@
 // are placed from map.latLngToContainerPoint on every move. The place names are plain text, so
 // they stay ordinary markers.
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import type { Map as LeafletMap, GeoJSON as LeafletGeoJSON } from "leaflet";
 
 import "leaflet/dist/leaflet.css";
@@ -64,7 +64,32 @@ const REGION_PAD = 56;
 // where the view sits when the box is too small to hold the region, which is the phone
 const REGION: [number, number] = [52.55, 13.15];
 
-type Pin = { count: number; where: string; lat: number; lon: number; x: number; y: number; free: boolean };
+/** What the map draws over itself: a cluster with a count, a recorded place, or the person. */
+export type MapPoint = {
+  id: string;
+  lat: number;
+  lon: number;
+  /** a cluster carries the number of places in it, a single place carries none */
+  count?: number;
+  label: string;
+  /** the person's own position, drawn as a dot with its name beside it */
+  here?: boolean;
+};
+
+const REGION_POINTS: MapPoint[] = CLUSTERS.map(([count, lat, lon, where]) => ({
+  id: `c${count}`,
+  lat,
+  lon,
+  count,
+  label: `${count} places ${where}, zoom in`,
+}));
+
+type Pin = MapPoint & { x: number; y: number; free: boolean };
+
+type Centre = ((lat: number, lon: number, zoom: number, animate: boolean) => void) | null;
+
+/** What a screen can ask the map to do: put a point in the middle of the space it has. */
+export type MapHandle = { centre: (lat: number, lon: number, zoom: number, animate: boolean) => void };
 
 const token = (name: string) =>
   getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -92,32 +117,56 @@ function loadGeo(): Promise<Geo> {
 // is hidden, so nothing the sheet covers is left clickable or in the tab order.
 // offsetTop and offsetHeight are used rather than a client rect, because they ignore the sheet's
 // enter animation, which is still sliding the sheet when the map first measures it.
-function freeBox(host: HTMLElement, sheet: HTMLElement | null, nav: HTMLElement | null, desktop: boolean) {
+function freeBox(host: HTMLElement, sheet: HTMLElement | null, band: HTMLElement | null, desktop: boolean) {
   const w = host.offsetWidth;
   const h = host.offsetHeight;
   if (!sheet) return { x: 0, y: 0, w, h };
+  // whatever floats across the top of the map is not free space either: the nav pill on the
+  // desktop, the search and filter bar on the phone. Without this a pin lands behind one of them,
+  // where it cannot be seen or clicked.
+  const top = band ? band.offsetTop + band.offsetHeight : 0;
+  // the box is reported as it really is, however little is left: a floor here would let a pin
+  // sit under the sheet and still count as free
+  if (!desktop) return { x: 0, y: top, w, h: Math.max(1, sheet.offsetTop - top) };
   const right = sheet.offsetLeft + sheet.offsetWidth;
-  if (!desktop) return { x: 0, y: 0, w, h: Math.max(180, sheet.offsetTop) };
-  // on desktop the nav pill floats over the top of the same space, so the band it sits in is not
-  // free either: without this a count pin can land behind it, where it cannot be seen or clicked
-  const top = nav ? nav.offsetTop + nav.offsetHeight : 0;
-  return { x: right, y: top, w: Math.max(180, w - right), h: Math.max(180, h - top) };
+  return { x: right, y: top, w: Math.max(1, w - right), h: Math.max(1, h - top) };
 }
 
 // half a pin, so one is hidden before it slides under the edge of the glass
 const PIN_EDGE = 24;
 
 // `still` is the welcome card: the same map, no dragging, no zooming, no pins, nothing to focus.
-export default function RegionMap({ className, still = false }: { className?: string; still?: boolean }) {
+// `points` replaces the region's count pins with whatever a screen puts on the map: the recorded
+// places near the person on A4, the saved ones on A7. Pass a value that does not change between
+// renders, a module constant or a memo: a new array tears the map down and builds it again.
+// `maxZoom` is how far the fit may go in, so a handful of places in one city fills the space
+// instead of stopping at the whole region's zoom.
+export default function RegionMap({
+  className,
+  still = false,
+  points,
+  maxZoom = REGION_ZOOM_MAX,
+  ref,
+}: {
+  className?: string;
+  still?: boolean;
+  points?: MapPoint[];
+  maxZoom?: number;
+  /** a screen holds this to move the map from a control of its own */
+  ref?: React.Ref<MapHandle>;
+}) {
   const hostRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const [pins, setPins] = useState<Pin[]>([]);
   const [zooming, setZooming] = useState(false);
   // set once the map exists: puts a point in the middle of the free space, not the screen
-  const centreRef = useRef<((lat: number, lon: number, zoom: number, animate: boolean) => void) | null>(null);
+  const centreRef = useRef<Centre>(null);
+  // read at the moment it is called, so the handle survives the map being rebuilt
+  useImperativeHandle(ref, () => ({ centre: (...args) => centreRef.current?.(...args) }), []);
 
   useEffect(() => {
     let live = true;
+    const pts = points ?? REGION_POINTS;
 
     (async () => {
       const [{ default: L }, geo] = await Promise.all([import("leaflet"), loadGeo()]);
@@ -215,7 +264,7 @@ export default function RegionMap({ className, still = false }: { className?: st
 
       // the card's clusters: dots on the same canvas, the biggest one larger, no counts to read
       if (still) {
-        for (const [count, lat, lon] of CLUSTERS) {
+        for (const { lat, lon, count = 0 } of pts) {
           L.circleMarker([lat, lon], {
             radius: count >= 100 ? 6 : 3.5,
             stroke: false,
@@ -238,14 +287,18 @@ export default function RegionMap({ className, still = false }: { className?: st
 
       const sheetEl = () => (host.parentElement?.querySelector(".a1-sheet") as HTMLElement | null) ?? null;
       const navEl = () => (document.querySelector(".tabbar-pill") as HTMLElement | null) ?? null;
+      const barEl = () => (host.parentElement?.querySelector(".map-top") as HTMLElement | null) ?? null;
       const wide = matchMedia(DESKTOP);
+      // the phone keeps its bar over the map, the desktop moves it into the panel and the nav
+      // pill takes that band instead
+      const bandEl = () => (wide.matches ? navEl() : barEl());
 
       const placePins = () => {
         if (still) return;
-        const box = freeBox(host, sheetEl(), navEl(), wide.matches);
+        const box = freeBox(host, sheetEl(), bandEl(), wide.matches);
         setPins(
-          CLUSTERS.map(([count, lat, lon, where]) => {
-            const p = map.latLngToContainerPoint([lat, lon]);
+          pts.map((pt) => {
+            const p = map.latLngToContainerPoint([pt.lat, pt.lon]);
             // inside the free box on both axes, with half a pin of margin on the side the
             // sheet is on, so a pin is never clipped by the screen edge or covered by the glass
             const free =
@@ -253,7 +306,7 @@ export default function RegionMap({ className, still = false }: { className?: st
               p.x <= box.x + box.w &&
               p.y >= box.y &&
               p.y <= box.y + box.h - (wide.matches ? 0 : PIN_EDGE);
-            return { count, where, lat, lon, x: p.x, y: p.y, free };
+            return { ...pt, x: p.x, y: p.y, free };
           }),
         );
       };
@@ -262,42 +315,47 @@ export default function RegionMap({ className, still = false }: { className?: st
       // screen, so neither the region nor a cluster you tapped ends up under the glass.
       const centreOn = (lat: number, lon: number, zoom: number, animate: boolean) => {
         const r = { width: host.offsetWidth, height: host.offsetHeight };
-        const box = freeBox(host, sheetEl(), navEl(), wide.matches);
+        const box = freeBox(host, sheetEl(), bandEl(), wide.matches);
         const off = L.point(r.width / 2 - (box.x + box.w / 2), r.height / 2 - (box.y + box.h / 2));
         map.setView(map.unproject(map.project([lat, lon], zoom).add(off), zoom), zoom, { animate });
       };
       // moving the map from a pin hands it over, the same as dragging it
       let taken = false;
-      centreRef.current = still
+      const centre: Centre = still
         ? null
         : (lat, lon, zoom, animate) => {
             taken = true;
             centreOn(lat, lon, zoom, animate);
           };
+      centreRef.current = centre;
       map.on("dragstart", () => {
         taken = true;
       });
       // the welcome card has no sheet over it, so the whole region fits inside it
-      const cluster = L.latLngBounds(CLUSTERS.map(([, lat, lon]) => [lat, lon] as [number, number]));
-      // the zoom at which the nine clusters fit the box, on whichever axis runs out first
+      const cluster = L.latLngBounds(pts.map((pt) => [pt.lat, pt.lon] as [number, number]));
+      // the zoom at which every point fits the box, on whichever axis runs out first
       const zoomForBox = (box: { w: number; h: number }) => {
         const nw = map.project(cluster.getNorthWest(), 0);
         const se = map.project(cluster.getSouthEast(), 0);
         const w = Math.max(80, box.w - REGION_PAD * 2);
         const h = Math.max(80, box.h - REGION_PAD * 2);
         // down to the zoomSnap step, so the view is the same on every reload
-        const z = Math.log2(Math.min(w / (se.x - nw.x), h / (se.y - nw.y)));
-        return Math.min(REGION_ZOOM_MAX, Math.floor(z * 4) / 4);
+        // at zoom 0 a region is a fraction of a pixel across, so the guard against two points on
+        // the same line has to be smaller than any real span, not a whole pixel
+        const span = (a: number, b: number) => Math.max(1e-9, b - a);
+        const z = Math.log2(Math.min(w / span(nw.x, se.x), h / span(nw.y, se.y)));
+        return Math.min(maxZoom, Math.floor(z * 4) / 4);
       };
       const fit = still
         ? () => map.fitBounds(cluster, { animate: false, padding: L.point(28, 28) })
         : () => {
-            const box = freeBox(host, sheetEl(), navEl(), wide.matches);
+            const box = freeBox(host, sheetEl(), bandEl(), wide.matches);
             const z = zoomForBox(box);
-            // a box that cannot hold the region keeps the anchor the phone was drawn around,
-            // rather than centring on clusters half of which would be off the band anyway
-            const middle = z >= REGION_ZOOM_MIN ? cluster.getCenter() : L.latLng(REGION[0], REGION[1]);
-            centreOn(middle.lat, middle.lng, Math.max(REGION_ZOOM_MIN, z), false);
+            // a box that cannot hold the whole region keeps the anchor the phone was drawn around,
+            // rather than centring on clusters half of which would be off the band anyway. A
+            // screen that brought its own points has no such anchor: they are all there is to show.
+            const anchor = points || z >= REGION_ZOOM_MIN ? cluster.getCenter() : L.latLng(REGION[0], REGION[1]);
+            centreOn(anchor.lat, anchor.lng, points ? z : Math.max(REGION_ZOOM_MIN, z), false);
           };
 
       map.on("move zoomend", placePins);
@@ -311,7 +369,7 @@ export default function RegionMap({ className, still = false }: { className?: st
       // that box changes rather than only when the 64rem breakpoint flips. Once the person has
       // moved the map themselves it is theirs, and a resize must not pull it back.
       const boxKey = () => {
-        const b = freeBox(host, sheetEl(), navEl(), wide.matches);
+        const b = freeBox(host, sheetEl(), bandEl(), wide.matches);
         return `${b.x}:${b.y}:${b.w}:${b.h}`;
       };
       let fitted = "";
@@ -329,11 +387,10 @@ export default function RegionMap({ className, still = false }: { className?: st
         if (!taken && boxKey() !== fitted) refit();
         placePins();
       };
-      // the sheet is watched too: it can change width while the map's own box does not
+      // the sheet and the bar are watched too: either can change size while the map's own box does not
       const ro = new ResizeObserver(onResize);
       ro.observe(host);
-      const sheet = sheetEl();
-      if (sheet) ro.observe(sheet);
+      for (const el of [sheetEl(), barEl()]) if (el) ro.observe(el);
       map.once("unload", () => ro.disconnect());
     })().catch((err) => {
       console.error("[RegionMap]", err);
@@ -345,32 +402,56 @@ export default function RegionMap({ className, still = false }: { className?: st
       mapRef.current = null;
       centreRef.current = null;
     };
-  }, [still]);
+  }, [still, points, maxZoom]);
 
   return (
     <>
       <div ref={hostRef} className={className} />
       {!still &&
-        pins.map((pin) => (
-        <button
-          key={pin.count}
-          type="button"
-          className="a1-pin glass glass-pin"
-          style={{
+        pins.map((pin) => {
+          const style = {
             left: `${pin.x}px`,
             top: `${pin.y}px`,
             // the enter animation keeps opacity applied, and an animation beats an inline style,
             // so a pin that is off the free space or mid-zoom hides with visibility instead
-            visibility: zooming || !pin.free ? "hidden" : undefined,
-          }}
-          aria-label={`${pin.count} places ${pin.where}, zoom in`}
-          onClick={() =>
-            centreRef.current?.(pin.lat, pin.lon, 10.5, !matchMedia("(prefers-reduced-motion: reduce)").matches)
+            visibility: zooming || !pin.free ? ("hidden" as const) : undefined,
+          };
+
+          // the person's own position is a mark, not a control: a dot with its name beside it
+          if (pin.here) {
+            return (
+              <div key={pin.id} className="a1-here" style={style}>
+                <span className="a1-here-dot" />
+                <span className="a1-here-label">{pin.label}</span>
+              </div>
+            );
           }
-        >
-          {pin.count}
-          </button>
-        ))}
+
+          return (
+            <button
+              key={pin.id}
+              type="button"
+              className={`a1-pin glass glass-pin${pin.count === undefined ? " a1-pin-place" : ""}`}
+              style={style}
+              aria-label={pin.label}
+              onClick={() =>
+                centreRef.current?.(
+                  pin.lat,
+                  pin.lon,
+                  pin.count === undefined ? 12 : 10.5,
+                  !matchMedia("(prefers-reduced-motion: reduce)").matches,
+                )
+              }
+            >
+              {pin.count ?? (
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 5c0 7.2-4.2 11-9 11-2.2 0-4-.6-5.2-1.6C6 9.6 10.2 6.2 19 5Z" />
+                  <path d="M5 19c1.4-3.4 3.4-5.8 6-7.4" />
+                </svg>
+              )}
+            </button>
+          );
+        })}
       <p className={still ? "a02-credit" : "a1-credit"}>Map data © OpenStreetMap contributors</p>
     </>
   );
