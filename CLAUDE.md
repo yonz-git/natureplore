@@ -3,7 +3,7 @@
 Read `README.md` first, it says where tokens, map data, screens and flows come
 from. The rules that are easy to get wrong:
 
-- **Tokens are generated.** Change `../docs/design.md`, then `npm run tokens`.
+- **Tokens are generated.** Change `docs/design.md`, then `npm run tokens`.
   Never hand-edit `app/tokens.css`, and never paste hex values into components:
   use the Tailwind utilities the tokens create (`bg-ground`, `text-on-ground-soft`,
   `rounded-sheet`, `p-inset-screen`, `text-body`).
@@ -25,7 +25,7 @@ Run the `/impeccable` skill for design work, and keep these whatever the task is
 
 - **Glass.** Every frosted surface is `.glass` plus one tier (`glass-pin`,
   `glass-pill`, `glass-nav`, `glass-card`, `glass-top` for sheets). The recipe
-  lives in `app/glass.css` and mirrors `../docs/design.md`: one fill, one
+  lives in `app/glass.css` and mirrors `docs/design.md`: one fill, one
   hairline rim of `0.2px` white 55%, a specular pair inside the corners, blur 18
   on pins and chips, 26 on controls and bars, 30 on cards, panels and sheets.
 - **Never hand-write `-webkit-backdrop-filter`.** The build adds prefixes. Written
@@ -51,7 +51,7 @@ Run the `/impeccable` skill for design work, and keep these whatever the task is
 - **rem, never px.** Every size, space, radius and type step is in rem, so the
   screens follow the reader's own font size. The only px left are hairlines,
   `0.2px` rims and `1px` rules, which have to stay one line whatever the zoom.
-  Values live in `../docs/design.md` and are generated, so change them there
+  Values live in `docs/design.md` and are generated, so change them there
   and run `npm run tokens`.
 - **Fluid before breakpoints.** A screen has to hold at any width, not at three
   of them: `clamp()` on type and page margins, proportions and `min()` on
