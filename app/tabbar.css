@@ -40,10 +40,17 @@
     display: flex;
     align-items: center;
   }
+  /* the desktop nav is set in heading type, so the top of the screen reads in one
+     voice: both states share the weight, and the current tab is marked by colour */
   .tabbar-tab {
     height: 2.875rem;
     padding: 0 1.25rem;
     flex-direction: row;
     gap: 0.5rem;
+    font-size: var(--text-nav-desktop);
+    line-height: var(--text-nav-desktop--line-height);
+    font-weight: var(--text-nav-desktop--font-weight);
+    letter-spacing: var(--text-nav-desktop--letter-spacing);
   }
+  .tabbar-tab.is-current { font-weight: var(--text-nav-desktop--font-weight); }
 }
