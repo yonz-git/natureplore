@@ -23,5 +23,7 @@
 
   /* the map already keeps the region clear of the panel, the pins only grow */
   .a1-pin { width: 3.25rem; height: 3.25rem; font-size: 0.9375rem; }
+  /* one place is a smaller mark than a cluster of them, at every size */
+  .a1-pin-place { width: 2.75rem; height: 2.75rem; }
   .a1-credit { left: auto; right: var(--spacing-inset-float); top: auto; bottom: 1rem; }
 }

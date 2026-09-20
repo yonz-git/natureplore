@@ -1,7 +1,9 @@
 /* The tab bar: a floating glass pill on phone, the nav pill at the top right from 64rem.
    The current tab is white, the others white at 72%: no capsule behind either. */
 
-.tabbar { position: fixed; inset: auto 1rem 1.5rem; z-index: 20; display: flex; justify-content: center; }
+/* The bar sits 0.25rem from the bottom edge, as on the version 6 boards, plus the home
+   indicator's own space on a device, where 0.25rem alone would put the tabs under it. */
+.tabbar { position: fixed; inset: auto 1rem calc(0.25rem + env(safe-area-inset-bottom, 0px)); z-index: 20; display: flex; justify-content: center; }
 .tabbar-pill {
   width: 100%;
   max-width: min(100%, 32.5rem);

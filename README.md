@@ -17,6 +17,7 @@ npm run build
 | Design tokens | `docs/design.md` frontmatter, generated into `app/tokens.css` by `scripts/tokens.mjs`. Edit the design system, never `tokens.css`. |
 | Base map data | `public/base-geo.js`, copied from `../design flow/base-geo.js`. Regenerate it from `../design flow/base-geo-src/`. Vector data from OpenStreetMap, no tile server. `components/RegionMap.tsx` draws it with Leaflet on the Map tab. |
 | Background photograph | `public/img/forest-olena-bohovyk.jpg`, from `../docs/assets/`. |
+| Place tiles | `public/img/place-*.jpg`, the soft fields the version 6 boards use where a place photograph will go. |
 | Screens and states | The wireframe canvas, https://claude.ai/artifact/S5XrKyZEsHDqYnrxfLM98F (phone, tablet and desktop boards, codes A0 to K7). |
 | Flows | `../design flow/Natureplore_User_Flows_v1.md`, generated from `../design flow/flows-src/`. |
 | Brand | `../BRAND.md`. |
@@ -39,7 +40,13 @@ started. No streaks, no engagement prompts.
 - `components/WelcomeReveal.tsx` lets the forest photograph show faintly through A0's field in a soft circle that follows the mouse, under the liquid layer. Transforms only, mouse and pen only, off for reduced motion.
 - `app/welcome/page.tsx` is A0-2 · Welcome on its own, the same component with `still`: the statements, one green action and a glass card holding the region map, split layout with the glass nav pill from 1024px.
 - `app/glass.css` is the liquid glass recipe from the design system as classes: `glass` plus a tier (`glass-pill`, `glass-nav`, `glass-card`), `glass-top` for surfaces lit from the top only, `glass-clip` for clipped ones.
-- `app/(app)/` is the tabbed shell. `map` is A1, the real Berlin and Brandenburg map with the start sheet on it; `learn` and `notebook` are stub screens for now.
+- `app/(app)/` is the tabbed shell. `learn` and `notebook` are stub screens for now. The map tab is flow A:
+  - `map` is A1, the start sheet over the real Berlin and Brandenburg map. Its three ways in lead to the three screens below.
+  - `map/search` is A2 and A3 in one screen (`components/SearchScreen.tsx`): the regions whose name contains what was typed, or, when nothing does, the nearest spellings. The query is in the address. Matching is `searchRegions` in `lib/places.ts`, checked by `node --test lib/places.test.ts`.
+  - `map/near-you` (A4), `map/region` (A5) and `map/saved` (A7) are one screen in three states (`components/MapScreen.tsx`): the map with what it is showing, and a sheet listing it. `map/region` takes a `place` in the address and names it in the heading.
+  - `map/not-mapped` is A6, the honest empty state. It draws no map on purpose.
+  - `components/LocationDialog.tsx` stands in for the permission prompt: an action sheet on the phone, the browser bubble on the desktop. Allowing goes to A4. It is put on the body, because a screen is a fixed layer and so its own stacking context.
+  - `lib/places.ts` holds the places, regions and counts every one of them reads, so a row, a pin and a search result never disagree.
 - `components/RegionMap.tsx` is the map itself: Leaflet over the vector geometry in `public/base-geo.js`, drawn to one canvas in the `basemap` tokens, with no tile server, so it holds the design system and works offline. The count pins are React siblings of the Leaflet container, placed from `latLngToContainerPoint` on every move, because a Leaflet pane always carries a transform and a transformed ancestor switches the frost off. The place names are plain text, so they stay ordinary markers. The view is centred in the part of the screen the sheet leaves free, above it on the phone and beside it on the desktop, so a pin is never under the glass.
 - `components/Logo.tsx` is the natureplore mark, one inline SVG filled with `currentColor`; give it a height and the width follows.
 - `components/` holds shared pieces, `TabBar` is the fixed bottom navigation.

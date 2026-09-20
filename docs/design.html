@@ -11,7 +11,7 @@
   --color-ground:#14261A; --color-scrim:#061209; --color-glass-solid:#23402A;
   --color-primary:#5A7C58; --color-primary-mid:#4E6E4D; --color-primary-deep:#425F42; --color-on-primary:#FFFFFF;
   --color-on-ground:#FFFFFF; --color-on-ground-soft:#D0D4D1; --color-on-ground-mute:#A9B0A9;
-  --color-accent-tint:#B9D6B1; --color-accent-tint-soft:#DCEBD7; --color-marker:#2F4A30;
+  --color-accent-tint:#B9D6B1; --color-accent-tint-soft:#DCEBD7; --color-marker:#2F4A30; --color-marker-label:#AEB779; --color-marker-label-deep:#9DA56D;
   --color-map-road:#FFFFFF; --color-map-water:#C8E8F0; --color-keyboard:#08120A;
   --color-basemap-land:#1B2521; --color-basemap-urban:#222D28; --color-basemap-wood:#213027; --color-basemap-water:#15232A;
   --color-basemap-motorway:#5E4A52; --color-basemap-trunk:#5C5044; --color-basemap-road:#4F4C40; --color-basemap-rail:#48524D;
@@ -140,7 +140,8 @@ svg{display:block;flex-shrink:0}
 <div class="sw"><div class="c" style="background:var(--color-glass-solid);color:var(--color-on-ground)">glass-solid</div><div class="m"><b>glass-solid</b><span>#23402A, reduced transparency</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-accent-tint);color:#14261A">accent-tint</div><div class="m"><b>accent-tint</b><span>#B9D6B1, heading gradient end</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-accent-tint-soft);color:#14261A">accent-tint-soft</div><div class="m"><b>accent-tint-soft</b><span>#DCEBD7, gradient fallback</span></div></div>
-<div class="sw"><div class="c" style="background:var(--color-marker);color:var(--color-on-ground)">marker</div><div class="m"><b>marker</b><span>#2F4A30, You are here</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-marker);color:var(--color-on-ground)">marker</div><div class="m"><b>marker</b><span>#2F4A30, the You are here dot</span></div></div>
+<div class="sw"><div class="c" style="background:linear-gradient(135deg,var(--color-marker-label) 0%,var(--color-marker-label-deep) 100%);color:var(--color-ground)">marker-label</div><div class="m"><b>marker-label</b><span>#AEB779 to #9DA56D, the You are here tag</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-map-water);color:#14261A">map-water</div><div class="m"><b>map-water</b><span>#C8E8F0 at 40%</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-basemap-land);color:var(--color-basemap-label)">basemap-land</div><div class="m"><b>basemap-land</b><span>#1B2521, the map surface</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-basemap-wood);color:var(--color-basemap-label-nature)">basemap-wood</div><div class="m"><b>basemap-wood</b><span>#213027, forest and reserve</span></div></div>
