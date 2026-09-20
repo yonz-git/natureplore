@@ -44,9 +44,9 @@
   --a0-cx: 50%;
   --a0-cy: 78%;
   /* the whole stage. Container units measure the content box, and on the phone the stage has padding
-     (4.5rem on top, the screen inset at the sides), so it is added back. No padding on desktop. */
+     (--top-chrome above, the screen inset at the sides), so it is added back. No padding on desktop. */
   --a0-w: calc(100cqw + var(--spacing-inset-screen) * 2);
-  --a0-h: calc(100cqh + 4.5rem);
+  --a0-h: calc(100cqh + var(--top-chrome));
 }
 
 /* the green field, under the photograph */

@@ -1,25 +1,42 @@
 /* A1 · Start sheet: the region map with its count pins, and the start sheet resting on the bottom edge. */
 
-/* the screen is its own layer over the layout's photo, capped at the app's reading width */
-.a1 { position: fixed; inset: 0; margin: 0 auto; max-width: min(100%, 32.5rem); overflow: hidden; }
+/* the screen is its own layer over the layout's photo. The map runs edge to edge at every width,
+   the sheet keeps the app's reading width, so a wide phone or a small laptop shows map either side
+   of the sheet rather than a hard column of map floating on the photograph. */
+.a1 { position: fixed; inset: 0; overflow: hidden; }
 
-.a1-map { position: absolute; inset: 0 0 auto; height: clamp(16rem, 46%, 34rem); width: 100%; display: block; }
-.a1-map .ms-water { stroke: color-mix(in srgb, var(--color-map-water) 40%, transparent); }
-.a1-map .ms-river-1 { stroke-width: 5; }
-.a1-map .ms-river-2 { stroke-width: 4; }
-.a1-map .ms-river-3 { stroke-width: 3; }
-.a1-map .ms-lakes { fill: color-mix(in srgb, var(--color-map-water) 40%, transparent); }
-.a1-map .ms-roads,
-.a1-map .ms-lanes { stroke: var(--color-map-road); opacity: 0.6; }
-.a1-map .ms-roads { stroke-width: 3; }
-.a1-map .ms-lanes { stroke-width: 1.6; }
+/* the map fills the screen and the sheet rests on it, so the glass frosts real geometry */
+.a1-map { position: absolute; inset: 0; }
+/* Leaflet puts its own class on this element and ships a grey background, so the land colour has
+   to beat it on specificity */
+.a1-map.leaflet-container { font: inherit; background: var(--color-basemap-land); }
 
-/* a count pin sits at a share of the map box, so the cluster holds its shape at any width */
-/* --x and --y are the pin's share of the screen; the desktop block narrows the band to the map */
+/* place names: plain text over the map, with a halo so a name survives any surface under it */
+.a1-lbl-anchor { width: 0 !important; height: 0 !important; margin: 0 !important; }
+.a1-lbl {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-size: var(--text-caption);
+  line-height: 1;
+  font-weight: 500;
+  color: var(--color-basemap-label);
+  text-shadow: 0 0 2px var(--color-basemap-halo), 0 0 3px var(--color-basemap-halo), 0 0 4px var(--color-basemap-halo);
+  pointer-events: none;
+}
+.a1-lbl-city { font-size: var(--text-body); font-weight: 500; color: var(--color-basemap-label-strong); }
+/* a reserve or landscape name sits under its count pin rather than behind it */
+.a1-lbl-nature { transform: translate(-50%, 1.6rem); font-style: italic; color: var(--color-basemap-label-nature); }
+.a1-lbl-water { font-style: italic; font-weight: 400; color: var(--color-basemap-label-water); }
+.a1-lbl.is-hidden { display: none; }
+
+/* a count pin is a sibling of the map, never a marker inside it: a Leaflet pane always carries a
+   transform, and a transformed ancestor switches the frost off. It is placed in pixels from the
+   map on every move (components/RegionMap.tsx). */
 .a1-pin {
   position: absolute;
-  left: calc(var(--x) * 1%);
-  top: calc(var(--y) * 1%);
   width: 2.75rem;
   height: 2.75rem;
   transform: translate(-50%, -50%);
@@ -29,19 +46,31 @@
   line-height: var(--text-chip--line-height);
   font-weight: var(--text-chip--font-weight);
   font-variant-numeric: tabular-nums;
+  transition: transform 160ms ease-out;
 }
-.a1-label {
+.a1-pin:active { transform: translate(-50%, -50%) scale(0.94); }
+
+.a1-credit {
   position: absolute;
-  left: calc(var(--x) * 1%);
-  top: calc(var(--y) * 1%);
-  transform: translate(-50%, 0);
-  font-size: var(--text-micro); line-height: var(--text-micro--line-height);
-  color: var(--color-on-ground-soft);
+  left: var(--spacing-inset-float);
+  top: var(--top-chrome);
+  margin: 0;
+  font-size: var(--text-micro);
+  line-height: var(--text-micro--line-height);
+  color: var(--color-on-ground-mute);
+  text-shadow: 0 0 3px var(--color-basemap-halo), 0 0 5px var(--color-basemap-halo);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .a1-pin { transition: none; }
 }
 
 .a1-sheet {
   position: absolute;
   inset: auto 0 0;
+  max-width: min(100%, 32.5rem);
+  margin-inline: auto;
   padding: 0.75rem var(--spacing-inset-screen) var(--spacing-tabbar-clearance);
   display: flex;
   flex-direction: column;

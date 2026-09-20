@@ -8,7 +8,7 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: 4.5rem var(--spacing-inset-screen) 0;
+  padding: var(--top-chrome) var(--spacing-inset-screen) 0;
   background: var(--color-ground);
   color: var(--color-on-ground);
   --a02-photo: url(/img/forest-olena-bohovyk.jpg);
@@ -25,7 +25,7 @@
     rgb(0 0 0 / 0.39);
 }
 
-.a02-mark { font-size: 0.9375rem; line-height: 1.2; }
+.a02-mark svg { display: block; height: 2rem; width: auto; }
 .a02-nav { display: none; }
 .a02-main { display: flex; flex-direction: column; }
 .a02-h1 {
@@ -68,18 +68,21 @@
   border-bottom: 0;
   border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
 }
-.a02-map { display: block; width: 100%; height: 100%; position: absolute; inset: 0; }
-.a02-map .ms-water { stroke: color-mix(in srgb, var(--color-map-water) 40%, transparent); }
-.a02-map .ms-river-1 { stroke-width: 5; }
-.a02-map .ms-river-2 { stroke-width: 4; }
-.a02-map .ms-river-3 { stroke-width: 3; }
-.a02-map .ms-lakes { fill: color-mix(in srgb, var(--color-map-water) 40%, transparent); }
-.a02-map .ms-roads,
-.a02-map .ms-lanes { stroke: var(--color-map-road); opacity: 0.6; }
-.a02-map .ms-roads { stroke-width: 3; }
-.a02-map .ms-lanes { stroke-width: 1.6; }
-.a02-map .ms-places { fill: var(--color-on-ground); }
-.a02-map-wide { display: none; }
+/* the same map as the Map tab, fitted to the region and fixed: a picture, not a control */
+.a02-map { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
+.a02-map.leaflet-container { font: inherit; background: var(--color-basemap-land); }
+.a02-credit {
+  position: absolute;
+  right: 1.25rem;
+  /* the card runs to the bottom edge on the phone, so the credit clears the home indicator */
+  bottom: 2.25rem;
+  margin: 0;
+  font-size: var(--text-micro);
+  line-height: var(--text-micro--line-height);
+  color: var(--color-on-ground-mute);
+  text-shadow: 0 0 3px var(--color-basemap-halo), 0 0 5px var(--color-basemap-halo);
+  pointer-events: none;
+}
 
 @media (min-width: 64rem) {
   .a02 {
@@ -92,7 +95,18 @@
       linear-gradient(90deg, color-mix(in srgb, var(--color-scrim) 60%, transparent) 0%, color-mix(in srgb, var(--color-scrim) 25%, transparent) 55%, color-mix(in srgb, var(--color-scrim) 45%, transparent) 100%),
       rgb(0 0 0 / 0.39);
   }
-  .a02-mark { position: absolute; top: 2.75rem; left: var(--a02-inset); font-size: 1.25rem; }
+  /* the mark mirrors the nav opposite it rather than the page inset: same 2.5rem from its edge,
+     and it takes the nav pill's box, top 1.75rem and height 3.5rem, so any logo height stays
+     centred on the nav without the height being counted into the offset twice */
+  .a02-mark {
+    position: absolute;
+    top: 1.75rem;
+    left: 2.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+  }
+  .a02-mark svg { height: 2.34rem; }
   .a02-nav {
     position: absolute;
     top: 1.75rem;
@@ -132,6 +146,7 @@
   }
   .a02-h1 > span + span { margin-top: var(--spacing-6); }
   .a02-cta { margin-top: var(--spacing-12); height: 3.5rem; padding: 0 2.75rem; font-size: 1.0625rem; }
+  .a02-credit { bottom: 1.25rem; }
   .a02-card {
     position: absolute;
     left: 55.5%;
@@ -144,6 +159,4 @@
     border-radius: var(--radius-hero);
     --glass-ring: var(--glass-ring-full);
   }
-  .a02-map-tall { display: none; }
-  .a02-map-wide { display: block; }
 }

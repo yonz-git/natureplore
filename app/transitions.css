@@ -17,7 +17,7 @@
 /* the map screen in layers: the map settles first, the pins follow, the sheet rises into place */
 .screen-enter .a1-map { animation: layer-in 380ms var(--ease-out) both; }
 .screen-enter .a1-pin,
-.screen-enter .a1-label { animation: fade-in 380ms var(--ease-out) 40ms both; }
+.screen-enter .a1-credit { animation: fade-in 380ms var(--ease-out) 40ms both; }
 .screen-enter .a1-sheet { animation: sheet-in 360ms var(--ease-out) 60ms both; }
 
 /* every other screen is one block of content: its parts carry the animation, not the section, so a
@@ -43,7 +43,7 @@
 @media (prefers-reduced-motion: reduce) {
   .screen-enter .a1-map,
   .screen-enter .a1-pin,
-  .screen-enter .a1-label,
+  .screen-enter .a1-credit,
   .screen-enter .a1-sheet,
   .screen-enter > section:not(.a1) > * { animation: fade-in 160ms var(--ease-out) both; }
 }
