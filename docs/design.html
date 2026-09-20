@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Natureplore Prototype Design System</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&display=swap">
+<style>
+:root{
+  /* colors */
+  --color-ground:#14261A; --color-scrim:#061209; --color-glass-solid:#23402A;
+  --color-primary:#5A7C58; --color-primary-mid:#4E6E4D; --color-primary-deep:#425F42; --color-on-primary:#FFFFFF;
+  --color-on-ground:#FFFFFF; --color-on-ground-soft:#D0D4D1; --color-on-ground-mute:#A9B0A9;
+  --color-accent-tint:#B9D6B1; --color-accent-tint-soft:#DCEBD7; --color-marker:#2F4A30;
+  --color-map-road:#FFFFFF; --color-map-water:#C8E8F0; --color-keyboard:#08120A;
+  --color-basemap-land:#1B2521; --color-basemap-urban:#222D28; --color-basemap-wood:#213027; --color-basemap-water:#15232A;
+  --color-basemap-motorway:#5E4A52; --color-basemap-trunk:#5C5044; --color-basemap-road:#4F4C40; --color-basemap-rail:#48524D;
+  --color-basemap-border:#4E4560; --color-basemap-label:#98A291; --color-basemap-label-strong:#E3E8DC;
+  --color-basemap-label-nature:#9FB47E; --color-basemap-label-water:#7B9EA3; --color-basemap-halo:rgb(27 37 33 / 0.92);
+  --color-field-light:#668A64; --color-field:#547654; --color-field-deep:#33502F;
+  --color-field-shade:#2C442D; --color-field-mid:#3E5C3E; --color-field-glow:#80A57D; --color-field-flow:#5F8058; --color-on-field:#FAFBF5;
+  /* alpha forms used on the photo */
+  --soft:rgba(255,255,255,.8); --mute:rgba(255,255,255,.72); --line:rgba(255,255,255,.22);
+  /* typography */
+  --font:'Space Grotesk','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --type-display-desktop:300 72px/1.1 var(--font); --type-display:300 38px/1.12 var(--font);
+  --type-h1-desktop:300 44px/1.08 var(--font); --type-h1:300 34px/1.1 var(--font);
+  --type-h2:300 30px/1.12 var(--font); --type-h3:300 26px/1.15 var(--font);
+  --type-body-lg:400 18px/1.6 var(--font); --type-body:400 15px/1.6 var(--font);
+  --type-label-lg:500 16px/1.2 var(--font); --type-label:500 15px/1.3 var(--font);
+  --type-field:400 15px/1.3 var(--font); --type-chip:400 13px/1 var(--font);
+  --type-caption:400 13px/1.4 var(--font); --type-tab:500 11px/1.3 var(--font); --type-micro:400 10px/1.2 var(--font);
+  /* rounded */
+  --rounded-xs:2px; --rounded-sm:14px; --rounded-md:18px; --rounded-lg:25px; --rounded-xl:32px;
+  --rounded-sheet:36px; --rounded-panel:40px; --rounded-hero:56px; --rounded-full:9999px;
+  /* spacing */
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:20px; --space-6:24px; --space-7:28px;
+  --space-8:32px; --space-10:40px; --space-12:48px; --space-18:72px; --space-24:96px;
+  --inset-float:20px; --inset-screen:28px; --inset-panel:36px; --inset-desktop:96px; --tabbar-clearance:114px;
+  /* glass recipe */
+  --glass-fill:linear-gradient(135deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.07) 100%),rgba(10,28,14,.3);
+  --glass-frost:blur(26px) saturate(1.8);
+  --primary-gradient:linear-gradient(135deg,var(--color-primary) 0%,var(--color-primary-mid) 50%,var(--color-primary-deep) 100%);
+  --shadow-pin:inset 2px 2px 6px -3px rgba(255,255,255,.35),inset -2px -2px 6px -3px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.24);
+  --shadow-pill:inset 4px 4px 10px -5px rgba(255,255,255,.35),inset -4px -4px 10px -5px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.3),0 14px 34px rgba(0,0,0,.32);
+  --shadow-nav:inset 4px 4px 10px -5px rgba(255,255,255,.35),inset -4px -4px 10px -5px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.3),0 14px 34px rgba(0,0,0,.32);
+  --shadow-card:inset 6px 6px 16px -8px rgba(255,255,255,.35),inset -6px -6px 16px -8px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.3),0 24px 60px rgba(0,0,0,.32);
+  --shadow-sheet:inset 0 10px 20px -12px rgba(255,255,255,.35),0 -1px 2px rgba(0,0,0,.3),0 -10px 40px rgba(0,0,0,.26);
+  --shadow-inner:inset 2px 2px 6px -3px rgba(255,255,255,.35),inset -2px -2px 6px -3px rgba(0,0,0,.22);
+}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f5f2;color:#1b211c;font:400 15px/1.6 var(--font)}
+.page{max-width:1120px;margin:0 auto;padding-inline:24px;padding-block:56px 96px}
+header h1{margin:0;font:300 44px/1.1 var(--font);letter-spacing:-.02em}
+header p{margin:12px 0 0;max-width:70ch;color:#4a554c}
+.note{margin-top:16px;font-size:13px;color:#4a554c}
+section{margin-top:72px}
+section>h2{margin:0 0 8px;font:500 13px/1.3 var(--font);color:#4a554c}
+section>h3{margin:0 0 28px;font:300 28px/1.2 var(--font);letter-spacing:-.02em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.sw{border:1px solid #dfe3dc;border-radius:16px;overflow:hidden;background:#fff}
+.sw .c{height:84px;display:flex;align-items:flex-end;padding:10px 12px;font-size:12px}
+.sw .m{padding:10px 12px;font-size:13px;line-height:1.4}.sw .m b{font-weight:500;display:block}.sw .m span{color:#5a655c}
+.spec{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:baseline;padding:18px 0;border-top:1px solid #dfe3dc}
+.spec .k{font-size:13px;color:#4a554c;line-height:1.45}.spec .k b{display:block;color:#1b211c;font-weight:500}
+.bar{display:flex;align-items:center;gap:16px;padding:6px 0;font-size:13px}.bar i{display:block;height:16px;background:var(--color-primary);border-radius:4px}
+.bar span{width:170px;color:#4a554c}
+.stage{position:relative;isolation:isolate;overflow:hidden;border-radius:28px;padding:40px;color:var(--color-on-ground);background:var(--color-ground)}
+.stage::before{content:'';position:absolute;inset:0;z-index:-2;background:url('../public/img/forest-olena-bohovyk.jpg') center/cover,linear-gradient(135deg,#2c4a30,#0f1d12)}
+.stage::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(6,18,9,.55) 0%,rgba(6,18,9,.2) 38%,rgba(6,18,9,.6) 100%),rgba(0,0,0,.39)}
+.row{display:flex;flex-wrap:wrap;gap:24px;align-items:center}
+.col{display:flex;flex-direction:column;gap:14px}
+.cap{font:var(--type-caption);color:var(--soft);margin:0 0 12px}
+.lab{font:400 12px/1.3 var(--font);color:var(--soft);margin-top:8px;text-align:center}
+/* glass */
+.g{position:relative;background:var(--glass-fill);backdrop-filter:var(--glass-frost);-webkit-backdrop-filter:var(--glass-frost);border:0.2px solid rgba(255,255,255,.55);box-shadow:var(--shadow-pill);color:var(--color-on-ground)}
+.gi{position:relative;border:0.2px solid rgba(255,255,255,.55);box-shadow:var(--shadow-inner);color:var(--color-on-ground)}
+@media (prefers-reduced-transparency:reduce){.g{background:var(--color-glass-solid);backdrop-filter:none;-webkit-backdrop-filter:none}}
+.press{transition:transform 160ms ease-out}.press:active{transform:scale(.97)}
+button{font-family:var(--font);cursor:pointer}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.btn{height:50px;padding:0 24px;border-radius:var(--rounded-lg);display:inline-flex;align-items:center;justify-content:center;gap:10px;font:var(--type-label-lg);min-width:240px}
+.btn-primary{border:0;background:var(--primary-gradient);color:var(--color-on-primary);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 10px 30px rgba(0,0,0,.25)}
+.btn-primary.is-pressed{background:var(--color-primary-deep);transform:scale(.97)}
+.btn-outline{background:transparent}
+.field{height:50px;padding:0 22px;border-radius:var(--rounded-lg);display:flex;align-items:center;gap:12px;font:var(--type-field);width:320px}
+.field.is-focused{border-color:rgba(255,255,255,.9)}
+.field span{color:var(--soft)}
+.chip{height:36px;padding:0 16px;border-radius:var(--rounded-md);font:var(--type-chip);display:inline-flex;align-items:center}
+.chip.is-on{border:0;background:var(--primary-gradient);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 10px 30px rgba(0,0,0,.25)}
+.chip.is-on::before{display:none}
+.round{width:50px;height:50px;border-radius:var(--rounded-full);display:inline-flex;align-items:center;justify-content:center;padding:0}
+.round.is-on{border:0;background:var(--primary-gradient)}.round.is-on::before{display:none}
+.pin{width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:400 14px/1 var(--font);background:var(--glass-fill);backdrop-filter:blur(18px) saturate(1.8);-webkit-backdrop-filter:blur(18px) saturate(1.8);box-shadow:var(--shadow-pin);padding:0}
+.you{width:22px;height:22px;border-radius:50%;background:var(--color-marker);border:4px solid #fff;box-shadow:0 0 0 1px var(--color-marker),0 0 0 10px rgba(255,255,255,.25)}
+.tag{padding:5px 12px;border-radius:var(--rounded-sm);font:500 12px/1.3 var(--font)}
+.tabbar{width:358px;height:68px;padding:5px;border-radius:34px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;box-shadow:var(--shadow-nav)}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:400 11px/1.3 var(--font);color:var(--mute)}
+.tab.is-active{font-weight:500;color:#fff}
+.sheet{width:390px;padding:12px var(--inset-screen) 40px;border-radius:var(--rounded-sheet) var(--rounded-sheet) 0 0;border:0;border-top:0.2px solid rgba(255,255,255,.55);box-shadow:var(--shadow-sheet)}
+.handle{width:40px;height:4px;margin:0 auto 26px;border-radius:var(--rounded-xs);background:rgba(255,255,255,.5)}
+.grad{background-image:linear-gradient(100deg,#fff 0%,var(--color-accent-tint) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--color-accent-tint-soft)}
+.rowi{min-height:88px;padding:16px 0;display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:8px;align-items:center;border-bottom:1px solid var(--line)}
+.rowi .l{display:flex;gap:16px;align-items:center}.tile{flex-shrink:0;width:56px;height:56px;border-radius:var(--rounded-md);border:1px solid var(--line);background:rgba(255,255,255,.16);display:flex;align-items:flex-end;justify-content:center;font:var(--type-micro);color:var(--soft);padding-bottom:5px}
+.rowi .t{display:flex;flex-direction:column;gap:4px;min-width:0}.rowi .t b{font:var(--type-label)}.rowi .t span{font:var(--type-caption);color:var(--soft)}
+.card{width:350px;padding:20px 24px 8px;border-radius:var(--rounded-xl);box-shadow:var(--shadow-card)}
+.dialog{width:302px;border-radius:var(--rounded-xl);box-shadow:var(--shadow-card);overflow:hidden;text-align:center;font-family:-apple-system,'SF Pro Text','Helvetica Neue',Helvetica,Arial,sans-serif}
+.dialog .b{padding:28px 24px 22px}.dialog .b b{display:block;font-size:17px;font-weight:600;line-height:1.3}.dialog .b span{display:block;margin-top:8px;font-size:13px;line-height:1.45}
+.dialog .o{height:52px;display:flex;align-items:center;justify-content:center;border-top:1px solid var(--line);font-size:17px}
+.dd{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.dd>div{background:#fff;border:1px solid #dfe3dc;border-radius:20px;padding:24px 28px}
+.dd h4{margin:0 0 12px;font:500 16px/1.3 var(--font)}.dd ul{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.dd li{padding-left:28px;position:relative;font-size:14px;line-height:1.5}.dd li::before{position:absolute;left:0;top:0;font-weight:500}
+.do li::before{content:'\2713';color:#3d6b3f}.dont li::before{content:'\2717';color:#9a3b32}
+.rad{display:flex;flex-wrap:wrap;gap:20px}.rad div{width:120px;height:88px;background:#fff;border:1px solid #cfd5cc;display:flex;align-items:flex-end;padding:10px;font-size:12px;color:#4a554c}
+svg{display:block;flex-shrink:0}
+@media (max-width:640px){.spec{grid-template-columns:1fr;gap:8px}.stage{padding:24px}.field,.sheet,.card,.tabbar{width:100%}.btn{min-width:0;width:100%}}
+@media (prefers-reduced-motion:reduce){.press{transition:none}}
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+<h1>Natureplore Prototype Design System</h1>
+<p>Clear liquid glass over a living forest photograph, white type, one moss green for action, and generous spacing so every screen can breathe.</p>
+<p class="note">This page is the human-readable mirror of <code>docs/design.md</code>, which is the source of truth. Every value below is a CSS custom property declared from the same tokens.</p>
+</header>
+
+<section>
+<h2>Colors</h2><h3>One green, white at three strengths, and a filtered photograph</h3>
+<div class="grid">
+<div class="sw"><div class="c" style="background:var(--color-primary);color:var(--color-on-primary)">Text on primary</div><div class="m"><b>primary</b><span>#5A7C58</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-primary-mid);color:var(--color-on-primary)">Text on primary</div><div class="m"><b>primary-mid</b><span>#4E6E4D</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-primary-deep);color:var(--color-on-primary)">Text on primary</div><div class="m"><b>primary-deep</b><span>#425F42, pressed</span></div></div>
+<div class="sw"><div class="c" style="background:var(--primary-gradient);color:var(--color-on-primary)">Primary gradient, 135 degrees</div><div class="m"><b>button and selected chip fill</b><span>primary, mid, deep</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-ground);color:var(--color-on-ground)">on-ground #FFFFFF</div><div class="m"><b>ground</b><span>#14261A, behind the photo</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-ground);color:var(--color-on-ground-soft)">on-ground-soft</div><div class="m"><b>on-ground-soft</b><span>#D0D4D1, white at 80%</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-ground);color:var(--color-on-ground-mute)">on-ground-mute</div><div class="m"><b>on-ground-mute</b><span>#A9B0A9, white at 60 to 72%</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-scrim);color:var(--color-on-ground)">scrim</div><div class="m"><b>scrim</b><span>#061209, photo filter tint</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-glass-solid);color:var(--color-on-ground)">glass-solid</div><div class="m"><b>glass-solid</b><span>#23402A, reduced transparency</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-accent-tint);color:#14261A">accent-tint</div><div class="m"><b>accent-tint</b><span>#B9D6B1, heading gradient end</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-accent-tint-soft);color:#14261A">accent-tint-soft</div><div class="m"><b>accent-tint-soft</b><span>#DCEBD7, gradient fallback</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-marker);color:var(--color-on-ground)">marker</div><div class="m"><b>marker</b><span>#2F4A30, You are here</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-map-water);color:#14261A">map-water</div><div class="m"><b>map-water</b><span>#C8E8F0 at 40%</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-land);color:var(--color-basemap-label)">basemap-land</div><div class="m"><b>basemap-land</b><span>#1B2521, the map surface</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-wood);color:var(--color-basemap-label-nature)">basemap-wood</div><div class="m"><b>basemap-wood</b><span>#213027, forest and reserve</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-urban);color:var(--color-basemap-label)">basemap-urban</div><div class="m"><b>basemap-urban</b><span>#222D28, built-up area</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-water);color:var(--color-basemap-label-water)">basemap-water</div><div class="m"><b>basemap-water</b><span>#15232A, lake and river</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-motorway);color:#14261A">basemap-motorway</div><div class="m"><b>basemap-motorway</b><span>#5E4A52, motorway</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-trunk);color:#14261A">basemap-trunk</div><div class="m"><b>basemap-trunk</b><span>#5C5044, trunk road</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-road);color:#14261A">basemap-road</div><div class="m"><b>basemap-road</b><span>#4F4C40, primary road</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-rail);color:#14261A">basemap-rail</div><div class="m"><b>basemap-rail</b><span>#48524D, railway, dashed</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-border);color:var(--color-on-ground)">basemap-border</div><div class="m"><b>basemap-border</b><span>#4E4560, state edge, dashed</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-label-strong);color:#1B2521">basemap-label-strong</div><div class="m"><b>basemap-label-strong</b><span>#E3E8DC, city name</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-label);color:#1B2521">basemap-label</div><div class="m"><b>basemap-label</b><span>#98A291, town name</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-label-nature);color:#1B2521">basemap-label-nature</div><div class="m"><b>basemap-label-nature</b><span>#9FB47E, reserve and landscape</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-basemap-label-water);color:#1B2521">basemap-label-water</div><div class="m"><b>basemap-label-water</b><span>#7B9EA3, lake and river name</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-keyboard);color:var(--color-on-ground-soft)">keyboard</div><div class="m"><b>keyboard</b><span>#08120A, placeholder slab</span></div></div>
+<div class="sw"><div class="c" style="background:linear-gradient(160deg,var(--color-field-light) 0%,var(--color-field) 40%,var(--color-field-deep) 100%);color:var(--color-on-field)">Welcome field, 160 degrees</div><div class="m"><b>field-light, field, field-deep</b><span>#668A64, #547654, #33502F</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-field-shade);color:var(--color-on-field)">field-shade</div><div class="m"><b>field-shade</b><span>#2C442D, drifting dark patch</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-field-mid);color:var(--color-on-field)">field-mid</div><div class="m"><b>field-mid</b><span>#3E5C3E, drifting mid patch</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-field-glow);color:#14261A">field-glow</div><div class="m"><b>field-glow</b><span>#80A57D, drifting light patch</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-field-flow);color:#FFFFFF">field-flow</div><div class="m"><b>field-flow</b><span>#5F8058, the liquid layer, screened over the field it lifts it to a step above field-glow</span></div></div>
+<div class="sw"><div class="c" style="background:var(--color-on-field);color:#14261A">on-field</div><div class="m"><b>on-field</b><span>#FAFBF5, text and rules on the field</span></div></div>
+</div>
+<p class="note">No state colours (error, success, warning) are defined yet. Add them when the first screen needs one.</p>
+</section>
+
+<section>
+<h2>Typography</h2><h3>Space Grotesk, light for headings, never heavier than 500</h3>
+<div class="spec"><div class="k"><b>display-desktop</b>300, 72px / 1.1, -0.025em</div><div style="font:var(--type-display-desktop);letter-spacing:-.025em">Places near you.</div></div>
+<div class="spec"><div class="k"><b>display</b>300, 38px / 1.12, -0.02em</div><div style="font:var(--type-display);letter-spacing:-.02em">What lives there.</div></div>
+<div class="spec"><div class="k"><b>h1-desktop</b>300, 44px / 1.08, -0.02em</div><div style="font:var(--type-h1-desktop);letter-spacing:-.02em">See what lives around you</div></div>
+<div class="spec"><div class="k"><b>h1</b>300, 34px / 1.1, -0.02em</div><div style="font:var(--type-h1);letter-spacing:-.02em">See what lives around you</div></div>
+<div class="spec"><div class="k"><b>h2</b>300, 30px / 1.12, -0.02em</div><div style="font:var(--type-h2);letter-spacing:-.02em">New Brandenburg isn&#8217;t mapped yet</div></div>
+<div class="spec"><div class="k"><b>h3</b>300, 26px / 1.15, -0.02em</div><div style="font:var(--type-h3);letter-spacing:-.02em">Recorded places near you</div></div>
+<div class="spec"><div class="k"><b>body-lg</b>400, 18px / 1.6</div><div style="font:var(--type-body-lg)">A map of wild places in Berlin and Brandenburg, the species recorded there by season, and ways to protect them.</div></div>
+<div class="spec"><div class="k"><b>body</b>400, 15px / 1.6</div><div style="font:var(--type-body)">No places are recorded here, so the map stays empty rather than guessing.</div></div>
+<div class="spec"><div class="k"><b>label-lg</b>500, 16px / 1.2</div><div style="font:var(--type-label-lg)">Use my location</div></div>
+<div class="spec"><div class="k"><b>label</b>500, 15px / 1.3</div><div style="font:var(--type-label)">Tempelhofer Feld</div></div>
+<div class="spec"><div class="k"><b>field</b>400, 15px / 1.3</div><div style="font:var(--type-field)">Search places or species</div></div>
+<div class="spec"><div class="k"><b>chip</b>400, 13px / 1</div><div style="font:var(--type-chip)">Mushrooms</div></div>
+<div class="spec"><div class="k"><b>caption</b>400, 13px / 1.4</div><div style="font:var(--type-caption)">Location stays on this device. No account needed.</div></div>
+<div class="spec"><div class="k"><b>tab</b>500, 11px / 1.3</div><div style="font:var(--type-tab)">Map</div></div>
+<div class="spec"><div class="k"><b>micro</b>400, 10px / 1.2</div><div style="font:var(--type-micro)">photo</div></div>
+</section>
+
+<section>
+<h2>Spacing</h2><h3>When two spacings work, take the larger one</h3>
+<div class="bar"><span>1, 4px, inside an item</span><i style="width:var(--space-1)"></i></div>
+<div class="bar"><span>2, 8px, inside an item</span><i style="width:var(--space-2)"></i></div>
+<div class="bar"><span>3, 12px, between controls</span><i style="width:var(--space-3)"></i></div>
+<div class="bar"><span>4, 16px, between controls</span><i style="width:var(--space-4)"></i></div>
+<div class="bar"><span>5, 20px, inset-float</span><i style="width:var(--space-5)"></i></div>
+<div class="bar"><span>6, 24px, between groups</span><i style="width:var(--space-6)"></i></div>
+<div class="bar"><span>7, 28px, inset-screen</span><i style="width:var(--space-7)"></i></div>
+<div class="bar"><span>8, 32px, between groups</span><i style="width:var(--space-8)"></i></div>
+<div class="bar"><span>inset-panel, 36px</span><i style="width:var(--inset-panel)"></i></div>
+<div class="bar"><span>10, 40px, between sections</span><i style="width:var(--space-10)"></i></div>
+<div class="bar"><span>12, 48px, between sections</span><i style="width:var(--space-12)"></i></div>
+<div class="bar"><span>18, 72px, above a hero heading</span><i style="width:var(--space-18)"></i></div>
+<div class="bar"><span>24, 96px, inset-desktop</span><i style="width:var(--space-24)"></i></div>
+<div class="bar"><span>tabbar-clearance, 114px</span><i style="width:var(--tabbar-clearance)"></i></div>
+<p class="note">Rows are 88 tall with 16 above and below. A map sheet shows two rows, or three without chips. Remove content before tightening space, and never let a sheet cover a pin.</p>
+</section>
+
+<section>
+<h2>Radius</h2><h3>Nothing sharp, radius grows with the surface</h3>
+<div class="rad">
+<div style="border-radius:var(--rounded-xs)">xs 2</div><div style="border-radius:var(--rounded-sm)">sm 14</div><div style="border-radius:var(--rounded-md)">md 18</div>
+<div style="border-radius:var(--rounded-lg)">lg 25</div><div style="border-radius:var(--rounded-xl)">xl 32</div><div style="border-radius:var(--rounded-sheet) var(--rounded-sheet) 0 0">sheet 36</div>
+<div style="border-radius:var(--rounded-panel)">panel 40</div><div style="border-radius:var(--rounded-hero)">hero 56</div><div style="border-radius:var(--rounded-full)">full</div>
+</div>
+</section>
+
+<section>
+<h2>Elevation &amp; Depth</h2><h3>Glass in four parts: frost, one fill, a 0.2px rim, inner shading with its shadow</h3>
+<div class="stage"><div class="row" style="align-items:flex-start">
+<div><div class="g" style="width:200px;height:120px;border-radius:var(--rounded-lg);backdrop-filter:blur(18px) saturate(1.8);-webkit-backdrop-filter:blur(18px) saturate(1.8);box-shadow:var(--shadow-pin)"></div><div class="lab">pin, disc and chip tier, blur 18</div></div>
+<div><div class="g" style="width:200px;height:120px;border-radius:var(--rounded-lg)"></div><div class="lab">control, nav and tab bar tier, blur 26</div></div>
+<div><div class="g" style="width:200px;height:120px;border-radius:var(--rounded-xl);box-shadow:var(--shadow-card);backdrop-filter:blur(30px) saturate(1.8);-webkit-backdrop-filter:blur(30px) saturate(1.8)"></div><div class="lab">card, panel and dialog tier, blur 30</div></div>
+<div><div class="g top" style="width:200px;height:120px;border-radius:var(--rounded-sheet) var(--rounded-sheet) 0 0;border:0;border-top:0.2px solid rgba(255,255,255,.55);box-shadow:var(--shadow-sheet)"></div><div class="lab">sheet, lit from the top</div></div>
+<div><div class="g" style="width:200px;height:120px;border-radius:var(--rounded-lg);display:flex;align-items:center;justify-content:center"><div class="gi" style="width:150px;height:56px;border-radius:var(--rounded-lg)"></div></div><div class="lab">glass on glass, no second blur</div></div>
+</div></div>
+</section>
+
+<section>
+<h2>Components</h2><h3>Rendered live from the tokens</h3>
+<div class="stage"><div class="col" style="gap:48px">
+
+<div><p class="cap">Buttons: button-primary, button-primary-pressed, button-outline, text link</p>
+<div class="row"><button class="btn btn-primary press">Use my location</button><button class="btn btn-primary is-pressed">Pressed</button><button class="btn btn-outline gi press">Browse Berlin and Brandenburg</button>
+<a href="#" style="color:#fff;font:var(--type-label);text-underline-offset:3px">Use my location instead</a></div></div>
+
+<div><p class="cap">Search field: field-search, field-search-focused</p>
+<div class="row"><div class="field g"><svg width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5 20.5 20.5"></path></g></svg><span>Search places or species</span></div>
+<div class="field g is-focused"><svg width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5 20.5 20.5"></path></g></svg>Brandenb</div></div></div>
+
+<div><p class="cap">Chips: chip-selected, chip</p>
+<div class="row" style="gap:8px"><button class="chip is-on g press">All</button><button class="chip g press">Plants</button><button class="chip g press">Herbs</button><button class="chip g press">Mushrooms</button><button class="chip g press">Birds</button></div></div>
+
+<div><p class="cap">Map: pin, place pin, You are here, control-round, control-round-on</p>
+<div class="row"><button class="pin g">164</button><button class="pin g" style="width:40px;height:40px"><svg width="18" height="18" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19C5 11 10 5 19 5c0 9-6 14-14 14z"></path><path d="M5 19l8-8"></path></g></svg></button>
+<div class="row" style="gap:12px"><div class="tag g">You are here</div><div class="you"></div></div>
+<button class="round g press" aria-label="Saved places"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M7 3.8h10V20l-5-3.6L7 20z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg></button>
+<button class="round g is-on press" aria-label="Saved places, on"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M7 3.8h10V20l-5-3.6L7 20z" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg></button></div></div>
+
+<div><p class="cap">sheet with list-row</p>
+<div class="sheet g top"><div class="handle"></div>
+<div style="font:var(--type-h3);letter-spacing:-.02em">Recorded places <span class="grad">near you</span></div>
+<div style="font:var(--type-caption);color:var(--soft);margin-top:8px">Sorted by distance</div>
+<div style="margin-top:22px;border-top:1px solid var(--line)">
+<div class="rowi"><div class="l"><div class="tile">photo</div><div class="t"><b>Tempelhofer Feld</b><span>Grassland, 7 km</span><span>24 plants, 72 herbs, 41 birds</span></div></div><svg width="20" height="20" viewBox="0 0 24 24" style="margin:auto"><path d="M7 3.8h10V20l-5-3.6L7 20z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg></div>
+<div class="rowi"><div class="l"><div class="tile">photo</div><div class="t"><b>Tegeler Fließ valley</b><span>River meadow, 10 km</span><span>22 plants, 66 herbs, 57 birds</span></div></div><svg width="20" height="20" viewBox="0 0 24 24" style="margin:auto"><path d="M7 3.8h10V20l-5-3.6L7 20z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path></svg></div>
+</div></div></div>
+
+<div><p class="cap">card, dialog</p>
+<div class="row" style="align-items:flex-start">
+<div class="card g"><div style="font:var(--type-caption);color:var(--soft)">Places</div><div style="margin-top:8px;border-top:1px solid var(--line)">
+<div style="min-height:76px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line)"><span class="gi" style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12)"></span><span class="t" style="display:flex;flex-direction:column;gap:4px"><b style="font:500 16px/1.3 var(--font)">Brandenburg</b><span style="font:var(--type-caption);color:var(--soft)">Region, Germany, 212 places mapped</span></span></div>
+<div style="min-height:76px;display:flex;align-items:center;gap:14px;color:rgba(255,255,255,.6)"><span class="gi" style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12)"></span><span style="display:flex;flex-direction:column;gap:4px"><b style="font:500 16px/1.3 var(--font)">New Brandenburg</b><span style="font:var(--type-caption)">Kentucky, USA, not mapped yet</span></span></div>
+</div></div>
+<div class="dialog g"><div class="b"><b>Allow Natureplore to use your location?</b><span>Shows recorded places near you. Only used on this device.</span></div><div class="o">Allow once</div><div class="o" style="font-weight:600">Allow while using app</div><div class="o">Don&#8217;t allow</div></div>
+</div></div>
+
+<div><p class="cap">tab-bar with tab-active</p>
+<div class="tabbar g"><div class="tab is-active"><svg width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20z"></path><path d="M9 4v13.5M15 6.5V20"></path></g></svg>Map</div>
+<div class="tab"><svg width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M12 6.5C10.4 5.2 8 4.6 4 4.8v13.6c4-.2 6.4.4 8 1.6 1.6-1.2 4-1.8 8-1.6V4.8c-4-.2-6.4.4-8 1.7z"></path><path d="M12 6.5V20"></path></g></svg>Learn</div>
+<div class="tab"><svg width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><rect x="5" y="3.5" width="14" height="17" rx="2"></rect><path d="M9 3.5v17M12.5 9H16M12.5 13H16"></path></g></svg>Notebook</div></div></div>
+
+</div></div>
+</section>
+
+<section>
+<h2>Do's and Don'ts</h2><h3>What keeps the system itself</h3>
+<div class="dd">
+<div class="do"><h4>Do</h4><ul>
+<li>Give every group room. Reach for 28 and 32 before 12 and 16, and drop a row before shrinking one.</li>
+<li>Keep one filled green action per screen and let everything else be glass or text.</li>
+<li>Keep the photo filter on (scrim plus 39% black) and check white text against the brightest part of the photo.</li>
+<li>Build every glass surface from the same four parts: frost, fill, a 0.2px rim, inner shading with its separation shadow.</li>
+<li>Use the gradient on one phrase of one heading per screen.</li>
+<li>Keep targets at 44 or more, and 50 for the main controls.</li>
+</ul></div>
+<div class="dont"><h4>Don't</h4><ul>
+<li>Don't let a sheet, chip row or control cover the map pins, and don't float controls among them.</li>
+<li>Don't draw rims with thick, blurred or offset inner shadows, and don't stack one blurred surface on another.</li>
+<li>Don't add a second hue, a neon accent, pure black panels or grey card stacks.</li>
+<li>Don't set text heavier than 500, in capitals, or below white 60%.</li>
+<li>Don't use sharp corners or a radius smaller than 14 on anything a finger touches.</li>
+<li>Don't join details with middle dots. Use commas.</li>
+</ul></div>
+</div>
+</section>
+</div>
+</body>
+</html>

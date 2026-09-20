@@ -14,7 +14,7 @@ npm run build
 
 | Thing | Source |
 | --- | --- |
-| Design tokens | `../docs/design.md` frontmatter, generated into `app/tokens.css` by `scripts/tokens.mjs`. Edit the design system, never `tokens.css`. |
+| Design tokens | `docs/design.md` frontmatter, generated into `app/tokens.css` by `scripts/tokens.mjs`. Edit the design system, never `tokens.css`. |
 | Base map data | `public/base-geo.js`, copied from `../design flow/base-geo.js`. Regenerate it from `../design flow/base-geo-src/`. Vector data from OpenStreetMap, no tile server. `components/RegionMap.tsx` draws it with Leaflet on the Map tab. |
 | Background photograph | `public/img/forest-olena-bohovyk.jpg`, from `../docs/assets/`. |
 | Screens and states | The wireframe canvas, https://claude.ai/artifact/S5XrKyZEsHDqYnrxfLM98F (phone, tablet and desktop boards, codes A0 to K7). |
