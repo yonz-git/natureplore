@@ -43,4 +43,9 @@ started. No streaks, no engagement prompts.
 - `components/RegionMap.tsx` is the map itself: Leaflet over the vector geometry in `public/base-geo.js`, drawn to one canvas in the `basemap` tokens, with no tile server, so it holds the design system and works offline. The count pins are React siblings of the Leaflet container, placed from `latLngToContainerPoint` on every move, because a Leaflet pane always carries a transform and a transformed ancestor switches the frost off. The place names are plain text, so they stay ordinary markers. The view is centred in the part of the screen the sheet leaves free, above it on the phone and beside it on the desktop, so a pin is never under the glass.
 - `components/Logo.tsx` is the natureplore mark, one inline SVG filled with `currentColor`; give it a height and the width follows.
 - `components/` holds shared pieces, `TabBar` is the fixed bottom navigation.
+- `--top-chrome` in `app/globals.css` is the room above the first element on a screen. A status
+  bar only exists once the app is installed, so it is `1.75rem` plus the safe area rather than a
+  fixed allowance: in any browser it is the same offset the desktop layout uses, and on an
+  installed phone the notch adds itself. Every screen top uses it, the welcome page, the tabbed
+  shell and the map credit.
 - `app/tokens.css` is generated; `app/globals.css` is hand written.
