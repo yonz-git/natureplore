@@ -1,4 +1,5 @@
-/* A0 · Welcome, logo applied: the logo intro (components/Intro.tsx, timeline in lib/intro-timeline.ts).
+/* A0 · Welcome, logo applied: the logo intro before A0 · Welcome (components/Intro.tsx, played by
+   components/IntroGate.tsx, timeline in lib/intro-timeline.ts).
    The board is a 90 by 56.25rem frame with the logo drawn 35.34rem wide in its middle, scaled to cover
    the window. Here the photograph and the veil simply fill the window, and the logo takes the width it
    would have in that covering frame, eased back on a narrow screen just enough to stay whole:
@@ -11,13 +12,20 @@
 .intro {
   position: fixed;
   inset: 0;
+  z-index: 10;
   overflow: hidden;
-  background: var(--color-ground);
 }
 .intro-stage {
   position: absolute;
   inset: 0;
   isolation: isolate;
+  background: var(--color-ground);
+}
+/* on the way out the stage fades over the welcome, once it has drawn; the welcome is usable from the start */
+.intro-leaving { pointer-events: none; }
+.intro-fading .intro-stage { animation: intro-out 360ms var(--ease-out) forwards; }
+@keyframes intro-out {
+  to { opacity: 0; }
 }
 
 /* the photograph, zooming slowly for three minutes on the compositor */
@@ -100,12 +108,16 @@
   min-height: 2.75rem;
   padding-inline: var(--spacing-4);
   border-radius: var(--radius-lg);
+  border: 0;
+  background: none;
   color: var(--color-on-ground-soft);
+  font: inherit;
   font-size: var(--text-label);
   line-height: var(--text-label--line-height);
   font-weight: var(--text-label--font-weight);
   animation: fade-in 320ms var(--ease-out) 600ms both;
 }
+.intro-skip { cursor: pointer; }
 .intro-skip:hover { color: var(--color-on-ground); }
 
 /* Replay and Continue, once the animals have settled; each arrives on its own so the glass keeps its frost */
@@ -138,6 +150,7 @@
 }
 .intro-continue {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 50%, var(--color-primary-deep) 100%);
+  border: 0;
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
   color: var(--color-on-primary);
   animation-delay: 40ms;
@@ -154,4 +167,5 @@
   .intro-skip,
   .intro-replay,
   .intro-continue { animation: fade-in 160ms var(--ease-out) both; }
+  .intro-fading .intro-stage { animation: intro-out 160ms var(--ease-out) forwards; }
 }
