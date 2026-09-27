@@ -48,6 +48,24 @@ Run the `/impeccable` skill for design work, and keep these whatever the task is
   (`--ease-out`), under 300ms for a control and under 400ms for a screen,
   `transform` and `opacity` only, and a shorter fade under
   `prefers-reduced-motion`.
+- **CSS for micro motion, GSAP for choreography.** Hovers, active and focus
+  states, dropdowns, sheet and modal entries: CSS transitions and animations, or
+  a React motion helper. Hero sequences, page transitions, SVG path animation,
+  canvas or map state morphing and anything driven by the scroll: GSAP. The
+  welcome is the pattern for the second kind (`lib/intro-timeline.ts`,
+  `components/WelcomeLogo.tsx`, `components/WelcomeScroll.tsx`): build a
+  timeline, hold it, drive it.
+- **In React, GSAP goes in `useGSAP`.** From `@gsap/react`, with `scope` set to
+  the component's own ref where there is one, so every tween, timeline and
+  `gsap.set` is reverted when the component unmounts or the effect re-runs.
+  Listeners, rAF loops and classes you add by hand still need the cleanup
+  function you return from it.
+- GSAP takes an element's `translate`, `rotate` and `scale` properties into its
+  own transform the first time it sets one, and never reads them again. A value
+  that changes, a custom property among them, has to be passed to GSAP each
+  time, not left in the stylesheet: this is what made the welcome's photograph
+  slide as the circle grew. The backdrop root trap above holds for GSAP too, a
+  transform it writes on an ancestor of glass kills the frost the same way.
 - **rem, never px.** Every size, space, radius and type step is in rem, so the
   screens follow the reader's own font size. The only px left are hairlines,
   `0.2px` rims and `1px` rules, which have to stay one line whatever the zoom.

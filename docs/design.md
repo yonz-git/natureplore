@@ -2,6 +2,9 @@
 version: alpha
 name: Natureplore Prototype
 description: Clear liquid glass over a living forest photograph, white type, one moss green for action, and generous spacing so every screen can breathe.
+fonts:
+  heading: "'Comfortaa', 'Trebuchet MS', 'Helvetica Neue', Arial, sans-serif"
+  text: "'Jost', 'Futura', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif"
 colors:
   ground: "#14261A"
   scrim: "#061209"
@@ -45,97 +48,107 @@ colors:
   on-field: "#FAFBF5"
 typography:
   display-desktop:
-    fontFamily: Space Grotesk
+    fontFamily: Comfortaa
     fontSize: 4.5rem   # the ceiling of the fluid display below
     fontWeight: 300
-    lineHeight: 1.1
+    lineHeight: 1.8
     letterSpacing: -0.025em
   display:
-    fontFamily: Space Grotesk
+    fontFamily: Comfortaa
     fontSize: "clamp(2.375rem, 1.06rem + 5.6vw, 4.5rem)"
     fontWeight: 300
     lineHeight: 1.12
     letterSpacing: -0.02em
   h1-desktop:
-    fontFamily: Space Grotesk
+    fontFamily: Comfortaa
     fontSize: 2.75rem   # the ceiling of the fluid h1 below
     fontWeight: 300
     lineHeight: 1.08
     letterSpacing: -0.02em
   h1:
-    fontFamily: Space Grotesk
+    fontFamily: Comfortaa
     fontSize: "clamp(2.125rem, 1.7rem + 1.8vw, 2.75rem)"
     fontWeight: 300
     lineHeight: 1.1
     letterSpacing: -0.02em
   h2:
-    fontFamily: Space Grotesk
+    fontFamily: Comfortaa
     fontSize: 1.875rem
     fontWeight: 300
     lineHeight: 1.12
     letterSpacing: -0.02em
   h3:
-    fontFamily: Space Grotesk
+    fontFamily: Comfortaa
     fontSize: 1.625rem
     fontWeight: 300
     lineHeight: 1.15
     letterSpacing: -0.02em
   body-lg:
-    fontFamily: Space Grotesk
+    fontFamily: Jost
     fontSize: 1.125rem
-    fontWeight: 400
+    fontWeight: 300
     lineHeight: 1.6
   body:
-    fontFamily: Space Grotesk
+    fontFamily: Jost
     fontSize: 0.9375rem
-    fontWeight: 400
+    fontWeight: 300
     lineHeight: 1.6
-  label-lg:
-    fontFamily: Space Grotesk
+  quote:
+    fontFamily: Jost
     fontSize: 1rem
-    fontWeight: 500
+    fontWeight: 300
+    lineHeight: 1.55
+  button:
+    fontFamily: Jost
+    fontSize: 1rem
+    fontWeight: 400
+    lineHeight: 1.2
+  label-lg:
+    fontFamily: Jost
+    fontSize: 1rem
+    fontWeight: 400
     lineHeight: 1.2
   label:
-    fontFamily: Space Grotesk
+    fontFamily: Jost
     fontSize: 0.9375rem
-    fontWeight: 500
+    fontWeight: 400
     lineHeight: 1.3
   field:
-    fontFamily: Space Grotesk
+    fontFamily: Jost
     fontSize: 0.9375rem
-    fontWeight: 400
+    fontWeight: 300
     lineHeight: 1.3
   chip:
-    fontFamily: Space Grotesk
+    fontFamily: Jost
     fontSize: 0.8125rem
-    fontWeight: 400
+    fontWeight: 300
     lineHeight: 1
   caption:
-    fontFamily: Space Grotesk
+    fontFamily: Jost
     fontSize: 0.8125rem
-    fontWeight: 400
+    fontWeight: 300
     lineHeight: 1.4
   tab:
-    fontFamily: Space Grotesk
+    fontFamily: Jost
     fontSize: 0.6875rem
-    fontWeight: 500
+    fontWeight: 400
     lineHeight: 1.3
   nav-desktop:
-    fontFamily: Space Grotesk
+    fontFamily: Jost
     fontSize: 0.875rem
     fontWeight: 300
     lineHeight: 1
     letterSpacing: -0.02em
   nav-desktop-active:
-    fontFamily: Space Grotesk
+    fontFamily: Jost
     fontSize: 0.875rem
-    fontWeight: 500
+    fontWeight: 400
     lineHeight: 1
     letterSpacing: -0.02em
   micro:
-    fontFamily: Space Grotesk
+    fontFamily: Jost
     fontSize: 0.625rem
-    fontWeight: 400
+    fontWeight: 300
     lineHeight: 1.2
 rounded:
   xs: 0.125rem
@@ -167,23 +180,26 @@ spacing:
   tabbar-clearance: 7.125rem
 components:
   button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.label-lg}"
+    backgroundColor: "{colors.marker-label}"
+    backgroundColorDeep: "{colors.marker-label-deep}"
+    borderColor: "{colors.marker}"
+    textColor: "{colors.ground}"
+    typography: "{typography.button}"
     rounded: "{rounded.lg}"
     height: 3.125rem
     padding: 0 1.5rem
   button-primary-pressed:
-    backgroundColor: "{colors.primary-deep}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.label-lg}"
+    backgroundColor: "{colors.marker-label-deep}"
+    borderColor: "{colors.marker}"
+    textColor: "{colors.ground}"
+    typography: "{typography.button}"
     rounded: "{rounded.lg}"
     height: 3.125rem
     padding: 0 1.5rem
   button-outline:
     backgroundColor: "{colors.ground}"
     textColor: "{colors.on-ground}"
-    typography: "{typography.label-lg}"
+    typography: "{typography.button}"
     rounded: "{rounded.lg}"
     height: 3.125rem
     padding: 0 1.5rem
@@ -271,13 +287,13 @@ components:
 
 Natureplore shows people the wild places near them in Berlin and Brandenburg, what is recorded there, and what is happening to it. The prototype should feel like looking down into a forest through clean glass: calm, quiet and alive. Every screen sits on one top-down forest photograph, the interface floats over it as clear liquid glass, type is white and light in weight, and a single moss green marks the one thing to do next.
 
-The system started from the Oevra style tokens (one chromatic colour, light display weights, Space Grotesk for text, hairlines instead of shadows, no sharp corners) and keeps those habits. What changed is the material. Flat white paper became frosted glass over a photograph, black hairlines became bright rims of light, and spacing grew until each group of content has room around it.
+The system started from the Oevra style tokens (one chromatic colour, light display weights, two typefaces rather than one, hairlines instead of shadows, no sharp corners) and keeps those habits. What changed is the material. Flat white paper became frosted glass over a photograph, black hairlines became bright rims of light, and spacing grew until each group of content has room around it.
 
 It must never become a dense dashboard, a stack of grey cards, or a neon dark theme. When in doubt, remove an element and give the rest more room.
 
 ## Colors
 
-There is one hue. `primary` (#5A7C58) with `primary-mid` and `primary-deep` forms the diagonal gradient on filled actions, and white text on it clears 4.5:1. `accent-tint` and `accent-tint-soft` are pale greens used only for the gradient on emphasised words in headings, fading from white. `marker` is the deep green core of the "You are here" dot. `marker-label` with `marker-label-deep` fills the tag beside it, a slight diagonal gradient in the one warm green the system has, which is what makes a mark for the person read against a basemap made of cool greens. `ground` ink on it clears 7:1 at the light end and 6:1 at the deep one.
+There is one hue. `primary` (#5A7C58) with `primary-mid` and `primary-deep` forms the diagonal gradient on filled actions, and white text on it clears 4.5:1. `accent-tint` and `accent-tint-soft` are pale greens used only for the gradient on emphasised words in headings, fading from white. `marker` is the deep green core of the "You are here" dot. `marker-label` with `marker-label-deep` fills the tag beside it, a slight diagonal gradient in the one warm green the system has, which is what makes a mark for the person read against a basemap made of cool greens. `ground` ink on it clears 7:1 at the light end and 6:1 at the deep one. The same three carry the primary button, so the one warm green in the system means both a mark for the person and the action to take, and `primary` is left to the selected states: a selected chip, the map toggle you are on, and a control switched on.
 
 Everything else is white at different strengths on top of the photograph. `on-ground` is pure white for headings, labels and icons. `on-ground-soft` is white at 80% (shown here as its solid equivalent) for body copy and captions. `on-ground-mute` is white at 60% to 72% for unmapped search results, and inactive tabs sit at 65%. Do not go below 60% for any text.
 
@@ -287,11 +303,11 @@ There are no state colours (error, success, warning) yet. Add them when the firs
 
 ## Typography
 
-Space Grotesk carries everything, in three weights. Headings are weight 300 with slightly tight tracking, large and quiet. Body is 400 at a relaxed 1.6 line height. Labels, buttons, row titles and the active tab are 500. The one exception is the desktop nav, whose three labels are set in the heading weight so the top of the screen reads in one voice. Nothing is bolder than 500 and nothing is set in capitals.
+Two typefaces and two weights, and the whole scale sits light. Comfortaa sets the headings and nothing else, at weight 300 with slightly tight tracking, large and quiet. Jost sets everything else: running text, captions, fields, chips, the tab bar, the desktop nav and the quoted line of evidence are 300, and anything that names an action or a thing is 400, which is buttons, row titles, labels, tags and the tab you are on. Nothing is bolder than 400 and nothing is set in capitals, so the difference between a row title and the line under it is one step of weight and the colour, never size or emphasis. The split follows what each face is good at. Comfortaa is round and open and reads as a voice at 26px and up, where its low stroke contrast is a quality rather than a cost. Jost is a narrow geometric sans that holds its shape at 300 down to small sizes and keeps a long label on one line.
 
-The scale is short on purpose. `display` opens the welcome screen, `h1` is the start sheet heading, `h2` is for state sheets such as "not mapped yet" and "no connection", `h3` is for list sheets and messages over the map. `body` is the default paragraph, `caption` is for helper lines and row details, `chip` for chips and pins, `tab` for the tab bar, `micro` only for placeholder tags. Desktop adds `display-desktop`, `h1-desktop`, `body-lg`, `nav-desktop` and `nav-desktop-active`, the heading treatment at 14 with the heading tracking, weight 300 for a tab you can go to and 400 for the one you are on.
+The scale is short on purpose. `display` opens the welcome screen, `h1` is the start sheet heading, `h2` is for state sheets such as "not mapped yet" and "no connection", `h3` is for list sheets and messages over the map. `body` is the default paragraph, `button` is every pill button, at 400, one step up from the text around it, `quote` is the one quoted line of evidence on an impact screen, `caption` is for helper lines and row details, `chip` for chips and pins, `tab` for the tab bar, `micro` only for placeholder tags. Desktop adds `display-desktop`, `h1-desktop`, `body-lg`, `nav-desktop` and `nav-desktop-active`, the text face at 14 with the heading tracking, weight 300 for a tab you can go to and 500 for the one you are on.
 
-One phrase per heading may carry the white to pale green gradient ("around you", "near you", "isn't mapped yet"). It marks the meaning of the screen, so use it once per screen and never on body text. The system location dialog is the one exception to the typeface: it uses the platform font, because it belongs to the operating system.
+One phrase per heading may carry the white to pale green gradient ("around you", "near you", "isn't mapped yet"). It marks the meaning of the screen, so use it once per screen and never on body text. The system location dialog is the one exception to both typefaces: it uses the platform font, because it belongs to the operating system.
 
 ## Layout
 
@@ -336,7 +352,7 @@ Nothing has a sharp corner. Radius grows with the size of the surface: `md` (18)
 
 ## Components
 
-`button-primary` is the only filled element on a screen: the diagonal gradient from `primary` through `primary-mid` to `primary-deep`, white `label-lg`, a 1px inner top highlight and a soft float shadow, no glass rim. One per view. Pressed state scales to 0.97 over 160ms and settles on `primary-deep`. `button-outline` is glass on glass: transparent fill, rim, white label. Text links are white `label` with an underline offset by 3px.
+`button-primary` is the only filled element on a screen: the warm diagonal gradient from `marker-label` to `marker-label-deep`, a 1px `marker` edge, `ground` `label-lg`, a 1px inner top highlight and a soft float shadow, no glass rim. Its label and icon are dark rather than white, which is what the fill needs at 7:1, and it is the one place on a screen where ink is dark. One per view. Pressed state scales to 0.97 over 160ms and settles on `marker-label-deep`. `button-outline` is glass on glass: transparent fill, rim, white label. Text links are white `label` with an underline offset by 3px.
 
 `field-search` is a 50 tall glass pill with a 20px icon, 12 gap and 22 side padding. `field-search-focused` raises the border to white 90% and shows a clear button with a 44 target. `chip` is a 36 tall glass pill; `chip-selected` takes the primary gradient, and only one chip in a group is selected. Chip rows scroll sideways and bleed off the right edge rather than wrapping on phone.
 

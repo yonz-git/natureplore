@@ -1,12 +1,8 @@
-import IntroGate from "@/components/IntroGate";
 import Welcome from "@/components/Welcome";
 
-// A0 · Welcome, logo applied, the logo intro, then A0 · Welcome, which scrolls into A0-2 · Welcome.
+// A0 · Welcome, which scrolls into A0-2 · Welcome. The page opens on the green field with no logo:
+// the scroll builds the logo and opens the photograph behind it (components/WelcomeLogo.tsx).
 // "Go to map" goes on to the tabbed app.
 export default function Home() {
-  return (
-    <IntroGate>
-      <Welcome />
-    </IntroGate>
-  );
+  return <Welcome />;
 }

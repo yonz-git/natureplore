@@ -2,11 +2,13 @@
 // board's standalone page. Every number is in the logo's own units (its viewBox is 1729.5 by 425.2),
 // so the motion scales with the logo.
 //
-// Beats: the plant grows from 0.4s and hops into place by 3.2s, the mushroom pops up at 2.0s and
-// hops over by about 4.75s, the bird circles in from 0.6s and lands at 5.6s, and the symbol pulses
+// Beats: the mushroom is taken over from the welcome's cue at 1.2s, where it already stands
+// (components/WelcomeCue.tsx), the plant grows from 0.4s and hops down beside it, in two hops, by
+// 2.5s, the mushroom jumps into its place at 2.8s, the bird circles in from 0.6s and lands at 5.6s
+// over the two of them, and the symbol pulses
 // at 5.65s. "nature" starts as the plant lands: the swan rises at 3.2s, "a" and "t" wipe on from
 // 4.1s, the snake slithers in at 4.5s, the squirrel runs in at 4.45s. "plore" rises at 5.9s.
-// onSettled fires at 8.5s, once the squirrel has landed; the snake keeps swaying until 13.8s.
+// The handoff to A0 - Welcome is three more beats, below; the snake keeps swaying until 13.8s.
 //
 // The photo zoom, the swan's sway and the drift in the fill are CSS animations in app/intro.css:
 // a per-frame GSAP transform on those made Chrome drop letters on random frames.
@@ -16,7 +18,23 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
 gsap.registerPlugin(MotionPathPlugin);
 
-const SETTLED = 8.5;
+// The handoff to A0 - Welcome (components/Intro.tsx). The welcome mounts held and unseen while the
+// letters are still rising, so the liquid layer is loaded and ready; as "plore" comes up the
+// photograph fades off it and the green field takes over; once the squirrel has landed the logo is
+// free to leave for the welcome's own corner.
+const MUSH_IN = 1.2; // the mushroom the cue sent over is taken up here, first of the three
+const MUSH_JUMP = 2.8; // and once the plant has landed beside it, it jumps into its place
+const WARM = 5.1;
+const OPEN = 6.0;
+const FLY = 8.0;
+
+export type IntroBeats = { onWarm: () => void; onOpen: () => void; onFly: () => void };
+
+// A timeline that is built but not played: components/WelcomeLogo.tsx scrubs it with the scroll.
+const NO_BEATS: IntroBeats = { onWarm() {}, onOpen() {}, onFly() {} };
+export function buildIntro(root: HTMLElement) {
+  return playIntro(root, NO_BEATS, true);
+}
 
 // the bird's pen stroke, from off the top left corner to its place on the plant
 const BIRD = [
@@ -30,22 +48,28 @@ const BIRD = [
 ];
 
 // Builds the timeline on a fresh intro root and plays it. revert() puts every piece back and stops
-// the loops, so a replay (or React running the effect twice in development) starts clean.
-export function playIntro(root: HTMLElement, onSettled: () => void) {
+// the loops, so React running the effect twice in development starts clean.
+export function playIntro(root: HTMLElement, beats: IntroBeats, paused = false) {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let whole: gsap.core.Timeline;
   const q = (s: string) => root.querySelector(s) as SVGGraphicsElement;
   const qa = (s: string) => Array.from(root.querySelectorAll(s));
   const sway = q(".sway");
 
   const ctx = gsap.context(() => {
     const photo = q(".intro-photo"), veil = q(".intro-veil"), logo = q(".intro-logo");
-    const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+    const tl = gsap.timeline({ defaults: { ease: "power2.out" }, paused });
+    whole = tl;
 
-    tl.fromTo(photo, { opacity: 0 }, { opacity: 1, duration: 2.4, ease: "power3.out" }, 0);
-    tl.fromTo(veil, { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "sine.out" }, 0);
+    // the photograph and its veil belong to the intro screen; scrubbed on the welcome there are none
+    if (photo) tl.fromTo(photo, { opacity: 0 }, { opacity: 1, duration: 2.4, ease: "power3.out" }, 0);
+    if (veil) tl.fromTo(veil, { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "sine.out" }, 0);
     if (reduce) {
       tl.fromTo(logo, { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "sine.out" }, 0.6);
-      tl.call(onSettled, undefined, tl.duration());
+      // the same three beats, close together: the logo is read, then the welcome takes over
+      tl.call(beats.onWarm, undefined, 1.0);
+      tl.call(beats.onOpen, undefined, 1.6);
+      tl.call(beats.onFly, undefined, 2.2);
       return;
     }
     // the board's logo sat inside the veil and came up with it
@@ -67,7 +91,7 @@ export function playIntro(root: HTMLElement, onSettled: () => void) {
     gsap.set(wr, { transformOrigin: "0% 50%", scaleX: 0 });
 
     gsap.set(bird, { opacity: 0, x: BIRD[0].x, y: BIRD[0].y, rotation: -12 });
-    gsap.set(mush, { opacity: 0, scale: 0, x: 1714, y: 1307 });
+    gsap.set(mush, { opacity: 0, scale: 0, x: 0, y: 0 });
     gsap.set(plant, { x: -975, y: 940, scale: 0.35 });
     gsap.set([pBl, pBr, pMid, pTop], { scale: 0.05, opacity: 0 });
     gsap.set(swan, { y: 330, opacity: 0 });
@@ -80,40 +104,32 @@ export function playIntro(root: HTMLElement, onSettled: () => void) {
     tl.to(bird, { keyframes: [{ rotation: 8, duration: 1.05 }, { rotation: -10, duration: 1.15 }, { rotation: 6, duration: 1.05 }, { rotation: -6, duration: 0.95 }, { rotation: 0, duration: 0.8 }], ease: "sine.inOut" }, 0.6);
     tl.to(wing, { keyframes: [{ rotation: -24, duration: 0.1 }, { rotation: 44, duration: 0.15 }, { rotation: 0, duration: 0.11 }], ease: "sine.inOut", repeat: 13 }, 0.6);
 
-    // mushroom: pops up at the bottom right, then wanders over in little bounces: squash, tilt
-    // into the hop, land, jiggle; it pauses once to look around
-    tl.to(mush, { opacity: 1, duration: 0.15, ease: "sine.out" }, 2.0);
-    tl.to(mush, { scale: 1, duration: 0.6, ease: "back.out(3)" }, 2.0);
-    const M = [[1714, 1307], [1280, 1150], [1400, 850], [900, 700], [1000, 420], [420, 280], [0, 0]];
-    let m0 = 2.35;
-    for (let k = 0; k < M.length - 1; k++) {
-      const ma = M[k], mb = M[k + 1], dir = mb[0] < ma[0] ? -1 : 1, apex = Math.min(ma[1], mb[1]) - 200, md = 0.24;
-      tl.to(mush, { scaleX: 1.18, scaleY: 0.8, duration: 0.06, ease: "power1.out" }, m0);
-      tl.to(mush, { scaleX: 0.9, scaleY: 1.16, rotation: dir * 16, duration: 0.09, ease: "power1.out" }, m0 + 0.06);
-      tl.to(mush, { x: mb[0], duration: md, ease: "none" }, m0 + 0.06);
-      tl.to(mush, { y: apex, duration: md * 0.5, ease: "power2.out" }, m0 + 0.06);
-      tl.to(mush, { y: mb[1], duration: md * 0.5, ease: "power2.in" }, m0 + 0.06 + md * 0.5);
-      tl.to(mush, { rotation: -dir * 8, duration: md - 0.09, ease: "sine.inOut" }, m0 + 0.15);
-      tl.to(mush, { scaleX: 1.22, scaleY: 0.76, duration: 0.06, ease: "power1.in" }, m0 + 0.06 + md);
-      tl.to(mush, { scaleX: 1, scaleY: 1, rotation: 0, duration: 0.24, ease: "elastic.out(1.2, 0.5)" }, m0 + 0.12 + md);
-      m0 += 0.36;
-      if (k === 2) {
-        tl.to(mush, { keyframes: [{ rotation: -12, duration: 0.1 }, { rotation: 10, duration: 0.12 }, { rotation: 0, duration: 0.08 }], ease: "sine.inOut" }, m0 + 0.02);
-        m0 += 0.3;
-      }
-    }
-    tl.to(mush, { keyframes: [{ rotation: 7, duration: 0.1 }, { rotation: -5, duration: 0.1 }, { rotation: 0, duration: 0.25, ease: "elastic.out(1, 0.4)" }], ease: "sine.inOut" }, m0 + 0.1);
+    // mushroom: the welcome's own mushroom has walked here under the scroll
+    // (components/WelcomeCue.tsx) and is standing in this spot. This one takes over from it first of
+    // the three, waits while the plant hops down beside it, jumps into its own place, and only then
+    // does the bird come in over them.
+    tl.to(mush, { opacity: 1, duration: 0.12, ease: "sine.out" }, MUSH_IN);
+    tl.to(mush, { scale: 1, duration: 0.7, ease: "back.out(2.4)" }, MUSH_IN);
+    // the jump, once the plant is down: crouch, up, land, and a wobble to settle
+    tl.to(mush, { scaleX: 1.16, scaleY: 0.84, duration: 0.12, ease: "power1.out" }, MUSH_JUMP);
+    tl.to(mush, { scaleX: 0.92, scaleY: 1.12, duration: 0.1, ease: "power1.out" }, MUSH_JUMP + 0.12);
+    tl.to(mush, { y: -120, duration: 0.26, ease: "power2.out" }, MUSH_JUMP + 0.12);
+    tl.to(mush, { rotation: -9, duration: 0.38, ease: "sine.inOut" }, MUSH_JUMP + 0.12);
+    tl.to(mush, { y: 0, duration: 0.28, ease: "power2.in" }, MUSH_JUMP + 0.38);
+    tl.to(mush, { scaleX: 1.2, scaleY: 0.8, duration: 0.08, ease: "power1.in" }, MUSH_JUMP + 0.58);
+    tl.to(mush, { scaleX: 1, scaleY: 1, duration: 0.5, ease: "elastic.out(1, 0.45)" }, MUSH_JUMP + 0.66);
+    tl.to(mush, { rotation: 0, duration: 0.5, ease: "elastic.out(1, 0.4)" }, MUSH_JUMP + 0.66);
 
-    // plant: bottom pair first, then middle, then top, small, then three hops to its place
+    // plant: bottom pair first, then middle, then top, small, then two hops to its place
     tl.to([pBl, pBr], { opacity: 1, duration: 0.15 }, 0.4);
     tl.to([pBl, pBr], { scale: 1, duration: 0.8, ease: "back.out(2.2)" }, 0.4);
     tl.to(pMid, { opacity: 1, duration: 0.15 }, 0.75);
     tl.to(pMid, { scale: 1, duration: 0.9, ease: "back.out(1.6)" }, 0.75);
     tl.to(pTop, { opacity: 1, duration: 0.15 }, 1.05);
     tl.to(pTop, { scale: 1, duration: 0.9, ease: "back.out(1.6)" }, 1.05);
-    const L = [[-975, 940, 0.35], [-650, 627, 0.55], [-325, 313, 0.78], [0, 0, 1]];
+    const L = [[-975, 940, 0.35], [-490, 470, 0.66], [0, 0, 1]];
     let t0 = 1.1;
-    for (let h = 0; h < 3; h++) {
+    for (let h = 0; h < L.length - 1; h++) {
       const a = L[h], b = L[h + 1], apex = (a[1] + b[1]) / 2 - 320, s = b[2];
       tl.to(plant, { scaleX: a[2] * 0.9, scaleY: a[2] * 1.12, duration: 0.12, ease: "power1.out" }, t0);
       tl.to(plant, { x: b[0], duration: 0.52, ease: "none" }, t0);
@@ -258,10 +274,23 @@ export function playIntro(root: HTMLElement, onSettled: () => void) {
     sq.to(tail, { rotation: 0, scaleY: 1, duration: 1.1, ease: "elastic.out(1.2, 0.28)" }, leap + 0.76);
     tl.add(sq, 4.45);
 
-    tl.call(onSettled, undefined, Math.min(SETTLED, tl.duration()));
+    tl.call(beats.onWarm, undefined, WARM);
+    tl.call(beats.onOpen, undefined, OPEN);
+    tl.call(beats.onFly, undefined, FLY);
   }, root);
 
   return {
+    // the timeline itself, for a caller that drives it rather than watching it play
+    get timeline() {
+      return whole;
+    },
+    // Skip: the logo finishes where it would have finished, at once, so what flies to the corner is
+    // the whole logo and not a half built one. The beats are suppressed, they have their own way out.
+    settle() {
+      whole.progress(1, true);
+      sway.classList.remove("swaying");
+      root.classList.remove("intro-live");
+    },
     revert() {
       ctx.revert();
       sway.classList.remove("swaying");

@@ -11,11 +11,15 @@
   padding: var(--top-chrome) var(--spacing-inset-screen) 0;
   background: var(--color-ground);
   color: var(--color-on-ground);
-  --a02-photo: url(/img/forest-olena-bohovyk.jpg);
+  /* the same photograph the logo intro opens on, app/intro.css */
+  --a02-photo: url(/img/intro-waterfall.webp);
 }
 /* the lens is only a plain full-size box here, app/welcome.css turns it into the growing circle */
 .a0-lens { position: absolute; inset: 0; z-index: -1; }
-.a02-photo { position: absolute; inset: 0; background: var(--a02-photo) center / cover; }
+.a02-photo { position: absolute; inset: 0; }
+/* the photograph itself, inside the box the scroll moves, so its slow zoom and that motion never
+   write the same transform (components/WelcomeZoom.tsx) */
+.a02-photo-in { position: absolute; inset: 0; background: var(--a02-photo) center / cover; }
 .a02-photo::after {
   content: "";
   position: absolute;
@@ -25,12 +29,14 @@
     rgb(0 0 0 / 0.39);
 }
 
-.a02-mark svg { display: block; height: 2rem; width: auto; }
 .a02-nav { display: none; }
 .a02-main { display: flex; flex-direction: column; }
 .a02-h1 {
   margin: 3.75rem 0 0;
-  font-size: min(var(--text-display), 9.4vw); /* "What is happening" stays on one row down to 20rem */
+  /* every statement is one row, so the size is set by the longest of them, "what nests and grows
+     there", holding inside the screen inset down to 20rem */
+  font-size: min(var(--text-display), 6.6vw);
+  font-family: var(--text-display--font-family);
   line-height: var(--text-display--line-height);
   font-weight: var(--text-display--font-weight);
   letter-spacing: var(--text-display--letter-spacing);
@@ -50,11 +56,13 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 50%, var(--color-primary-deep) 100%);
+  background: linear-gradient(135deg, var(--color-marker-label) 0%, var(--color-marker-label-deep) 100%);
+  border: 1px solid var(--color-marker);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
-  color: var(--color-on-primary);
-  font-size: var(--text-label-lg);
-  font-weight: var(--text-label-lg--font-weight);
+  color: var(--color-ground);
+  font-size: var(--text-button);
+  font-family: var(--text-button--font-family);
+  font-weight: var(--text-button--font-weight);
   transition: transform 160ms ease-out;
 }
 .a02-cta:active { transform: scale(0.97); }
@@ -95,18 +103,6 @@
       linear-gradient(90deg, color-mix(in srgb, var(--color-scrim) 60%, transparent) 0%, color-mix(in srgb, var(--color-scrim) 25%, transparent) 55%, color-mix(in srgb, var(--color-scrim) 45%, transparent) 100%),
       rgb(0 0 0 / 0.39);
   }
-  /* the mark mirrors the nav opposite it rather than the page inset: same 2.5rem from its edge,
-     and it takes the nav pill's box, top 1.75rem and height 3.5rem, so any logo height stays
-     centred on the nav without the height being counted into the offset twice */
-  .a02-mark {
-    position: absolute;
-    top: 1.75rem;
-    left: 2.5rem;
-    height: 3.5rem;
-    display: flex;
-    align-items: center;
-  }
-  .a02-mark svg { height: 2.34rem; }
   .a02-nav {
     position: absolute;
     top: 1.75rem;
@@ -127,6 +123,7 @@
     gap: 0.5rem;
     border-radius: var(--radius-full);
     font-size: var(--text-nav-desktop);
+    font-family: var(--text-nav-desktop--font-family);
     line-height: var(--text-nav-desktop--line-height);
     font-weight: var(--text-nav-desktop--font-weight);
     letter-spacing: var(--text-nav-desktop--letter-spacing);
@@ -146,11 +143,13 @@
   }
   .a02-h1 {
     margin: 0;
-    font-size: clamp(3rem, 5vw, var(--text-display-desktop));
+    /* same rule here, and the row has to stop short of the map card at 55.5% */
+    font-size: clamp(2.25rem, 3.6vw, var(--text-display-desktop));
     line-height: var(--text-display-desktop--line-height);
     letter-spacing: var(--text-display-desktop--letter-spacing);
   }
-  .a02-h1 > span + span { margin-top: var(--spacing-6); }
+  /* the line height carries the spacing on desktop (see display-desktop) */
+  .a02-h1 > span + span { margin-top: 0; }
   .a02-cta { margin-top: var(--spacing-12); height: 3.125rem; padding: 0 2.75rem; font-size: 1.0625rem; }
   .a02-credit { bottom: 1.25rem; }
   .a02-card {

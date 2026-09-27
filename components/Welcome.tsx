@@ -1,14 +1,20 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import RegionMap from "@/components/RegionMap";
+import WelcomeCue from "@/components/WelcomeCue";
 import WelcomeEther from "@/components/WelcomeEther";
+import WelcomeHero from "@/components/WelcomeHero";
+import WelcomeLogo from "@/components/WelcomeLogo";
 import WelcomeReveal from "@/components/WelcomeReveal";
 import WelcomeScroll from "@/components/WelcomeScroll";
+import WelcomeZoom from "@/components/WelcomeZoom";
 
-// A0 · Welcome and A0-2 · Welcome as one page. It opens as A0: the green field and the three
-// statements, which blur in word by word. Scrolling moves the statements to their A0-2 places,
-// opens the forest photograph in a growing circle with a glowing rim, brings in the nav and the
-// green action, and fades the map card in last. The card holds the same map as the Map tab,
+// A0 · Welcome and A0-2 · Welcome as one page. It opens as A0: the green field and one line,
+// "Natureplore all around,", blurring in word by word in the middle of the screen, no logo. Scrolling
+// takes that line away as the forest photograph opens in a growing circle with a glowing rim, builds
+// the logo piece by piece in the middle and sends it to the top left corner
+// (components/WelcomeLogo.tsx), and only then brings in A0-2: the statements, the nav, the green
+// action, and the map card last. The card holds the same map as the Map tab,
 // fitted to the region and fixed: it is a picture of where you are going, not a control.
 // With `still` it is A0-2 alone, nothing moves.
 // Layout: app/welcome2.css. Field, intro and scroll choreography: app/welcome.css, fed by
@@ -60,7 +66,7 @@ function Words({ text, first, tint }: { text: string; first: number; tint?: bool
           animationDelay: `${300 + (first + i) * 85}ms`,
           // the last statement runs from white to the accent tint, word by word
           color: tint
-            ? `color-mix(in srgb, var(--color-accent-tint) ${(first + i - 6) * 25}%, var(--color-on-ground))`
+            ? `color-mix(in srgb, var(--color-accent-tint) ${(first + i - 8) * 20}%, var(--color-on-ground))`
             : undefined,
         }}
       >
@@ -69,12 +75,6 @@ function Words({ text, first, tint }: { text: string; first: number; tint?: bool
     </span>
   ));
 }
-
-const Rule = ({ n }: { n: 1 | 2 }) => (
-  <span className="a0-rule" aria-hidden="true">
-    <span style={{ animationDelay: `${1650 + n * 150}ms` }} />
-  </span>
-);
 
 export default function Welcome({ still = false }: { still?: boolean }) {
   return (
@@ -100,13 +100,20 @@ export default function Welcome({ still = false }: { still?: boolean }) {
           </div>
         )}
         <div className="a0-lens" aria-hidden="true">
-          <div className="a02-photo" />
+          <div className="a02-photo">
+            <div className="a02-photo-in" />
+          </div>
         </div>
         {!still && <div className="a0-orb" aria-hidden="true" />}
+        {/* the logo: built by the scroll on A0, already in its corner on A0-2 */}
+        {still ? (
+          <div className="a0-mark-corner">
+            <Logo symbol />
+          </div>
+        ) : (
+          <WelcomeLogo />
+        )}
 
-        <div className="a02-mark">
-          <Logo />
-        </div>
         <nav aria-label="Main" className="a02-nav glass glass-nav">
           {TABS.map((tab) => (
             <Link
@@ -133,26 +140,27 @@ export default function Welcome({ still = false }: { still?: boolean }) {
           ))}
         </nav>
 
+        {/* what the page opens on, alone in the middle of the screen until the scroll takes it away */}
+        {!still && <WelcomeHero text="Natureplore all around" />}
+
         <main className="a02-main">
-          <h1 className="a02-h1" aria-label="Places near you. What lives there. What is happening to them.">
+          <h1 className="a02-h1" aria-label="Natureplore all around, what nests and grows there and what is happening to them.">
             <span className="a0-l1" aria-hidden="true">
-              <Words text="Places near you." first={0} />
+              <Words text="Natureplore all around," first={0} />
             </span>
             <span className="a0-l2" aria-hidden="true">
-              <Words text="What lives there." first={3} />
-              <Rule n={1} />
+              <Words text="what nests and grows there" first={3} />
             </span>
             {/* "to them." sits on a second row in A0-2 and at the end of the row in A0 on desktop.
                 The hidden copy keeps the row as wide as the whole sentence. */}
             <span className="a0-l3" aria-hidden="true">
               <span className="a0-l3a">
-                <Words text="What is happening" first={6} tint />
+                <Words text="and what is happening" first={8} tint />
                 <span className="a0-l3b">
-                  <Words text="to them." first={9} tint />
+                  <Words text="to them." first={12} tint />
                 </span>
               </span>
               <span className="a0-ghost"> to them.</span>
-              <Rule n={2} />
             </span>
           </h1>
           <Link href="/map" className="a02-cta">
@@ -164,11 +172,8 @@ export default function Welcome({ still = false }: { still?: boolean }) {
           <RegionMap className="a02-map" still />
         </div>
 
-        {!still && (
-          <div className="a0-cue" aria-hidden="true">
-            <span>Scroll</span>
-          </div>
-        )}
+        {!still && <WelcomeCue text="Scroll" />}
+        <WelcomeZoom />
         {!still && <WelcomeScroll />}
       </div>
     </div>

@@ -1,78 +1,7 @@
-/* A0 · Welcome, logo applied: the logo intro before A0 · Welcome (components/Intro.tsx, played by
-   components/IntroGate.tsx, timeline in lib/intro-timeline.ts).
-   The board is a 90 by 56.25rem frame with the logo drawn 35.34rem wide in its middle, scaled to cover
-   the window. Here the photograph and the veil simply fill the window, and the logo takes the width it
-   would have in that covering frame, eased back on a narrow screen just enough to stay whole:
-     cover    max(35.34 / 90 of the width, 35.34 / 56.25 of the height)
-     contain  min(the same two)
-     narrow   35.34 / 41.25 of the width, the board's rule for phones
-   Its font size is one board rem at that scale, so the shadow below grows with it.
+/* The logo as the scroll builds it (components/WelcomeLogo.tsx, timeline in lib/intro-timeline.ts).
+   What is left here is the drawing itself: the piece loops inside it and the fill they share. Where
+   the logo sits, how big it is and how it travels to its corner are in app/welcome.css.
    Colours are tokens only. */
-
-.intro {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  overflow: hidden;
-}
-.intro-stage {
-  position: absolute;
-  inset: 0;
-  isolation: isolate;
-  background: var(--color-ground);
-}
-/* on the way out the stage fades over the welcome, once it has drawn; the welcome is usable from the start */
-.intro-leaving { pointer-events: none; }
-.intro-fading .intro-stage { animation: intro-out 360ms var(--ease-out) forwards; }
-@keyframes intro-out {
-  to { opacity: 0; }
-}
-
-/* the photograph, zooming slowly for three minutes on the compositor */
-.intro-photo {
-  position: absolute;
-  inset: 0;
-  background: url(/img/intro-waterfall.webp) center / cover no-repeat;
-  will-change: transform;
-  animation: intro-zoom 180s linear forwards;
-}
-@keyframes intro-zoom {
-  0% { transform: scale(1); }
-  16.667% { transform: scale(1.25); }
-  100% { transform: scale(1.45); }
-}
-
-/* the board's filter: the scrim across, darker at the sides, plus the even black layer */
-.intro-veil {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg,
-      color-mix(in srgb, var(--color-scrim) 60%, transparent) 0%,
-      color-mix(in srgb, var(--color-scrim) 25%, transparent) 55%,
-      color-mix(in srgb, var(--color-scrim) 45%, transparent) 100%),
-    rgb(0 0 0 / 0.39);
-}
-
-.intro-mark {
-  --intro-w: min(max(39.27vw, 62.83dvh), max(min(39.27vw, 62.83dvh), 85.67vw));
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: var(--intro-w);
-  translate: -50% -50%;
-  font-size: calc(var(--intro-w) / 35.34);
-  pointer-events: none;
-}
-/* brightness and the drop shadow as one CSS filter on the whole logo, the cheapest place for them */
-.intro-logo {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1729.5 / 425.2;
-  overflow: visible;
-  filter: brightness(1.265) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35));
-}
 
 /* Inside the logo, lengths are its own viewBox units, so these px scale with the logo. */
 .intro-logo .blob-a,
@@ -98,74 +27,8 @@
   to { transform: rotate(1.5deg); }
 }
 
-/* Skip, quiet in the top corner while the logo builds */
-.intro-skip {
-  position: absolute;
-  top: var(--top-chrome);
-  right: var(--spacing-inset-screen);
-  display: flex;
-  align-items: center;
-  min-height: 2.75rem;
-  padding-inline: var(--spacing-4);
-  border-radius: var(--radius-lg);
-  border: 0;
-  background: none;
-  color: var(--color-on-ground-soft);
-  font: inherit;
-  font-size: var(--text-label);
-  line-height: var(--text-label--line-height);
-  font-weight: var(--text-label--font-weight);
-  animation: fade-in 320ms var(--ease-out) 600ms both;
-}
-.intro-skip { cursor: pointer; }
-.intro-skip:hover { color: var(--color-on-ground); }
-
-/* Replay and Continue, once the animals have settled; each arrives on its own so the glass keeps its frost */
-.intro-actions {
-  position: absolute;
-  inset-inline: 0;
-  bottom: calc(var(--spacing-10) + env(safe-area-inset-bottom, 0px));
-  display: flex;
-  justify-content: center;
-  gap: var(--spacing-3);
-  padding-inline: var(--spacing-inset-screen);
-}
-.intro-replay,
-.intro-continue {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 3.125rem;
-  min-width: 8.5rem;
-  padding-inline: var(--spacing-6);
-  border-radius: var(--radius-lg);
-  color: var(--color-on-ground);
-  font: inherit;
-  font-size: var(--text-label-lg);
-  line-height: var(--text-label-lg--line-height);
-  font-weight: var(--text-label-lg--font-weight);
-  cursor: pointer;
-  transition: transform 160ms ease-out;
-  animation: sheet-in 280ms var(--ease-out) both;
-}
-.intro-continue {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 50%, var(--color-primary-deep) 100%);
-  border: 0;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
-  color: var(--color-on-primary);
-  animation-delay: 40ms;
-}
-.intro-replay:active,
-.intro-continue:active { transform: scale(0.97); }
-.intro :focus-visible { outline: 0.125rem solid var(--color-on-ground); outline-offset: 0.1875rem; }
-
 @media (prefers-reduced-motion: reduce) {
-  .intro-photo,
   .intro-logo .blob-a,
   .intro-logo .blob-b,
   .intro-logo .sway.swaying { animation: none; }
-  .intro-skip,
-  .intro-replay,
-  .intro-continue { animation: fade-in 160ms var(--ease-out) both; }
-  .intro-fading .intro-stage { animation: intro-out 160ms var(--ease-out) forwards; }
 }
