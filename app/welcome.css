@@ -8,10 +8,6 @@
   from { opacity: 0; filter: blur(0.875rem); transform: translateY(0.625rem); }
   to { opacity: 1; filter: blur(0); transform: translateY(0); }
 }
-@keyframes a0-rule {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0 0 0 0); }
-}
 @keyframes a0-arrive {
   from { opacity: 0; filter: blur(0.375rem); transform: translateY(0.5rem); }
   to { opacity: 1; filter: blur(0); transform: translateY(0); }
@@ -25,12 +21,7 @@
   to { transform: translate3d(calc(var(--a0-drift-x) * -1.2), calc(var(--a0-drift-y) * -0.8), 0) scale(1); }
 }
 
-/* scrubbed by the scroll, each one only names the A0 end */
-@keyframes a0s-move { from { transform: var(--a0-from); } }
-/* "to them." drops to its own row first, then slides left under the row above, so the two never cross */
-@keyframes a0s-drop { from { transform: var(--a0-from); } 30% { transform: var(--a0-mid); } }
-@keyframes a0s-rise { from { opacity: 0; transform: translate(0, var(--a0-rise)); } }
-@keyframes a0s-fade { from { opacity: 0; } }
+/* scrubbed by the scroll, each one only names the end it is not in */
 @keyframes a0s-leave { from { opacity: 1; } }
 @keyframes a0s-hide { to { visibility: hidden; } }
 @keyframes a0s-away { to { transform: translateY(-200%); } }
@@ -136,9 +127,25 @@
   mix-blend-mode: soft-light;
 }
 
-/* the rules ride on their statements: above them on the phone, beside them on desktop */
-.a0-rule { position: absolute; left: 0; top: -1.4375rem; width: 6rem; height: 1px; opacity: 0; }
-.a0-rule span { display: block; height: 100%; background: var(--color-on-field); }
+/* The logo. Without the scroll choreography it is simply in its corner, the place A0-2 keeps it and
+   the box components/WelcomeLogo.tsx sends it to; the scroll media query below puts it in the middle
+   of the page instead and hands it to the scroll. The corner mirrors the nav opposite it: on desktop
+   it takes the nav pill's box, 3.5rem tall from 1.75rem, with the logo centred in it. */
+.a0-mark,
+.a0-mark-corner {
+  position: absolute;
+  top: var(--top-chrome);
+  left: var(--spacing-inset-screen);
+  height: 2rem;
+  width: auto;
+  pointer-events: none;
+}
+/* the corner holds the symbol alone, the wordmark dissolves before the flight
+   (components/WelcomeLogo.tsx) */
+.a0-mark-corner { aspect-ratio: 283.81 / 265.34; }
+.a0-mark-corner svg { display: block; height: 100%; width: auto; }
+.a0-mark .intro-logo { height: 100%; width: auto; filter: none; }
+.a0-mark-slot { visibility: hidden; }
 
 .a0-cue {
   position: absolute;
@@ -148,16 +155,36 @@
   opacity: 0;
   pointer-events: none;
   text-align: center;
-  font-size: var(--text-caption);
+  /* a size of its own, a step above a caption, so the one instruction on the page is easy to read */
+  font-size: calc(var(--text-caption) * 1.15);
   line-height: var(--text-caption--line-height);
 }
 .a0-cue span { display: inline-block; }
-.a0-cue span::after { content: ""; display: block; width: 1px; height: 2.5rem; margin: var(--spacing-3) auto 0; background: currentColor; }
 
-/* intro, runs once on load */
-.a0s .a0-w { animation: a0-word 1100ms var(--a0-ease) both; }
-.a0s .a0-rule span { animation: a0-rule 900ms var(--a0-ease) both; }
-.a0s .a02-mark,
+/* the mushroom under the cue, and the ground it pushes up out of. It keeps its own place on the page
+   rather than the cue's, because the scroll fades the cue away and sends the mushroom to the logo
+   (components/WelcomeCue.tsx). */
+.a0-mush {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--spacing-10) - 0.65rem);
+  width: 1.125rem;
+  height: 1.25rem;
+  margin: 0 auto;
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--color-on-field);
+}
+.a0-mush[data-out] { overflow: visible; }
+.a0-mush svg { display: block; width: 100%; height: auto; }
+
+/* The one line the page opens on, in the middle of the screen. It belongs to the scroll opening only:
+   without it the page is A0-2, which has the whole sentence in its own place. */
+.a0-hero { display: none; }
+
+/* the opening, once on load: the line writes itself letter by letter
+   (components/WelcomeHero.tsx), then the cue arrives under it */
 .a0s .a0-cue span { animation: a0-arrive 800ms var(--a0-ease) 2300ms both; }
 
 /* The scroll choreography. components/WelcomeScroll.tsx writes --a0-p on each of these elements: the
@@ -168,27 +195,53 @@
 @property --a0-p { syntax: "<number>"; inherits: false; initial-value: 0; }
 
 @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
-  .a0s { height: 300vh; }
+  /* The scroll is the background's: the photograph opens across it, and the logo takes over from
+     there on its own clock (components/WelcomeLogo.tsx). The page is this tall so that the circle
+     opens over a long scroll rather than a flick of the wheel. */
+  .a0s { height: 350vh; }
+  /* Once it has all played, the page is A0-2 and nothing else: no scroller, nothing above it to go
+     back to (components/WelcomeLogo.tsx sets a0-done on the frame the logo lands). Everything the
+     scroll was driving is put in its finished state here, because the scroll position itself is gone:
+     the field and the opening line have been left behind, and the photograph is simply the
+     background, the same as A0-2 has it (app/welcome2.css). */
+  .a0s.a0-done { height: auto; }
+  .a0s.a0-done .a02 { position: relative; }
+  .a0s.a0-done :is(.a0-field, .a0-ether, .a0-orb, .a0-hero, .a0-cue, .a0-mush) { display: none; }
+  .a0s.a0-done .a0-lens {
+    inset: 0;
+    width: auto;
+    height: auto;
+    aspect-ratio: auto;
+    translate: none;
+    border-radius: 0;
+    visibility: visible;
+  }
+  .a0s.a0-done .a02-photo {
+    inset: 0;
+    width: auto;
+    height: auto;
+    translate: none;
+  }
   .a0s .a02 { position: sticky; top: 0; height: 100dvh; min-height: 0; container-type: size; }
   .a0s :is(.a0-field, .a0-orb) { display: block; }
 
-  .a0s :is(.a0-field, .a0-ether, .a02-h1, .a0-l1, .a0-l2, .a0-l3, .a0-l3b, .a0-rule, .a0-cue, .a02-nav, .a02-cta, .a02-card) {
+  .a0s :is(.a0-field, .a0-ether, .a0-hero, .a0-cue) {
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-fill-mode: both;
     animation-play-state: paused;
     animation-delay: calc((var(--a0-s) - var(--a0-p)) / (var(--a0-e) - var(--a0-s)) * 1s);
   }
-  .a0s .a0-field { animation-name: a0s-hide; --a0-s: 0.7; --a0-e: 0.71; }
+  .a0s .a0-field { animation-name: a0s-hide; --a0-s: 0.97; --a0-e: 0.98; }
   /* once the field is covered the liquid layer steps out of it, which is what pauses its simulation */
-  .a0s .a0-ether { animation-name: a0s-away; --a0-s: 0.7; --a0-e: 0.71; }
+  .a0s .a0-ether { animation-name: a0s-away; --a0-s: 0.97; --a0-e: 0.98; }
   /* The photograph opens in a circle between --a0-s and --a0-e of the scroll. The lens is that circle at
      its final size, 150% of hypot(w, h) / sqrt(2), enough to clear every corner. WelcomeScroll scales
      the lens up from nothing, scales the photograph inside it by the inverse so it stays put, and scales
      the rim with the lens. Only transforms change, so nothing is repainted while the circle grows. */
   .a0s .a0-lens {
     --a0-s: 0.04;
-    --a0-e: 0.78;
+    --a0-e: 0.95;
     inset: auto;
     left: var(--a0-cx);
     top: var(--a0-cy);
@@ -210,19 +263,65 @@
   .a0s :is(.a0-lens, .a02-photo, .a0-orb) { will-change: transform; }
   .a0s :is(.a0-lens, .a0-orb) { visibility: hidden; } /* until WelcomeScroll places them */
 
-  /* the statements move from their A0 places, phone: lower and further apart */
-  .a0s :is(.a02-h1, .a0-l1, .a0-l2, .a0-l3, .a0-l3b) { animation-name: a0s-move; --a0-s: 0.06; --a0-e: 0.55; }
-  .a0s .a02-h1 { --a0-from: translate(0, 1.625rem); }
-  .a0s .a0-l1 { --a0-from: translate(0, 0); }
-  .a0s .a0-l2 { --a0-from: translate(0, 1.8125rem); }
-  .a0s .a0-l3 { --a0-from: translate(0, 3.625rem); }
-  .a0s .a0-l3b { --a0-from: translate(0, 100%); --a0-mid: translate(0, 100%); animation-name: a0s-drop; }
-  .a0s :is(.a0-rule, .a0-cue) { animation-name: a0s-leave; --a0-s: 0; --a0-e: 0.08; }
+  /* The logo builds in the middle of the page and travels to the corner slot, both worked out by
+     components/WelcomeLogo.tsx. The width is the intro board's: the logo as it would be drawn in a
+     frame covering the window, eased back on a narrow screen just enough to stay whole. Its font
+     size is one board rem at that width, so the shadow inside it grows with it. */
+  /* No will-change here. The lens behind it sits at z-index -1, and a promoted layer over that took
+     the whole page's paint with it: the photograph, the words and the card all came out black. */
+  /* until components/WelcomeLogo.tsx starts the timeline, the markup is the whole logo, which would
+     flash on the page as it loads */
+  .a0s .a0-mark:not([data-ready]) { visibility: hidden; }
+  .a0s .a0-mark {
+    --a0-mark-w: min(max(39.27cqw, 62.83cqh), max(min(39.27cqw, 62.83cqh), 85.67cqw));
+    top: 50%;
+    left: 50%;
+    height: auto;
+    width: var(--a0-mark-w);
+    translate: -50% -50%;
+    font-size: calc(var(--a0-mark-w) / 35.34);
+  }
+  .a0s .a0-mark .intro-logo {
+    height: auto;
+    width: 100%;
+    aspect-ratio: 1729.5 / 425.2;
+    overflow: visible;
+    filter: brightness(1.265) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35));
+  }
 
-  /* the rest arrives, the map last and only fading */
-  .a0s .a02-nav { animation-name: a0s-rise; --a0-s: 0.52; --a0-e: 0.66; }
-  .a0s .a02-cta { animation-name: a0s-rise; --a0-s: 0.58; --a0-e: 0.72; }
-  .a0s .a02-card { animation-name: a0s-fade; --a0-s: 0.8; --a0-e: 0.98; }
+  /* The opening line and the cue go first, as the photograph starts to open behind them. What is
+     left of the scroll opens the photograph, and nothing else waits on it. */
+  .a0s .a0-cue { animation-name: a0s-leave; --a0-s: 0; --a0-e: 0.08; }
+  .a0s .a0-hero { animation-name: a0s-leave; --a0-s: 0.04; --a0-e: 0.25; }
+
+  /* A0-2 arrives on the frame the logo lands in its corner, one layer after another, the map last
+     and only fading (components/WelcomeLogo.tsx sets a0-open) */
+  .a0s :is(.a02-h1, .a02-nav, .a02-cta, .a02-card) { opacity: 0; }
+  .a0s.a0-open :is(.a02-h1, .a02-nav, .a02-cta, .a02-card) {
+    animation: a0-arrive 800ms var(--a0-ease) both;
+  }
+  .a0s.a0-open .a02-nav { animation-delay: 120ms; }
+  .a0s.a0-open .a02-cta { animation-delay: 240ms; }
+  .a0s.a0-open .a02-card { animation: fade-in 900ms var(--a0-ease) 360ms both; }
+
+  /* the opening line, centred on the screen, in the display face */
+  .a0s .a0-hero {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    margin: 0;
+    translate: 0 -50%;
+    opacity: 0;
+    pointer-events: none;
+    text-align: center;
+    font-size: min(var(--text-display), 6.6vw);
+    font-family: var(--text-display--font-family);
+    font-weight: var(--text-display--font-weight);
+    letter-spacing: var(--text-display--letter-spacing);
+    white-space: nowrap;
+  }
 
   /* a link that takes keyboard focus must be visible: jump to the end state */
   .a0s:has(a:focus-visible) :is(*, *::after) { animation: none !important; }
@@ -240,13 +339,10 @@
       --a0-w: 100cqw;
       --a0-h: 100cqh;
     }
-    /* A0 on desktop: the block sits a little above the middle, rows 0.375rem apart, the first row indented,
-       the last one on a single row against the right inset */
-    .a0s .a02-h1 { --a0-from: translate(0, calc(47cqh - 12.5rem - 1.5lh - 0.375rem)); }
-    .a0s .a0-l1 { --a0-from: translate(var(--a0-inset), 0); }
-    .a0s .a0-l2 { --a0-from: translate(0, -1.125rem); }
-    .a0s .a0-l3 { --a0-from: translate(calc(100cqw - var(--a0-inset) * 2 - 100%), -2.25rem); }
-    .a0s .a0-l3b { --a0-from: translate(calc(100% + 0.25em), 0); --a0-mid: translate(calc(90% + 0.25em), 100%); }
+    .a0s .a0-hero {
+      font-size: clamp(2.25rem, 3.6vw, var(--text-display-desktop));
+      letter-spacing: var(--text-display-desktop--letter-spacing);
+    }
   }
 }
 
@@ -257,11 +353,15 @@
 }
 
 @media (min-width: 64rem) {
+  /* the corner mirrors the nav opposite it: the nav pill's box, with the logo centred in it */
+  .a0-mark,
+  .a0-mark-corner {
+    top: calc(1.75rem + (3.5rem - 2.34rem) / 2);
+    left: 2.5rem;
+    height: 2.34rem;
+  }
   .a0-blob-1 { left: -18%; top: -20%; width: 68%; }
   .a0-blob-2 { left: 25%; top: -29%; width: 69%; aspect-ratio: 1.22; }
   .a0-blob-3 { left: 62%; top: 42%; width: 62%; }
   .a0-blob-4 { left: 8%; top: 58%; width: 53%; aspect-ratio: 1.23; }
-  .a0-rule { top: 0.55lh; width: clamp(6rem, 11.8vw, 10.625rem); }
-  .a0-l2 .a0-rule { left: calc(100% + var(--a0-gap, 4.5rem)); }
-  .a0-l3 .a0-rule { left: auto; right: calc(100% + var(--a0-gap, 4.5rem)); }
 }

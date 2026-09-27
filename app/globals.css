@@ -1,8 +1,13 @@
 @import "tailwindcss";
+/* Tailwind scans every file it is not told to skip, and public/base-geo.js is a megabyte and a half
+   of coordinates, which takes it about a minute per build and times the loader out on a cold cache.
+   Nothing in public holds a class name, so it stays out of the scan. */
+@source not "../public";
 @import "./tokens.css";
 @import "./glass.css";
 @import "./welcome.css";
 @import "./welcome2.css";
+@import "./intro.css";
 @import "./a1.css";
 @import "./a1-desktop.css";
 @import "./map.css";
@@ -14,6 +19,11 @@
    on a laptop or a phone, this is the same offset the desktop layout uses and nothing is wasted. */
 :root {
   --top-chrome: calc(1.75rem + env(safe-area-inset-top, 0px));
+
+  /* The two families from docs/design.md, with the copies Next self-hosts in front of them.
+     The stacks themselves stay in tokens.css so the system reads the same outside this app. */
+  --font-heading: var(--font-comfortaa), "Comfortaa", "Trebuchet MS", sans-serif;
+  --font-text: var(--font-jost), "Jost", "Futura", "Century Gothic", sans-serif;
 }
 
 html,
@@ -24,6 +34,14 @@ body {
 body {
   background: var(--color-scrim);
   color: var(--color-on-ground);
-  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-family: var(--font-text), system-ui, sans-serif;
+  font-weight: var(--text-body--font-weight);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Headings are the one place the heading face is used. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
 }

@@ -1,0 +1,34 @@
+/* The logo as the scroll builds it (components/WelcomeLogo.tsx, timeline in lib/intro-timeline.ts).
+   What is left here is the drawing itself: the piece loops inside it and the fill they share. Where
+   the logo sits, how big it is and how it travels to its corner are in app/welcome.css.
+   Colours are tokens only. */
+
+/* Inside the logo, lengths are its own viewBox units, so these px scale with the logo. */
+.intro-logo .blob-a,
+.intro-logo .blob-b { transform-box: fill-box; transform-origin: center; }
+.intro-logo .blob-a { animation: intro-drift-a 22s ease-in-out infinite alternate; }
+.intro-logo .blob-b { animation: intro-drift-b 28s ease-in-out infinite alternate; }
+@keyframes intro-drift-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(260px, 120px, 0) scale(1.12); }
+}
+@keyframes intro-drift-b {
+  from { transform: translate3d(0, 0, 0) scale(1.08); }
+  to { transform: translate3d(-300px, -100px, 0) scale(1); }
+}
+/* the drift waits while the pieces move (see lib/intro-timeline.ts) */
+.intro-live .blob-a,
+.intro-live .blob-b { animation-play-state: paused; }
+/* the swan's slow sway, around the water line */
+.intro-logo .sway { transform-box: view-box; transform-origin: 512px 323px; }
+.intro-logo .sway.swaying { animation: intro-sway 2.3s ease-in-out infinite alternate; }
+@keyframes intro-sway {
+  from { transform: rotate(-1.5deg); }
+  to { transform: rotate(1.5deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-logo .blob-a,
+  .intro-logo .blob-b,
+  .intro-logo .sway.swaying { animation: none; }
+}

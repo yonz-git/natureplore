@@ -166,7 +166,7 @@
 /* the sheet is a flex column, and a column with a ceiling squeezes its rows: nothing in it gives */
 .map-sheet > * { flex-shrink: 0; }
 
-.map-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
+.map-title { font-size: var(--text-h2); font-family: var(--text-h2--font-family); line-height: var(--text-h2--line-height); }
 .map-sub,
 .notmapped-note {
   margin: 0.5rem 0 0;
@@ -217,6 +217,7 @@
 .map-row-text { min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
 .map-row-name {
   font-size: var(--text-label);
+  font-family: var(--text-label--font-family);
   line-height: var(--text-label--line-height);
   font-weight: var(--text-label--font-weight);
 }
@@ -292,12 +293,13 @@
   border: 0;
   color: var(--color-on-ground);
   font-size: var(--text-label);
+  font-family: var(--text-label--font-family);
   font-weight: var(--text-label--font-weight);
   cursor: pointer;
 }
 .search-instead span { text-decoration: underline; text-underline-offset: 0.1875rem; }
 
-.search-title { margin-top: 0.5rem; font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
+.search-title { margin-top: 0.5rem; font-size: var(--text-h2); font-family: var(--text-h2--font-family); line-height: var(--text-h2--line-height); }
 .search-note {
   margin: 0.75rem 0 0;
   font-size: var(--text-body);
@@ -345,6 +347,7 @@
 .search-result-text { min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
 .search-result-name {
   font-size: var(--text-label);
+  font-family: var(--text-label--font-family);
   line-height: var(--text-label--line-height);
   font-weight: var(--text-label--font-weight);
 }
@@ -393,18 +396,19 @@
   border: 0.2px solid rgb(255 255 255 / 0.55);
   box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
   color: var(--color-on-ground);
-  font-size: var(--text-label-lg);
-  line-height: var(--text-label-lg--line-height);
-  font-weight: var(--text-label-lg--font-weight);
+  font-size: var(--text-button);
+  font-family: var(--text-button--font-family);
+  line-height: var(--text-button--line-height);
+  font-weight: var(--text-button--font-weight);
   cursor: pointer;
   transition: transform 160ms var(--ease-out);
 }
 .dialog-btn:active { transform: scale(0.97); }
 .dialog-btn.is-strong {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 50%, var(--color-primary-deep) 100%);
-  border: 0;
+  background: linear-gradient(135deg, var(--color-marker-label) 0%, var(--color-marker-label-deep) 100%);
+  border: 1px solid var(--color-marker);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
-  color: var(--color-on-primary);
+  color: var(--color-ground);
 }
 
 @keyframes dialog-in {

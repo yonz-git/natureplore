@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Natureplore Prototype Design System</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400&family=Jost:wght@300;400&display=swap">
 <style>
 :root{
   /* colors */
@@ -22,14 +22,16 @@
   /* alpha forms used on the photo */
   --soft:rgba(255,255,255,.8); --mute:rgba(255,255,255,.72); --line:rgba(255,255,255,.22);
   /* typography */
-  --font:'Space Grotesk','Helvetica Neue',Helvetica,Arial,sans-serif;
-  --type-display-desktop:300 72px/1.1 var(--font); --type-display:300 38px/1.12 var(--font);
-  --type-h1-desktop:300 44px/1.08 var(--font); --type-h1:300 34px/1.1 var(--font);
-  --type-h2:300 30px/1.12 var(--font); --type-h3:300 26px/1.15 var(--font);
-  --type-body-lg:400 18px/1.6 var(--font); --type-body:400 15px/1.6 var(--font);
-  --type-label-lg:500 16px/1.2 var(--font); --type-label:500 15px/1.3 var(--font);
-  --type-field:400 15px/1.3 var(--font); --type-chip:400 13px/1 var(--font);
-  --type-caption:400 13px/1.4 var(--font); --type-tab:500 11px/1.3 var(--font); --type-nav-desktop:300 14px/1 var(--font); --type-nav-desktop-active:500 14px/1 var(--font); --type-micro:400 10px/1.2 var(--font);
+  --font-heading:'Comfortaa','Trebuchet MS','Helvetica Neue',Arial,sans-serif;
+  --font-text:'Jost','Futura','Century Gothic','Helvetica Neue',Arial,sans-serif;
+  --font:var(--font-text);
+  --type-display-desktop:300 72px/1.8 var(--font-heading); --type-display:300 38px/1.12 var(--font-heading);
+  --type-h1-desktop:300 44px/1.08 var(--font-heading); --type-h1:300 34px/1.1 var(--font-heading);
+  --type-h2:300 30px/1.12 var(--font-heading); --type-h3:300 26px/1.15 var(--font-heading);
+  --type-body-lg:300 18px/1.6 var(--font); --type-body:300 15px/1.6 var(--font); --type-quote:300 16px/1.55 var(--font);
+  --type-button:400 16px/1.2 var(--font); --type-label-lg:400 16px/1.2 var(--font); --type-label:400 15px/1.3 var(--font);
+  --type-field:300 15px/1.3 var(--font); --type-chip:300 13px/1 var(--font);
+  --type-caption:300 13px/1.4 var(--font); --type-tab:400 11px/1.3 var(--font); --type-nav-desktop:300 14px/1 var(--font); --type-nav-desktop-active:400 14px/1 var(--font); --type-micro:300 10px/1.2 var(--font);
   /* rounded */
   --rounded-xs:2px; --rounded-sm:14px; --rounded-md:18px; --rounded-lg:25px; --rounded-xl:32px;
   --rounded-sheet:36px; --rounded-panel:40px; --rounded-hero:56px; --rounded-full:9999px;
@@ -41,6 +43,7 @@
   --glass-fill:linear-gradient(135deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.07) 100%),rgba(10,28,14,.3);
   --glass-frost:blur(26px) saturate(1.8);
   --primary-gradient:linear-gradient(135deg,var(--color-primary) 0%,var(--color-primary-mid) 50%,var(--color-primary-deep) 100%);
+  --action-gradient:linear-gradient(135deg,var(--color-marker-label) 0%,var(--color-marker-label-deep) 100%);
   --shadow-pin:inset 2px 2px 6px -3px rgba(255,255,255,.35),inset -2px -2px 6px -3px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.3),0 8px 22px rgba(0,0,0,.24);
   --shadow-pill:inset 4px 4px 10px -5px rgba(255,255,255,.35),inset -4px -4px 10px -5px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.3),0 14px 34px rgba(0,0,0,.32);
   --shadow-nav:inset 4px 4px 10px -5px rgba(255,255,255,.35),inset -4px -4px 10px -5px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.3),0 14px 34px rgba(0,0,0,.32);
@@ -49,14 +52,14 @@
   --shadow-inner:inset 2px 2px 6px -3px rgba(255,255,255,.35),inset -2px -2px 6px -3px rgba(0,0,0,.22);
 }
 *{box-sizing:border-box}
-body{margin:0;background:#f4f5f2;color:#1b211c;font:400 15px/1.6 var(--font)}
+body{margin:0;background:#f4f5f2;color:#1b211c;font:300 15px/1.6 var(--font)}
 .page{max-width:1120px;margin:0 auto;padding-inline:24px;padding-block:56px 96px}
-header h1{margin:0;font:300 44px/1.1 var(--font);letter-spacing:-.02em}
+header h1{margin:0;font:300 44px/1.1 var(--font-heading);letter-spacing:-.02em}
 header p{margin:12px 0 0;max-width:70ch;color:#4a554c}
 .note{margin-top:16px;font-size:13px;color:#4a554c}
 section{margin-top:72px}
-section>h2{margin:0 0 8px;font:500 13px/1.3 var(--font);color:#4a554c}
-section>h3{margin:0 0 28px;font:300 28px/1.2 var(--font);letter-spacing:-.02em}
+section>h2{margin:0 0 8px;font:400 13px/1.3 var(--font);color:#4a554c}
+section>h3{margin:0 0 28px;font:300 28px/1.2 var(--font-heading);letter-spacing:-.02em}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
 .sw{border:1px solid #dfe3dc;border-radius:16px;overflow:hidden;background:#fff}
 .sw .c{height:84px;display:flex;align-items:flex-end;padding:10px 12px;font-size:12px}
@@ -71,7 +74,7 @@ section>h3{margin:0 0 28px;font:300 28px/1.2 var(--font);letter-spacing:-.02em}
 .row{display:flex;flex-wrap:wrap;gap:24px;align-items:center}
 .col{display:flex;flex-direction:column;gap:14px}
 .cap{font:var(--type-caption);color:var(--soft);margin:0 0 12px}
-.lab{font:400 12px/1.3 var(--font);color:var(--soft);margin-top:8px;text-align:center}
+.lab{font:300 12px/1.3 var(--font);color:var(--soft);margin-top:8px;text-align:center}
 /* glass */
 .g{position:relative;background:var(--glass-fill);backdrop-filter:var(--glass-frost);-webkit-backdrop-filter:var(--glass-frost);border:0.2px solid rgba(255,255,255,.55);box-shadow:var(--shadow-pill);color:var(--color-on-ground)}
 .gi{position:relative;border:0.2px solid rgba(255,255,255,.55);box-shadow:var(--shadow-inner);color:var(--color-on-ground)}
@@ -79,9 +82,9 @@ section>h3{margin:0 0 28px;font:300 28px/1.2 var(--font);letter-spacing:-.02em}
 .press{transition:transform 160ms ease-out}.press:active{transform:scale(.97)}
 button{font-family:var(--font);cursor:pointer}
 :focus-visible{outline:2px solid #fff;outline-offset:3px}
-.btn{height:50px;padding:0 24px;border-radius:var(--rounded-lg);display:inline-flex;align-items:center;justify-content:center;gap:10px;font:var(--type-label-lg);min-width:240px}
-.btn-primary{border:0;background:var(--primary-gradient);color:var(--color-on-primary);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 10px 30px rgba(0,0,0,.25)}
-.btn-primary.is-pressed{background:var(--color-primary-deep);transform:scale(.97)}
+.btn{height:50px;padding:0 24px;border-radius:var(--rounded-lg);display:inline-flex;align-items:center;justify-content:center;gap:10px;font:var(--type-button);min-width:240px}
+.btn-primary{border:1px solid var(--color-marker);background:var(--action-gradient);color:var(--color-ground);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 10px 30px rgba(0,0,0,.25)}
+.btn-primary.is-pressed{background:var(--color-marker-label-deep);transform:scale(.97)}
 .btn-outline{background:transparent}
 .field{height:50px;padding:0 22px;border-radius:var(--rounded-lg);display:flex;align-items:center;gap:12px;font:var(--type-field);width:320px}
 .field.is-focused{border-color:rgba(255,255,255,.9)}
@@ -91,11 +94,11 @@ button{font-family:var(--font);cursor:pointer}
 .chip.is-on::before{display:none}
 .round{width:50px;height:50px;border-radius:var(--rounded-full);display:inline-flex;align-items:center;justify-content:center;padding:0}
 .round.is-on{border:0;background:var(--primary-gradient)}.round.is-on::before{display:none}
-.pin{width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:400 14px/1 var(--font);background:var(--glass-fill);backdrop-filter:blur(18px) saturate(1.8);-webkit-backdrop-filter:blur(18px) saturate(1.8);box-shadow:var(--shadow-pin);padding:0}
+.pin{width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:300 14px/1 var(--font);background:var(--glass-fill);backdrop-filter:blur(18px) saturate(1.8);-webkit-backdrop-filter:blur(18px) saturate(1.8);box-shadow:var(--shadow-pin);padding:0}
 .you{width:22px;height:22px;border-radius:50%;background:var(--color-marker);border:4px solid #fff;box-shadow:0 0 0 1px var(--color-marker),0 0 0 10px rgba(255,255,255,.25)}
-.tag{padding:5px 12px;border-radius:var(--rounded-sm);font:500 12px/1.3 var(--font)}
+.tag{padding:5px 12px;border-radius:var(--rounded-sm);font:400 12px/1.3 var(--font)}
 .tabbar{width:358px;height:68px;padding:5px;border-radius:34px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;box-shadow:var(--shadow-nav)}
-.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:400 11px/1.3 var(--font);color:var(--mute)}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:300 11px/1.3 var(--font);color:var(--mute)}
 .tab.is-active{font-weight:500;color:#fff}
 .sheet{width:390px;padding:12px var(--inset-screen) 40px;border-radius:var(--rounded-sheet) var(--rounded-sheet) 0 0;border:0;border-top:0.2px solid rgba(255,255,255,.55);box-shadow:var(--shadow-sheet)}
 .handle{width:40px;height:4px;margin:0 auto 26px;border-radius:var(--rounded-xs);background:rgba(255,255,255,.5)}
@@ -109,7 +112,7 @@ button{font-family:var(--font);cursor:pointer}
 .dialog .o{height:52px;display:flex;align-items:center;justify-content:center;border-top:1px solid var(--line);font-size:17px}
 .dd{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
 .dd>div{background:#fff;border:1px solid #dfe3dc;border-radius:20px;padding:24px 28px}
-.dd h4{margin:0 0 12px;font:500 16px/1.3 var(--font)}.dd ul{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.dd h4{margin:0 0 12px;font:400 16px/1.3 var(--font)}.dd ul{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:12px}
 .dd li{padding-left:28px;position:relative;font-size:14px;line-height:1.5}.dd li::before{position:absolute;left:0;top:0;font-weight:500}
 .do li::before{content:'\2713';color:#3d6b3f}.dont li::before{content:'\2717';color:#9a3b32}
 .rad{display:flex;flex-wrap:wrap;gap:20px}.rad div{width:120px;height:88px;background:#fff;border:1px solid #cfd5cc;display:flex;align-items:flex-end;padding:10px;font-size:12px;color:#4a554c}
@@ -132,7 +135,8 @@ svg{display:block;flex-shrink:0}
 <div class="sw"><div class="c" style="background:var(--color-primary);color:var(--color-on-primary)">Text on primary</div><div class="m"><b>primary</b><span>#5A7C58</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-primary-mid);color:var(--color-on-primary)">Text on primary</div><div class="m"><b>primary-mid</b><span>#4E6E4D</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-primary-deep);color:var(--color-on-primary)">Text on primary</div><div class="m"><b>primary-deep</b><span>#425F42, pressed</span></div></div>
-<div class="sw"><div class="c" style="background:var(--primary-gradient);color:var(--color-on-primary)">Primary gradient, 135 degrees</div><div class="m"><b>button and selected chip fill</b><span>primary, mid, deep</span></div></div>
+<div class="sw"><div class="c" style="background:var(--primary-gradient);color:var(--color-on-primary)">Primary gradient, 135 degrees</div><div class="m"><b>selected chip, toggle and control fill</b><span>primary, mid, deep</span></div></div>
+<div class="sw"><div class="c" style="background:var(--action-gradient);color:var(--color-ground);border:1px solid var(--color-marker)">Action gradient, 135 degrees</div><div class="m"><b>primary button fill</b><span>marker-label to deep, marker edge</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-ground);color:var(--color-on-ground)">on-ground #FFFFFF</div><div class="m"><b>ground</b><span>#14261A, behind the photo</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-ground);color:var(--color-on-ground-soft)">on-ground-soft</div><div class="m"><b>on-ground-soft</b><span>#D0D4D1, white at 80%</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-ground);color:var(--color-on-ground-mute)">on-ground-mute</div><div class="m"><b>on-ground-mute</b><span>#A9B0A9, white at 60 to 72%, inactive tabs 65%</span></div></div>
@@ -141,7 +145,7 @@ svg{display:block;flex-shrink:0}
 <div class="sw"><div class="c" style="background:var(--color-accent-tint);color:#14261A">accent-tint</div><div class="m"><b>accent-tint</b><span>#B9D6B1, heading gradient end</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-accent-tint-soft);color:#14261A">accent-tint-soft</div><div class="m"><b>accent-tint-soft</b><span>#DCEBD7, gradient fallback</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-marker);color:var(--color-on-ground)">marker</div><div class="m"><b>marker</b><span>#2F4A30, the You are here dot</span></div></div>
-<div class="sw"><div class="c" style="background:linear-gradient(135deg,var(--color-marker-label) 0%,var(--color-marker-label-deep) 100%);color:var(--color-ground)">marker-label</div><div class="m"><b>marker-label</b><span>#AEB779 to #9DA56D, the You are here tag</span></div></div>
+<div class="sw"><div class="c" style="background:linear-gradient(135deg,var(--color-marker-label) 0%,var(--color-marker-label-deep) 100%);color:var(--color-ground)">marker-label</div><div class="m"><b>marker-label</b><span>#AEB779 to #9DA56D, the tag and the primary button</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-map-water);color:#14261A">map-water</div><div class="m"><b>map-water</b><span>#C8E8F0 at 40%</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-basemap-land);color:var(--color-basemap-label)">basemap-land</div><div class="m"><b>basemap-land</b><span>#1B2521, the map surface</span></div></div>
 <div class="sw"><div class="c" style="background:var(--color-basemap-wood);color:var(--color-basemap-label-nature)">basemap-wood</div><div class="m"><b>basemap-wood</b><span>#213027, forest and reserve</span></div></div>
@@ -168,24 +172,26 @@ svg{display:block;flex-shrink:0}
 </section>
 
 <section>
-<h2>Typography</h2><h3>Space Grotesk, light for headings, never heavier than 500</h3>
-<div class="spec"><div class="k"><b>display-desktop</b>300, 72px / 1.1, -0.025em</div><div style="font:var(--type-display-desktop);letter-spacing:-.025em">Places near you.</div></div>
+<h2>Typography</h2><h3>Comfortaa on headings, Jost everywhere else, two weights only, 300 and 400</h3>
+<div class="spec"><div class="k"><b>display-desktop</b>300, 72px / 1.8, -0.025em</div><div style="font:var(--type-display-desktop);letter-spacing:-.025em">Places near you.</div></div>
 <div class="spec"><div class="k"><b>display</b>300, 38px / 1.12, -0.02em</div><div style="font:var(--type-display);letter-spacing:-.02em">What lives there.</div></div>
 <div class="spec"><div class="k"><b>h1-desktop</b>300, 44px / 1.08, -0.02em</div><div style="font:var(--type-h1-desktop);letter-spacing:-.02em">See what lives around you</div></div>
 <div class="spec"><div class="k"><b>h1</b>300, 34px / 1.1, -0.02em</div><div style="font:var(--type-h1);letter-spacing:-.02em">See what lives around you</div></div>
 <div class="spec"><div class="k"><b>h2</b>300, 30px / 1.12, -0.02em</div><div style="font:var(--type-h2);letter-spacing:-.02em">New Brandenburg isn&#8217;t mapped yet</div></div>
 <div class="spec"><div class="k"><b>h3</b>300, 26px / 1.15, -0.02em</div><div style="font:var(--type-h3);letter-spacing:-.02em">Recorded places near you</div></div>
-<div class="spec"><div class="k"><b>body-lg</b>400, 18px / 1.6</div><div style="font:var(--type-body-lg)">A map of wild places in Berlin and Brandenburg, the species recorded there by season, and ways to protect them.</div></div>
-<div class="spec"><div class="k"><b>body</b>400, 15px / 1.6</div><div style="font:var(--type-body)">No places are recorded here, so the map stays empty rather than guessing.</div></div>
-<div class="spec"><div class="k"><b>label-lg</b>500, 16px / 1.2</div><div style="font:var(--type-label-lg)">Use my location</div></div>
-<div class="spec"><div class="k"><b>label</b>500, 15px / 1.3</div><div style="font:var(--type-label)">Tempelhofer Feld</div></div>
-<div class="spec"><div class="k"><b>field</b>400, 15px / 1.3</div><div style="font:var(--type-field)">Search places or species</div></div>
-<div class="spec"><div class="k"><b>chip</b>400, 13px / 1</div><div style="font:var(--type-chip)">Mushrooms</div></div>
-<div class="spec"><div class="k"><b>caption</b>400, 13px / 1.4</div><div style="font:var(--type-caption)">Location stays on this device. No account needed.</div></div>
-<div class="spec"><div class="k"><b>tab</b>500, 11px / 1.3</div><div style="font:var(--type-tab)">Map</div></div>
+<div class="spec"><div class="k"><b>body-lg</b>300, 18px / 1.6</div><div style="font:var(--type-body-lg)">A map of wild places in Berlin and Brandenburg, the species recorded there by season, and ways to protect them.</div></div>
+<div class="spec"><div class="k"><b>body</b>300, 15px / 1.6</div><div style="font:var(--type-body)">No places are recorded here, so the map stays empty rather than guessing.</div></div>
+<div class="spec"><div class="k"><b>quote</b>300, 16px / 1.55</div><div style="font:var(--type-quote)">&#8220;The meadow has lost about 40% of its area to drainage since 1990.&#8221;</div></div>
+<div class="spec"><div class="k"><b>button</b>400, 16px / 1.2</div><div style="font:var(--type-button)">Use my location</div></div>
+<div class="spec"><div class="k"><b>label-lg</b>400, 16px / 1.2</div><div style="font:var(--type-label-lg)">Save this spot</div></div>
+<div class="spec"><div class="k"><b>label</b>400, 15px / 1.3</div><div style="font:var(--type-label)">Tempelhofer Feld</div></div>
+<div class="spec"><div class="k"><b>field</b>300, 15px / 1.3</div><div style="font:var(--type-field)">Search places or species</div></div>
+<div class="spec"><div class="k"><b>chip</b>300, 13px / 1</div><div style="font:var(--type-chip)">Mushrooms</div></div>
+<div class="spec"><div class="k"><b>caption</b>300, 13px / 1.4</div><div style="font:var(--type-caption)">Location stays on this device. No account needed.</div></div>
+<div class="spec"><div class="k"><b>tab</b>400, 11px / 1.3</div><div style="font:var(--type-tab)">Map</div></div>
 <div class="spec"><div class="k"><b>nav-desktop</b>300, 14px / 1, -0.02em</div><div style="font:var(--type-nav-desktop);letter-spacing:-.02em">Map &#183; Learn &#183; Notebook</div></div>
-<div class="spec"><div class="k"><b>nav-desktop-active</b>500, 14px / 1, -0.02em</div><div style="font:var(--type-nav-desktop-active);letter-spacing:-.02em">Map</div></div>
-<div class="spec"><div class="k"><b>micro</b>400, 10px / 1.2</div><div style="font:var(--type-micro)">photo</div></div>
+<div class="spec"><div class="k"><b>nav-desktop-active</b>400, 14px / 1, -0.02em</div><div style="font:var(--type-nav-desktop-active);letter-spacing:-.02em">Map</div></div>
+<div class="spec"><div class="k"><b>micro</b>300, 10px / 1.2</div><div style="font:var(--type-micro)">photo</div></div>
 </section>
 
 <section>
@@ -260,8 +266,8 @@ svg{display:block;flex-shrink:0}
 <div><p class="cap">card, dialog</p>
 <div class="row" style="align-items:flex-start">
 <div class="card g"><div style="font:var(--type-caption);color:var(--soft)">Places</div><div style="margin-top:8px;border-top:1px solid var(--line)">
-<div style="min-height:76px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line)"><span class="gi" style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12)"></span><span class="t" style="display:flex;flex-direction:column;gap:4px"><b style="font:500 16px/1.3 var(--font)">Brandenburg</b><span style="font:var(--type-caption);color:var(--soft)">Region, Germany, 212 places mapped</span></span></div>
-<div style="min-height:76px;display:flex;align-items:center;gap:14px;color:rgba(255,255,255,.6)"><span class="gi" style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12)"></span><span style="display:flex;flex-direction:column;gap:4px"><b style="font:500 16px/1.3 var(--font)">New Brandenburg</b><span style="font:var(--type-caption)">Kentucky, USA, not mapped yet</span></span></div>
+<div style="min-height:76px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line)"><span class="gi" style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12)"></span><span class="t" style="display:flex;flex-direction:column;gap:4px"><b style="font:400 16px/1.3 var(--font)">Brandenburg</b><span style="font:var(--type-caption);color:var(--soft)">Region, Germany, 212 places mapped</span></span></div>
+<div style="min-height:76px;display:flex;align-items:center;gap:14px;color:rgba(255,255,255,.6)"><span class="gi" style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12)"></span><span style="display:flex;flex-direction:column;gap:4px"><b style="font:400 16px/1.3 var(--font)">New Brandenburg</b><span style="font:var(--type-caption)">Kentucky, USA, not mapped yet</span></span></div>
 </div></div>
 <div class="dialog g"><div class="b"><b>Allow Natureplore to use your location?</b><span>Shows recorded places near you. Only used on this device.</span></div><div class="o">Allow once</div><div class="o" style="font-weight:600">Allow while using app</div><div class="o">Don&#8217;t allow</div></div>
 </div></div>

@@ -51,6 +51,7 @@
     flex-direction: row;
     gap: 0.5rem;
     font-size: var(--text-nav-desktop);
+    font-family: var(--text-nav-desktop--font-family);
     line-height: var(--text-nav-desktop--line-height);
     font-weight: var(--text-nav-desktop--font-weight);
     letter-spacing: var(--text-nav-desktop--letter-spacing);

@@ -124,7 +124,7 @@
   border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
 }
 .a1-handle { width: 2.5rem; height: 0.25rem; margin: 0 auto 1.75rem; border-radius: var(--radius-xs); background: rgb(255 255 255 / 0.5); }
-.a1-title { margin: 0; font-size: var(--text-h1); line-height: var(--text-h1--line-height); font-weight: var(--text-h1--font-weight); letter-spacing: var(--text-h1--letter-spacing); }
+.a1-title { margin: 0; font-size: var(--text-h1); font-family: var(--text-h1--font-family); line-height: var(--text-h1--line-height); font-weight: var(--text-h1--font-weight); letter-spacing: var(--text-h1--letter-spacing); }
 .a1-title em { font-style: normal; background-image: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-accent-tint) 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
 .a1-actions { margin-top: var(--spacing-8); display: flex; flex-direction: column; gap: 0.875rem; }
@@ -156,15 +156,17 @@
   justify-content: center;
   gap: 0.625rem;
   border-radius: var(--radius-lg);
-  font-size: var(--text-label-lg); line-height: var(--text-label-lg--line-height); font-weight: var(--text-label-lg--font-weight);
+  font-size: var(--text-button); line-height: var(--text-button--line-height); font-weight: var(--text-button--font-weight);
+  font-family: var(--text-button--font-family);
   text-decoration: none;
   transition: transform 160ms ease-out;
 }
 .a1-btn:active { transform: scale(0.97); }
 .a1-btn-primary {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 50%, var(--color-primary-deep) 100%);
+  background: linear-gradient(135deg, var(--color-marker-label) 0%, var(--color-marker-label-deep) 100%);
+  border: 1px solid var(--color-marker);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
-  color: var(--color-on-primary);
+  color: var(--color-ground);
 }
 .a1-btn-outline {
   background: transparent;
