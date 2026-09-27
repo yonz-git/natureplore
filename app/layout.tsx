@@ -1,9 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Comfortaa, Jost } from "next/font/google";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const jost = Jost({
+  variable: "--font-jost",
+  subsets: ["latin"],
+});
+
+const comfortaa = Comfortaa({
+  variable: "--font-comfortaa",
   subsets: ["latin"],
 });
 
@@ -19,7 +24,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} h-full`}>
+    <html lang="en" className={`${jost.variable} ${comfortaa.variable} h-full`}>
       <body className="min-h-full">{children}</body>
     </html>
   );

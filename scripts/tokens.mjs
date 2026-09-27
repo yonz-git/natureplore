@@ -14,8 +14,16 @@ const push = (name, value) => lines.push(`  ${name}: ${value};`);
 
 for (const [k, v] of Object.entries(d.colors ?? {})) push(`--color-${k}`, v);
 lines.push('');
+for (const [k, v] of Object.entries(d.fonts ?? {})) push(`--font-${k}`, v);
+const familyVar = (name) =>
+  Object.keys(d.fonts ?? {}).find((k) => (d.fonts[k] ?? '').includes(`'${name}'`));
+lines.push('');
 for (const [k, t] of Object.entries(d.typography ?? {})) {
   push(`--text-${k}`, t.fontSize);
+  if (t.fontFamily != null) {
+    const v = familyVar(t.fontFamily);
+    push(`--text-${k}--font-family`, v ? `var(--font-${v})` : t.fontFamily);
+  }
   if (t.lineHeight != null) push(`--text-${k}--line-height`, t.lineHeight);
   if (t.fontWeight != null) push(`--text-${k}--font-weight`, t.fontWeight);
   if (t.letterSpacing != null) push(`--text-${k}--letter-spacing`, t.letterSpacing);
@@ -31,4 +39,4 @@ ${lines.join('\n')}
 }
 `;
 writeFileSync(OUT, css);
-console.log(`tokens.css written: ${Object.keys(d.colors ?? {}).length} colours, ${Object.keys(d.typography ?? {}).length} type styles`);
+console.log(`tokens.css written: ${Object.keys(d.colors ?? {}).length} colours, ${Object.keys(d.fonts ?? {}).length} typefaces, ${Object.keys(d.typography ?? {}).length} type styles`);

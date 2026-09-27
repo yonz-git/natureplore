@@ -12,6 +12,9 @@
 
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  /* for something already on screen moving from A to B, like the logo flying into the welcome's
+     corner. Not --ease-in-out, that name is Tailwind's own and is used by the ease-in-out utility */
+  --ease-move: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 /* the map screen in layers: the map settles first, the pins follow, the sheet rises into place */
