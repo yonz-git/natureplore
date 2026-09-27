@@ -5,6 +5,8 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 
+import { warpText } from "@/lib/text-warp";
+
 gsap.registerPlugin(SplitText);
 
 // The line the welcome opens on. Each letter swings up from its bottom left corner, one after
@@ -25,6 +27,20 @@ export default function WelcomeHero({ text }: { text: string }) {
         gsap.from(split.chars, { opacity: 0, duration: 0.4, stagger: 0.01 });
         return;
       }
+      // once the letters have landed, the line is handed to the warp under the mouse (lib/text-warp.ts):
+      // mouse and pen only
+      const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+      let warp: ReturnType<typeof warpText> = null;
+      let gone = false;
+      const hand = async () => {
+        await document.fonts.ready;
+        if (gone || !fine) return;
+        const chars = split.chars as HTMLElement[];
+        warp = warpText(el, chars);
+        if (!warp) return;
+        gsap.set(chars, { visibility: "hidden" });
+        gsap.ticker.add(warp.frame);
+      };
       gsap.from(split.chars, {
         rotationZ: -90,
         transformOrigin: "bottom left",
@@ -32,7 +48,15 @@ export default function WelcomeHero({ text }: { text: string }) {
         stagger: 0.06,
         duration: 0.5,
         ease: "power3.out",
+        onComplete: () => void hand(),
       });
+      return () => {
+        gone = true;
+        if (warp) {
+          gsap.ticker.remove(warp.frame);
+          warp.stop();
+        }
+      };
     },
     { scope: line },
   );

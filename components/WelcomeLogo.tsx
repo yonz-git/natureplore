@@ -39,6 +39,7 @@ export default function WelcomeLogo() {
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
 
+    gsap.set(el, { xPercent: -50, yPercent: -50 }); // centred on the point app/welcome.css puts it at
     const stage = el.closest(".a0s");
     let travel: gsap.core.Timeline | undefined;
     // once it has all played out the page keeps it: scrolling back up then changes nothing
@@ -47,17 +48,26 @@ export default function WelcomeLogo() {
     // letter and is gone, and the symbol alone shrinks into the corner. The whole drawing is still
     // what moves, since by then there is nothing left of it but the symbol; what is worked out here
     // is where the drawing has to go for the SYMBOL to land in the corner slot.
-    const fly = () => {
-      const letters = el.querySelectorAll(".wordmark > *");
+    // where the drawing has to go, from where it stands untransformed, for the symbol to sit in the slot
+    const corner = () => {
       const box = el.getBoundingClientRect();
       const to = target.getBoundingClientRect();
-      const sym = box.width
-        ? {
-            cx: box.left + ((SYM.x + SYM.w / 2) / LOGO.w) * box.width,
-            cy: box.top + ((SYM.y + SYM.h / 2) / LOGO.h) * box.height,
-            width: (SYM.w / LOGO.w) * box.width,
-          }
-        : null;
+      const width = (SYM.w / LOGO.w) * box.width;
+      if (!width || !to.width) return null;
+      const cx = box.left + ((SYM.x + SYM.w / 2) / LOGO.w) * box.width;
+      const cy = box.top + ((SYM.y + SYM.h / 2) / LOGO.h) * box.height;
+      const scale = to.width / width;
+      // where a point of the drawing ends up once the drawing is scaled about its own centre
+      const under = (of: number, point: number) => of + (point - of) * scale;
+      return {
+        x: to.left + to.width / 2 - under(box.left + box.width / 2, cx),
+        y: to.top + to.height / 2 - under(box.top + box.height / 2, cy),
+        scale,
+      };
+    };
+    const fly = () => {
+      const letters = el.querySelectorAll(".wordmark > *");
+      const landing = corner();
       const open = () => {
         done = true;
         // the scroll has done its work: the page stops being a scroller and is A0-2 alone, so there
@@ -65,10 +75,7 @@ export default function WelcomeLogo() {
         stage?.classList.add("a0-open", "a0-done");
         scrollTo(0, 0);
       };
-      if (!sym?.width || !to.width) return open();
-      const scale = to.width / sym.width;
-      // where a point of the drawing ends up once the drawing is scaled about its own centre
-      const under = (of: number, point: number) => of + (point - of) * scale;
+      if (!landing) return open();
       travel = gsap
         .timeline({ onComplete: open })
         .to(
@@ -88,9 +95,7 @@ export default function WelcomeLogo() {
         .to(
           el,
           {
-            x: to.left + to.width / 2 - under(box.left + box.width / 2, sym.cx),
-            y: to.top + to.height / 2 - under(box.top + box.height / 2, sym.cy),
-            scale,
+            ...landing,
             duration: TRAVEL,
             ease: "power3.inOut",
           },
@@ -133,7 +138,18 @@ export default function WelcomeLogo() {
       }
     });
 
+    // the landing is in pixels from the middle of the page, so a window that changes size once it has
+    // landed has to have it worked out again
+    const resize = () => {
+      if (!done) return;
+      gsap.set(el, { x: 0, y: 0, scale: 1 });
+      const landing = corner();
+      if (landing) gsap.set(el, landing);
+    };
+    addEventListener("resize", resize);
+
     return () => {
+      removeEventListener("resize", resize);
       unfollow();
       travel?.kill();
       intro.revert();

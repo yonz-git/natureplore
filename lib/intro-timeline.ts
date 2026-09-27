@@ -3,8 +3,9 @@
 // so the motion scales with the logo.
 //
 // Beats: the mushroom is taken over from the welcome's cue at 1.2s, where it already stands
-// (components/WelcomeCue.tsx), the plant grows from 0.4s and hops down beside it, in two hops, by
-// 2.5s, the mushroom jumps into its place at 2.8s, the bird circles in from 0.6s and lands at 5.6s
+// (components/WelcomeCue.tsx) pops in below the logo and jumps once, to wait under the symbol, at 1.65s, the plant grows from 0.4s and hops down
+// beside it, in two hops, by 2.7s, the mushroom then jumps twice back, at 3.0s and 3.7s, and lands in its
+// place on the plant, the bird circles in from 0.6s and lands at 5.6s
 // over the two of them, and the symbol pulses
 // at 5.65s. "nature" starts as the plant lands: the swan rises at 3.2s, "a" and "t" wipe on from
 // 4.1s, the snake slithers in at 4.5s, the squirrel runs in at 4.45s. "plore" rises at 5.9s.
@@ -23,7 +24,12 @@ gsap.registerPlugin(MotionPathPlugin);
 // photograph fades off it and the green field takes over; once the squirrel has landed the logo is
 // free to leave for the welcome's own corner.
 const MUSH_IN = 1.2; // the mushroom the cue sent over is taken up here, first of the three
-const MUSH_JUMP = 2.8; // and once the plant has landed beside it, it jumps into its place
+const MUSH_HELLO = 1.65; // it jumps once, to where it waits for the plant
+// logo units from its place: it pops in below and right of the logo, and waits below the symbol
+export const MUSH_POP = { x: 463, y: 578 }; // components/WelcomeCue.tsx sends its mushroom here
+const MUSH_WAIT = { x: 165, y: 440 };
+const MUSH_JUMPS = [3.0, 3.7]; // and once the plant has landed, twice more into its place on it
+const PLANT_HOPS = 1.5; // the plant's first hop, so its second lands (2.7s) between the two
 const WARM = 5.1;
 const OPEN = 6.0;
 const FLY = 8.0;
@@ -91,7 +97,7 @@ export function playIntro(root: HTMLElement, beats: IntroBeats, paused = false) 
     gsap.set(wr, { transformOrigin: "0% 50%", scaleX: 0 });
 
     gsap.set(bird, { opacity: 0, x: BIRD[0].x, y: BIRD[0].y, rotation: -12 });
-    gsap.set(mush, { opacity: 0, scale: 0, x: 0, y: 0 });
+    gsap.set(mush, { opacity: 0, scale: 0, ...MUSH_POP });
     gsap.set(plant, { x: -975, y: 940, scale: 0.35 });
     gsap.set([pBl, pBr, pMid, pTop], { scale: 0.05, opacity: 0 });
     gsap.set(swan, { y: 330, opacity: 0 });
@@ -106,19 +112,30 @@ export function playIntro(root: HTMLElement, beats: IntroBeats, paused = false) 
 
     // mushroom: the welcome's own mushroom has walked here under the scroll
     // (components/WelcomeCue.tsx) and is standing in this spot. This one takes over from it first of
-    // the three, waits while the plant hops down beside it, jumps into its own place, and only then
-    // does the bird come in over them.
+    // the three, below the logo, jumps once to wait under the symbol while the plant hops down, jumps twice back
+    // and lands on the plant, and only then does the bird come in over them.
     tl.to(mush, { opacity: 1, duration: 0.12, ease: "sine.out" }, MUSH_IN);
-    tl.to(mush, { scale: 1, duration: 0.7, ease: "back.out(2.4)" }, MUSH_IN);
-    // the jump, once the plant is down: crouch, up, land, and a wobble to settle
-    tl.to(mush, { scaleX: 1.16, scaleY: 0.84, duration: 0.12, ease: "power1.out" }, MUSH_JUMP);
-    tl.to(mush, { scaleX: 0.92, scaleY: 1.12, duration: 0.1, ease: "power1.out" }, MUSH_JUMP + 0.12);
-    tl.to(mush, { y: -120, duration: 0.26, ease: "power2.out" }, MUSH_JUMP + 0.12);
-    tl.to(mush, { rotation: -9, duration: 0.38, ease: "sine.inOut" }, MUSH_JUMP + 0.12);
-    tl.to(mush, { y: 0, duration: 0.28, ease: "power2.in" }, MUSH_JUMP + 0.38);
-    tl.to(mush, { scaleX: 1.2, scaleY: 0.8, duration: 0.08, ease: "power1.in" }, MUSH_JUMP + 0.58);
-    tl.to(mush, { scaleX: 1, scaleY: 1, duration: 0.5, ease: "elastic.out(1, 0.45)" }, MUSH_JUMP + 0.66);
-    tl.to(mush, { rotation: 0, duration: 0.5, ease: "elastic.out(1, 0.4)" }, MUSH_JUMP + 0.66);
+    tl.to(mush, { scale: 1, duration: 0.45, ease: "back.out(2.4)" }, MUSH_IN);
+    // one jump to (x, y): crouch, up and across, land, and a wobble to settle
+    let from = MUSH_POP;
+    const jump = (at: number, to: { x: number; y: number }, rise: number, tilt: number) => {
+      const apex = Math.min(from.y, to.y) - rise;
+      from = to;
+      tl.to(mush, { x: to.x, duration: 0.54, ease: "none" }, at + 0.12);
+      tl.to(mush, { scaleX: 1.16, scaleY: 0.84, duration: 0.12, ease: "power1.out" }, at);
+      tl.to(mush, { scaleX: 0.92, scaleY: 1.12, duration: 0.1, ease: "power1.out" }, at + 0.12);
+      tl.to(mush, { y: apex, duration: 0.26, ease: "power2.out" }, at + 0.12);
+      tl.to(mush, { rotation: tilt, duration: 0.38, ease: "sine.inOut" }, at + 0.12);
+      tl.to(mush, { y: to.y, duration: 0.28, ease: "power2.in" }, at + 0.38);
+      tl.to(mush, { scaleX: 1.2, scaleY: 0.8, duration: 0.08, ease: "power1.in" }, at + 0.58);
+      tl.to(mush, { scaleX: 1, scaleY: 1, duration: 0.5, ease: "elastic.out(1, 0.45)" }, at + 0.66);
+      tl.to(mush, { rotation: 0, duration: 0.5, ease: "elastic.out(1, 0.4)" }, at + 0.66);
+    };
+    // pops in below the logo, jumps once to wait under the symbol while the plant hops down, then
+    // twice up onto the plant
+    jump(MUSH_HELLO, MUSH_WAIT, 90, -8);
+    jump(MUSH_JUMPS[0], { x: MUSH_WAIT.x / 2, y: MUSH_WAIT.y / 2 }, 100, -8);
+    jump(MUSH_JUMPS[1], { x: 0, y: 0 }, 130, -10);
 
     // plant: bottom pair first, then middle, then top, small, then two hops to its place
     tl.to([pBl, pBr], { opacity: 1, duration: 0.15 }, 0.4);
@@ -128,7 +145,7 @@ export function playIntro(root: HTMLElement, beats: IntroBeats, paused = false) 
     tl.to(pTop, { opacity: 1, duration: 0.15 }, 1.05);
     tl.to(pTop, { scale: 1, duration: 0.9, ease: "back.out(1.6)" }, 1.05);
     const L = [[-975, 940, 0.35], [-490, 470, 0.66], [0, 0, 1]];
-    let t0 = 1.1;
+    let t0 = PLANT_HOPS;
     for (let h = 0; h < L.length - 1; h++) {
       const a = L[h], b = L[h + 1], apex = (a[1] + b[1]) / 2 - 320, s = b[2];
       tl.to(plant, { scaleX: a[2] * 0.9, scaleY: a[2] * 1.12, duration: 0.12, ease: "power1.out" }, t0);

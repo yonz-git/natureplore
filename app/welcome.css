@@ -93,7 +93,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 22.3125rem;
+  width: 15rem;
   aspect-ratio: 1;
   overflow: hidden;
   opacity: 0;
@@ -102,7 +102,7 @@
   transition: opacity 400ms ease;
   will-change: transform;
 }
-.a0-reveal[data-on] { opacity: 0.55; }
+.a0-reveal[data-on] { opacity: 0.35; }
 .a0-reveal-photo {
   position: absolute;
   left: 0;
@@ -257,8 +257,8 @@
     top: 50%;
     width: var(--a0-w);
     height: var(--a0-h);
-    translate: calc(var(--a0-cx) * -1) calc(var(--a0-cy) * -1);
-    transform-origin: var(--a0-cx) var(--a0-cy);
+    /* placed and counter-scaled around the centre by components/WelcomeScroll.tsx alone: a CSS
+       translate here was added on top of it and slid the photograph off the right of the screen */
   }
   .a0s :is(.a0-lens, .a02-photo, .a0-orb) { will-change: transform; }
   .a0s :is(.a0-lens, .a0-orb) { visibility: hidden; } /* until WelcomeScroll places them */
@@ -278,7 +278,8 @@
     left: 50%;
     height: auto;
     width: var(--a0-mark-w);
-    translate: -50% -50%;
+    /* centred on that point by components/WelcomeLogo.tsx (xPercent, yPercent): GSAP takes a CSS
+       translate into its own x and y the first time it moves the logo, which threw the landing off */
     font-size: calc(var(--a0-mark-w) / 35.34);
   }
   .a0s .a0-mark .intro-logo {

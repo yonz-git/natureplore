@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 
+import { MUSH_POP } from "@/lib/intro-timeline";
 import { followProgress } from "@/lib/welcome-progress";
 
 gsap.registerPlugin(SplitText);
@@ -61,15 +62,16 @@ export default function WelcomeCue({ text }: { text: string }) {
         // only its head comes up: the ground line is the box, and this leaves the stem under it
         .to(cap, { yPercent: 57, duration: 0.5, ease: "back.out(2)", yoyo: true, repeat: 1 }, 0.18);
 
-      // where it is going: the mushroom's place in the logo, worked out from the logo's own box
+      // where it is going: the spot below the logo where the logo's own mushroom pops in, worked out
+      // from the logo's own box
       const journey = () => {
         const mark = document.querySelector(".a0-mark");
         const from = sprout.getBoundingClientRect();
         const box = mark?.getBoundingClientRect();
         if (!box?.width || !from.width) return null;
         return {
-          x: box.left + ((MUSH.x + MUSH.w / 2) / LOGO.w) * box.width - (from.left + from.width / 2),
-          y: box.top + ((MUSH.y + MUSH.h / 2) / LOGO.h) * box.height - (from.top + from.height / 2),
+          x: box.left + ((MUSH.x + MUSH_POP.x + MUSH.w / 2) / LOGO.w) * box.width - (from.left + from.width / 2),
+          y: box.top + ((MUSH.y + MUSH_POP.y + MUSH.h / 2) / LOGO.h) * box.height - (from.top + from.height / 2),
           scale: ((MUSH.w / LOGO.w) * box.width) / from.width,
         };
       };
