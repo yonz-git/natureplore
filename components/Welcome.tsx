@@ -1,25 +1,25 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
-import RegionMap from "@/components/RegionMap";
 import WelcomeCue from "@/components/WelcomeCue";
 import WelcomeEther from "@/components/WelcomeEther";
 import WelcomeHero from "@/components/WelcomeHero";
 import WelcomeLogo from "@/components/WelcomeLogo";
 import WelcomeReveal from "@/components/WelcomeReveal";
+import WelcomeRoute from "@/components/WelcomeRoute";
 import WelcomeScroll from "@/components/WelcomeScroll";
 import WelcomeZoom from "@/components/WelcomeZoom";
 
-// A0 · Welcome and A0-2 · Welcome as one page. It opens as A0: the green field and one line,
-// "Natureplore all around,", blurring in word by word in the middle of the screen, no logo. Scrolling
-// takes that line away as the forest photograph opens in a growing circle with a glowing rim, builds
-// the logo piece by piece in the middle and sends it to the top left corner
-// (components/WelcomeLogo.tsx), and only then brings in A0-2: the statements, the nav, the green
-// action, and the map card last. The card holds the same map as the Map tab,
-// fitted to the region and fixed: it is a picture of where you are going, not a control.
-// With `still` it is A0-2 alone, nothing moves.
-// Layout: app/welcome2.css. Field, intro and scroll choreography: app/welcome.css, fed by
+// The opening, then A0 · Welcome, as one page. It opens on the green field and one line,
+// "Natureplore all around", in the middle of the screen, no logo. Scrolling takes that line away as
+// the forest photograph opens in a growing circle with a glowing rim, builds the logo piece by piece
+// in the middle and sends the symbol to the top left corner (components/WelcomeLogo.tsx), and only
+// then brings in A0: the heading, the line and the green action, the nav, and the route drawn across
+// the photograph with the four things the map holds (components/WelcomeRoute.tsx).
+// With `still` it is A0 alone, nothing moves.
+// Layout: app/welcome2.css. Field, opening and scroll choreography: app/welcome.css, fed by
 // components/WelcomeScroll.tsx. Glass: app/glass.css.
-// Boards: "A0 · Welcome, version 4 (animated)" and "A0-2 · Welcome, version 6", phone and desktop.
+// Boards: "A0 · Welcome, version 4 (animated)" for the opening, "A0 · Welcome" and
+// "A0 · Welcome, desktop" on the redesign canvas for the page it lands on.
 
 const TABS = [
   {
@@ -55,31 +55,10 @@ const TABS = [
   },
 ];
 
-// one span per word, so the words can come in one after another across the lines
-function Words({ text, first, tint }: { text: string; first: number; tint?: boolean }) {
-  return text.split(" ").map((w, i) => (
-    <span key={i}>
-      {i > 0 && " "}
-      <span
-        className="a0-w"
-        style={{
-          animationDelay: `${300 + (first + i) * 85}ms`,
-          // the last statement runs from white to the accent tint, word by word
-          color: tint
-            ? `color-mix(in srgb, var(--color-group-plants) ${(first + i - 8) * 20}%, var(--color-on-ground))`
-            : undefined,
-        }}
-      >
-        {w}
-      </span>
-    </span>
-  ));
-}
-
 export default function Welcome({ still = false }: { still?: boolean }) {
   return (
     <div className={still ? undefined : "a0s"}>
-      <div className="a02" data-screen={still ? "A0-2 · Welcome" : "A0 · Welcome, A0-2 · Welcome"}>
+      <div className="a02" data-screen={still ? "A0 · Welcome" : "Opening, A0 · Welcome"}>
         {!still && (
           <div className="a0-field" aria-hidden="true">
             <div className="a0-blob a0-blob-1" />
@@ -105,7 +84,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
           </div>
         </div>
         {!still && <div className="a0-orb" aria-hidden="true" />}
-        {/* the logo: built by the scroll on A0, already in its corner on A0-2 */}
+        {/* the logo: built by the scroll, already in its corner when the page is still */}
         {still ? (
           <div className="a0-mark-corner">
             <Logo symbol />
@@ -123,12 +102,12 @@ export default function Welcome({ still = false }: { still?: boolean }) {
               className="a02-tab"
             >
               <svg
-                width="20"
-                height="20"
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.4"
+                strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 aria-hidden="true"
@@ -143,34 +122,19 @@ export default function Welcome({ still = false }: { still?: boolean }) {
         {/* what the page opens on, alone in the middle of the screen until the scroll takes it away */}
         {!still && <WelcomeHero text="Natureplore all around" />}
 
+        <WelcomeRoute />
+
         <main className="a02-main">
-          <h1 className="a02-h1" aria-label="Natureplore all around, what nests and grows there and what is happening to them.">
-            <span className="a0-l1" aria-hidden="true">
-              <Words text="Natureplore all around," first={0} />
-            </span>
-            <span className="a0-l2" aria-hidden="true">
-              <Words text="what nests and grows there" first={3} />
-            </span>
-            {/* "to them." sits on a second row in A0-2 and at the end of the row in A0 on desktop.
-                The hidden copy keeps the row as wide as the whole sentence. */}
-            <span className="a0-l3" aria-hidden="true">
-              <span className="a0-l3a">
-                <Words text="and what is happening" first={8} tint />
-                <span className="a0-l3b">
-                  <Words text="to them." first={12} tint />
-                </span>
-              </span>
-              <span className="a0-ghost"> to them.</span>
-            </span>
+          <h1 className="a02-h1">
+            Explore <br className="a02-br" />
+            <span className="a02-close">all the corners of nature</span>
           </h1>
+          <p className="a02-lead">What nests and grows there, and what is happening to them.</p>
           <Link href="/map" className="a02-cta">
-            Go to map
+            <span className="a02-cta-phone">Go to map</span>
+            <span className="a02-cta-desk">See the map</span>
           </Link>
         </main>
-
-        <div className="a02-card glass glass-card" aria-hidden="true">
-          <RegionMap className="a02-map" still />
-        </div>
 
         {!still && <WelcomeCue text="Scroll" />}
         <WelcomeZoom />

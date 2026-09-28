@@ -1,7 +1,7 @@
-/* A0 · Welcome, and the scroll from it into A0-2 · Welcome (components/Welcome.tsx).
-   The page is laid out as A0-2 (app/welcome2.css). This file adds the green field, the intro
+/* The opening, and the scroll from it into A0 · Welcome (components/Welcome.tsx).
+   The page is laid out as A0 (app/welcome2.css). This file adds the green field, the intro
    (words blur in one by one, two rules wipe in) and the scroll choreography: every A0 position
-   is the "from" of an animation scrubbed by the scroll, so at the end of the scroll nothing is left but A0-2.
+   is the "from" of an animation scrubbed by the scroll, so at the end of the scroll nothing is left but A0.
    Colours are tokens only. */
 
 @keyframes a0-word {
@@ -127,7 +127,7 @@
   mix-blend-mode: soft-light;
 }
 
-/* The logo. Without the scroll choreography it is simply in its corner, the place A0-2 keeps it and
+/* The logo. Without the scroll choreography it is simply in its corner, the place A0 keeps it and
    the box components/WelcomeLogo.tsx sends it to; the scroll media query below puts it in the middle
    of the page instead and hands it to the scroll. The corner mirrors the nav opposite it: on desktop
    it takes the nav pill's box, 3.5rem tall from 1.75rem, with the logo centred in it. */
@@ -180,7 +180,7 @@
 .a0-mush svg { display: block; width: 100%; height: auto; }
 
 /* The one line the page opens on, in the middle of the screen. It belongs to the scroll opening only:
-   without it the page is A0-2, which has the whole sentence in its own place. */
+   without it the page is A0, which has the whole sentence in its own place. */
 .a0-hero { display: none; }
 
 /* the opening, once on load: the line writes itself letter by letter
@@ -191,7 +191,7 @@
    scroll progress from 0 to 1, eased so the page glides after the scroll instead of stepping with it.
    Every animation here is paused and one second long, and its delay places it: an element with
    --a0-s 0.06 and --a0-e 0.55 plays its second between 6% and 55% of the scroll.
-   A person who asked for reduced motion, or a browser without scripting, gets A0-2 as a still page. */
+   A person who asked for reduced motion, or a browser without scripting, gets A0 as a still page. */
 @property --a0-p { syntax: "<number>"; inherits: false; initial-value: 0; }
 
 @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
@@ -199,11 +199,11 @@
      there on its own clock (components/WelcomeLogo.tsx). The page is this tall so that the circle
      opens over a long scroll rather than a flick of the wheel. */
   .a0s { height: 350vh; }
-  /* Once it has all played, the page is A0-2 and nothing else: no scroller, nothing above it to go
+  /* Once it has all played, the page is A0 and nothing else: no scroller, nothing above it to go
      back to (components/WelcomeLogo.tsx sets a0-done on the frame the logo lands). Everything the
      scroll was driving is put in its finished state here, because the scroll position itself is gone:
      the field and the opening line have been left behind, and the photograph is simply the
-     background, the same as A0-2 has it (app/welcome2.css). */
+     background, the same as A0 has it (app/welcome2.css). */
   .a0s.a0-done { height: auto; }
   .a0s.a0-done .a02 { position: relative; }
   .a0s.a0-done :is(.a0-field, .a0-ether, .a0-orb, .a0-hero, .a0-cue, .a0-mush) { display: none; }
@@ -295,15 +295,17 @@
   .a0s .a0-cue { animation-name: a0s-leave; --a0-s: 0; --a0-e: 0.08; }
   .a0s .a0-hero { animation-name: a0s-leave; --a0-s: 0.04; --a0-e: 0.25; }
 
-  /* A0-2 arrives on the frame the logo lands in its corner, one layer after another, the map last
-     and only fading (components/WelcomeLogo.tsx sets a0-open) */
-  .a0s :is(.a02-h1, .a02-nav, .a02-cta, .a02-card) { opacity: 0; }
-  .a0s.a0-open :is(.a02-h1, .a02-nav, .a02-cta, .a02-card) {
+  /* A0 arrives on the frame the logo lands in its corner, one layer after another, and the route
+     draws itself over the photograph (components/WelcomeLogo.tsx sets a0-open, and
+     components/WelcomeRoute.tsx draws the route when it sees it) */
+  .a0s :is(.a02-h1, .a02-lead, .a02-nav, .a02-cta) { opacity: 0; }
+  .a0s .a02-route { visibility: hidden; }
+  .a0s.a0-open :is(.a02-h1, .a02-lead, .a02-nav, .a02-cta) {
     animation: a0-arrive 800ms var(--a0-ease) both;
   }
-  .a0s.a0-open .a02-nav { animation-delay: 120ms; }
+  .a0s.a0-open .a02-lead { animation-delay: 120ms; }
+  .a0s.a0-open .a02-nav { animation-delay: 180ms; }
   .a0s.a0-open .a02-cta { animation-delay: 240ms; }
-  .a0s.a0-open .a02-card { animation: fade-in 900ms var(--a0-ease) 360ms both; }
 
   /* the opening line, centred on the screen, in the display face */
   .a0s .a0-hero {
@@ -354,12 +356,12 @@
 }
 
 @media (min-width: 64rem) {
-  /* the corner mirrors the nav opposite it: the nav pill's box, with the logo centred in it */
+  /* the corner lines up with the nav: the symbol centred on the nav pill's height, as on the board */
   .a0-mark,
   .a0-mark-corner {
-    top: calc(1.75rem + (3.5rem - 2.34rem) / 2);
+    top: calc(2rem + (3.625rem - 2.125rem) / 2);
     left: 2.5rem;
-    height: 2.34rem;
+    height: 2.125rem;
   }
   .a0-blob-1 { left: -18%; top: -20%; width: 68%; }
   .a0-blob-2 { left: 25%; top: -29%; width: 69%; aspect-ratio: 1.22; }
