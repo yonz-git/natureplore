@@ -10,8 +10,8 @@
     overflow-y: auto;
     width: clamp(20rem, 30vw, 27.5rem);
     padding: 2.25rem 2.25rem 2rem;
-    border: 0.2px solid rgb(255 255 255 / 0.55);
-    border-radius: var(--radius-panel);
+    border: 0.5px solid var(--color-glass-edge);
+    border-radius: var(--radius-card);
   }
   .a1-handle { display: none; }
   /* the h1 token is fluid already, so the panel only gives it room */
@@ -25,5 +25,5 @@
   .a1-pin { width: 3.25rem; height: 3.25rem; font-size: 0.9375rem; }
   /* one place is a smaller mark than a cluster of them, at every size */
   .a1-pin-place { width: 2.75rem; height: 2.75rem; }
-  .a1-credit { left: auto; right: var(--spacing-inset-float); top: auto; bottom: 1rem; }
+  .a1-credit { left: auto; right: var(--spacing-inset-screen); top: auto; bottom: 1rem; }
 }

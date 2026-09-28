@@ -80,9 +80,9 @@
     closest-side,
     transparent 50%,
     color-mix(in srgb, var(--color-field-glow) 35%, transparent) 70%,
-    color-mix(in srgb, var(--color-accent-tint) 60%, transparent) 77.5%,
-    color-mix(in srgb, var(--color-accent-tint-soft) 85%, transparent) 80%,
-    color-mix(in srgb, var(--color-accent-tint) 40%, transparent) 82.5%,
+    color-mix(in srgb, var(--color-group-plants) 60%, transparent) 77.5%,
+    color-mix(in srgb, var(--color-mist) 85%, transparent) 80%,
+    color-mix(in srgb, var(--color-group-plants) 40%, transparent) 82.5%,
     color-mix(in srgb, var(--color-field-glow) 22%, transparent) 90%,
     transparent 100%
   );
@@ -331,7 +331,7 @@
 
   @media (min-width: 64rem) {
     .a0s {
-      --a0-inset: clamp(3rem, 6.67vw, var(--spacing-inset-desktop));
+      --a0-inset: clamp(3rem, 6.67vw, var(--spacing-screen-desktop));
       --a0-gap: clamp(2.25rem, 5vw, 4.5rem);
       --a0-drift-x: 5.625rem;
       --a0-drift-y: 3.125rem;

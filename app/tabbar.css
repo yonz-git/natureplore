@@ -13,7 +13,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.25rem;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill);
   list-style: none;
   margin: 0;
 }
@@ -24,7 +24,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.125rem;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill);
   color: rgb(255 255 255 / 0.65);
   font-size: var(--text-tab);
   line-height: var(--text-tab--line-height);
@@ -50,11 +50,11 @@
     padding: 0 1.25rem;
     flex-direction: row;
     gap: 0.5rem;
-    font-size: var(--text-nav-desktop);
-    font-family: var(--text-nav-desktop--font-family);
-    line-height: var(--text-nav-desktop--line-height);
-    font-weight: var(--text-nav-desktop--font-weight);
-    letter-spacing: var(--text-nav-desktop--letter-spacing);
+    font-size: var(--text-chip);
+    font-family: var(--text-chip--font-family);
+    line-height: var(--text-chip--line-height);
+    font-weight: var(--text-chip--font-weight);
+    letter-spacing: var(--text-chip--letter-spacing);
   }
-  .tabbar-tab.is-current { font-weight: var(--text-nav-desktop-active--font-weight); }
+  .tabbar-tab.is-current { font-weight: var(--text-chip-active--font-weight); }
 }

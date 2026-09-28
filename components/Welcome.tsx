@@ -66,7 +66,7 @@ function Words({ text, first, tint }: { text: string; first: number; tint?: bool
           animationDelay: `${300 + (first + i) * 85}ms`,
           // the last statement runs from white to the accent tint, word by word
           color: tint
-            ? `color-mix(in srgb, var(--color-accent-tint) ${(first + i - 8) * 20}%, var(--color-on-ground))`
+            ? `color-mix(in srgb, var(--color-group-plants) ${(first + i - 8) * 20}%, var(--color-on-ground))`
             : undefined,
         }}
       >

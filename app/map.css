@@ -19,7 +19,7 @@
 .map-top {
   position: absolute;
   top: var(--top-chrome);
-  left: var(--spacing-inset-float);
+  left: var(--spacing-inset-screen);
   right: 0;
   z-index: 2;
   display: flex;
@@ -61,7 +61,7 @@
   flex-shrink: 0;
   height: 2.25rem;
   padding: 0 0.75rem;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill);
   color: var(--color-on-ground);
   font-size: var(--text-chip);
   line-height: var(--text-chip--line-height);
@@ -74,16 +74,18 @@
 .map-chip:active { transform: scale(0.97); }
 /* the chip you are on is the solid green control, so it has no rim of its own */
 .map-chip.is-on {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 50%, var(--color-primary-deep) 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
   border: 0;
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
+  color: var(--color-on-primary);
+  font-weight: var(--text-chip-active--font-weight);
 }
 /* inside the sheet the glass is already behind it, so a season chip is a tint, not a pane */
 .map-chip.is-quiet {
   height: 2rem;
   padding: 0 0.875rem;
   background: rgb(255 255 255 / 0.12);
-  border: 0.2px solid rgb(255 255 255 / 0.55);
+  border: 0.5px solid var(--color-glass-edge);
   box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
 }
 .map-chip.is-quiet::before { inset: -0.375rem 0; }
@@ -98,7 +100,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill);
   font-size: var(--text-caption);
   line-height: 1;
 }
@@ -115,7 +117,7 @@
 }
 
 /* A6 has no map and no controls over it, so the field takes the whole width */
-.notmapped-screen .map-top { right: var(--spacing-inset-float); }
+.notmapped-screen .map-top { right: var(--spacing-inset-screen); }
 .notmapped-screen .map-top .map-search { margin-right: 0; }
 
 /* ── the map's own controls, in the corner the sheet never reaches ────────────────────────── */
@@ -123,7 +125,7 @@
 .map-tools {
   position: absolute;
   top: var(--top-chrome);
-  right: var(--spacing-inset-float);
+  right: var(--spacing-inset-screen);
   z-index: 3;
   display: flex;
   flex-direction: column;
@@ -136,7 +138,7 @@
   display: flex;
   align-items: center;
   gap: 0.375rem;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill);
   color: var(--color-on-ground);
   font-size: var(--text-caption);
   line-height: 1;
@@ -149,9 +151,11 @@
 .map-tool-label { display: none; }
 .map-tool.is-round { width: 2.75rem; height: 2.75rem; padding: 0; justify-content: center; }
 .map-tool.is-on {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-mid) 50%, var(--color-primary-deep) 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
   border: 0;
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
+  color: var(--color-on-primary);
+  font-weight: var(--text-chip-active--font-weight);
 }
 /* the control that recentres the map belongs to the map, so it sits down in it, clear of the bar */
 .map-tool.is-round { margin-top: 7.125rem; }
@@ -207,19 +211,19 @@
   flex-shrink: 0;
   width: 3.5rem;
   height: 3.5rem;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-tile);
   overflow: hidden;
   background: rgb(255 255 255 / 0.12);
-  border: 0.2px solid rgb(255 255 255 / 0.55);
+  border: 0.5px solid var(--color-glass-edge);
   box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
 }
 .map-row-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .map-row-text { min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
 .map-row-name {
-  font-size: var(--text-label);
-  font-family: var(--text-label--font-family);
-  line-height: var(--text-label--line-height);
-  font-weight: var(--text-label--font-weight);
+  font-size: var(--text-title-sm);
+  font-family: var(--text-title-sm--font-family);
+  line-height: var(--text-title-sm--line-height);
+  font-weight: var(--text-title-sm--font-weight);
 }
 .map-row-meta,
 .map-row-notable {
@@ -240,7 +244,7 @@
   justify-content: center;
   background: none;
   border: 0;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill);
   color: var(--color-on-ground);
   cursor: pointer;
   transition: transform 160ms var(--ease-out);
@@ -272,7 +276,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill);
   color: var(--color-on-ground);
   text-decoration: none;
   transition: transform 160ms var(--ease-out);
@@ -292,9 +296,9 @@
   background: none;
   border: 0;
   color: var(--color-on-ground);
-  font-size: var(--text-label);
-  font-family: var(--text-label--font-family);
-  font-weight: var(--text-label--font-weight);
+  font-size: var(--text-chip);
+  font-family: var(--text-chip--font-family);
+  font-weight: var(--text-chip--font-weight);
   cursor: pointer;
 }
 .search-instead span { text-decoration: underline; text-underline-offset: 0.1875rem; }
@@ -310,7 +314,7 @@
 .search-results {
   margin-top: 1rem;
   padding: 1.25rem 1.5rem 0.5rem;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-card);
 }
 .search-results-label {
   margin: 0;
@@ -331,7 +335,7 @@
 }
 .search-results li:last-child .search-result { border-bottom: 0; }
 /* a place with nothing recorded is still worth reaching, and says so before it is opened */
-.search-result.is-empty { color: var(--color-on-ground-mute); }
+.search-result.is-empty { color: var(--color-on-ground-soft); }
 .search-result-mark {
   flex-shrink: 0;
   width: 2.75rem;
@@ -339,17 +343,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill);
   background: rgb(255 255 255 / 0.12);
-  border: 0.2px solid rgb(255 255 255 / 0.55);
+  border: 0.5px solid var(--color-glass-edge);
   box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
 }
 .search-result-text { min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
 .search-result-name {
-  font-size: var(--text-label);
-  font-family: var(--text-label--font-family);
-  line-height: var(--text-label--line-height);
-  font-weight: var(--text-label--font-weight);
+  font-size: var(--text-title-sm);
+  font-family: var(--text-title-sm--font-family);
+  line-height: var(--text-title-sm--line-height);
+  font-weight: var(--text-title-sm--font-weight);
 }
 .search-result-meta { font-size: var(--text-caption); line-height: 1.35; color: inherit; opacity: 0.8; }
 
@@ -373,11 +377,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
-  border-radius: var(--radius-sheet);
+  border-radius: var(--radius-card);
   /* the sheet comes up from the edge it is attached to, and leaves the same way */
   animation: dialog-in 280ms var(--ease-out) both;
 }
-.dialog-title { margin: 0; font-size: var(--text-body-lg); line-height: 1.35; font-weight: 500; }
+.dialog-title { margin: 0; font-size: var(--text-title); line-height: 1.35; font-weight: 500; }
 .dialog-note {
   margin: 0;
   font-size: var(--text-caption);
@@ -391,9 +395,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-pill);
   background: rgb(255 255 255 / 0.12);
-  border: 0.2px solid rgb(255 255 255 / 0.55);
+  border: 0.5px solid var(--color-glass-edge);
   box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
   color: var(--color-on-ground);
   font-size: var(--text-button);
@@ -405,7 +409,7 @@
 }
 .dialog-btn:active { transform: scale(0.97); }
 .dialog-btn.is-strong {
-  background: linear-gradient(135deg, var(--color-marker-label) 0%, var(--color-marker-label-deep) 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
   border: 1px solid var(--color-marker);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
   color: var(--color-ground);
@@ -443,8 +447,8 @@
     width: var(--panel-w);
     padding: var(--panel-pad) var(--panel-pad) 2rem;
     overflow-y: auto;
-    border: 0.2px solid rgb(255 255 255 / 0.55);
-    border-radius: var(--radius-panel);
+    border: 0.5px solid var(--color-glass-edge);
+    border-radius: var(--radius-card);
   }
   /* the panel is the glass here, so the search screen stops being a plain column */
   .search-panel {
@@ -507,7 +511,7 @@
     inset: 50% auto auto 50%;
     width: min(23.75rem, calc(100vw - 3rem));
     padding: 1.75rem;
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-card);
     transform: translate(-50%, -50%);
     animation: dialog-pop 240ms var(--ease-out) both;
   }

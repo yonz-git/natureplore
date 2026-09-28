@@ -26,7 +26,7 @@ const HOPS = 3; // arcs it makes on the way over
 const RISE = 90; // px, how high the first arc takes it
 const HANDOVER = 0.9; // seconds after the logo starts, when its own mushroom pops into the same place
 const GROUND = "#FAFBF5"; // --color-on-field, the cue's own colour
-const LOGO_INK = "#AEB779"; // --color-marker-label, what the logo is drawn in
+const LOGO_INK = "#AEB779"; // --color-primary, what the logo is drawn in
 
 // the mushroom's own corner of the logo, in the logo's viewBox units
 const MUSH = { x: 112, y: 147, w: 60, h: 59 };

@@ -219,8 +219,10 @@ spacing:
   control-stack: 0.75rem
   card-gap: 1.5rem
   bar-clearance: 2.5rem
+  tabbar-clearance: 7.375rem
   screen-phone: 1rem
   screen-tablet: 2rem
+  inset-screen: "clamp(1rem, 0.1216rem + 3.6036vw, 2rem)"
   screen-desktop: 7.5rem
   chrome-desktop: 2.5rem
   content-max: 75rem
@@ -434,7 +436,7 @@ Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet
 
 Tokens are in rem so screens follow the reader's font size; the numbers in this prose are pixels at the default 16px root. Everything sits on a 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 80, 120. Element gaps are 16 to 24, card padding 32, and page sections on desktop are 80 to 120 apart with content capped at 1200. Two tighter rules come from the boards: a control stack (search bar over a chip, button or segment) is 12, and a stack of cards on tablet is 24.
 
-Screen margins are 16 on phone, 32 on tablet, 40 for desktop chrome (logo and nav) and 120 for the desktop welcome's main block. Margins are equal left and right: a column is pinned to both sides, never left to size itself. Scrolling content ends 40 above the tab bar or bottom bar. The tab bar floats 8 from the bottom on phone and 28 on tablet; the tablet bottom bar also sits 28 up.
+Screen margins are 16 on phone, 32 on tablet, 40 for desktop chrome (logo and nav) and 120 for the desktop welcome's main block. Margins are equal left and right: a column is pinned to both sides, never left to size itself. Between the two, `inset-screen` runs from 16 at 390 wide to 32 at 834, so one inset serves every phone and tablet. Scrolling content ends 40 above the tab bar or bottom bar, which on phone makes `tabbar-clearance` 118: the 8 float, the 70 bar and the 40 gap. The tab bar floats 8 from the bottom on phone and 28 on tablet; the tablet bottom bar also sits 28 up.
 
 Chip rows scroll sideways and bleed to the screen edge through negative margins equal to the container padding. A row inside a flex column never shrinks: it keeps its own height.
 

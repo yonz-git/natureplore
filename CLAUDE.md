@@ -25,9 +25,10 @@ Run the `/impeccable` skill for design work, and keep these whatever the task is
 
 - **Glass.** Every frosted surface is `.glass` plus one tier (`glass-pin`,
   `glass-pill`, `glass-nav`, `glass-card`, `glass-top` for sheets). The recipe
-  lives in `app/glass.css` and mirrors `docs/design.md`: one fill, one
-  hairline rim of `0.2px` white 55%, a specular pair inside the corners, blur 18
-  on pins and chips, 26 on controls and bars, 30 on cards, panels and sheets.
+  lives in `app/glass.css` and mirrors `docs/design.md`: blur 30, a white wash
+  over `glass-fill`, a 0.5px edge, a 1px inner top highlight, a scrim shadow and
+  a faint 0.5px rim of light on `::after`. Glass inside glass becomes inner
+  glass automatically (no second blur); `glass-inner` does the same by hand.
 - **Never hand-write `-webkit-backdrop-filter`.** The build adds prefixes. Written
   next to the standard property it makes the build keep only the prefixed one,
   which Chrome ignores, and every frosted surface silently goes flat.
@@ -71,9 +72,11 @@ Run the `/impeccable` skill for design work, and keep these whatever the task is
   `0.2px` rims and `1px` rules, which have to stay one line whatever the zoom.
   Values live in `docs/design.md` and are generated, so change them there
   and run `npm run tokens`.
-- **Fluid before breakpoints.** A screen has to hold at any width, not at three
-  of them: `clamp()` on type and page margins, proportions and `min()` on
-  widths, and a breakpoint only where the layout truly changes shape, at 64rem.
+- **One value per size, fluid only in between.** Type and spacing tokens hold
+  one value per size class, as on the boards, and switch with responsive
+  variants. Page insets are the fluid part (`inset-screen` runs 16 to 32), with
+  proportions and `min()` on widths, and a breakpoint only where the layout
+  truly changes shape, at 64rem.
 - **Every screen has both sizes.** Phone first, then the desktop layout from
   1024px that follows the matching desktop board.
 - **A change to one element is a change to all of them.** The same control,

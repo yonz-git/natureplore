@@ -23,7 +23,7 @@
   /* The two families from docs/design.md, with the copies Next self-hosts in front of them.
      The stacks themselves stay in tokens.css so the system reads the same outside this app. */
   --font-heading: var(--font-comfortaa), "Comfortaa", "Trebuchet MS", sans-serif;
-  --font-text: var(--font-jost), "Jost", "Futura", "Century Gothic", sans-serif;
+  --font-text: var(--font-alpino), "Alpino", "Futura", "Century Gothic", sans-serif;
 }
 
 html,

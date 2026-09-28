@@ -1,10 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Comfortaa, Jost } from "next/font/google";
+import { Comfortaa } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const jost = Jost({
-  variable: "--font-jost",
-  subsets: ["latin"],
+// Alpino is a Fontshare face, not on Google Fonts, so Next self-hosts the three weights from app/fonts.
+const alpino = localFont({
+  variable: "--font-alpino",
+  src: [
+    { path: "./fonts/alpino-300.woff2", weight: "300", style: "normal" },
+    { path: "./fonts/alpino-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/alpino-500.woff2", weight: "500", style: "normal" },
+  ],
 });
 
 const comfortaa = Comfortaa({
@@ -24,7 +30,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${jost.variable} ${comfortaa.variable} h-full`}>
+    <html lang="en" className={`${alpino.variable} ${comfortaa.variable} h-full`}>
       <body className="min-h-full">{children}</body>
     </html>
   );
