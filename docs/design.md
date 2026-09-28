@@ -155,7 +155,7 @@ typography:
     fontWeight: 500
     lineHeight: 1
     letterSpacing: 0.01em
-  button-quiet:
+  button-secondary:
     fontFamily: Alpino
     fontSize: 0.9375rem
     fontWeight: 400
@@ -241,13 +241,20 @@ components:
     rounded: "{rounded.button}"
     height: 3.375rem
     padding: 0 1.75rem
-  button-quiet:
+  button-secondary:
     backgroundColor: "{colors.inner-fill}"
     textColor: "{colors.on-ground}"
-    typography: "{typography.button-quiet}"
+    typography: "{typography.button-secondary}"
     rounded: "{rounded.button}"
     height: 3.375rem
     padding: 0 1.75rem
+  button-secondary-chevron:
+    backgroundColor: "{colors.inner-fill}"
+    textColor: "{colors.on-ground}"
+    typography: "{typography.button-secondary}"
+    rounded: "{rounded.button}"
+    height: 3.375rem
+    padding: 0 1.375rem 0 1.75rem
   field-search:
     backgroundColor: "{colors.glass-fill}"
     textColor: "{colors.on-ground}"
@@ -456,7 +463,7 @@ The search field is a full pill. That overrides the earlier "inputs 8" line in t
 
 ## Components
 
-`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. It stretches full width on phone and hugs its label on tablet and desktop. Pressed, it scales to 0.97 over 160ms. `button-quiet` is inner glass with a white `button-quiet` label, for secondary actions like "See all" and "Show all".
+`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule: full width on phone, hugging their label at the start of their column on tablet and desktop. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in Alpino 400 15, the same 54 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so `button-secondary-chevron` takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
 
 `field-search` is a 52 glass pill with a 19px icon, 12 gap and 20 side padding; a clear button keeps a 44 target. `control-round` is a 52 glass circle (back, locate, saved); on a photograph it becomes `control-on-photo`, 44, with a darker fill (forest at 45%, 20px blur) and a white 22% edge. `chip` is 40 for standalone chips and section jumps, `chip-sm` 36 inside a sheet; `chip-active` takes the lime. `segment` is a 48 glass pill with 4 padding holding two options; the active one is lime.
 

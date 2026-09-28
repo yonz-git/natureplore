@@ -41,7 +41,7 @@
   --type-title:400 1.0625rem/1.375rem var(--font-text); --type-title-sm:400 1rem/1.375rem var(--font-text);
   --type-meta:400 0.875rem/1.25rem var(--font-text); --type-label:400 0.8125rem/1.125rem var(--font-text);
   --type-field:300 1rem/1.3 var(--font-text);
-  --type-button:500 1rem/1 var(--font-text); --track-button:0.01em; --type-button-quiet:400 0.9375rem/1 var(--font-text);
+  --type-button:500 1rem/1 var(--font-text); --track-button:0.01em; --type-button-secondary:400 0.9375rem/1 var(--font-text);
   --type-chip:400 0.875rem/1 var(--font-text); --type-chip-active:500 0.875rem/1 var(--font-text);
   --type-pill:400 0.8125rem/1 var(--font-text); --type-pill-count:500 0.8125rem/1 var(--font-text);
   --type-stat-label:400 0.75rem/1 var(--font-text);
@@ -129,7 +129,8 @@ svg.i{display:block;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5
 .btn-primary{background:var(--lime);color:var(--color-on-primary);font:var(--type-button);letter-spacing:var(--track-button);box-shadow:inset 0 1px 0 rgb(255 255 255 / .35),0 14px 32px rgb(6 18 9 / .35)}
 .btn-primary.is-pressed{background:var(--color-primary-deep);transform:scale(0.97)}
 .btn-primary[aria-disabled=true]{opacity:.45;cursor:not-allowed}
-.btn-quiet{color:var(--color-on-ground);font:var(--type-button-quiet)}
+.btn-secondary{color:var(--color-on-ground);font:var(--type-button-secondary)}
+.btn-secondary.has-chevron{padding-right:1.375rem;gap:.625rem}
 .field{height:3.25rem;width:20rem;max-width:100%;padding:0 1.25rem;display:flex;align-items:center;gap:var(--space-3);border-radius:var(--rounded-pill)}
 .field input{flex:1;min-width:0;border:0;padding:0;background:transparent;color:var(--color-on-ground);font:var(--type-field);outline:none}
 .field input::placeholder{color:var(--color-on-ground-soft)}
@@ -298,7 +299,7 @@ svg.i{display:block;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5
   <div class="spec"><div><div class="k">title, title-sm</div><div class="v">Alpino 400, 17/22 and 16/22</div></div><div class="sample"><span style="font:var(--type-title)">The flooded ditch</span>&nbsp;&nbsp;<span style="font:var(--type-title-sm)">Brandenburg an der Havel</span></div></div>
   <div class="spec"><div><div class="k">meta, label</div><div class="v">Alpino 400, 14/20 and 13/18</div></div><div class="sample"><span style="font:var(--type-meta);color:var(--color-on-ground-soft)">19 recorded</span>&nbsp;&nbsp;<span style="font:var(--type-label);color:var(--color-on-ground-soft)">Regions</span></div></div>
   <div class="spec"><div><div class="k">field</div><div class="v">Alpino 300, 16/1.3</div></div><div class="sample" style="font:var(--type-field);color:var(--color-on-ground-soft)">Search a region or an organism</div></div>
-  <div class="spec"><div><div class="k">button, button-quiet</div><div class="v">Alpino 500 16, +1%; Alpino 400 15</div></div><div class="sample"><span style="font:var(--type-button);letter-spacing:var(--track-button)">Save this route</span>&nbsp;&nbsp;<span style="font:var(--type-button-quiet)">See all 138 records</span></div></div>
+  <div class="spec"><div><div class="k">button, button-secondary</div><div class="v">Alpino 500 16, +1%; Alpino 400 15</div></div><div class="sample"><span style="font:var(--type-button);letter-spacing:var(--track-button)">Save this route</span>&nbsp;&nbsp;<span style="font:var(--type-button-secondary)">See all 138 records</span></div></div>
   <div class="spec"><div><div class="k">chip, chip-active</div><div class="v">Alpino 400 and 500, 14</div></div><div class="sample"><span style="font:var(--type-chip)">Organisms</span>&nbsp;&nbsp;<span style="font:var(--type-chip-active)">Routes</span></div></div>
   <div class="spec"><div><div class="k">pill, pill-count, stat-label</div><div class="v">Alpino 400 13, 500 13, 400 12</div></div><div class="sample"><span style="font:var(--type-pill)">Sep to Oct</span>&nbsp;&nbsp;<span style="font:var(--type-pill-count)">24</span>&nbsp;&nbsp;<span style="font:var(--type-stat-label);color:var(--color-on-ground-soft)">Distance</span></div></div>
   <div class="spec"><div><div class="k">tab, tab-active</div><div class="v">Alpino 400 and 500, 12, +1%</div></div><div class="sample"><span style="font:var(--type-tab);letter-spacing:var(--track-tab);color:var(--color-on-ground-tab)">Learn</span>&nbsp;&nbsp;<span style="font:var(--type-tab-active);letter-spacing:var(--track-tab)">Map</span></div></div>
@@ -385,7 +386,8 @@ svg.i{display:block;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5
     <div class="item"><a href="#" class="btn btn-primary press"><svg class="i" width="19" height="19"><use href="#i-loc"/></svg>Use my location</a><span class="cap">button-primary, default</span></div>
     <div class="item"><a href="#" class="btn btn-primary is-pressed">Use my location</a><span class="cap">pressed: primary-deep, scale 0.97</span></div>
     <div class="item"><a href="#" class="btn btn-primary" aria-disabled="true">Save this route</a><span class="cap">disabled: 45% opacity</span></div>
-    <div class="item"><a href="#" class="btn btn-quiet inner press">See all 138 records</a><span class="cap">button-quiet, inner glass</span></div>
+    <div class="item"><a href="#" class="btn btn-secondary inner press">Browse Berlin and Brandenburg</a><span class="cap">button-secondary, inner glass, 28 each side</span></div>
+    <div class="item"><a href="#" class="btn btn-secondary has-chevron inner press">Show all 48 routes<svg class="i" width="18" height="18"><use href="#i-next"/></svg></a><span class="cap">with a chevron: 22 on the right, optically 28</span></div>
   </div></div>
 
   <h3 class="sub">Fields and round controls</h3>

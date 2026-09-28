@@ -133,10 +133,10 @@
   --text-button--line-height: 1;
   --text-button--font-weight: 500;
   --text-button--letter-spacing: 0.01em;
-  --text-button-quiet: 0.9375rem;
-  --text-button-quiet--font-family: var(--font-text);
-  --text-button-quiet--line-height: 1;
-  --text-button-quiet--font-weight: 400;
+  --text-button-secondary: 0.9375rem;
+  --text-button-secondary--font-family: var(--font-text);
+  --text-button-secondary--line-height: 1;
+  --text-button-secondary--font-weight: 400;
   --text-chip: 0.875rem;
   --text-chip--font-family: var(--font-text);
   --text-chip--line-height: 1;
