@@ -1,26 +1,35 @@
 ---
 version: alpha
-name: Natureplore Prototype
-description: Clear liquid glass over a living forest photograph, white type, one moss green for action, and generous spacing so every screen can breathe.
+name: Natureplore
+description: Delicate frosted glass over a darkened forest photograph, white type in light weights, one olive lime for the thing to do next, and room around every group.
 fonts:
   heading: "'Comfortaa', 'Trebuchet MS', 'Helvetica Neue', Arial, sans-serif"
-  text: "'Jost', 'Futura', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif"
+  text: "'Alpino', 'Futura', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif"
 colors:
   ground: "#14261A"
   scrim: "#061209"
   glass-solid: "#23402A"
-  primary: "#5A7C58"
-  primary-mid: "#4E6E4D"
-  primary-deep: "#425F42"
-  on-primary: "#FFFFFF"
+  glass-fill: "rgb(24 44 30 / 0.34)"
+  glass-edge: "rgb(255 255 255 / 0.16)"
+  inner-fill: "rgb(255 255 255 / 0.09)"
+  inner-edge: "rgb(255 255 255 / 0.14)"
+  pill-fill: "rgb(255 255 255 / 0.08)"
+  divider: "rgb(255 255 255 / 0.12)"
+  bar-rest: "rgb(255 255 255 / 0.3)"
+  primary: "#AEB779"
+  primary-deep: "#9DA56D"
+  on-primary: "#14261A"
   on-ground: "#FFFFFF"
-  on-ground-soft: "#D0D4D1"
-  on-ground-mute: "#A9B0A9"
-  accent-tint: "#B9D6B1"
-  accent-tint-soft: "#DCEBD7"
+  on-ground-soft: "rgb(255 255 255 / 0.78)"
+  on-ground-tab: "rgb(255 255 255 / 0.82)"
+  mist: "#DCEBD7"
+  group-plants: "#B9D6B1"
+  group-herbs: "#9DA56D"
+  group-mushrooms: "#C9A227"
+  group-birds: "#7FA8C9"
+  group-mammals: "#C58A6A"
   marker: "#2F4A30"
-  marker-label: "#AEB779"
-  marker-label-deep: "#9DA56D"
+  keyboard: "#08120A"
   map-road: "#FFFFFF"
   map-water: "#C8E8F0"
   basemap-land: "#1B2521"
@@ -37,7 +46,6 @@ colors:
   basemap-label-nature: "#9FB47E"
   basemap-label-water: "#7B9EA3"
   basemap-halo: "rgb(27 37 33 / 0.92)"
-  keyboard: "#08120A"
   field-light: "#668A64"
   field: "#547654"
   field-deep: "#33502F"
@@ -49,117 +57,153 @@ colors:
 typography:
   display-desktop:
     fontFamily: Comfortaa
-    fontSize: 4.5rem   # the ceiling of the fluid display below
+    fontSize: 3.5rem
     fontWeight: 300
-    lineHeight: 1.8
-    letterSpacing: -0.025em
+    lineHeight: 4rem
+    letterSpacing: -0.015em
   display:
     fontFamily: Comfortaa
-    fontSize: "clamp(2.375rem, 1.06rem + 5.6vw, 4.5rem)"
+    fontSize: 2.125rem
     fontWeight: 300
-    lineHeight: 1.12
-    letterSpacing: -0.02em
-  h1-desktop:
-    fontFamily: Comfortaa
-    fontSize: 2.75rem   # the ceiling of the fluid h1 below
-    fontWeight: 300
-    lineHeight: 1.08
-    letterSpacing: -0.02em
+    lineHeight: 2.625rem
+    letterSpacing: -0.01em
   h1:
     fontFamily: Comfortaa
-    fontSize: "clamp(2.125rem, 1.7rem + 1.8vw, 2.75rem)"
+    fontSize: 2rem
     fontWeight: 300
-    lineHeight: 1.1
-    letterSpacing: -0.02em
+    lineHeight: 2.5rem
+    letterSpacing: -0.01em
   h2:
     fontFamily: Comfortaa
-    fontSize: 1.875rem
+    fontSize: 1.5rem
     fontWeight: 300
-    lineHeight: 1.12
-    letterSpacing: -0.02em
+    lineHeight: 1.875rem
+    letterSpacing: -0.01em
   h3:
     fontFamily: Comfortaa
-    fontSize: 1.625rem
+    fontSize: 1.375rem
     fontWeight: 300
-    lineHeight: 1.15
-    letterSpacing: -0.02em
-  body-lg:
-    fontFamily: Jost
-    fontSize: 1.125rem
+    lineHeight: 1.75rem
+  stat:
+    fontFamily: Comfortaa
+    fontSize: 1.5rem
     fontWeight: 300
-    lineHeight: 1.6
+    lineHeight: 1
+  stat-sm:
+    fontFamily: Comfortaa
+    fontSize: 1.375rem
+    fontWeight: 300
+    lineHeight: 1
+  count:
+    fontFamily: Comfortaa
+    fontSize: 0.9375rem
+    fontWeight: 300
+    lineHeight: 1
+  lead-desktop:
+    fontFamily: Alpino
+    fontSize: 1.4375rem
+    fontWeight: 300
+    lineHeight: 2.125rem
   body:
-    fontFamily: Jost
-    fontSize: 0.9375rem
-    fontWeight: 300
-    lineHeight: 1.6
-  quote:
-    fontFamily: Jost
+    fontFamily: Alpino
     fontSize: 1rem
     fontWeight: 300
-    lineHeight: 1.55
-  button:
-    fontFamily: Jost
-    fontSize: 1rem
-    fontWeight: 400
-    lineHeight: 1.2
-  label-lg:
-    fontFamily: Jost
-    fontSize: 1rem
-    fontWeight: 400
-    lineHeight: 1.2
-  label:
-    fontFamily: Jost
-    fontSize: 0.9375rem
-    fontWeight: 400
-    lineHeight: 1.3
-  field:
-    fontFamily: Jost
+    lineHeight: 1.5rem
+  body-sm:
+    fontFamily: Alpino
     fontSize: 0.9375rem
     fontWeight: 300
-    lineHeight: 1.3
-  chip:
-    fontFamily: Jost
-    fontSize: 0.8125rem
+    lineHeight: 1.375rem
+  secondary:
+    fontFamily: Alpino
+    fontSize: 0.875rem
     fontWeight: 300
-    lineHeight: 1
+    lineHeight: 1.25rem
   caption:
-    fontFamily: Jost
+    fontFamily: Alpino
     fontSize: 0.8125rem
     fontWeight: 300
-    lineHeight: 1.4
-  tab:
-    fontFamily: Jost
-    fontSize: 0.6875rem
+    lineHeight: 1.125rem
+  title:
+    fontFamily: Alpino
+    fontSize: 1.0625rem
     fontWeight: 400
+    lineHeight: 1.375rem
+  title-sm:
+    fontFamily: Alpino
+    fontSize: 1rem
+    fontWeight: 400
+    lineHeight: 1.375rem
+  meta:
+    fontFamily: Alpino
+    fontSize: 0.875rem
+    fontWeight: 400
+    lineHeight: 1.25rem
+  label:
+    fontFamily: Alpino
+    fontSize: 0.8125rem
+    fontWeight: 400
+    lineHeight: 1.125rem
+  field:
+    fontFamily: Alpino
+    fontSize: 1rem
+    fontWeight: 300
     lineHeight: 1.3
-  nav-desktop:
-    fontFamily: Jost
-    fontSize: 0.875rem
-    fontWeight: 300
+  button:
+    fontFamily: Alpino
+    fontSize: 1rem
+    fontWeight: 500
     lineHeight: 1
-    letterSpacing: -0.02em
-  nav-desktop-active:
-    fontFamily: Jost
+    letterSpacing: 0.01em
+  button-quiet:
+    fontFamily: Alpino
+    fontSize: 0.9375rem
+    fontWeight: 400
+    lineHeight: 1
+  chip:
+    fontFamily: Alpino
     fontSize: 0.875rem
     fontWeight: 400
     lineHeight: 1
-    letterSpacing: -0.02em
-  micro:
-    fontFamily: Jost
-    fontSize: 0.625rem
-    fontWeight: 300
-    lineHeight: 1.2
+  chip-active:
+    fontFamily: Alpino
+    fontSize: 0.875rem
+    fontWeight: 500
+    lineHeight: 1
+  pill:
+    fontFamily: Alpino
+    fontSize: 0.8125rem
+    fontWeight: 400
+    lineHeight: 1
+  pill-count:
+    fontFamily: Alpino
+    fontSize: 0.8125rem
+    fontWeight: 500
+    lineHeight: 1
+  stat-label:
+    fontFamily: Alpino
+    fontSize: 0.75rem
+    fontWeight: 400
+    lineHeight: 1
+  tab:
+    fontFamily: Alpino
+    fontSize: 0.75rem
+    fontWeight: 400
+    lineHeight: 1
+    letterSpacing: 0.01em
+  tab-active:
+    fontFamily: Alpino
+    fontSize: 0.75rem
+    fontWeight: 500
+    lineHeight: 1
+    letterSpacing: 0.01em
 rounded:
-  xs: 0.125rem
-  sm: 0.875rem
-  md: 1.125rem
-  lg: 1.5625rem
-  xl: 2rem
-  sheet: 2.25rem
-  panel: 2.5rem
-  hero: 3.5rem
-  full: 9999px
+  handle: 0.1875rem
+  tile: 0.75rem
+  inner: 1.125rem
+  card: 1.75rem
+  button: 1.75rem
+  pill: 9999px
 spacing:
   "1": 0.25rem
   "2": 0.5rem
@@ -167,217 +211,277 @@ spacing:
   "4": 1rem
   "5": 1.25rem
   "6": 1.5rem
-  "7": 1.75rem
   "8": 2rem
   "10": 2.5rem
   "12": 3rem
-  "18": 4.5rem
-  "24": 6rem
-  inset-float: 1.25rem
-  inset-screen: "clamp(1.25rem, 0.9rem + 1.6vw, 1.75rem)"
-  inset-panel: "clamp(1.5rem, 1rem + 1.6vw, 2.25rem)"
-  inset-desktop: "clamp(2.5rem, 1rem + 6.6vw, 6rem)"
-  tabbar-clearance: 7.125rem
+  "20": 5rem
+  "30": 7.5rem
+  control-stack: 0.75rem
+  card-gap: 1.5rem
+  bar-clearance: 2.5rem
+  screen-phone: 1rem
+  screen-tablet: 2rem
+  screen-desktop: 7.5rem
+  chrome-desktop: 2.5rem
+  content-max: 75rem
 components:
   button-primary:
-    backgroundColor: "{colors.marker-label}"
-    backgroundColorDeep: "{colors.marker-label-deep}"
-    borderColor: "{colors.marker}"
-    textColor: "{colors.ground}"
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
     typography: "{typography.button}"
-    rounded: "{rounded.lg}"
-    height: 3.125rem
-    padding: 0 1.5rem
+    rounded: "{rounded.button}"
+    height: 3.375rem
+    padding: 0 1.75rem
   button-primary-pressed:
-    backgroundColor: "{colors.marker-label-deep}"
-    borderColor: "{colors.marker}"
-    textColor: "{colors.ground}"
+    backgroundColor: "{colors.primary-deep}"
+    textColor: "{colors.on-primary}"
     typography: "{typography.button}"
-    rounded: "{rounded.lg}"
-    height: 3.125rem
-    padding: 0 1.5rem
-  button-outline:
-    backgroundColor: "{colors.ground}"
+    rounded: "{rounded.button}"
+    height: 3.375rem
+    padding: 0 1.75rem
+  button-quiet:
+    backgroundColor: "{colors.inner-fill}"
     textColor: "{colors.on-ground}"
-    typography: "{typography.button}"
-    rounded: "{rounded.lg}"
-    height: 3.125rem
-    padding: 0 1.5rem
+    typography: "{typography.button-quiet}"
+    rounded: "{rounded.button}"
+    height: 3.375rem
+    padding: 0 1.75rem
   field-search:
-    backgroundColor: "{colors.ground}"
+    backgroundColor: "{colors.glass-fill}"
     textColor: "{colors.on-ground}"
     typography: "{typography.field}"
-    rounded: "{rounded.lg}"
-    height: 3.125rem
-    padding: 0 1.375rem
-  field-search-focused:
-    backgroundColor: "{colors.ground}"
-    textColor: "{colors.on-ground}"
-    typography: "{typography.field}"
-    rounded: "{rounded.lg}"
-    height: 3.125rem
-    padding: 0 1.375rem
-  chip:
-    backgroundColor: "{colors.ground}"
-    textColor: "{colors.on-ground}"
-    typography: "{typography.chip}"
-    rounded: "{rounded.md}"
-    height: 2.25rem
-    padding: 0 1rem
-  chip-selected:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.chip}"
-    rounded: "{rounded.md}"
-    height: 2.25rem
-    padding: 0 1rem
+    rounded: "{rounded.pill}"
+    height: 3.25rem
+    padding: 0 1.25rem
   control-round:
-    backgroundColor: "{colors.ground}"
+    backgroundColor: "{colors.glass-fill}"
     textColor: "{colors.on-ground}"
-    rounded: "{rounded.full}"
-    size: 3.125rem
-  control-round-on:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-    rounded: "{rounded.full}"
-    size: 3.125rem
-  pin:
-    backgroundColor: "{colors.ground}"
+    rounded: "{rounded.pill}"
+    size: 3.25rem
+  control-on-photo:
+    backgroundColor: "{colors.glass-fill}"
+    textColor: "{colors.on-ground}"
+    rounded: "{rounded.pill}"
+    size: 2.75rem
+  chip:
+    backgroundColor: "{colors.glass-fill}"
     textColor: "{colors.on-ground}"
     typography: "{typography.chip}"
-    rounded: "{rounded.full}"
-    size: 2.75rem
-  sheet:
-    backgroundColor: "{colors.ground}"
+    rounded: "{rounded.pill}"
+    height: 2.5rem
+    padding: 0 1rem
+  chip-active:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.chip-active}"
+    rounded: "{rounded.pill}"
+    height: 2.5rem
+    padding: 0 1rem
+  chip-sm:
+    backgroundColor: "{colors.glass-fill}"
     textColor: "{colors.on-ground}"
-    rounded: "{rounded.sheet}"
-    padding: 0.75rem 1.75rem 7.125rem
+    typography: "{typography.chip}"
+    rounded: "{rounded.pill}"
+    height: 2.25rem
+    padding: 0 0.875rem
+  segment:
+    backgroundColor: "{colors.glass-fill}"
+    textColor: "{colors.on-ground}"
+    typography: "{typography.chip}"
+    rounded: "{rounded.pill}"
+    height: 3rem
+    padding: 0.25rem
+  segment-active:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.chip-active}"
+    rounded: "{rounded.pill}"
+    padding: 0 1.125rem 0 0.875rem
+  pill:
+    backgroundColor: "{colors.pill-fill}"
+    textColor: "{colors.on-ground}"
+    typography: "{typography.pill}"
+    rounded: "{rounded.pill}"
+    height: 1.875rem
+    padding: 0 0.75rem 0 0.5625rem
+  pill-organism:
+    backgroundColor: "{colors.pill-fill}"
+    textColor: "{colors.on-ground}"
+    typography: "{typography.pill-count}"
+    rounded: "{rounded.pill}"
+    height: 2rem
+    padding: 0 0.75rem 0 0.625rem
+  tag:
+    backgroundColor: "{colors.inner-fill}"
+    textColor: "{colors.on-ground}"
+    typography: "{typography.stat-label}"
+    rounded: "{rounded.pill}"
+    height: 1.625rem
+    padding: 0 0.625rem
+  icon-disc:
+    backgroundColor: "{colors.inner-fill}"
+    textColor: "{colors.mist}"
+    rounded: "{rounded.pill}"
+    size: 2.5rem
+  cluster-orb:
+    backgroundColor: "{colors.glass-fill}"
+    textColor: "{colors.on-ground}"
+    typography: "{typography.count}"
+    rounded: "{rounded.pill}"
+    size: 2.875rem
+  spot-marker:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.pill-count}"
+    rounded: "{rounded.pill}"
+    size: 2.25rem
   card:
-    backgroundColor: "{colors.ground}"
+    backgroundColor: "{colors.glass-fill}"
     textColor: "{colors.on-ground}"
-    rounded: "{rounded.xl}"
-    padding: 1.25rem 1.5rem 0.5rem
-  dialog:
-    backgroundColor: "{colors.ground}"
+    rounded: "{rounded.card}"
+    padding: 2rem
+  card-compact:
+    backgroundColor: "{colors.glass-fill}"
     textColor: "{colors.on-ground}"
-    rounded: "{rounded.xl}"
-    width: 18.875rem
-  tab-bar:
-    backgroundColor: "{colors.ground}"
-    textColor: "{colors.on-ground-soft}"
-    typography: "{typography.tab}"
-    rounded: "{rounded.full}"
-    height: 4.25rem
-    padding: 0.3125rem
-  tab-active:
-    backgroundColor: "{colors.ground}"
+    rounded: "{rounded.card}"
+    padding: 1.25rem
+  inner-card:
+    backgroundColor: "{colors.inner-fill}"
     textColor: "{colors.on-ground}"
-    typography: "{typography.tab}"
+    rounded: "{rounded.inner}"
+    padding: 1rem
+  stat-tile:
+    backgroundColor: "{colors.inner-fill}"
+    textColor: "{colors.on-ground}"
+    typography: "{typography.stat}"
+    rounded: "{rounded.inner}"
+    padding: 1rem
+  stat-tile-nested:
+    backgroundColor: "{colors.inner-fill}"
+    textColor: "{colors.on-ground}"
+    typography: "{typography.stat-sm}"
+    rounded: "{rounded.tile}"
+    padding: 0.875rem 0.75rem
   list-row:
-    backgroundColor: "{colors.ground}"
     textColor: "{colors.on-ground}"
-    typography: "{typography.label}"
-    height: 5.5rem
-    padding: 1rem 0
+    typography: "{typography.title-sm}"
+    height: 4.25rem
+    padding: 0.75rem 0
+  sheet:
+    backgroundColor: "{colors.glass-fill}"
+    textColor: "{colors.on-ground}"
+    rounded: "{rounded.card}"
+    padding: 0.75rem 1.5rem 8.75rem
+  bottom-bar:
+    backgroundColor: "{colors.glass-fill}"
+    textColor: "{colors.on-ground-soft}"
+    typography: "{typography.secondary}"
+    rounded: "{rounded.card}"
+    padding: 0.75rem 0.75rem 0.75rem 1.75rem
+  tab-bar:
+    backgroundColor: "{colors.glass-fill}"
+    textColor: "{colors.on-ground-tab}"
+    typography: "{typography.tab}"
+    rounded: "{rounded.pill}"
+    height: 4.375rem
+    padding: 0.375rem
+  tab-active:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.tab-active}"
+    rounded: "{rounded.pill}"
+    height: 3.5rem
+    width: 5.25rem
+  nav-desktop:
+    backgroundColor: "{colors.glass-fill}"
+    textColor: "{colors.on-ground}"
+    typography: "{typography.chip}"
+    rounded: "{rounded.pill}"
+    height: 3.625rem
+    padding: 0.375rem
+  nav-desktop-active:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.chip-active}"
+    rounded: "{rounded.pill}"
+    height: 2.75rem
+    padding: 0 1.125rem 0 0.875rem
 ---
 
-# Natureplore Prototype Design System
+# Natureplore Design System
 
 ## Overview
 
-Natureplore shows people the wild places near them in Berlin and Brandenburg, what is recorded there, and what is happening to it. The prototype should feel like looking down into a forest through clean glass: calm, quiet and alive. Every screen sits on one top-down forest photograph, the interface floats over it as clear liquid glass, type is white and light in weight, and a single moss green marks the one thing to do next.
+Natureplore shows people the wild places near them, which routes lead through them, what lives along each route and what is happening to it. It should feel like looking into a forest through a pane of cold, clean glass: calm, premium and quiet, with the photograph doing the talking. Every screen sits on a darkened forest or water photograph, the interface floats over it as delicate frosted glass with a thin rim of light, type is white and light in weight, and one olive lime marks the thing to do next.
 
-The system started from the Oevra style tokens (one chromatic colour, light display weights, two typefaces rather than one, hairlines instead of shadows, no sharp corners) and keeps those habits. What changed is the material. Flat white paper became frosted glass over a photograph, black hairlines became bright rims of light, and spacing grew until each group of content has room around it.
-
-It must never become a dense dashboard, a stack of grey cards, or a neon dark theme. When in doubt, remove an element and give the rest more room.
+The system comes from the redesign canvas (welcome on phone and desktop, start sheet, search results, the routes list, the tablet organisms page and the tablet route detail), including every hand edit made on those boards. It must never become a grey card stack, a colourful dashboard, or glass so thick it hides the forest.
 
 ## Colors
 
-There is one hue. `primary` (#5A7C58) with `primary-mid` and `primary-deep` forms the diagonal gradient on filled actions, and white text on it clears 4.5:1. `accent-tint` and `accent-tint-soft` are pale greens used only for the gradient on emphasised words in headings, fading from white. `marker` is the deep green core of the "You are here" dot. `marker-label` with `marker-label-deep` fills the tag beside it, a slight diagonal gradient in the one warm green the system has, which is what makes a mark for the person read against a basemap made of cool greens. `ground` ink on it clears 7:1 at the light end and 6:1 at the deep one. The same three carry the primary button, so the one warm green in the system means both a mark for the person and the action to take, and `primary` is left to the selected states: a selected chip, the map toggle you are on, and a control switched on.
+`ground` is the deep forest green under everything and the colour a long page fades into once its photograph ends. `scrim` is the near-black green used for the photo filter and every shadow, so shadows are tinted, never grey. Glass is built from `glass-fill` with a white wash on top and a `glass-edge` hairline; glass sitting on glass uses `inner-fill` and `inner-edge` instead. `glass-solid` replaces all of it when reduced transparency is on.
 
-Everything else is white at different strengths on top of the photograph. `on-ground` is pure white for headings, labels and icons. `on-ground-soft` is white at 80% (shown here as its solid equivalent) for body copy and captions. `on-ground-mute` is white at 60% to 72% for unmapped search results, and inactive tabs sit at 65%. Do not go below 60% for any text.
+`primary` to `primary-deep` is the olive lime, always as a 135 degree gradient. It is allowed in exactly six places: the primary button, the active tab, segment or chip, spot markers and the route line, the current month bar, the logo symbol, and the closing phrase of a heading. Ink on lime is `on-primary`, the forest green, at about 7.5:1. Everything else is white: `on-ground` for titles and values, `on-ground-soft` (white 78%) for secondary text and icons, `on-ground-tab` (white 82%) for tabs you are not on. `mist` tints icons inside discs and draws the focus ring.
 
-The photograph is always filtered before anything sits on it: a vertical `scrim` gradient (55% at the top, 20% in the upper middle, 60% at the bottom) plus an even black layer at 39%. That filter is what keeps white text at or above 4.5:1 over the brightest tree crowns, so it is part of the colour system, not decoration. `ground` is the solid colour behind the photo while it loads. `glass-solid` replaces every glass fill when the viewer asks for reduced transparency. `map-road` is drawn at 60% and `map-water` at 40% over the photo, like a satellite layer, which is the hand-drawn sketch on the welcome screens and nothing else. The real map on the Map tab is its own surface rather than a layer over the photograph, so it has its own set: `basemap-land` behind everything, `basemap-wood`, `basemap-urban` and `basemap-water` for the areas, `basemap-motorway`, `basemap-trunk`, `basemap-road` and `basemap-rail` for the lines, `basemap-border` for the dashed state edge, and four label inks, `basemap-label` for towns, `basemap-label-strong` for cities, `basemap-label-nature` for reserves and landscapes and `basemap-label-water` for lakes and rivers, each carried by a `basemap-halo` glow so a name stays readable wherever it falls. Every one of those inks clears 4.5:1 on the surface it sits on. The set is deliberately dim: the map is the quietest thing on the screen, so the glass sheet and the count pins read as the foreground. The animated welcome page (A0) is the one screen without the photograph. It opens straight on a green field, and the words blur in one by one: a diagonal gradient from `field-light` through `field` to `field-deep`, with slow drifting patches of `field-shade`, `field-mid`, `field-glow` and soft white, and grain. The pointer stirs a liquid layer over it, slow broad flows of `field-flow`, a dark green that is screened over the field, so all it can do is lift the field a little, to a step above `field-glow` where the flow is fastest: the same green tone, just a bit brighter, never white, grey, neon or darker than the field. Text and rules on the field are `on-field`, a green-tinted off-white, and the one button is a white pill (`on-primary` to `accent-tint-soft`).
-
-There are no state colours (error, success, warning) yet. Add them when the first screen needs one, and keep them desaturated.
+The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group-birds`, `group-mammals`) appear only as icon tints, dots and proportion bar segments, always next to the group's name or icon, never as fills behind text. `marker`, `keyboard` and the `map-`, `basemap-` and `field-` colours are carried from the prototype for the base map and the welcome animation; the boards do not use them.
 
 ## Typography
 
-Two typefaces and two weights, and the whole scale sits light. Comfortaa sets the headings and nothing else, at weight 300 with slightly tight tracking, large and quiet. Jost sets everything else: running text, captions, fields, chips, the tab bar, the desktop nav and the quoted line of evidence are 300, and anything that names an action or a thing is 400, which is buttons, row titles, labels, tags and the tab you are on. Nothing is bolder than 400 and nothing is set in capitals, so the difference between a row title and the line under it is one step of weight and the colour, never size or emphasis. The split follows what each face is good at. Comfortaa is round and open and reads as a voice at 26px and up, where its low stroke contrast is a quality rather than a cost. Jost is a narrow geometric sans that holds its shape at 300 down to small sizes and keeps a long label on one line.
+Two faces with separate jobs. Comfortaa 300 is the voice: headings, stat numbers and map counts, round and light so large sizes stay friendly rather than loud. Alpino (Fontshare) carries everything you read or tap, in 300 for running text and 400 for titles, labels and controls, stepping to 500 only on the primary button, the active tab or segment, and counts in pills. Nothing is heavier than 500 and nothing is set in capitals.
 
-The scale is short on purpose. `display` opens the welcome screen, `h1` is the start sheet heading, `h2` is for state sheets such as "not mapped yet" and "no connection", `h3` is for list sheets and messages over the map. `body` is the default paragraph, `button` is every pill button, at 400, one step up from the text around it, `quote` is the one quoted line of evidence on an impact screen, `caption` is for helper lines and row details, `chip` for chips and pins, `tab` for the tab bar, `micro` only for placeholder tags. Desktop adds `display-desktop`, `h1-desktop`, `body-lg`, `nav-desktop` and `nav-desktop-active`, the text face at 14 with the heading tracking, weight 300 for a tab you can go to and 500 for the one you are on.
-
-One phrase per heading may carry the white to pale green gradient ("around you", "near you", "isn't mapped yet"). It marks the meaning of the screen, so use it once per screen and never on body text. The system location dialog is the one exception to both typefaces: it uses the platform font, because it belongs to the operating system.
+Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 23/34 for the one desktop subline, `body` 16/24, `body-sm` 15/22 for notes under a section, `secondary` 14/20, `caption` 13/18. `title` 17/22 names a route, spot or organism; `title-sm` 16/22 names a search result or a fact. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
 
 ## Layout
 
-Spacing is the main design tool. The rule is simple: when two spacings would both work, take the larger one, and when content does not fit, remove content before tightening space.
+Tokens are in rem so screens follow the reader's font size; the numbers in this prose are pixels at the default 16px root. Everything sits on a 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 80, 120. Element gaps are 16 to 24, card padding 32, and page sections on desktop are 80 to 120 apart with content capped at 1200. Two tighter rules come from the boards: a control stack (search bar over a chip, button or segment) is 12, and a stack of cards on tablet is 24.
 
-The scale runs 4, 8, 12, 16, 20, 24, 28, 32, 40, 48, 72, 96. Use it by distance in meaning:
+Screen margins are 16 on phone, 32 on tablet, 40 for desktop chrome (logo and nav) and 120 for the desktop welcome's main block. Margins are equal left and right: a column is pinned to both sides, never left to size itself. Scrolling content ends 40 above the tab bar or bottom bar. The tab bar floats 8 from the bottom on phone and 28 on tablet; the tablet bottom bar also sits 28 up.
 
-- 4 to 8 inside one item: icon to label, lines of a row, tab icon to tab label.
-- 12 to 16 between controls that act together: field to button, button to button, chips in a row, photo to row text.
-- 22 to 32 between groups: heading block to chips, chips to list, copy to actions, actions to helper line.
-- 40 to 48 between sections on a page, and 60 to 72 above a welcome heading.
-
-Phone screens are 390 wide. Content inside sheets and pages uses `inset-screen` (28). Floating clusters over the map (search, chips, controls) use `inset-float` (20). A bottom sheet has 12 above its handle, 26 to 28 below it, and `tabbar-clearance` (114) at the bottom so content never hides behind the floating tab bar, which sits 16 from the sides and 24 from the bottom edge.
-
-Rows are 88 tall with 16 above and below and 16 between photo and text. A map sheet shows two rows, or three when there are no chips above them. The rest scrolls. Never shrink rows to fit one more. Rows of 76 with 10 padding are allowed only on sheets whose rows carry four lines of text.
-
-The map must stay a map. Keep at least the band between the top cluster and the sheet free for pins, never let the sheet cover a pin, and keep 8 or more between the lowest pin and the sheet edge. Floating controls never sit among the pins: Saved lives beside the search field, the locate button sits alone at the right edge.
-
-Touch targets are 44 at minimum and 50 for the controls people use most (search, primary buttons, Saved, back). Desktop is 1440 by 900 with `inset-desktop` (96) page margins, a 440 wide glass side panel set 24 from the edges with `inset-panel` (36) padding, and the nav pill 28 from the top and 40 from the right.
+Chip rows scroll sideways and bleed to the screen edge through negative margins equal to the container padding. A row inside a flex column never shrinks: it keeps its own height.
 
 ## Elevation & Depth
 
-Depth comes from glass, not from stacked drop shadows. Every frosted surface is built from the same four parts, and only the size of the lighting changes with the size of the surface.
+There is one material, frosted glass, in two strengths. Glass: `backdrop-filter: blur(30px) saturate(1.4)`, fill `linear-gradient(160deg, white 16% to white 5%)` over `glass-fill`, a 0.5px `glass-edge` border, an inner top highlight `inset 0 1px 0 white 11%`, and a float shadow `0 24px 60px scrim 35%`. Inner glass, for anything on glass: no blur, fill `linear-gradient(160deg, white 14% to white 4%)`, a 0.5px `inner-edge` border and `inset 0 1px 0 white 9%`. Never put a blurred surface on a blurred surface.
 
-1. Frost: `backdrop-filter: blur(26px) saturate(1.8)` on controls, the nav and the tab bar; 18px on pins, discs and chips; 30px on cards, panels, dialogs and sheets. Always pair it with the `-webkit-` prefix.
-2. Fill: `linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.07))` over `rgba(10,28,14,0.3)`, on every frosted surface, pins included.
-3. Rim: one hairline border, `0.2px solid rgba(255,255,255,0.55)`, all the way round. Sheets carry it on the top edge only. There is no gradient ring: the hairline is the whole edge, and thick or blurred inner shadows would read as a plastic bevel.
-4. Inner shading and separation: a soft light inside the top left and a soft shade inside the bottom right, sized with the surface, plus a thin contact shadow and one float shadow.
+Both carry a rim of light: a 0.5px gradient ring at 150 degrees, laid over the 0.5px border,, white 15% at the top left fading to 3.4%, 1.1% and back to 6.2% at the bottom right, drawn with a mask so it follows the radius. It should read as a glint, not a border.
 
-| Surface | Blur | Inner shading | Shadow |
-| --- | --- | --- | --- |
-| Pins, discs, chips | 18px | `inset 2px 2px 6px -3px rgba(255,255,255,0.35)`, `inset -2px -2px 6px -3px rgba(0,0,0,0.22)` | `0 1px 2px rgba(0,0,0,0.3)`, `0 8px 22px rgba(0,0,0,0.24)` |
-| Controls, search field, nav and tab bars | 26px | 4px and 10px at the same colours | `0 1px 2px rgba(0,0,0,0.3)`, `0 14px 34px rgba(0,0,0,0.32)` |
-| Cards, panels, dialogs, the desktop map card | 30px | 6px and 16px | `0 1px 2px rgba(0,0,0,0.3)`, `0 24px 60px rgba(0,0,0,0.32)` |
-| Sheets and edge-bleeding surfaces | 30px | `inset 0 10px 20px -12px rgba(255,255,255,0.35)` on the top edge | `0 -1px 2px rgba(0,0,0,0.3)`, `0 -10px 40px rgba(0,0,0,0.26)` |
-
-Glass that sits on glass (fields, outline buttons, season chips inside a sheet) gets the rim and inner shading but no second blur. Do not stack `backdrop-filter` surfaces. A modal dims and blurs the whole screen first (`scrim` at 30% to 58% with a 10px blur), then the dialog takes the same glass fill as the sheet it interrupts. With reduced transparency every glass fill becomes `glass-solid` and the blur is removed.
+Photographs always sit under a dark filter so white text holds. The standard filter is a vertical gradient of `scrim` from 60% at the top to about 30% in the upper third and 75 to 80% at the bottom, plus a flat layer of black at 39%. Long tablet pages fade the filter to solid `ground` where the photo ends. The welcome is the one exception: its waterfall is the hero, so it drops the black layer and only darkens the top and bottom. A sheet over a map lifts with an upward shadow, `0 -24px 60px scrim 35%`.
 
 ## Shapes
 
-Nothing has a sharp corner. Radius grows with the size of the surface: `md` (18) for chips and photo tiles, `lg` (25) for every 50 tall control so buttons and fields are full pills, `xl` (32) for cards and dialogs, `sheet` (36) for the top corners of bottom sheets, `panel` (40) for the desktop side panel, `hero` (56) for the large map card on the desktop welcome page. Pins, icon discs, round controls and the tab bar are fully round. `sm` (14) is only for the small map label and `xs` (2) only for the sheet handle. Round shapes and wide radii are what make the glass read as poured rather than cut.
+Radius follows depth. A card on the photograph is 28. Anything inside a card is 18. Anything inside that is 12. Buttons are 28 at 54 tall, so they read as full pills. Every other pill (fields, chips, segments, tags, the tab bar, the desktop nav) has a radius of exactly half its height: 52 gives 26, 40 gives 20, 36 gives 18, 30 gives 15, 70 gives 35. Round controls, icon discs, orbs and markers are circles. Images are rounded rectangles on the same depth rule, never circles.
+
+The search field is a full pill. That overrides the earlier "inputs 8" line in the scale, and applies to every field. Sheets round only their top corners, 28. Month bars round 10 on top and 4 at the base. The only square-ish radius is the 3px sheet handle.
 
 ## Components
 
-`button-primary` is the only filled element on a screen: the warm diagonal gradient from `marker-label` to `marker-label-deep`, a 1px `marker` edge, `ground` `label-lg`, a 1px inner top highlight and a soft float shadow, no glass rim. Its label and icon are dark rather than white, which is what the fill needs at 7:1, and it is the one place on a screen where ink is dark. One per view. Pressed state scales to 0.97 over 160ms and settles on `marker-label-deep`. `button-outline` is glass on glass: transparent fill, rim, white label. Text links are white `label` with an underline offset by 3px.
+`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. It stretches full width on phone and hugs its label on tablet and desktop. Pressed, it scales to 0.97 over 160ms. `button-quiet` is inner glass with a white `button-quiet` label, for secondary actions like "See all" and "Show all".
 
-`field-search` is a 50 tall glass pill with a 20px icon, 12 gap and 22 side padding. `field-search-focused` raises the border to white 90% and shows a clear button with a 44 target. `chip` is a 36 tall glass pill; `chip-selected` takes the primary gradient, and only one chip in a group is selected. Chip rows scroll sideways and bleed off the right edge rather than wrapping on phone.
+`field-search` is a 52 glass pill with a 19px icon, 12 gap and 20 side padding; a clear button keeps a 44 target. `control-round` is a 52 glass circle (back, locate, saved); on a photograph it becomes `control-on-photo`, 44, with a darker fill (forest at 45%, 20px blur) and a white 22% edge. `chip` is 40 for standalone chips and section jumps, `chip-sm` 36 inside a sheet; `chip-active` takes the lime. `segment` is a 48 glass pill with 4 padding holding two options; the active one is lime.
 
-`pin` is a 44 round glass disc with a count in `chip` type, or 40 with a leaf icon for a single place. "You are here" is a 22 `marker` dot with a 4px white border, a 1px `marker` edge and a soft white halo, labelled by a small tag filled `marker-label` to `marker-label-deep` at 135 degrees, in `ground` ink. `control-round` is a 50 round glass button (back, Saved, locate at 44); `control-round-on` is the same control filled with the primary gradient and a filled icon.
+Each organism group has one line icon, drawn on a 24 grid with a 1.5 stroke and round caps: a two-leaf sprig for plants, a four-leaf stem for herbs, a cap and stem for mushrooms, a perched bird for birds and a paw print for mammals. The icon always sits next to the group's name or count and is never used alone. It is 22 in a group tile and 18 in a 40 icon disc, both in the group colour, and 16 with a 1.4 stroke in `mist` inside an organism pill. The groups always appear in this order: plants, herbs, mushrooms, birds, mammals.
 
-`sheet` rises from the bottom edge with a 40 by 4 handle, then heading, caption, optional chips, a list and one text action. `list-row` has a 56 photo tile with radius `md`, a `label` title on one line, up to two `caption` lines, and a 44 bookmark target; rows are divided by 1px lines at white 22%, and the last row in a card has no line. `card` groups search results under a `caption` heading with 44 round icon discs. `dialog` is 302 wide on phone and 380 on desktop, centred, with the sheet's glass fill; the system dialog keeps platform type and stacked full-width choices.
+`pill` (30) carries a season or a spot link with a 16px icon. `pill-organism` (32) shows only a group icon in `mist` and a count; the group name is kept for screen readers but not shown. `tag` (26) marks a state such as "Not mapped yet". `icon-disc` is a 40 inner glass circle with a `mist` icon, or a group-coloured icon beside a group heading. `cluster-orb` is a 46 glass circle with a Comfortaa count on the map. `spot-marker` is a lime circle numbered in walking order, 36 in a list and 32 on the route axis, where it takes a forest and mist double ring. Alpino's digits sit about 1px low in a line of height 1, so a number alone in a circle gets 2px of bottom padding to sit at its optical centre.
 
-`tab-bar` is a floating glass pill with three equal tabs. `tab-active` is pure white in weight 500 with no capsule behind it; the other tabs are white at 65% in weight 400. On desktop the same pill sits at the top right with icon and label side by side, and its three labels take `nav-desktop` rather than `tab`, with `nav-desktop-active` on the one you are on. The tab you can go to stays in the heading weight, so the nav keeps the heading voice, and the current one steps up two weights, from 300 to 500, alongside the step from white at 65% to full white. Two cues rather than one, because a single step of either was too quiet on glass over a photograph. `aria-current` carries it for anyone reading neither.
+`card` is glass at 28 with 32 padding and a 24 gap inside; `card-compact` pads 20 for a results list. `inner-card` is 18 with 16 padding (20 for a fact or a route card). Stat tiles show a `stat-label`, then the value in `stat` with its unit; nested in a route card they become `stat-tile-nested`, 12 radius, 14 by 12 padding, `stat-sm`. A route card opens with a 168 photo at 12 radius, a save orb top right, the title and a `caption` line, three stat tiles, a divider, then organism pills. An organism card puts a 117 by 105 photo beside the name, Latin name, date and a spot pill.
+
+`list-row` is 68 tall with a 40 icon disc, a `title-sm` over a `caption`, and a chevron or tag; rows are divided by a 1px line that starts after the disc and fades to the right. `sheet` rises to 196 from the top on phone with a 36 by 5 handle, a heading, chips and cards. `bottom-bar` holds a short note and the primary button with a 54 round companion. `tab-bar` is 70 tall with 6 padding and three 84 by 56 items, icon over label; the active item is a lime pill. On desktop, `nav-desktop` is a 58 glass pill centred at the top with 44 tall items, icon beside label. Data: the proportion bar is 12 tall, 3 gaps, radius 6, in group colours; month bars are white 30% with the current month in lime.
 
 ## Do's and Don'ts
 
 Do:
 
-- Give every group room. Reach for 28 and 32 before 12 and 16, and drop a row before shrinking one.
-- Keep one filled green action per screen and let everything else be glass or text.
-- Keep the photo filter on (scrim plus 39% black) and check white text against the brightest part of the photo.
-- Build every glass surface from the same four parts: frost, fill, a 0.2px rim, inner shading with its separation shadow.
-- Use the gradient on one phrase of one heading per screen.
-- Keep targets at 44 or more, and 50 for the main controls.
+- Keep one lime action per screen and let everything else be glass, inner glass or text.
+- Set radius by depth, 28 then 18 then 12, and every other pill at half its height.
+- Keep the dark filter on every photograph and check white text on its brightest part.
+- Pin columns to both sides so left and right margins match.
+- Give a spot row's facts their own lines, with the Latin name in italic.
+- Keep targets at 44 or more, and 52 to 54 for the main controls.
 
 Don't:
 
-- Don't let a sheet, chip row or control cover the map pins, and don't float controls among them.
-- Don't draw rims with thick, blurred or offset inner shadows, don't add a second ring on top of the hairline, and don't stack one blurred surface on another.
-- Don't add a second hue, a neon accent, pure black panels or grey card stacks.
-- Don't set text heavier than 500, in capitals, or below white 60%.
-- Don't use sharp corners or a radius smaller than 14 on anything a finger touches.
-- Don't join details with middle dots. Use commas.
+- Don't use lime anywhere outside its six places, or put group colours behind text.
+- Don't stack a blurred surface on another blurred surface, or thicken the rim past a glint.
+- Don't let a bar's border eat its padding: the height includes padding on both sides plus the 0.5px border, and the items are centred in it.
+- Don't round images into circles, or set text heavier than 500 or in capitals.
+- Don't join facts with middle dots. Use commas, or stack them when a row carries more than two.
+- Don't let a row in a flex column shrink to fit; grow the board instead.
