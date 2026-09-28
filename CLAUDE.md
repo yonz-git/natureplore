@@ -69,7 +69,7 @@ Run the `/impeccable` skill for design work, and keep these whatever the task is
   transform it writes on an ancestor of glass kills the frost the same way.
 - **rem, never px.** Every size, space, radius and type step is in rem, so the
   screens follow the reader's own font size. The only px left are hairlines,
-  `0.2px` rims and `1px` rules, which have to stay one line whatever the zoom.
+  `0.5px` edges and rims and `1px` rules, which have to stay one line whatever the zoom.
   Values live in `docs/design.md` and are generated, so change them there
   and run `npm run tokens`.
 - **One value per size, fluid only in between.** Type and spacing tokens hold
