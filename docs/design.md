@@ -248,13 +248,6 @@ components:
     rounded: "{rounded.button}"
     height: 3.375rem
     padding: 0 1.75rem
-  button-secondary-chevron:
-    backgroundColor: "{colors.inner-fill}"
-    textColor: "{colors.on-ground}"
-    typography: "{typography.button-secondary}"
-    rounded: "{rounded.button}"
-    height: 3.375rem
-    padding: 0 1.375rem 0 1.75rem
   field-search:
     backgroundColor: "{colors.glass-fill}"
     textColor: "{colors.on-ground}"
@@ -319,7 +312,7 @@ components:
     typography: "{typography.pill-count}"
     rounded: "{rounded.pill}"
     height: 2rem
-    padding: 0 0.75rem 0 0.625rem
+    padding: 0 0.5625rem 0 0.5rem
   tag:
     backgroundColor: "{colors.inner-fill}"
     textColor: "{colors.on-ground}"
@@ -429,7 +422,7 @@ The system comes from the redesign canvas (welcome on phone and desktop, start s
 
 `ground` is the deep forest green under everything and the colour a long page fades into once its photograph ends. `scrim` is the near-black green used for the photo filter and every shadow, so shadows are tinted, never grey. Glass is built from `glass-fill` with a white wash on top and a `glass-edge` hairline; glass sitting on glass uses `inner-fill` and `inner-edge` instead. `glass-solid` replaces all of it when reduced transparency is on.
 
-`primary` to `primary-deep` is the olive lime, always as a 135 degree gradient. It is allowed in exactly six places: the primary button, the active tab, segment or chip, spot markers and the route line, the current month bar, the logo symbol, and the closing phrase of a heading. Ink on lime is `on-primary`, the forest green, at about 7.5:1. Everything else is white: `on-ground` for titles and values, `on-ground-soft` (white 78%) for secondary text and icons, `on-ground-tab` (white 82%) for tabs you are not on. `mist` tints icons inside discs and draws the focus ring.
+`primary` to `primary-deep` is the olive lime, always as a 135 degree gradient. It is allowed in exactly six places: the primary button, the active tab, segment or chip, spot markers and the route line, the current month bar, the logo symbol, and the closing phrase of the page title. That phrase appears once per screen, on the title only; section headings stay white, so the lime never competes with the one action. Ink on lime is `on-primary`, the forest green, at about 7.5:1. Everything else is white: `on-ground` for titles and values, `on-ground-soft` (white 78%) for secondary text and icons, `on-ground-tab` (white 82%) for tabs you are not on. `mist` tints icons inside discs and draws the focus ring.
 
 The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group-birds`, `group-mammals`) appear only as icon tints, dots and proportion bar segments, always next to the group's name or icon, never as fills behind text. `marker`, `keyboard` and the `map-`, `basemap-` and `field-` colours are carried from the prototype for the base map and the welcome animation; the boards do not use them.
 
@@ -441,17 +434,17 @@ Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet
 
 ## Layout
 
-Tokens are in rem so screens follow the reader's font size; the numbers in this prose are pixels at the default 16px root. Everything sits on a 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 80, 120. Element gaps are 16 to 24, card padding 32, and page sections on desktop are 80 to 120 apart with content capped at 1200. Two tighter rules come from the boards: a control stack (search bar over a chip, button or segment) is 12, and a stack of cards on tablet is 24.
+Tokens are in rem so screens follow the reader's font size; the numbers in this prose are pixels at the default 16px root. Layout sits on a 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 80, 120. Inside a component, 2px half-steps (2, 6, 10, 14) are allowed for icon to label gaps and optical padding, never for gaps between components. Element gaps are 16 to 24, card padding 32, and page sections on desktop are 80 to 120 apart with content capped at 1200. Two tighter rules come from the boards: a control stack (search bar over a chip, button or segment) is 12, and a stack of cards on tablet is 24.
 
-Screen margins are 16 on phone, 32 on tablet, 40 for desktop chrome (logo and nav) and 120 for the desktop welcome's main block. Margins are equal left and right: a column is pinned to both sides, never left to size itself. Between the two, `inset-screen` runs from 16 at 390 wide to 32 at 834, so one inset serves every phone and tablet. Scrolling content ends 40 above the tab bar or bottom bar, which on phone makes `tabbar-clearance` 118: the 8 float, the 70 bar and the 40 gap. The tab bar floats 8 from the bottom on phone and 28 on tablet; the tablet bottom bar also sits 28 up.
+Screen margins are 16 on phone, 32 on tablet, 40 for desktop chrome (logo and nav) and 120 for the desktop welcome's main block. Margins are equal left and right: a column is pinned to both sides, never left to size itself. Between the two, `inset-screen` runs from 16 at 390 wide to 32 at 834, so one inset serves every phone and tablet. Scrolling content ends 40 above the tab bar or bottom bar, which on phone makes `tabbar-clearance` 118: the 8 float, the 70 bar and the 40 gap. On tablet the bar floats 28 up, so the clearance is 138. The tab bar floats 8 from the bottom on phone and 28 on tablet; the tablet bottom bar also sits 28 up.
 
 Chip rows scroll sideways and bleed to the screen edge through negative margins equal to the container padding. A row inside a flex column never shrinks: it keeps its own height.
 
 ## Elevation & Depth
 
-There is one material, frosted glass, in two strengths. Glass: `backdrop-filter: blur(30px) saturate(1.4)`, fill `linear-gradient(160deg, white 16% to white 5%)` over `glass-fill`, a 0.5px `glass-edge` border, an inner top highlight `inset 0 1px 0 white 11%`, and a float shadow `0 24px 60px scrim 35%`. Inner glass, for anything on glass: no blur, fill `linear-gradient(160deg, white 14% to white 4%)`, a 0.5px `inner-edge` border and `inset 0 1px 0 white 9%`. Never put a blurred surface on a blurred surface.
+There is one material, frosted glass, in two strengths. Glass: `backdrop-filter: blur(30px) saturate(1.4)`, fill `linear-gradient(160deg, white 16% to white 5%)` over `glass-fill`, a 0.5px `glass-edge` border, an inner top highlight `inset 0 1px 0 white 11%`, and a float shadow `0 24px 60px scrim 35%`. Inner glass, for anything on glass: no blur, fill `linear-gradient(160deg, white 14% to white 4%)`, a 0.5px `inner-edge` border and `inset 0 1px 0 white 9%`. Never put a blurred surface on a blurred surface: fields, chips, segments, round controls and buttons on a sheet or panel are all inner glass. The one exception is `control-on-photo`, whose 20 blur frosts the photograph it sits on, even when that photograph is inside a card. Every inner edge is the same `inner-edge`, white 14%.
 
-Both carry a rim of light: a 0.5px gradient ring at 150 degrees, laid over the 0.5px border,, white 15% at the top left fading to 3.4%, 1.1% and back to 6.2% at the bottom right, drawn with a mask so it follows the radius. It should read as a glint, not a border.
+Both carry a rim of light: a 0.5px gradient ring at 150 degrees, laid over the 0.5px border, white 15% at the top left fading to 3.4%, 1.1% and back to 6.2% at the bottom right, drawn with a mask so it follows the radius. It should read as a glint, not a border.
 
 Photographs always sit under a dark filter so white text holds. The standard filter is a vertical gradient of `scrim` from 60% at the top to about 30% in the upper third and 75 to 80% at the bottom, plus a flat layer of black at 39%. Long tablet pages fade the filter to solid `ground` where the photo ends. The welcome is the one exception: its waterfall is the hero, so it drops the black layer and only darkens the top and bottom. A sheet over a map lifts with an upward shadow, `0 -24px 60px scrim 35%`.
 
@@ -461,15 +454,23 @@ Radius follows depth. A card on the photograph is 28. Anything inside a card is 
 
 The search field is a full pill. That overrides the earlier "inputs 8" line in the scale, and applies to every field. Sheets round only their top corners, 28. Month bars round 10 on top and 4 at the base. The only square-ish radius is the 3px sheet handle.
 
+## Motion
+
+Motion shows what changed and nothing else. Every movement uses one strong ease-out, `cubic-bezier(0.23, 1, 0.32, 1)`, and only `transform` and `opacity`. A press is 160ms, a control or chip 200 to 250, a dropdown or expanding list 250, and a screen or sheet enter under 400, in layers: the surface, then its content. Hover changes are 200ms colour or wash only. Never animate an ancestor of glass: animate each layer. With reduced motion, movement becomes a 150ms fade. The welcome's scroll opening is the one choreographed sequence.
+
 ## Components
 
-`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule: full width on phone, hugging their label at the start of their column on tablet and desktop. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in Alpino 400 15, the same 54 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so `button-secondary-chevron` takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
+`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule: full width on phone, hugging their label on tablet and desktop. There they are centred when they close a full-width grid or list ("Show all", "See all", "Open the route") and start-aligned when they follow a text block or sit in a stack with a field. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in Alpino 400 15, the same 54 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so a button that ends in a chevron takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
+
+States, for every control. Hover (mouse and pen only): the primary dims to brightness 0.96, glass and inner glass controls take a white 8% wash. Focus: a 2px `mist` outline 3 outside the shape, following its radius, never removed. Pressed: scale 0.97. Disabled: 45% opacity, no press, and the reason said next to it. Loading: the primary keeps its width, its label gives way to an 18 spinner in `on-primary`, and it is marked busy. A field with a problem keeps its shape, its edge rises to white 40%, and a `caption` line with an alert icon under it says what to do; there is no red, the words carry it.
+
+Empty, offline and not-mapped screens share one pattern: a glass card with the page title, one or two lines of `body` that say what is missing and why, and one action (Try again, Browse mapped regions). The map is never left blank without that card.
 
 `field-search` is a 52 glass pill with a 19px icon, 12 gap and 20 side padding; a clear button keeps a 44 target. `control-round` is a 52 glass circle (back, locate, saved); on a photograph it becomes `control-on-photo`, 44, with a darker fill (forest at 45%, 20px blur) and a white 22% edge. `chip` is 40 for standalone chips and section jumps, `chip-sm` 36 inside a sheet; `chip-active` takes the lime. `segment` is a 48 glass pill with 4 padding holding two options; the active one is lime.
 
 Each organism group has one line icon, drawn on a 24 grid with a 1.5 stroke and round caps: a two-leaf sprig for plants, a four-leaf stem for herbs, a cap and stem for mushrooms, a perched bird for birds and a paw print for mammals. The icon always sits next to the group's name or count and is never used alone. It is 22 in a group tile and 18 in a 40 icon disc, both in the group colour, and 16 with a 1.4 stroke in `mist` inside an organism pill. The groups always appear in this order: plants, herbs, mushrooms, birds, mammals.
 
-`pill` (30) carries a season or a spot link with a 16px icon. `pill-organism` (32) shows only a group icon in `mist` and a count; the group name is kept for screen readers but not shown. `tag` (26) marks a state such as "Not mapped yet". `icon-disc` is a 40 inner glass circle with a `mist` icon, or a group-coloured icon beside a group heading. `cluster-orb` is a 46 glass circle with a Comfortaa count on the map. `spot-marker` is a lime circle numbered in walking order, 36 in a list and 32 on the route axis, where it takes a forest and mist double ring. Alpino's digits sit about 1px low in a line of height 1, so a number alone in a circle gets 2px of bottom padding to sit at its optical centre.
+`pill` (30) carries a season or a spot link with a 16px icon. `pill-organism` (32, padding 8 left and 9 right, 4 between icon and count, 4 between pills) shows only a group icon in `mist` and a count; the group name is kept for screen readers but not shown. Organism counts are always a row of these pills, on every card, list and sheet at every size, never written out as "24 plants, 72 herbs". The row sits at full card width so five pills fit on one line. `tag` (26) marks a state such as "Not mapped yet". `icon-disc` is a 40 inner glass circle with a `mist` icon, or a group-coloured icon beside a group heading. `cluster-orb` is a 46 glass circle with a Comfortaa count on the map. `spot-marker` is a lime circle numbered in walking order, 36 in a list and 32 on the route axis, where it takes a forest and mist double ring. Alpino's digits sit about 1px low in a line of height 1, so a number alone in a circle gets 2px of bottom padding to sit at its optical centre.
 
 `card` is glass at 28 with 32 padding and a 24 gap inside; `card-compact` pads 20 for a results list. `inner-card` is 18 with 16 padding (20 for a fact or a route card). Stat tiles show a `stat-label`, then the value in `stat` with its unit; nested in a route card they become `stat-tile-nested`, 12 radius, 14 by 12 padding, `stat-sm`. A route card opens with a 168 photo at 12 radius, a save orb top right, the title and a `caption` line, three stat tiles, a divider, then organism pills. An organism card puts a 117 by 105 photo beside the name, Latin name, date and a spot pill.
 
@@ -485,10 +486,11 @@ Do:
 - Pin columns to both sides so left and right margins match.
 - Give a spot row's facts their own lines, with the Latin name in italic.
 - Keep targets at 44 or more, and 52 to 54 for the main controls.
+- Check `caption` and `secondary` text at white 78% on the brightest part of each photograph. If it falls under 4.5:1, darken the filter, never thicken the type.
 
 Don't:
 
-- Don't use lime anywhere outside its six places, or put group colours behind text.
+- Don't use lime anywhere outside its six places, give more than one heading a lime phrase, or put group colours behind text.
 - Don't stack a blurred surface on another blurred surface, or thicken the rim past a glint.
 - Don't let a bar's border eat its padding: the height includes padding on both sides plus the 0.5px border, and the items are centred in it.
 - Don't round images into circles, or set text heavier than 500 or in capitals.
