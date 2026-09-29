@@ -24,7 +24,7 @@ import WelcomeZoom from "@/components/WelcomeZoom";
 const TABS = [
   {
     href: "/map",
-    label: "Map",
+    label: "Routes",
     current: true,
     icon: (
       <>
@@ -44,14 +44,9 @@ const TABS = [
     ),
   },
   {
-    href: "/notebook",
-    label: "Notebook",
-    icon: (
-      <>
-        <rect x="5" y="3.5" width="14" height="17" rx="2" />
-        <path d="M9 3.5v17M12.5 9H16M12.5 13H16" />
-      </>
-    ),
+    href: "/saved",
+    label: "Saved",
+    icon: <path d="M7 3.8h10V20l-5-3.6L7 20z" />,
   },
 ];
 
@@ -130,7 +125,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
             <span className="a02-close">all the corners of nature</span>
           </h1>
           <p className="a02-lead">What nests and grows there, and what is happening to them.</p>
-          <Link href="/map" className="a02-cta">
+          <Link href="/map/start" className="a02-cta">
             <span className="a02-cta-phone">Go to map</span>
             <span className="a02-cta-desk">See the map</span>
           </Link>

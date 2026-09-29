@@ -1,21 +1,20 @@
 "use client";
 
-// B4 · Organism detail, and B5 · the same with its location generalised. The photograph, the
-// name, where and when it was recorded, why it is here, when to look, what it lives with, the
-// impact on it and what to do, then where else it is recorded and the documentaries about it.
-// A species at risk from collection shows only an area, never a point, and nothing that would
-// narrow it down again. On the phone it is a sheet under three round controls; from 64rem a wide
-// sheet in two columns. Pages that are not built yet (sources, actions, other places) are
-// controls with nowhere to go. Boards: B4 and B5, phone and desktop, version 6.
+// B4 · Organism, and B5 · the same with its location generalised. The photograph, the name, the
+// spot and route it was recorded at, the record, why it is here, when to look, the spots where it
+// is recorded, the impact here (the claim card and the same action row as its spot) and the
+// documentaries. A species at risk from collection shows only an area, never a point, and nothing
+// that would narrow it down again. On the phone it is a sheet under three round controls; from
+// 64rem a wide sheet in two columns. Back returns where the page was opened: the spot page, or the
+// walk on its spot (B4-walk). Boards: B4, B4-walk and B5, version 6.
 
 import Link from "next/link";
 
-import { ArrowIcon, BackIcon, BookmarkIcon, EyeOffIcon, MapIcon, ShareIcon } from "@/components/Icons";
+import { ArrowIcon, BackIcon, BookmarkIcon, ChevronIcon, EyeOffIcon, ShareIcon } from "@/components/Icons";
+import { ActionRow, ClaimCard, MonthGrid, SpotMark } from "@/components/SpotParts";
 import type { Organism } from "@/lib/organisms";
 import { useSaved } from "@/lib/saved";
-
-const MONTHS = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
-const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+import { creditLine, organismPhoto } from "@/lib/photos";
 
 function Actions({ o }: { o: Organism }) {
   const { isSaved, toggle } = useSaved();
@@ -47,15 +46,14 @@ function Actions({ o }: { o: Organism }) {
   );
 }
 
-export default function OrganismPage({ o }: { o: Organism }) {
-  const now = new Date().getMonth();
+export default function OrganismPage({ o, back }: { o: Organism; back: { href: string; label: string } }) {
+  const photo = organismPhoto(`${o.name} ${o.close}`);
   const name = `${o.name} ${o.close}`;
 
   return (
     <section className="org" aria-labelledby="org-title">
-
       <div className="org-top">
-        <Link href={o.back.href} className="round glass glass-pin" aria-label={`Back to ${o.back.label}`}>
+        <Link href={back.href} className="round glass glass-pin" aria-label={back.label}>
           <BackIcon size={20} />
         </Link>
         <Actions o={o} />
@@ -63,18 +61,24 @@ export default function OrganismPage({ o }: { o: Organism }) {
 
       <div className="org-sheet glass glass-top">
         <div className="org-main">
-          <Link href={o.back.href} className="org-back">
+          <Link href={back.href} className="org-back">
             <BackIcon size={18} />
-            {o.back.label}
+            {back.label}
           </Link>
-          <div className="org-photo" role="img" aria-label={`Photograph of the ${name.toLowerCase()} to come`} />
-          <p className="org-credit">{o.credit}</p>
+          {photo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="org-photo" src={photo.src} alt={name.trim()} />
+          ) : (
+            <div className="org-photo" role="img" aria-label={`Photograph of the ${name.toLowerCase()} to come`} />
+          )}
+          <p className="org-credit">{photo ? creditLine(photo) : o.credit}</p>
           <h1 id="org-title" className="org-title">
             {o.name} <em>{o.close}</em>
           </h1>
           <p className="org-kind">
             {o.kind}, <i>{o.latin}</i>
           </p>
+          {o.scope && <p className="org-scope">{o.scope}</p>}
 
           {o.generalised ? (
             <>
@@ -92,8 +96,13 @@ export default function OrganismPage({ o }: { o: Organism }) {
               <p className="org-small">{o.generalised.record}</p>
             </>
           ) : (
-            <div className="org-box org-record org-record-phone">
-              <Record o={o} />
+            <div className="org-box org-record">
+              <p className="org-record-title">{o.record.title}</p>
+              {o.record.lines.map((l) => (
+                <p key={l} className="org-small">
+                  {l}
+                </p>
+              ))}
             </div>
           )}
 
@@ -107,101 +116,73 @@ export default function OrganismPage({ o }: { o: Organism }) {
           <h2 className="org-h2">When to look</h2>
           {o.season ? (
             <>
-              <ol className="org-months" aria-label="Months it is recorded most">
-                {MONTHS.map((m, i) => (
-                  <li
-                    key={i}
-                    className={i === now ? "is-now" : o.season!.includes(i) ? "is-on" : undefined}
-                    aria-label={`${MONTH_NAMES[i]}${o.season!.includes(i) ? ", most recorded" : ""}${i === now ? ", this month" : ""}`}
-                  >
-                    {m}
-                  </li>
-                ))}
-              </ol>
+              <MonthGrid months={o.season} label="Most recorded" />
               <p className="org-small">{o.when}</p>
             </>
           ) : (
             <p className="org-body org-when">{o.when}</p>
           )}
 
-          {o.with && (
+          {o.where && (
             <>
-              <h2 className="org-h2">Recorded here with</h2>
-              <div className="chips org-with">
-                {o.with.map((w) =>
-                  w.id ? (
-                    <Link key={w.name} href={`/map/organism/${w.id}`} className="chip">
-                      {w.name}
+              <h2 className="org-h2">
+                Where it’s <em>recorded</em>
+              </h2>
+              <ol className="fb-card fb-rows">
+                {o.where.map((w) => (
+                  <li key={w.n}>
+                    <Link href={`/map/route/linum/spot/${w.n}`} className="fb-row">
+                      <SpotMark n={w.n} />
+                      <span className="fb-row-text">
+                        <b>
+                          Spot {w.n}, {w.name}
+                        </b>
+                        <span>{w.line}</span>
+                      </span>
+                      <ChevronIcon size={18} />
                     </Link>
-                  ) : (
-                    <span key={w.name} className="chip">
-                      {w.name}
-                    </span>
-                  ),
-                )}
-              </div>
+                  </li>
+                ))}
+              </ol>
             </>
           )}
-
-          <div className="org-box org-impact">
-            <h2 className="org-h3">Impact here</h2>
-            <p className="org-body">{o.impact.text}</p>
-            <p className="org-small">{o.impact.source}</p>
-            <button type="button" className="org-link" aria-disabled="true">
-              Read the source<span className="sr-only">, not built in the prototype yet</span>
-            </button>
-            <hr />
-            <h2 className="org-h3">What you can do</h2>
-            <ul className="org-rows">
-              {o.actions.map((a) => (
-                <li key={a.title}>
-                  <button type="button" className="org-row" aria-disabled="true">
-                    <span>
-                      <b>{a.title}</b>
-                      <span>{a.sub}</span>
-                    </span>
-                    <span className="sr-only">, not built in the prototype yet</span>
-                    <ArrowIcon size={20} />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           {o.generalised && <p className="org-small org-note">{o.generalised.note}</p>}
         </div>
 
         <aside className="org-side">
           <Actions o={o} />
-          {!o.generalised && (
-            <div className="org-box org-record org-record-desk">
-              <Record o={o} />
+
+          <h2 className="org-h2 org-h2-first">
+            Impact <em>here</em>
+          </h2>
+          {o.claim && (
+            <div className="fb-stack">
+              <ClaimCard claim={o.claim} />
+              {o.rule && <ActionRow spot={o.rule} className="fb-card" />}
             </div>
           )}
-          {o.generalised && <p className="org-small">{o.generalised.note}</p>}
-
-          {o.near && (
-            <>
-              <h2 className="org-h2">Where it’s recorded near you</h2>
-              <ul className="org-box org-rows org-near">
-                {o.near.map((n) => (
-                  <li key={n.name}>
+          {o.impact && (
+            <div className="org-box org-impact">
+              <p className="org-body">{o.impact.text}</p>
+              <p className="org-small">{o.impact.source}</p>
+              <hr />
+              <h3 className="org-h3">What you can do</h3>
+              <ul className="org-rows">
+                {o.actions?.map((a) => (
+                  <li key={a.title}>
                     <button type="button" className="org-row" aria-disabled="true">
                       <span>
-                        <b>{n.name}</b>
-                        <span>{n.line}</span>
+                        <b>{a.title}</b>
+                        <span>{a.sub}</span>
                       </span>
                       <span className="sr-only">, not built in the prototype yet</span>
-                    <ArrowIcon size={20} />
+                      <ArrowIcon size={20} />
                     </button>
                   </li>
                 ))}
               </ul>
-              <Link href="/map/near-you" className="btn btn-secondary org-routes">
-                <MapIcon size={18} />
-                Routes and spots to see it
-              </Link>
-            </>
+            </div>
           )}
 
           {o.docs && (
@@ -214,6 +195,7 @@ export default function OrganismPage({ o }: { o: Organism }) {
                     <b>{d.title}</b>
                     <span>{d.line}</span>
                   </span>
+                  <ChevronIcon size={18} />
                 </Link>
               ))}
             </>
@@ -221,18 +203,5 @@ export default function OrganismPage({ o }: { o: Organism }) {
         </aside>
       </div>
     </section>
-  );
-}
-
-function Record({ o }: { o: Organism }) {
-  return (
-    <>
-      <p className="org-record-title">{o.record.title}</p>
-      {o.record.lines.map((l) => (
-        <p key={l} className="org-small">
-          {l}
-        </p>
-      ))}
-    </>
   );
 }

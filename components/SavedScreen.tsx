@@ -1,102 +1,89 @@
 "use client";
 
-// A7 · Map home, saved spots and routes: what the person saved on this device, nearest first, on
-// the map as route pins around them. The first two show, "Show all" opens the rest in place.
-// From 64rem the panel adds the group filter. Boards: A7, phone and desktop, version 6.
+// E1 · Saved, the Saved tab: what is kept on this device. Routes, each downloaded, with Walk it;
+// then organisms, and actions and documentaries, which say what will appear there. It reads the
+// same store as every Save control, so a route saved on A5 is here. Walk it opens the walk (L4).
+// Board: E1 · Saved, phone.
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import { useEffect } from "react";
 
-import { ChevronIcon } from "@/components/Icons";
-import { MapTools, SavedCard, SearchField, Segment } from "@/components/MapParts";
-import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
-import { GROUPS, HERE, SAVED, type Group } from "@/lib/routes";
-import { rememberList, savedItems, useSaved } from "@/lib/saved";
-
-// every thing that can be saved has a pin, so the map is built once and does not follow the list
-const POINTS: MapPoint[] = [
-  { id: "here", lat: HERE.lat, lon: HERE.lon, label: "You are here", here: true },
-  ...SAVED.map((s) => ({
-    id: s.id,
-    lat: s.lat,
-    lon: s.lon,
-    label: s.kind === "route" ? `${s.name}, open the route card` : `${s.name}, show on the map`,
-    href: s.kind === "route" ? `/map/route/${s.id}` : undefined,
-  })),
-];
-
-const FIRST = 2;
+import { CheckCircleIcon, ChevronIcon, WalkIcon } from "@/components/Icons";
+import { rememberList, useSaved } from "@/lib/saved";
+import { routeDetail } from "@/lib/spots";
+import { SUGGESTIONS } from "@/lib/suggestions";
 
 export default function SavedScreen() {
-  const map = useRef<MapHandle>(null);
   const { ids } = useSaved();
-  const [group, setGroup] = useState<Group | null>(null);
-  const [all, setAll] = useState(false);
-  useEffect(() => rememberList("/map/saved"), []);
-
-  const items = useMemo(() => {
-    const list = savedItems(ids);
-    return group ? list.filter((s) => s.counts[group]) : list;
-  }, [ids, group]);
-  const shown = all ? items : items.slice(0, FIRST);
-  const count = savedItems(ids).length;
+  const routes = SUGGESTIONS.filter((s) => ids.includes(s.id));
+  // a route opened from here goes back here
+  useEffect(() => rememberList("/saved"), []);
 
   return (
-    <section className="ms a7">
-      <RegionMap className="a1-map" ref={map} points={POINTS} maxZoom={11} />
+    <section className="saved">
+      <div className="saved-sheet glass" aria-labelledby="e1-title">
+        <h1 id="e1-title">Saved</h1>
+        <p>Kept on this device</p>
 
-      <div className="ms-panel glass-desk">
-        <div className="ms-bar">
-          <SearchField />
-          <Segment />
-        </div>
-
-        <div className="ms-sheet glass-phone" aria-labelledby="saved-title">
-          <div className="ms-handle" aria-hidden="true" />
-          <div className="chips chips-desk" role="group" aria-label="Filter by group">
-            <button type="button" className="chip" aria-pressed={group === null} onClick={() => setGroup(null)}>
-              All
-            </button>
-            {GROUPS.map((g) => (
-              <button
-                key={g.id}
-                type="button"
-                className="chip"
-                aria-pressed={group === g.id}
-                onClick={() => setGroup(group === g.id ? null : g.id)}
-              >
-                {g.label}
-              </button>
-            ))}
+        <h2>Routes</h2>
+        {routes.length === 0 ? (
+          <p className="saved-empty">Routes you save appear here, downloaded so you can walk them offline.</p>
+        ) : (
+          <div className="saved-list">
+            {routes.map((r) => {
+              const row = (
+                <>
+                  {r.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={r.image} alt="" />
+                  ) : (
+                    <span className="saved-thumb" aria-hidden="true" />
+                  )}
+                  <span>
+                    <b>{r.name}</b>
+                    <small>{r.meta.replace(/, [^,]* at a looking pace/, "")}</small>
+                    <em>
+                      <CheckCircleIcon size={16} />
+                      Downloaded
+                    </em>
+                  </span>
+                  {r.href && <ChevronIcon size={18} />}
+                </>
+              );
+              return (
+                <article key={r.id} className="saved-card" aria-label={r.name}>
+                  {r.href ? (
+                    <Link href={r.href} className="saved-row">
+                      {row}
+                    </Link>
+                  ) : (
+                    <div className="saved-row">{row}</div>
+                  )}
+                  {/* L4, the walk, is built for Linum wet meadows loop only */}
+                  {routeDetail(r.id) ? (
+                    <Link href={`/walk/${r.id}`} className="btn btn-primary">
+                      <WalkIcon size={18} />
+                      Walk it
+                    </Link>
+                  ) : (
+                    <button type="button" className="btn btn-primary" aria-disabled="true">
+                      <WalkIcon size={18} />
+                      Walk it
+                      <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
+                    </button>
+                  )}
+                </article>
+              );
+            })}
           </div>
-          <div>
-            <h1 id="saved-title" className="ms-title">
-              Saved <em>spots and routes</em>
-            </h1>
-            <p className="ms-lead">
-              {count === 0
-                ? "Nothing saved on this device yet. The bookmark on a route or a spot keeps it here."
-                : `${count} saved on this device, sorted by distance`}
-            </p>
-          </div>
+        )}
 
-          <div className="ms-list">
-            {shown.map((s) => (
-              <SavedCard key={s.id} item={s} />
-            ))}
-          </div>
+        <h2>Organisms</h2>
+        <p className="saved-empty">Organisms you save appear here.</p>
 
-          {!all && items.length > FIRST && (
-            <button type="button" className="btn btn-secondary btn-chev is-closing" onClick={() => setAll(true)}>
-              Show all {items.length} saved spots and routes
-              <ChevronIcon size={18} />
-            </button>
-          )}
-        </div>
+        <h2>Actions and documentaries</h2>
+        <p className="saved-empty">Clean-ups you register for, everyday practices and documentaries you save appear here.</p>
       </div>
-
-      <MapTools
-        locate={() => map.current?.centre(HERE.lat, HERE.lon, 12, !matchMedia("(prefers-reduced-motion: reduce)").matches)}
-      />
     </section>
   );
 }

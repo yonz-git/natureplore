@@ -1,68 +1,96 @@
 "use client";
 
-// B1 · Route detail, on the map: what opens when a route is picked from a list or its pin. The
-// map shows the route's real line, its start and its spots in walking order; beside it (desktop)
-// or under it (phone) is everything about the route: photographs, the numbers, what is recorded
-// along it, what is notable now, the spots, and saving, sharing and navigating. Modelled on how
-// Komoot shows a route, without editing and without elevation.
-// Pages that are not built yet (A8, navigation) are controls with nowhere to go.
-// Boards: "B1 · Route detail, on the map", phone, tablet and desktop.
+// B1 · Route, and B1-saved: what is on this route, and when. The map shows the route's real line,
+// its start and its spots in walking order; under it (phone) or beside it (desktop) the page, in
+// the order of the flow and IA redesign: Spots along this route (each opens its spot, L3), the
+// route and where its spots are, what is recorded along it (to A8), when to walk it, what is
+// happening along it (claim cards), and getting there. Save is pinned; once the route is saved the
+// same place holds Walk it, which opens the walk (L4). The store is real in the prototype, so B1
+// and B1-saved are one page. Boards: B1 phone, tablet and desktop, and B1-saved phone.
 
 import Link from "next/link";
 import { useMemo, useRef, useSyncExternalStore } from "react";
 
-import {
-  BookmarkIcon,
-  CalendarIcon,
-  ChevronIcon,
-  CloseIcon,
-  GroupIcon,
-  LocationIcon,
-  ShareIcon,
-} from "@/components/Icons";
+import { BackIcon, BookmarkIcon, CalendarIcon, ChevronIcon, LocationIcon, WalkIcon } from "@/components/Icons";
 import { MapTools } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
+import { ClaimCard, SpotMark } from "@/components/SpotParts";
+import { organismPhoto } from "@/lib/photos";
 import { GROUPS, recordsOf, spotsOf, type Route } from "@/lib/routes";
 import { lastList, useSaved } from "@/lib/saved";
+import { MONTH_LETTERS, MONTH_NAMES, NOW, routeDetail, spotLine } from "@/lib/spots";
+import { suggestionById } from "@/lib/suggestions";
 
 const noop = () => () => {};
 
-function Actions({ route, className }: { route: Route; className: string }) {
+const SECTIONS = [
+  ["spots", "Spots"],
+  ["drawn", "The route"],
+  ["recorded", "What is recorded"],
+  ["season", "When to walk it"],
+  ["happening", "What is happening"],
+  ["getting", "Getting there"],
+] as const;
+
+function SectionHead({ id, lead, close, note }: { id: string; lead: string; close: string; note?: string }) {
+  return (
+    <div className="fb-sec" id={`sec-${id}`}>
+      <h2 id={`sec-${id}-title`}>
+        {lead}
+        <em>{close}</em>
+      </h2>
+      {note && <span>{note}</span>}
+    </div>
+  );
+}
+
+/** Save, pinned. Once saved it becomes Walk it, with Saved beside it to undo. */
+function Pin({ route, walkable }: { route: Route; walkable: boolean }) {
   const { isSaved, toggle } = useSaved();
   const saved = isSaved(route.id);
-  const share = async () => {
-    try {
-      if (navigator.share) await navigator.share({ title: route.name, url: location.href });
-      else await navigator.clipboard.writeText(location.href);
-    } catch {
-      // the person closed the share sheet
-    }
-  };
   return (
-    <div className={className}>
-      <button type="button" className="b1-act" aria-pressed={saved} onClick={() => toggle(route.id)}>
-        <BookmarkIcon size={19} filled={saved} />
-        {saved ? "Saved" : "Save"}
-      </button>
-      <button type="button" className="b1-act" onClick={share}>
-        <ShareIcon size={19} />
-        Share
-      </button>
-      {/* navigation is not built in the prototype, so the one action leads nowhere yet */}
-      <button type="button" className="btn btn-primary b1-go" aria-disabled="true">
-        <LocationIcon />
-        Navigate
-        <span className="sr-only">, not built in the prototype yet</span>
-      </button>
+    <div className="b1-pin glass-phone">
+      {saved ? (
+        <>
+          <button type="button" className="btn btn-secondary b1-saved" aria-pressed="true" onClick={() => toggle(route.id)}>
+            <BookmarkIcon size={19} filled />
+            Saved
+            <span className="sr-only">, remove it from Saved</span>
+          </button>
+          {walkable ? (
+            <Link href={`/walk/${route.id}`} className="btn btn-primary b1-walk">
+              <WalkIcon size={19} />
+              Walk it
+            </Link>
+          ) : (
+            <button type="button" className="btn btn-primary b1-walk" aria-disabled="true">
+              <WalkIcon size={19} />
+              Walk it
+              <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
+            </button>
+          )}
+        </>
+      ) : (
+        <button type="button" className="btn btn-primary b1-walk" onClick={() => toggle(route.id)}>
+          <BookmarkIcon size={19} />
+          Save this route
+        </button>
+      )}
+      <p className="sr-only" aria-live="polite">
+        {saved ? "Saved and downloaded. Find it in Saved." : ""}
+      </p>
     </div>
   );
 }
 
 export default function RouteCardScreen({ route }: { route: Route }) {
   const map = useRef<MapHandle>(null);
+  const detail = routeDetail(route.id);
   const spots = useMemo(() => spotsOf(route), [route]);
-  // closing goes back to the list the route was opened from, read once the page is in the browser
-  const back = useSyncExternalStore(noop, lastList, () => "/map/near-you");
+  const inSeasonPhotos = (suggestionById(route.id)?.inSeason ?? []).map((o) => organismPhoto(o.name)?.src).slice(0, 2);
+  // back goes to the list the route was opened from, A5, A4 or Saved, read once the page is in the browser
+  const back = useSyncExternalStore(noop, lastList, () => "/map");
+  const backLabel = back === "/saved" ? "Back to Saved" : "Back to the suggestions";
 
   // the real line when the route has one, otherwise a loop through its spots
   const line = useMemo<[number, number][]>(
@@ -70,6 +98,7 @@ export default function RouteCardScreen({ route }: { route: Route }) {
       route.path ?? [[route.lat, route.lon], ...spots.map((s) => [s.lat, s.lon] as [number, number]), [route.lat, route.lon]],
     [route, spots],
   );
+  // a spot's marker opens its page where the route has spot pages
   const points = useMemo<MapPoint[]>(
     () => [
       { id: "start", lat: route.lat, lon: route.lon, label: `Start and finish, ${route.from}`, start: true },
@@ -80,6 +109,7 @@ export default function RouteCardScreen({ route }: { route: Route }) {
         n: s.n,
         label: route.stops[i]?.name ?? `Spot ${s.n}`,
         left: route.stops[i]?.left,
+        href: routeDetail(route.id) ? `/map/route/${route.id}/spot/${s.n}` : undefined,
       })),
     ],
     [route, spots],
@@ -90,14 +120,15 @@ export default function RouteCardScreen({ route }: { route: Route }) {
   const lead = rest.reverse().join(" ");
   const locate = () =>
     map.current?.centre(route.lat, route.lon, 14, !matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const most = detail ? Math.max(...detail.season) : 1;
 
   return (
     <section className="ms b1">
       <RegionMap className="a1-map" ref={map} points={points} line={line} detail={route.detail} maxZoom={15} />
 
       <div className="b1-top">
-        <Link href={back} className="round glass glass-pin" aria-label="Close the route">
-          <CloseIcon size={20} />
+        <Link href={back} className="round glass glass-pin" aria-label={backLabel}>
+          <BackIcon size={20} />
         </Link>
         <button type="button" className="round glass glass-pin" aria-label="Show the start on the map" onClick={locate}>
           <LocationIcon size={20} />
@@ -107,17 +138,21 @@ export default function RouteCardScreen({ route }: { route: Route }) {
       <div className="ms-panel glass-desk">
         <div className="ms-sheet glass-phone" aria-labelledby="route-title">
           <div className="ms-handle" aria-hidden="true" />
+          <Link href={back} className="fb-backlink b1-back-desk">
+            <BackIcon size={18} />
+            {backLabel}
+          </Link>
 
-          <div className="b1-photos" role="img" aria-label="Photographs of the route, to come">
-            <span />
-            <span />
-            <span />
-            <span className="b1-photos-tag" aria-hidden="true">
-              Photos to come
-            </span>
-            <Link href={back} className="b1-close" aria-label="Close the route">
-              <CloseIcon size={20} />
-            </Link>
+          <div className="b1-photos">
+            {/* the route, then two of what is in season along it; a frame stays blank where there is no photo */}
+            {[route.image, ...inSeasonPhotos].slice(0, 3).map((src, i) =>
+              src ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img key={i} src={src} alt={i ? "" : `${route.name}`} />
+              ) : (
+                <span key={i} />
+              ),
+            )}
           </div>
 
           <div className="b1-head">
@@ -138,8 +173,7 @@ export default function RouteCardScreen({ route }: { route: Route }) {
             <div className="card-stat">
               <dt>Time</dt>
               <dd>
-                <b>{route.time}</b>
-                <span>h</span>
+                <b>{route.time.replace(":", " h ")}</b>
               </dd>
             </div>
             <div className="card-stat">
@@ -150,72 +184,158 @@ export default function RouteCardScreen({ route }: { route: Route }) {
             </div>
           </dl>
 
-          <p className="b1-body">{route.description}</p>
-
-          <section className="b1-box" aria-labelledby="recorded-title">
-            <div className="b1-box-head">
-              <h2 id="recorded-title">What is recorded along this route</h2>
-              <span>Within 250 m of the line</span>
-            </div>
-            <div
-              className="b1-bar"
-              role="img"
-              aria-label={`${total} records: ${GROUPS.map((g) => `${route.counts[g.id] ?? 0} ${g.label.toLowerCase()}`).join(", ")}`}
-            >
-              {GROUPS.filter((g) => route.counts[g.id]).map((g) => (
-                <span key={g.id} className={`is-${g.id}`} style={{ flexGrow: route.counts[g.id] }} />
+          {detail && (
+            <nav aria-label="Jump to a section" className="fb-strip">
+              {SECTIONS.map(([id, label]) => (
+                <a key={id} href={`#sec-${id}`}>
+                  {label}
+                </a>
               ))}
-            </div>
-            <ul className="b1-groups">
-              {GROUPS.map((g) => (
-                <li key={g.id} className={`is-${g.id}${route.counts[g.id] ? "" : " is-none"}`}>
-                  <GroupIcon group={g.id} size={20} />
-                  <span>{g.label}</span>
-                  <b>{route.counts[g.id] ?? 0}</b>
-                </li>
-              ))}
-            </ul>
-            {/* A8, everything recorded here, is not built in the prototype yet */}
-            <button type="button" className="btn btn-secondary btn-chev b1-all" aria-disabled="true">
-              See all organisms
-              <span className="sr-only">, not built in the prototype yet</span>
-              <ChevronIcon size={18} />
-            </button>
-          </section>
+            </nav>
+          )}
 
-          <p className="b1-notable">
-            <CalendarIcon size={20} />
-            {route.notable.organism ? (
-              <Link href={`/map/organism/${route.notable.organism}`}>{route.notable.text}</Link>
-            ) : (
-              <span>{route.notable.text}</span>
-            )}
-          </p>
-
-          <section aria-labelledby="spots-title">
-            <h2 id="spots-title" className="b1-h2">
-              Spots along the route
-            </h2>
-            <ol className="b1-spots">
-              {route.stops.map((s, i) => (
-                <li key={s.name} id={`spot-${i + 1}`}>
-                  <span className="spot-mark" aria-hidden="true">
-                    {i + 1}
-                  </span>
-                  <span>
-                    <b>{s.name}</b>
-                    <span>{s.note}</span>
-                  </span>
-                </li>
-              ))}
+          <section aria-labelledby="sec-spots-title">
+            <SectionHead id="spots" lead="Spots along " close="this route" note="In walking order" />
+            <ol className="fb-card fb-rows">
+              {detail
+                ? detail.spots.map((s) => (
+                    <li key={s.n}>
+                      <Link href={`/map/route/${route.id}/spot/${s.n}`} className="fb-row">
+                        <SpotMark n={s.n} />
+                        <span className="fb-row-text">
+                          <b>{s.name}</b>
+                          <span>{spotLine(s)}</span>
+                          <span className="fb-pill">
+                            <CalendarIcon size={14} />
+                            {s.when}
+                          </span>
+                        </span>
+                        <ChevronIcon size={18} />
+                      </Link>
+                    </li>
+                  ))
+                : route.stops.map((s, i) => (
+                    <li key={s.name}>
+                      <div className="fb-row">
+                        <SpotMark n={i + 1} />
+                        <span className="fb-row-text">
+                          <b>{s.name}</b>
+                          <span>{s.note}</span>
+                        </span>
+                      </div>
+                    </li>
+                  ))}
             </ol>
           </section>
 
-          <p className="ms-note b1-foot">{route.summary.replace(/^[^,]+, \d+ spots, /, "").replace(/^./, (c) => c.toUpperCase())}.</p>
+          {detail && (
+            <section aria-labelledby="sec-drawn-title">
+              <SectionHead id="drawn" lead="The route, and where its " close="spots are" />
+              <div className="fb-card">
+                <div className="fb-axis" role="img" aria-label={`Spots along the ${route.km} km line, in walking order`}>
+                  <span className="fb-axis-line" />
+                  {detail.axis.map((f, i) => (
+                    <span key={i} className="fb-axis-mark" style={{ left: `${f * 100}%` }}>
+                      <SpotMark n={i + 1} />
+                    </span>
+                  ))}
+                </div>
+                <div className="fb-axis-ticks" aria-hidden="true">
+                  {detail.ticks.map((t) => (
+                    <span key={t}>{t}</span>
+                  ))}
+                </div>
+                <p className="fb-small">
+                  The line is drawn on the map, with the same numbers. {route.time.replace(":", " h ")} at a looking pace.
+                </p>
+              </div>
+            </section>
+          )}
 
-          <Actions route={route} className="b1-actions b1-actions-phone" />
+          <section aria-labelledby="sec-recorded-title">
+            <SectionHead id="recorded" lead="What is recorded " close="along this route" note="Within 250 m of the line" />
+            <div className="fb-card fb-recorded">
+              <div
+                className="b1-bar"
+                role="img"
+                aria-label={`${total} records: ${GROUPS.map((g) => `${route.counts[g.id] ?? 0} ${g.label.toLowerCase()}`).join(", ")}`}
+              >
+                {GROUPS.filter((g) => route.counts[g.id]).map((g) => (
+                  <span key={g.id} className={`is-${g.id}`} style={{ flexGrow: route.counts[g.id] }} />
+                ))}
+              </div>
+              <ul className="fb-legend" aria-hidden="true">
+                {GROUPS.map((g) => (
+                  <li key={g.id} className={`fb-pill${route.counts[g.id] ? "" : " is-none"}`}>
+                    <i className={`is-${g.id}`} />
+                    {g.label} {route.counts[g.id] ?? 0}
+                  </li>
+                ))}
+              </ul>
+              {/* A8 has the records of Linum wet meadows loop only */}
+              {route.id === "linum" ? (
+                <Link href={`/map/route/${route.id}/recorded`} className="btn btn-secondary btn-chev">
+                  See everything recorded
+                  <ChevronIcon size={18} />
+                </Link>
+              ) : (
+                <button type="button" className="btn btn-secondary btn-chev" aria-disabled="true">
+                  See everything recorded
+                  <span className="sr-only">, not built in the prototype yet</span>
+                  <ChevronIcon size={18} />
+                </button>
+              )}
+            </div>
+          </section>
+
+          {detail && (
+            <>
+              <section aria-labelledby="sec-season-title">
+                <SectionHead id="season" lead="When to " close="walk it" note="Spots in season" />
+                <div className="fb-card">
+                  <ol
+                    className="fb-season"
+                    aria-label={`Spots in season by month. ${MONTH_NAMES[NOW]}: ${detail.season[NOW]} of ${detail.spots.length}`}
+                  >
+                    {detail.season.map((c, i) => (
+                      <li key={i} aria-hidden="true" className={i === NOW ? "is-now" : undefined}>
+                        <span>{c}</span>
+                        <span className="fb-season-bar" style={{ height: `${0.75 + (4.375 * c) / most}rem` }} />
+                        <span>{MONTH_LETTERS[i]}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  <p className="fb-small">{detail.seasonNote}</p>
+                </div>
+              </section>
+
+              <section aria-labelledby="sec-happening-title">
+                <SectionHead id="happening" lead="What is happening " close="along this route" />
+                <div className="fb-stack">
+                  {detail.claims.map((c) => (
+                    <ClaimCard key={c.id} claim={c} />
+                  ))}
+                </div>
+              </section>
+
+              <section aria-labelledby="sec-getting-title">
+                <SectionHead id="getting" lead="Getting there, and " close="getting along it" />
+                <dl className="fb-card fb-facts">
+                  {detail.getting.map(([k, v]) => (
+                    <div key={k}>
+                      <dt>{k}</dt>
+                      <dd>{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <p className="fb-small">{detail.gettingNote}</p>
+              </section>
+
+              <p className="fb-small b1-foot">{detail.foot}</p>
+            </>
+          )}
         </div>
-        <Actions route={route} className="b1-actions b1-actions-desk" />
+        <Pin route={route} walkable={!!detail} />
       </div>
 
       <MapTools locate={locate} />

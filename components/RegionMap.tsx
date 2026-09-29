@@ -11,6 +11,7 @@
 // are placed from map.latLngToContainerPoint on every move. The place names are plain text, so
 // they stay ordinary markers.
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import type { Map as LeafletMap, GeoJSON as LeafletGeoJSON } from "leaflet";
@@ -85,6 +86,10 @@ export type MapPoint = {
   start?: boolean;
   /** a spot's name goes on the left of its marker */
   left?: boolean;
+  /** a route drawn with its name, the second line under it ("4 of 6 in season"), as on A5's map */
+  tag?: string;
+  /** the visible name of a tagged route, when `label` says more for screen readers */
+  name?: string;
 };
 
 const REGION_POINTS: MapPoint[] = CLUSTERS.map(([count, lat, lon, where]) => ({
@@ -481,14 +486,25 @@ export default function RegionMap({
             visibility: zooming || !pin.free ? ("hidden" as const) : undefined,
           };
 
-          // a spot on the route: a lime disc numbered in walking order, its name beside it
+          // a spot on the route: a lime disc numbered in walking order, its name beside it. It opens
+          // the spot's page where there is one, and otherwise its row further down the same page.
           if (pin.n !== undefined) {
-            return (
-              <a key={pin.id} href={`#spot-${pin.n}`} className={`map-spot${pin.left ? " is-left" : ""}`} style={style} aria-label={`Spot ${pin.n}, ${pin.label}`}>
+            const body = (
+              <>
                 <span className="spot-mark">{pin.n}</span>
                 <span className="map-spot-label" aria-hidden="true">
                   {pin.label}
                 </span>
+              </>
+            );
+            const cls = `map-spot${pin.left ? " is-left" : ""}${pin.current ? " is-current" : ""}`;
+            return pin.href ? (
+              <Link key={pin.id} href={pin.href} className={cls} style={style} aria-label={`Spot ${pin.n}, ${pin.label}`}>
+                {body}
+              </Link>
+            ) : (
+              <a key={pin.id} href={`#spot-${pin.n}`} className={cls} style={style} aria-label={`Spot ${pin.n}, ${pin.label}`}>
+                {body}
               </a>
             );
           }
@@ -502,6 +518,25 @@ export default function RegionMap({
                 <span className="map-start-label" aria-hidden="true">
                   Start and finish
                 </span>
+              </div>
+            );
+          }
+
+          // a route on A5's map: its name and how many spots are in season, in a glass label
+          if (pin.tag !== undefined) {
+            const body = (
+              <>
+                <b>{pin.name}</b>
+                <span>{pin.tag}</span>
+              </>
+            );
+            return pin.href ? (
+              <Link key={pin.id} href={pin.href} className="map-route glass glass-pin" style={style} aria-label={pin.label}>
+                {body}
+              </Link>
+            ) : (
+              <div key={pin.id} className="map-route glass glass-pin" style={style} role="img" aria-label={pin.label}>
+                {body}
               </div>
             );
           }

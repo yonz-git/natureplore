@@ -187,3 +187,32 @@ export const EyeOffIcon = (p: P) => (
     <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
   </Svg>
 );
+
+export const CheckCircleIcon = (p: P) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="9.5" />
+    <path d="m7.5 12.5 3 3 6-6.5" />
+  </Svg>
+);
+
+export const WalkIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M6 4h6v7l7 3v5H4V4h2z" />
+    <path d="M4 15h15" />
+  </Svg>
+);
+
+export const ListIcon = (p: P) => (
+  <Svg {...p}>
+    <rect x="5" y="3.5" width="14" height="17" rx="2" />
+    <path d="M9 3.5v17" />
+    <path d="M12.5 9h3.5M12.5 13h3.5" />
+  </Svg>
+);
+
+export const InfoIcon = (p: P) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M12 11v5.5M12 8v.01" />
+  </Svg>
+);

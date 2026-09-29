@@ -1,6 +1,6 @@
 import SavedScreen from "@/components/SavedScreen";
 
-// A7 · Map home, saved spots and routes: what was saved on this device.
+// E1 · Saved: the Saved tab, what is kept on this device.
 
 export default function Saved() {
   return <SavedScreen />;
