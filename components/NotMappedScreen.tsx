@@ -4,7 +4,7 @@
 
 import Link from "next/link";
 
-import { PanelLogo, SearchField } from "@/components/MapParts";
+import { SearchField } from "@/components/MapParts";
 import { REGIONS } from "@/lib/routes";
 
 export default function NotMappedScreen({ place }: { place: string }) {
@@ -25,7 +25,6 @@ export default function NotMappedScreen({ place }: { place: string }) {
       </svg>
 
       <div className="ms-panel glass-desk">
-        <PanelLogo />
         <div className="ms-bar">
           <SearchField defaultValue={searched} />
         </div>

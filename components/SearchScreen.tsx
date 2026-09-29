@@ -10,7 +10,7 @@ import { useMemo, useState } from "react";
 
 import { BackIcon, LocationIcon } from "@/components/Icons";
 import { useLocationPrompt } from "@/components/LocationDialog";
-import { PanelLogo, RegionRow, SearchField } from "@/components/MapParts";
+import { RegionRow, SearchField } from "@/components/MapParts";
 import RegionMap from "@/components/RegionMap";
 import { searchRegions, suggestRegions } from "@/lib/routes";
 
@@ -34,7 +34,6 @@ export default function SearchScreen({ query }: { query: string }) {
       <RegionMap className="a1-map" />
 
       <div className="ms-panel glass-desk">
-        <PanelLogo />
         <Link href="/map" className="ms-back-desk">
           <BackIcon size={18} />
           Map

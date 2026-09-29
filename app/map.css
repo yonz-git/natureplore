@@ -235,6 +235,10 @@ button.float-pill:active { transform: scale(0.97); }
   font-variant-numeric: tabular-nums;
 }
 
+/* a group with nothing recorded yet, on the B1 card: the pill stays so the row reads the same */
+.pill-org.is-none { color: var(--color-on-ground-soft); }
+.pill-org.is-none b { color: var(--color-on-ground-soft); font-weight: 400; }
+
 /* a state such as "Not mapped yet" */
 .tag {
   height: 1.625rem;
@@ -249,6 +253,29 @@ button.float-pill:active { transform: scale(0.97); }
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
+}
+
+/* Hover, mouse and pen only: the primary dims a little, glass and inner glass controls take a white
+   8% wash, drawn as an inset layer so the fill, edge and float shadow underneath stay as they are. */
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:not([aria-disabled="true"]):hover { filter: brightness(0.96); }
+  .btn-secondary:not([aria-disabled="true"]):hover,
+  .chip:not([aria-pressed="true"]):hover,
+  .b1-act:hover,
+  .row:hover,
+  .org-row:not([aria-disabled="true"]):hover {
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0.08);
+  }
+  .round:hover,
+  .tool-pill:not([aria-current]):hover,
+  button.float-pill:hover {
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.11), inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
+  }
+  .seg-opt:not([aria-current]):not([aria-disabled="true"]):hover,
+  .card-save:hover,
+  .b1-close:hover { background-color: rgb(255 255 255 / 0.08); }
+  .card:has(.card-open:hover) { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), inset 0 0 0 100vmax rgb(255 255 255 / 0.04); }
+  .b1-actions-desk .b1-act:hover { box-shadow: none; text-decoration: underline; text-underline-offset: 0.1875rem; }
 }
 
 /* ── cards ─────────────────────────────────────────────────────────────────────────────────── */
@@ -284,6 +311,13 @@ button.float-pill:active { transform: scale(0.97); }
 .card-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .card-rich .card-line,
 .card:not(.card-rich) .card-where { display: none; }
+
+/* the name opens the card's route: its link covers the whole card, the save control sits above */
+.card-open { color: inherit; text-decoration: none; }
+.card-open::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.card-open:focus-visible { outline: none; }
+.card:has(.card-open:focus-visible) { outline: 2px solid var(--color-mist); outline-offset: 3px; }
+.card-save { z-index: 1; }
 
 /* the save control: on a photograph it frosts the photograph, the one blur allowed inside glass */
 .card-save {
@@ -377,19 +411,7 @@ button.float-pill:active { transform: scale(0.97); }
 
 /* the panel is only a box on the desktop; on the phone its parts lay themselves out */
 .ms-panel { display: contents; }
-.ms-logo { display: none; }
 .ms-back-desk { display: none; }
-
-/* the wordmark over the map on the phone A1, centred at the top */
-.ms-wordmark {
-  position: absolute;
-  top: calc(var(--top-chrome) + 2.375rem);
-  left: 50%;
-  translate: -50% 0;
-  height: 1.6875rem;
-  color: var(--color-on-ground);
-  pointer-events: none;
-}
 
 /* the bar over the top of the map: the field, the segment, A5's location line */
 .ms-bar {
@@ -510,6 +532,196 @@ button.float-pill:active { transform: scale(0.97); }
 .a6 .ms-lead { margin-top: 0.75rem; }
 .a6 .ms-lead + .ms-lead { margin-top: 0.5rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
 .a6 .btn { margin-top: 1.5rem; }
+
+/* ── B1: the route detail, on the map ─────────────────────────────────────────────────────── */
+
+/* the spot marker: a lime disc numbered in walking order, with a forest and mist double ring */
+.spot-mark {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  box-sizing: border-box;
+  padding-bottom: 0.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  box-shadow: 0 0 0 2px var(--color-ground), 0 0 0 3.5px var(--color-mist), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
+  color: var(--color-on-primary);
+  font-family: var(--text-count--font-family);
+  font-size: var(--text-count);
+  font-weight: 400;
+  line-height: 1;
+}
+.map-spot { position: absolute; transform: translate(-50%, -50%); text-decoration: none; }
+.map-spot-label,
+.map-start-label {
+  position: absolute;
+  top: 50%;
+  left: 2.5rem;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  color: var(--color-on-ground);
+  font-size: var(--text-caption);
+  font-weight: 500;
+  line-height: 1;
+  text-shadow: 0 0 3px var(--color-ground), 0 0 6px var(--color-ground), 0 1px 8px rgb(6 18 9 / 0.8);
+  pointer-events: none;
+}
+.map-spot.is-left .map-spot-label { left: auto; right: 2.5rem; }
+.map-start {
+  position: absolute;
+  width: 2.5rem;
+  height: 2.5rem;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-on-ground);
+  color: var(--color-ground);
+  box-shadow: 0 0 0 0.25rem rgb(20 38 26 / 0.9), 0 0.5rem 1.25rem rgb(6 18 9 / 0.45);
+  pointer-events: none;
+}
+.map-start-label { left: auto; right: 3.125rem; }
+/* on the phone the map is small: the numbers carry it, the names are in the list below */
+@media (max-width: 63.99rem) {
+  .map-spot-label { display: none; }
+  .map-start-label { top: 3rem; right: auto; left: 50%; transform: translateX(-50%); }
+}
+
+.b1 { --sheet-top: 27.5rem; }
+.b1-top {
+  position: absolute;
+  top: calc(var(--top-chrome) + 0.5rem);
+  left: var(--spacing-screen-phone);
+  right: var(--spacing-screen-phone);
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.b1-top > * { pointer-events: auto; }
+.b1 .ms-sheet { padding-left: 1.5rem; padding-right: 1.5rem; }
+
+/* the photographs: one large and two small, placeholders until the route has its own */
+.b1-photos {
+  position: relative;
+  flex-shrink: 0;
+  height: 11.25rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.25rem;
+  border-radius: var(--radius-inner);
+  overflow: hidden;
+  border: 0.5px solid var(--color-inner-edge);
+}
+.b1-photos > span:nth-child(1) {
+  grid-row: 1 / 3;
+  background: radial-gradient(120% 90% at 30% 25%, rgb(174 183 121 / 0.35) 0%, transparent 60%), linear-gradient(170deg, var(--color-field-mid) 0%, var(--color-field-shade) 55%, var(--color-ground) 100%);
+}
+.b1-photos > span:nth-child(2) { background: radial-gradient(90% 90% at 70% 30%, rgb(200 232 240 / 0.25) 0%, transparent 60%), linear-gradient(170deg, var(--color-field-deep) 0%, var(--color-ground) 100%); }
+.b1-photos > span:nth-child(3) { background: radial-gradient(90% 90% at 40% 60%, rgb(174 183 121 / 0.3) 0%, transparent 65%), linear-gradient(170deg, var(--color-field-shade) 0%, var(--color-ground) 100%); }
+.b1-photos .b1-photos-tag {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  height: 1.875rem;
+  padding: 0 0.75rem;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  background: rgb(14 28 18 / 0.45);
+  backdrop-filter: blur(1.25rem);
+  border: 0.5px solid rgb(255 255 255 / 0.22);
+  font-size: var(--text-caption);
+  line-height: 1;
+}
+/* on the desktop the close control sits on the photograph; on the phone it is over the map */
+.b1-close { display: none; }
+
+.b1-head { display: flex; flex-direction: column; }
+.b1-head .ms-lead { margin-top: 0.25rem; }
+.b1-body { margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); }
+
+/* what is recorded along the route: the proportion bar, the five groups, and the way to all of them */
+.b1-box {
+  flex-shrink: 0;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  border-radius: var(--radius-inner);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+}
+.b1-box-head { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.75rem; row-gap: 0.25rem; }
+.b1-box-head h2,
+.b1-h2 { margin: 0; font-family: var(--text-h3--font-family); font-size: var(--text-h3); line-height: var(--text-h3--line-height); font-weight: var(--text-h3--font-weight); }
+.b1-box-head span { font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
+.b1-bar { height: 0.75rem; display: flex; gap: 0.25rem; border-radius: 0.375rem; overflow: hidden; }
+.b1-bar span { flex-basis: 0; }
+.b1-bar .is-plants { background: var(--color-group-plants); }
+.b1-bar .is-herbs { background: var(--color-group-herbs); }
+.b1-bar .is-mushrooms { background: var(--color-group-mushrooms); }
+.b1-bar .is-birds { background: var(--color-group-birds); }
+.b1-bar .is-mammals { background: var(--color-group-mammals); }
+.b1-groups { margin: 0; padding: 0; list-style: none; }
+.b1-groups li { min-height: 3rem; display: flex; align-items: center; gap: 0.75rem; }
+.b1-groups li + li { border-top: 1px solid var(--color-divider); }
+.b1-groups li > span { flex-grow: 1; font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); font-weight: 400; }
+.b1-groups li > b { font-family: var(--text-count--font-family); font-size: 1.25rem; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
+.b1-groups li.is-none { opacity: 0.6; }
+.b1-groups .is-plants svg { color: var(--color-group-plants); }
+.b1-groups .is-herbs svg { color: var(--color-group-herbs); }
+.b1-groups .is-mushrooms svg { color: var(--color-group-mushrooms); }
+.b1-groups .is-birds svg { color: var(--color-group-birds); }
+.b1-groups .is-mammals svg { color: var(--color-group-mammals); }
+
+.b1-notable {
+  margin: 0;
+  display: flex;
+  gap: 0.75rem;
+  font-size: var(--text-meta);
+  line-height: var(--text-meta--line-height);
+  font-weight: 500;
+}
+.b1-notable svg { flex-shrink: 0; color: var(--color-mist); }
+.b1-notable a { color: inherit; text-decoration: underline; text-underline-offset: 0.1875rem; }
+
+.b1-h2 { margin-bottom: 0.5rem; }
+.b1-spots { margin: 0; padding: 0; list-style: none; }
+.b1-spots li { display: flex; align-items: center; gap: 0.875rem; padding: 0.75rem 0; scroll-margin-top: 1rem; }
+.b1-spots li + li { border-top: 1px solid var(--color-divider); }
+.b1-spots li > span:last-child { min-width: 0; display: flex; flex-direction: column; gap: 0.125rem; }
+.b1-spots b { font-size: var(--text-body); line-height: 1.375rem; font-weight: 400; }
+.b1-spots li > span:last-child > span { font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
+.b1-foot { font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
+
+/* save and share, then the one thing to do. On the phone they close the sheet, full width */
+.b1-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.b1-actions .b1-go { grid-column: 1 / -1; }
+.b1-act {
+  height: 3.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  color: var(--color-on-ground);
+  font-size: var(--text-button-secondary);
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+.b1-act:active { transform: scale(0.97); }
+.b1-actions-desk { display: none; }
 
 /* ── offline ───────────────────────────────────────────────────────────────────────────────── */
 
@@ -741,8 +953,6 @@ button.float-pill:active { transform: scale(0.97); }
     flex-direction: column;
     border-radius: var(--radius-card);
   }
-  .ms-logo { display: block; flex-shrink: 0; height: 1.5rem; margin-bottom: 1.75rem; color: var(--color-on-ground); align-self: flex-start; }
-  .ms-wordmark,
   .ms-handle { display: none; }
 
   .ms-bar,
@@ -817,6 +1027,47 @@ button.float-pill:active { transform: scale(0.97); }
     border-color: var(--color-inner-edge);
   }
 
+  /* B1: the panel scrolls, save, share and navigate stay at its foot */
+  .b1-top { display: none; }
+  .b1 .ms-panel { padding: 1.5rem 0 0; }
+  .b1 .ms-sheet {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0 2rem 1.5rem;
+    gap: 1.25rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .b1 .ms-sheet::-webkit-scrollbar { display: none; }
+  .b1-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-pill);
+    background: rgb(14 28 18 / 0.45);
+    backdrop-filter: blur(1.25rem);
+    border: 0.5px solid rgb(255 255 255 / 0.22);
+    color: var(--color-on-ground);
+  }
+  .b1-photos { height: 12.5rem; }
+  .b1-actions-phone { display: none; }
+  .b1-actions-desk {
+    flex-shrink: 0;
+    padding: 1rem 2rem 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    border-top: 1px solid var(--color-divider);
+  }
+  .b1-actions-desk .b1-act { height: 2.75rem; padding: 0 0.25rem; background: none; border: 0; box-shadow: none; }
+  .b1-actions-desk .b1-go { margin-left: auto; align-self: center; }
+
   .ms-tools {
     position: absolute;
     top: 6.5rem;
@@ -827,6 +1078,8 @@ button.float-pill:active { transform: scale(0.97); }
     align-items: flex-end;
     gap: 0.75rem;
   }
+  .ms-tools { pointer-events: none; }
+  .ms-tools > * { pointer-events: auto; }
   .ms-tools .round { width: 2.75rem; height: 2.75rem; }
   .tool-pill {
     height: 2.75rem;
@@ -885,10 +1138,10 @@ button.float-pill:active { transform: scale(0.97); }
   .search .ms-bar-row { flex-direction: column; }
 
   /* A6 and offline: the message sits in the middle of the panel */
-  .a6 .ms-logo,
-  .offline .ms-logo { margin-bottom: auto; }
+  .a6 .ms-panel { justify-content: center; }
+  .a6 .ms-panel .ms-sheet { margin: 2.5rem 0 0; }
   .a6 .ms-sheet,
-  .offline .ms-sheet { flex: 0 0 auto; margin-top: 2.5rem; margin-bottom: auto; }
+  .offline .ms-sheet { flex: 0 0 auto; margin-top: auto; margin-bottom: auto; }
   .a6 .btn,
   .offline .btn { align-self: center; }
   .offline .ms-note { text-align: left; }

@@ -4,18 +4,24 @@
 // the map as route pins around them. The first two show, "Show all" opens the rest in place.
 // From 64rem the panel adds the group filter. Boards: A7, phone and desktop, version 6.
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ChevronIcon } from "@/components/Icons";
-import { MapTools, PanelLogo, SavedCard, SearchField, Segment } from "@/components/MapParts";
+import { MapTools, SavedCard, SearchField, Segment } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { GROUPS, HERE, SAVED, type Group } from "@/lib/routes";
-import { savedItems, useSaved } from "@/lib/saved";
+import { rememberList, savedItems, useSaved } from "@/lib/saved";
 
 // every thing that can be saved has a pin, so the map is built once and does not follow the list
 const POINTS: MapPoint[] = [
   { id: "here", lat: HERE.lat, lon: HERE.lon, label: "You are here", here: true },
-  ...SAVED.map((s) => ({ id: s.id, lat: s.lat, lon: s.lon, label: `${s.name}, show on the map` })),
+  ...SAVED.map((s) => ({
+    id: s.id,
+    lat: s.lat,
+    lon: s.lon,
+    label: s.kind === "route" ? `${s.name}, open the route card` : `${s.name}, show on the map`,
+    href: s.kind === "route" ? `/map/route/${s.id}` : undefined,
+  })),
 ];
 
 const FIRST = 2;
@@ -25,6 +31,7 @@ export default function SavedScreen() {
   const { ids } = useSaved();
   const [group, setGroup] = useState<Group | null>(null);
   const [all, setAll] = useState(false);
+  useEffect(() => rememberList("/map/saved"), []);
 
   const items = useMemo(() => {
     const list = savedItems(ids);
@@ -38,7 +45,6 @@ export default function SavedScreen() {
       <RegionMap className="a1-map" ref={map} points={POINTS} maxZoom={11} />
 
       <div className="ms-panel glass-desk">
-        <PanelLogo />
         <div className="ms-bar">
           <SearchField />
           <Segment />

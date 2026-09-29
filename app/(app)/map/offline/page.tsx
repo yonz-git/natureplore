@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { OfflineIcon } from "@/components/Icons";
-import { PanelLogo } from "@/components/MapParts";
 
 // A1 · First open, no connection: the map has never loaded, so nothing is drawn rather than a
 // guess. Try again goes back to A1. Reached by its address only in the prototype.
@@ -15,7 +14,6 @@ export default function Offline() {
         Map not loaded yet
       </div>
       <div className="ms-panel glass-desk">
-        <PanelLogo />
         <div className="ms-sheet is-short glass-phone">
           <div className="ms-handle" aria-hidden="true" />
           <h1 className="ms-title">

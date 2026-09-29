@@ -8,24 +8,26 @@
 // From 64rem both become the panel with the compact card, and the map gets its Saved control.
 // Boards: A4 and A5, phone and desktop, version 6.
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { LocationOffIcon, ChevronIcon } from "@/components/Icons";
 import { useLocationPrompt } from "@/components/LocationDialog";
-import { MapTools, PanelLogo, RouteCard, SearchField, Segment } from "@/components/MapParts";
+import { MapTools, RouteCard, SearchField, Segment } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
+import { rememberList } from "@/lib/saved";
 import { HERE, ROUTES, ROUTE_TOTAL, SEASON, type SeasonId } from "@/lib/routes";
 
 // the person and the routes near them, a constant so the map is built once
 const NEAR_POINTS: MapPoint[] = [
   { id: "here", lat: HERE.lat, lon: HERE.lon, label: "You are here", here: true },
-  ...ROUTES.map((r) => ({ id: r.id, lat: r.lat, lon: r.lon, label: `${r.name}, show on the map` })),
+  ...ROUTES.map((r) => ({ id: r.id, lat: r.lat, lon: r.lon, label: `${r.name}, open the route card`, href: `/map/route/${r.id}` })),
 ];
 
 export default function RoutesScreen({ near }: { near: boolean }) {
   const map = useRef<MapHandle>(null);
   const [season, setSeason] = useState<SeasonId | null>(null);
   const { ask, prompt } = useLocationPrompt();
+  useEffect(() => rememberList(near ? "/map/near-you" : "/map/region"), [near]);
 
   const routes = useMemo(
     () => (season ? ROUTES.filter((r) => r.season.includes(season)) : ROUTES),
@@ -37,7 +39,6 @@ export default function RoutesScreen({ near }: { near: boolean }) {
       <RegionMap className="a1-map" ref={map} points={near ? NEAR_POINTS : undefined} maxZoom={near ? 11 : undefined} />
 
       <div className="ms-panel glass-desk">
-        <PanelLogo />
         <div className="ms-bar">
           <SearchField />
           <Segment />
@@ -95,8 +96,9 @@ export default function RoutesScreen({ near }: { near: boolean }) {
           </div>
 
           {/* the full list is not built in the prototype, the button says what it would open */}
-          <button type="button" className="btn btn-secondary btn-chev is-closing">
+          <button type="button" className="btn btn-secondary btn-chev is-closing" aria-disabled="true">
             {near ? `Show all ${ROUTE_TOTAL} routes, nearest first` : `Show all ${ROUTE_TOTAL} routes as a list`}
+            <span className="sr-only">, not built in the prototype yet</span>
             <ChevronIcon size={18} />
           </button>
         </div>

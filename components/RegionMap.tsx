@@ -11,6 +11,7 @@
 // are placed from map.latLngToContainerPoint on every move. The place names are plain text, so
 // they stay ordinary markers.
 
+import { useRouter } from "next/navigation";
 import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import type { Map as LeafletMap, GeoJSON as LeafletGeoJSON } from "leaflet";
 
@@ -74,6 +75,16 @@ export type MapPoint = {
   label: string;
   /** the person's own position, drawn as a dot with its name beside it */
   here?: boolean;
+  /** a pin that opens something, such as a route's card, instead of zooming to itself */
+  href?: string;
+  /** the pin whose card is open, drawn with a ring */
+  current?: boolean;
+  /** a spot on a route, numbered in walking order */
+  n?: number;
+  /** where a route starts and finishes */
+  start?: boolean;
+  /** a spot's name goes on the left of its marker */
+  left?: boolean;
 };
 
 const REGION_POINTS: MapPoint[] = CLUSTERS.map(([count, lat, lon, where]) => ({
@@ -129,7 +140,10 @@ function freeBox(host: HTMLElement, sheet: HTMLElement | null, band: HTMLElement
   // sit under the sheet and still count as free
   if (!desktop) return { x: 0, y: top, w, h: Math.max(1, sheet.offsetTop - top) };
   const right = sheet.offsetLeft + sheet.offsetWidth;
-  return { x: right, y: top, w: Math.max(1, w - right), h: Math.max(1, h - top) };
+  // the map's own controls down the right edge are not free either
+  const tools = host.parentElement?.querySelector<HTMLElement>(".ms-tools");
+  const end = tools && tools.offsetWidth ? tools.offsetLeft - 8 : w;
+  return { x: right, y: top, w: Math.max(1, end - right), h: Math.max(1, h - top) };
 }
 
 // half a pin, so one is hidden before it slides under the edge of the glass
@@ -146,18 +160,25 @@ export default function RegionMap({
   still = false,
   points,
   maxZoom = REGION_ZOOM_MAX,
+  line,
+  detail,
   ref,
 }: {
   className?: string;
   still?: boolean;
   points?: MapPoint[];
   maxZoom?: number;
+  /** a route's line, [lat, lon] in walking order, drawn in lime over the map. Pass a constant. */
+  line?: [number, number][];
+  /** a GeoJSON file of the paths, water and land around a route, for the zoom a route is seen at */
+  detail?: string;
   /** a screen holds this to move the map from a control of its own */
   ref?: React.Ref<MapHandle>;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const [pins, setPins] = useState<Pin[]>([]);
+  const router = useRouter();
   const [zooming, setZooming] = useState(false);
   // set once the map exists: puts a point in the middle of the free space, not the screen
   const centreRef = useRef<Centre>(null);
@@ -187,7 +208,7 @@ export default function RegionMap({
         attributionControl: false,
         renderer: L.canvas({ padding: 0.5 }),
         minZoom: 7.75,
-        maxZoom: 12,
+        maxZoom: Math.max(12, maxZoom),
         zoomSnap: 0.25,
         zoomDelta: 0.5,
         wheelPxPerZoomLevel: 120,
@@ -212,7 +233,7 @@ export default function RegionMap({
         fillColor: token(name),
         fillOpacity: 1,
       });
-      const line = (name: string, weight: number, extra: object = {}) => () => ({
+      const stroke = (name: string, weight: number, extra: object = {}) => () => ({
         color: token(name),
         weight,
         fill: false,
@@ -224,8 +245,8 @@ export default function RegionMap({
         wood: fill("--color-basemap-wood"),
         urban: fill("--color-basemap-urban"),
         water: fill("--color-basemap-water"),
-        waterway: line("--color-basemap-water", 2),
-        states: line("--color-basemap-border", 1.2, { dashArray: "6 4" }),
+        waterway: stroke("--color-basemap-water", 2),
+        states: stroke("--color-basemap-border", 1.2, { dashArray: "6 4" }),
       };
       const roadStyle = (f?: GeoJSON.Feature) =>
         ({
@@ -239,6 +260,47 @@ export default function RegionMap({
         L.geoJSON(geo[k], { style: styles[k], interactive: false }).addTo(map);
       }
       L.geoJSON(geo.roads, { style: roadStyle, interactive: false }).addTo(map);
+
+      // The region data holds main roads only. A route is seen close up, so the tracks, ditches and
+      // ponds it follows come from its own detail file, drawn in the same basemap colours.
+      if (detail) {
+        const kinds: Record<string, object> = {
+          meadow: { stroke: false, fillColor: token("--color-basemap-wood"), fillOpacity: 0.45 },
+          urban: { stroke: false, fillColor: token("--color-basemap-urban"), fillOpacity: 1 },
+          wood: { stroke: false, fillColor: token("--color-basemap-wood"), fillOpacity: 1 },
+          wetland: { stroke: false, fillColor: token("--color-basemap-water"), fillOpacity: 0.55 },
+          water: { stroke: false, fillColor: token("--color-basemap-water"), fillOpacity: 1 },
+          ditch: { color: token("--color-basemap-label-water"), weight: 0.8, opacity: 0.6, fill: false },
+          river: { color: token("--color-basemap-label-water"), weight: 2, opacity: 0.7, fill: false },
+          service: { color: token("--color-basemap-rail"), weight: 1, fill: false },
+          track: { color: token("--color-basemap-label"), weight: 1, opacity: 0.55, dashArray: "4 3", fill: false },
+          path: { color: token("--color-basemap-label"), weight: 1, opacity: 0.55, dashArray: "2 3", fill: false },
+          street: { color: token("--color-basemap-road"), weight: 2, fill: false },
+          road: { color: token("--color-basemap-trunk"), weight: 3, fill: false },
+        };
+        fetch(detail)
+          .then((r) => r.json())
+          .then((fc: GeoJSON.FeatureCollection) => {
+            if (!live || mapRef.current !== map) return;
+            const layer = L.geoJSON(fc, {
+              style: (f) => ({ lineCap: "round", lineJoin: "round", ...kinds[f?.properties?.k as string] }),
+              interactive: false,
+            }).addTo(map);
+            layer.bringToBack();
+            // the region fills stay underneath, so the detail sits between them and the route
+            routeLayers.forEach((l) => l.bringToFront());
+          })
+          .catch(() => {});
+      }
+
+      // the route itself: a lime line on a dark casing, so it reads over water and land alike
+      const routeLayers: ReturnType<typeof L.polyline>[] = [];
+      if (line) {
+        routeLayers.push(
+          L.polyline(line, { color: token("--color-ground"), weight: 9, opacity: 0.85, lineCap: "round", lineJoin: "round", interactive: false }).addTo(map),
+          L.polyline(line, { color: token("--color-primary"), weight: 4.5, lineCap: "round", lineJoin: "round", interactive: false }).addTo(map),
+        );
+      }
 
       // Names, thinned as the map zooms out so they never pile up
       const labels: { marker: LeafletGeoJSON | ReturnType<typeof L.marker>; from: number }[] = [];
@@ -334,7 +396,7 @@ export default function RegionMap({
         taken = true;
       });
       // the welcome card has no sheet over it, so the whole region fits inside it
-      const cluster = L.latLngBounds(pts.map((pt) => [pt.lat, pt.lon] as [number, number]));
+      const cluster = L.latLngBounds([...pts.map((pt) => [pt.lat, pt.lon] as [number, number]), ...(line ?? [])]);
       // the zoom at which every point fits the box, on whichever axis runs out first
       const zoomForBox = (box: { w: number; h: number }) => {
         const nw = map.project(cluster.getNorthWest(), 0);
@@ -404,7 +466,7 @@ export default function RegionMap({
       mapRef.current = null;
       centreRef.current = null;
     };
-  }, [still, points, maxZoom]);
+  }, [still, points, maxZoom, line, detail]);
 
   return (
     <>
@@ -418,6 +480,31 @@ export default function RegionMap({
             // so a pin that is off the free space or mid-zoom hides with visibility instead
             visibility: zooming || !pin.free ? ("hidden" as const) : undefined,
           };
+
+          // a spot on the route: a lime disc numbered in walking order, its name beside it
+          if (pin.n !== undefined) {
+            return (
+              <a key={pin.id} href={`#spot-${pin.n}`} className={`map-spot${pin.left ? " is-left" : ""}`} style={style} aria-label={`Spot ${pin.n}, ${pin.label}`}>
+                <span className="spot-mark">{pin.n}</span>
+                <span className="map-spot-label" aria-hidden="true">
+                  {pin.label}
+                </span>
+              </a>
+            );
+          }
+          if (pin.start) {
+            return (
+              <div key={pin.id} className="map-start" style={style} role="img" aria-label={pin.label}>
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 21V4" />
+                  <path d="M6 4h11l-2 4 2 4H6" />
+                </svg>
+                <span className="map-start-label" aria-hidden="true">
+                  Start and finish
+                </span>
+              </div>
+            );
+          }
 
           // the person's own position is a mark, not a control: a dot with its name beside it
           if (pin.here) {
@@ -433,11 +520,12 @@ export default function RegionMap({
             <button
               key={pin.id}
               type="button"
-              className={`a1-pin glass glass-pin${pin.count === undefined ? " a1-pin-place" : ""}`}
+              className={`a1-pin glass glass-pin${pin.count === undefined ? " a1-pin-place" : ""}${pin.current ? " is-current" : ""}`}
+              aria-current={pin.current ? "true" : undefined}
               style={style}
               aria-label={pin.label}
               onClick={() =>
-                centreRef.current?.(
+                pin.href ? router.push(pin.href) : centreRef.current?.(
                   pin.lat,
                   pin.lon,
                   pin.count === undefined ? 12 : 10.5,

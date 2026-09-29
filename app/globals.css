@@ -9,6 +9,7 @@
 @import "./welcome2.css";
 @import "./intro.css";
 @import "./map.css";
+@import "./organism.css";
 @import "./tabbar.css";
 @import "./transitions.css";
 
@@ -42,4 +43,23 @@ h1,
 h2,
 h3 {
   font-family: var(--font-heading);
+}
+
+/* Focus, for every control: a 2px mist ring 3 outside the shape, following its radius, never
+   removed (docs/design.md, Components). Fields and cards draw their own on the part that shows. */
+:where(a, button, [role="button"], summary):focus-visible {
+  outline: 2px solid var(--color-mist);
+  outline-offset: 3px;
+}
+
+/* Disabled: 45% and no press. In the prototype this marks a control whose page is not built yet;
+   the reason is in its accessible name. */
+:where(a, button)[aria-disabled="true"],
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+:where(a, button)[aria-disabled="true"]:active,
+button:disabled:active {
+  transform: none;
 }

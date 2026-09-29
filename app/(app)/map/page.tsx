@@ -1,4 +1,3 @@
-import Logo from "@/components/Logo";
 import RegionMap from "@/components/RegionMap";
 import StartSheet from "@/components/StartSheet";
 
@@ -10,7 +9,6 @@ export default function MapHome() {
   return (
     <section className="ms a1">
       <RegionMap className="a1-map" />
-      <Logo className="ms-wordmark" />
       <StartSheet />
     </section>
   );

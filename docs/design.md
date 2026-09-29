@@ -343,9 +343,48 @@ components:
   spot-marker:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.on-primary}"
-    typography: "{typography.pill-count}"
+    typography: "{typography.count}"
     rounded: "{rounded.pill}"
-    size: 2.25rem
+    size: 2rem
+  spot-label:
+    textColor: "{colors.on-ground}"
+    typography: "{typography.label}"
+  start-marker:
+    backgroundColor: "{colors.on-ground}"
+    textColor: "{colors.ground}"
+    rounded: "{rounded.pill}"
+    size: 2.5rem
+  route-line:
+    backgroundColor: "{colors.primary}"
+    width: 0.28125rem
+  route-line-casing:
+    backgroundColor: "{colors.ground}"
+    width: 0.5625rem
+  pill-organism-none:
+    backgroundColor: "{colors.pill-fill}"
+    textColor: "{colors.on-ground-soft}"
+    typography: "{typography.pill}"
+    rounded: "{rounded.pill}"
+    height: 2rem
+  photo-group:
+    rounded: "{rounded.inner}"
+    height: 11.25rem
+  recorded-box:
+    backgroundColor: "{colors.inner-fill}"
+    textColor: "{colors.on-ground}"
+    rounded: "{rounded.inner}"
+    padding: 1.25rem
+  proportion-bar:
+    rounded: 0.375rem
+    height: 0.75rem
+  group-row:
+    textColor: "{colors.on-ground}"
+    typography: "{typography.body-sm}"
+    height: 3rem
+  detail-footer:
+    textColor: "{colors.on-ground}"
+    typography: "{typography.button-secondary}"
+    padding: 1rem 2rem 1.75rem
   card:
     backgroundColor: "{colors.glass-fill}"
     textColor: "{colors.on-ground}"
@@ -479,11 +518,13 @@ Empty, offline and not-mapped screens share one pattern: a glass card with the p
 
 Each organism group has one line icon, drawn on a 24 grid with a 1.5 stroke and round caps: a two-leaf sprig for plants, a four-leaf stem for herbs, a cap and stem for mushrooms, a perched bird for birds and a paw print for mammals. The icon always sits next to the group's name or count and is never used alone. It is 22 in a group tile and 18 in a 40 icon disc, both in the group colour, and 16 with a 1.4 stroke in `mist` inside an organism pill. The groups always appear in this order: plants, herbs, mushrooms, birds, mammals.
 
-`pill` (30) carries a season or a spot link with a 16px icon. `pill-organism` (32, padding 8 left and 9 right, 4 between icon and count, 4 between pills) shows only a group icon in `mist` and a count; the group name is kept for screen readers but not shown. Organism counts are always a row of these pills, on every card, list and sheet at every size, never written out as "24 plants, 72 herbs". The row sits at full card width so five pills fit on one line. `tag` (26) marks a state such as "Not mapped yet". `icon-disc` is a 40 inner glass circle with a `mist` icon, or a group-coloured icon beside a group heading. `cluster-orb` is a 46 glass circle with a Comfortaa count on the map. `spot-marker` is a lime circle numbered in walking order, 36 in a list and 32 on the route axis, where it takes a forest and mist double ring. Alpino's digits sit about 1px low in a line of height 1, so a number alone in a circle gets 2px of bottom padding to sit at its optical centre.
+`pill` (30) carries a season or a spot link with a 16px icon. `pill-organism` (32, padding 8 left and 9 right, 4 between icon and count, 4 between pills) shows only a group icon in `mist` and a count; the group name is kept for screen readers but not shown. Organism counts are always a row of these pills, on every card, list and sheet at every size, never written out as "24 plants, 72 herbs". Where every group must show, as on a route card that opens the detail, a group with nothing recorded keeps its pill as `pill-organism-none`: a 0 in Alpino 400 and the icon in `on-ground-soft`, named "none recorded yet" for screen readers. The row sits at full card width so five pills fit on one line. `tag` (26) marks a state such as "Not mapped yet". `icon-disc` is a 40 inner glass circle with a `mist` icon, or a group-coloured icon beside a group heading. `cluster-orb` is a 46 glass circle with a Comfortaa count on the map. `spot-marker` is a 32 lime circle numbered in walking order in a Comfortaa `count`, with a forest and mist double ring, the same on the map, on the route axis and in the spots list. Alpino's digits sit about 1px low in a line of height 1, so a number alone in a circle gets 2px of bottom padding to sit at its optical centre.
 
 `card` is glass at 28 with 32 padding and a 24 gap inside; `card-compact` pads 20 for a results list. `inner-card` is 18 with 16 padding (20 for a fact or a route card). Stat tiles show a `stat-label`, then the value in `stat` with its unit; nested in a route card they become `stat-tile-nested`, 12 radius, 14 by 12 padding, `stat-sm`. A route card opens with a 168 photo at 12 radius, a save orb top right, the title and a `caption` line, three stat tiles, a divider, then organism pills. An organism card puts a 117 by 105 photo beside the name, Latin name, date and a spot pill.
 
-`list-row` is 68 tall with a 40 icon disc, a `title-sm` over a `caption`, and a chevron or tag; rows are divided by a 1px line that starts after the disc and fades to the right. `sheet` rises to 196 from the top on phone with a 36 by 5 handle, a heading, chips and cards. `bottom-bar` holds a short note and the primary button with a 54 round companion. `tab-bar` is 70 tall with 6 padding and three 84 by 56 items, icon over label; the active item is a lime pill. On desktop, `nav-desktop` is a 58 glass pill centred at the top with 44 tall items, icon beside label. Data: the proportion bar is 12 tall, 3 gaps, radius 6, in group colours; month bars are white 30% with the current month in lime.
+`list-row` is 68 tall with a 40 icon disc, a `title-sm` over a `caption`, and a chevron or tag; rows are divided by a 1px line that starts after the disc and fades to the right. `sheet` rises to 196 from the top on phone with a 36 by 5 handle, a heading, chips and cards. `bottom-bar` holds a short note and the primary button with a 54 round companion. `tab-bar` is 70 tall with 6 padding and three 84 by 56 items, icon over label; the active item is a lime pill. On desktop, `nav-desktop` is a 58 glass pill centred at the top with 44 tall items, icon beside label. Data: the proportion bar is 12 tall, 4 gaps, radius 6, in group colours; month bars are white 30% with the current month in lime.
+
+Route detail (B1) is the page a route opens to, over the map, modelled on how Komoot shows a route, without editing and without elevation. The map carries the route: `route-line`, a 4.5 lime line with round caps on a 9 `ground` casing at 85%, so it reads over water and land alike; `spot-marker` pins on the line in walking order; and `start-marker`, a 40 white disc with a forest flag and a 4 forest halo, labelled "Start and finish". On the desktop each spot takes a `spot-label` beside it, `label` 500 in white with a `ground` halo, on the side that does not cover the line; on the phone the names live in the list instead. Beside the map (desktop panel) or under it (phone sheet) come, in this order: `photo-group` (one large photograph and two small in a 2 to 1 grid, 4 apart, radius 18, 180 tall on phone and 200 on desktop, with a close control on the photograph on desktop), the title with its closing word in lime and the start place in `secondary`, three `stat-tile-nested` tiles (Distance, Time, Spots), a `body` description, `recorded-box`, the notable line (a 20 calendar icon in `mist`, `meta` 500, linked to the organism it is about), "Spots along the route" as `list-row`s led by a `spot-marker`, a `caption` footnote, and the actions. `recorded-box` is an `inner-card` holding an `h3` "What is recorded along this route" with "Within 250 m of the line" in `secondary`, a `proportion-bar` (12 tall, 4 gaps, radius 6, group colours, empty groups left out), five `group-row`s (48, group icon 20 in its colour, name in `body-sm`, count in Comfortaa 20, a group with none at 60%), and `button-secondary` "See all organisms" with a chevron. On the tablet the rows become five group tiles. The actions: on the phone Save and Share side by side as `button-secondary` and the primary "Navigate" full width under them; on the desktop `detail-footer` pins them to the foot of the panel under a 1px rule, Save and Share as text links with icons, "Navigate" hugging its label at the right. The panel scrolls, the footer does not.
 
 ## Do's and Don'ts
 

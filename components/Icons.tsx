@@ -145,3 +145,45 @@ export const GroupIcon = ({ group, ...p }: P & { group: Group }) => (
     {GROUP_PATHS[group]}
   </Svg>
 );
+
+export const CloseIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M6 6l12 12M18 6 6 18" />
+  </Svg>
+);
+
+export const CalendarIcon = (p: P) => (
+  <Svg {...p}>
+    <rect x="4" y="5" width="16" height="15" rx="2" />
+    <path d="M4 10h16M9 3v4M15 3v4" />
+  </Svg>
+);
+
+export const ShareIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M12 3v12" />
+    <path d="m8 7 4-4 4 4" />
+    <path d="M5 12v8h14v-8" />
+  </Svg>
+);
+
+export const ArrowIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M5 12h13M13 6l6 6-6 6" />
+  </Svg>
+);
+
+export const MapIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20z" />
+    <path d="M9 4v13.5M15 6.5V20" />
+  </Svg>
+);
+
+export const EyeOffIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M3 3l18 18" />
+    <path d="M10.6 5.3A9 9 0 0 1 12 5.2c3.7 0 7 2.2 9.5 6.8-.8 1.5-1.7 2.8-2.7 3.8M6.2 6.2C4.7 7.4 3.4 9 2.5 12c2.5 4.6 5.8 6.8 9.5 6.8 1.6 0 3.1-.4 4.5-1.2" />
+    <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+  </Svg>
+);

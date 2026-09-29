@@ -2,7 +2,7 @@
 
 // The pieces every map screen is built from, so the same control reads the same on A1 to A7 and
 // at both sizes: the search field, the Routes and Organisms segment, the organism pills, a route
-// card, a saved card, a region row, the desktop tools and the panel's logo.
+// card, a saved card, a region row and the desktop tools.
 // Layout: app/map.css. Glass: app/glass.css.
 
 import Link from "next/link";
@@ -20,7 +20,6 @@ import {
   RoutesIcon,
   SearchIcon,
 } from "@/components/Icons";
-import Logo from "@/components/Logo";
 import { GROUPS, regionLine, type Counts, type Region, type Route, type Saved } from "@/lib/routes";
 import { useSaved } from "@/lib/saved";
 
@@ -97,20 +96,22 @@ export function Segment() {
       <button type="button" className="seg-opt" aria-disabled="true">
         <LeafIcon size={18} />
         Organisms
+        <span className="sr-only">, not built in the prototype yet</span>
       </button>
     </div>
   );
 }
 
 /** The organism counts, always as pills in the fixed group order. A group with none is left out. */
-export function OrganismPills({ counts }: { counts: Counts }) {
+export function OrganismPills({ counts, all = false }: { counts: Counts; all?: boolean }) {
+  // `all` is the route card on B1, which shows every group and says so when one has none yet
   return (
     <ul className="pills" aria-label="Organisms recorded along it">
-      {GROUPS.filter((g) => counts[g.id]).map((g) => (
-        <li key={g.id} className="pill-org">
+      {GROUPS.filter((g) => all || counts[g.id]).map((g) => (
+        <li key={g.id} className={`pill-org${counts[g.id] ? "" : " is-none"}`}>
           <GroupIcon group={g.id} />
-          <b>{counts[g.id]}</b>
-          <span className="sr-only">{g.label.toLowerCase()}</span>
+          <b>{counts[g.id] ?? 0}</b>
+          <span className="sr-only">{counts[g.id] ? g.label.toLowerCase() : `${g.label.toLowerCase()}, none recorded yet`}</span>
         </li>
       ))}
     </ul>
@@ -141,15 +142,19 @@ function Photo({ src }: { src?: string }) {
 
 /**
  * A route. `rich` is the A4 card on the phone: the tall photograph and the three stat tiles.
- * Every other list, and every list from 64rem, shows the compact card. L2, the route detail, is
- * not built in the prototype yet, so the card does not open anything.
+ * Every other list, and every list from 64rem, shows the compact card. The card opens B1, the route
+ * card over the map.
  */
 export function RouteCard({ route, rich = false }: { route: Route; rich?: boolean }) {
   return (
     <article className={`card${rich ? " card-rich" : ""}`} aria-label={route.name}>
       <Photo src={route.image} />
       <div className="card-text">
-        <h3 className="card-name">{route.name}</h3>
+        <h3 className="card-name">
+          <Link href={`/map/route/${route.id}`} className="card-open">
+            {route.name}
+          </Link>
+        </h3>
         <p className="card-meta card-where">{route.where}</p>
         <p className="card-meta card-line">{route.line}</p>
         <p className="card-meta card-spots">{route.spots} spots</p>
@@ -188,7 +193,15 @@ export function SavedCard({ item }: { item: Saved }) {
     <article className="card" aria-label={item.name}>
       <Photo src={item.image} />
       <div className="card-text">
-        <h3 className="card-name">{item.name}</h3>
+        <h3 className="card-name">
+          {item.kind === "route" ? (
+            <Link href={`/map/route/${item.id}`} className="card-open">
+              {item.name}
+            </Link>
+          ) : (
+            item.name
+          )}
+        </h3>
         <p className="card-meta card-line">{item.line}</p>
       </div>
       <OrganismPills counts={item.counts} />
@@ -216,15 +229,6 @@ export function RegionRow({ region }: { region: Region }) {
         {mapped ? <ChevronIcon size={18} /> : <span className="tag">Not mapped yet</span>}
       </Link>
     </li>
-  );
-}
-
-/** The panel's logo on the desktop, the way home to the welcome. */
-export function PanelLogo() {
-  return (
-    <Link href="/" aria-label="natureplore, back to the welcome" className="ms-logo">
-      <Logo className="block h-full w-auto" />
-    </Link>
   );
 }
 

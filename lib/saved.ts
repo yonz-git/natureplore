@@ -68,3 +68,22 @@ export function savedItems(list: string[]): Saved[] {
   const away = (s: Saved) => (s.lat - HERE.lat) ** 2 + ((s.lon - HERE.lon) * Math.cos((HERE.lat * Math.PI) / 180)) ** 2;
   return [...known, ...extra].sort((a, b) => away(a) - away(b));
 }
+
+const LIST_KEY = "np-last-list";
+
+/** The list a route card was opened from, so closing the card goes back to it. */
+export function rememberList(path: string) {
+  try {
+    sessionStorage.setItem(LIST_KEY, path);
+  } catch {
+    // nothing to remember in a private window
+  }
+}
+
+export function lastList(): string {
+  try {
+    return sessionStorage.getItem(LIST_KEY) ?? "/map/near-you";
+  } catch {
+    return "/map/near-you";
+  }
+}

@@ -65,6 +65,10 @@
   .tabbar-tab.is-current { font-weight: var(--text-chip-active--font-weight); }
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .tabbar-tab:not(.is-current):hover { background: rgb(255 255 255 / 0.08); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tabbar-tab { transition: none; }
 }
