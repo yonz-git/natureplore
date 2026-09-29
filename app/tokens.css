@@ -48,6 +48,15 @@
   --color-field-glow: #80A57D;
   --color-field-flow: #5F8058;
   --color-on-field: #FAFBF5;
+  --color-system-alert: rgb(37 37 37 / 0.78);
+  --color-system-alert-rule: rgb(255 255 255 / 0.18);
+  --color-system-alert-action: #0A84FF;
+  --color-system-prompt: #282A2C;
+  --color-system-prompt-text: #E3E3E3;
+  --color-system-prompt-soft: #C4C7C5;
+  --color-system-prompt-action: #A8C7FA;
+  --color-system-prompt-on-action: #062E6F;
+  --color-system-prompt-rule: #8E918F;
 
   --font-heading: 'Comfortaa', 'Trebuchet MS', 'Helvetica Neue', Arial, sans-serif;
   --font-text: 'Alpino', 'Futura', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif;

@@ -1,363 +1,644 @@
-/* A2 to A7: the map screens that follow A1. They reuse A1's screen layer (.a1), its sheet
-   (.a1-sheet, which is also what the map measures the free space against) and its controls
-   (.a1-field, .a1-btn), so a field or a button reads the same wherever it appears. What is here is
-   only what A1 does not have: the bar over the map, the map's own controls, the place list, the
-   search results and the permission dialog. The desktop layout is at the end of the file. */
+/* The map screens, A1 to A7 and the offline state, as on the version 6 boards of Flow A.
+   Phone first: the map fills the screen, the bar floats over its top and a glass sheet holds the
+   content. From 64rem the bar and the sheet move into one glass panel down the left, and the map
+   fills the rest. Shared controls (buttons, chips, pills, cards) are at the top so every screen
+   reads the same. The glass recipe is app/glass.css. */
 
-/* The desktop panel, in one place: the sheet, the bar that moves into it and the line that sits
-   beside it are all laid out from these three. */
-.map-screen,
-.search-screen,
-.notmapped-screen {
-  --panel-inset: 1.5rem;
-  --panel-pad: 2.25rem;
-  --panel-w: clamp(20rem, 30vw, 27.5rem);
-}
+/* ── the controls every screen shares ───────────────────────────────────────────────────────── */
 
-/* ── the bar over the map: the field, then the group filter, then A5's location line ───────── */
-
-.map-top {
-  position: absolute;
-  top: var(--top-chrome);
-  left: var(--spacing-inset-screen);
-  right: 0;
-  z-index: 2;
+/* Two buttons and no third: the lime primary, one per view, and the inner glass secondary. Full
+   width on the phone, hugging the label from 64rem (see the panel at the end). */
+.btn {
+  height: 3.375rem;
+  padding: 0 1.75rem;
+  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  align-self: stretch;
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 160ms var(--ease-out);
 }
-/* the field stops short of the controls in the corner, the rows below it scroll past them */
-.map-top .map-search { margin-right: 5.5rem; }
-/* the tint is dropped for any field carrying a glass tier, in app/a1.css */
-.map-clear {
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  border: 0;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 0.875rem 2rem rgb(6 18 9 / 0.35);
+  color: var(--color-on-primary);
+  font-family: var(--text-button--font-family);
+  font-size: var(--text-button);
+  font-weight: var(--text-button--font-weight);
+  letter-spacing: var(--text-button--letter-spacing);
+  line-height: 1;
+}
+.btn-secondary {
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  color: var(--color-on-ground);
+  font-family: var(--text-button-secondary--font-family);
+  font-size: var(--text-button-secondary);
+  font-weight: var(--text-button-secondary--font-weight);
+  line-height: 1;
+}
+/* a trailing chevron leaves 6 of air in its own box, so the right side takes 22 to read as 28 */
+.btn-chev { padding-right: 1.375rem; }
+
+/* the search field: a 52 glass pill, a 19 icon, the input takes the whole height */
+.field {
+  height: 3.25rem;
+  min-width: 0;
+  flex-grow: 1;
+  padding: 0 1.25rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: var(--radius-pill);
+  color: var(--color-on-ground);
+}
+/* a field resting on a glass sheet is inner glass, never a second blur */
+.field.is-inner {
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+}
+.field svg { flex-shrink: 0; }
+.field input {
+  align-self: stretch;
+  flex-grow: 1;
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--color-on-ground);
+  font-family: var(--text-field--font-family);
+  font-size: var(--text-field);
+  font-weight: var(--text-field--font-weight);
+  outline: none;
+}
+.field input::placeholder { color: var(--color-on-ground-soft); opacity: 1; }
+.field input::-webkit-search-cancel-button { display: none; }
+.field:focus-within { outline: 2px solid var(--color-mist); outline-offset: 3px; }
+.field-clear {
   width: 2.75rem;
   height: 2.75rem;
-  margin-right: -0.875rem;
+  margin-right: -0.75rem;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: none;
+  padding: 0;
   border: 0;
+  background: none;
   color: var(--color-on-ground-soft);
   cursor: pointer;
 }
 
-/* A row of chips wraps, it never scrolls. Scrolling one axis makes the browser compute the other
-   to auto, so the row could be dragged up and down as well as sideways, and a scroll container is
-   a backdrop root: the frost on the chips inside it sampled the container instead of the map and
-   painted a hard edged grey band behind the row. Wrapping costs a line only when the text needs
-   one, and every group stays reachable without a drag. */
-.map-chips,
-.map-season {
+/* Routes or Organisms: a 48 glass pill with two options, the one you are on in lime */
+.seg {
+  align-self: flex-start;
+  height: 3rem;
+  padding: 0.25rem;
+  box-sizing: border-box;
+  display: flex;
+  gap: 0.125rem;
+  border-radius: var(--radius-pill);
+}
+.seg-opt {
+  padding: 0 1.125rem 0 0.875rem;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
   gap: 0.5rem;
-}
-
-.map-chip {
-  position: relative;
-  flex-shrink: 0;
-  height: 2.25rem;
-  padding: 0 0.75rem;
+  border: 0;
   border-radius: var(--radius-pill);
+  background: none;
   color: var(--color-on-ground);
+  font-family: var(--text-chip--font-family);
   font-size: var(--text-chip);
-  line-height: var(--text-chip--line-height);
   font-weight: var(--text-chip--font-weight);
+  line-height: 1;
+  text-decoration: none;
   cursor: pointer;
   transition: transform 160ms var(--ease-out);
 }
-/* the chip is drawn at 36 as on the boards, and takes the finger at 44 */
-.map-chip::before { content: ""; position: absolute; inset: -0.25rem 0; }
-.map-chip:active { transform: scale(0.97); }
-/* the chip you are on is the solid green control, so it has no rim of its own */
-.map-chip.is-on {
+.seg-opt:active { transform: scale(0.97); }
+.seg-opt[aria-current="page"] {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
-  border: 0;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
   color: var(--color-on-primary);
   font-weight: var(--text-chip-active--font-weight);
 }
-/* inside the sheet the glass is already behind it, so a season chip is a tint, not a pane */
-.map-chip.is-quiet {
-  height: 2rem;
-  padding: 0 0.875rem;
-  background: rgb(255 255 255 / 0.12);
-  border: 0.5px solid var(--color-glass-edge);
-  box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
-}
-.map-chip.is-quiet::before { inset: -0.375rem 0; }
 
-/* A5 names its own state rather than leaving the person to work out why the map is not on them */
-.map-state {
-  align-self: flex-start;
+/* a 36 chip inside a sheet or panel; pressed takes the lime */
+.chips { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.chip {
+  height: 2.25rem;
+  padding: 0 0.875rem;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  color: var(--color-on-ground);
+  font-family: var(--text-chip--font-family);
+  font-size: var(--text-chip);
+  font-weight: var(--text-chip--font-weight);
+  line-height: 1;
   white-space: nowrap;
-  margin: 0.375rem 0 0;
-  height: 2.75rem;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+.chip:active { transform: scale(0.97); }
+.chip[aria-pressed="true"] {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  color: var(--color-on-primary);
+  font-weight: var(--text-chip-active--font-weight);
+}
+.chips-desk { display: none; }
+.chips-label { display: none; margin: 0; flex-basis: 100%; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
+
+/* a 40 glass pill over the map: "Use my location instead", "Location off" */
+.float-pill {
+  margin: 0;
+  align-self: flex-start;
+  height: 2.5rem;
   padding: 0 1rem 0 0.75rem;
-  display: flex;
+  box-sizing: border-box;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   border-radius: var(--radius-pill);
-  font-size: var(--text-caption);
+  color: var(--color-on-ground);
+  font-size: var(--text-chip);
+  font-weight: var(--text-chip-active--font-weight);
   line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
 }
-.map-state-action {
+button.float-pill { cursor: pointer; transition: transform 160ms var(--ease-out); }
+button.float-pill:active { transform: scale(0.97); }
+.float-pill-link {
   padding: 0;
-  background: none;
   border: 0;
+  background: none;
   color: var(--color-on-ground);
   font: inherit;
-  font-weight: 500;
   text-decoration: underline;
   text-underline-offset: 0.1875rem;
   cursor: pointer;
 }
 
-/* A6 has no map and no controls over it, so the field takes the whole width */
-.notmapped-screen .map-top { right: var(--spacing-inset-screen); }
-.notmapped-screen .map-top .map-search { margin-right: 0; }
-
-/* ── the map's own controls, in the corner the sheet never reaches ────────────────────────── */
-
-.map-tools {
-  position: absolute;
-  top: var(--top-chrome);
-  right: var(--spacing-inset-screen);
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.75rem;
-}
-.map-tool {
-  height: 3.125rem;
-  padding: 0 1rem;
+/* 52 round glass control: back, locate */
+.round {
+  width: 3.25rem;
+  height: 3.25rem;
+  flex-shrink: 0;
+  padding: 0;
   display: flex;
   align-items: center;
-  gap: 0.375rem;
+  justify-content: center;
   border-radius: var(--radius-pill);
   color: var(--color-on-ground);
-  font-size: var(--text-caption);
-  line-height: 1;
-  text-decoration: none;
   cursor: pointer;
   transition: transform 160ms var(--ease-out);
 }
-.map-tool:active { transform: scale(0.97); }
-/* on the phone the label is the icon's alternative, not a second thing to read */
-.map-tool-label { display: none; }
-.map-tool.is-round { width: 2.75rem; height: 2.75rem; padding: 0; justify-content: center; }
-.map-tool.is-on {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
-  border: 0;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
-  color: var(--color-on-primary);
-  font-weight: var(--text-chip-active--font-weight);
-}
-/* the control that recentres the map belongs to the map, so it sits down in it, clear of the bar */
-.map-tool.is-round { margin-top: 7.125rem; }
-.map-tool.is-round + .map-tool { margin-top: 0; }
+.round:active { transform: scale(0.94); }
 
-/* ── the sheet: what the map is showing, as a list ────────────────────────────────────────── */
-
-/* The boards run the list off the bottom of the frame. A screen cannot, so the sheet takes a
-   little under two thirds of the height and scrolls, which leaves the map the band the boards
-   draw it in and keeps every row reachable. */
-.map-sheet { max-height: 62dvh; overflow-y: auto; overscroll-behavior: contain; }
-/* the sheet is a flex column, and a column with a ceiling squeezes its rows: nothing in it gives */
-.map-sheet > * { flex-shrink: 0; }
-
-.map-title { font-size: var(--text-h2); font-family: var(--text-h2--font-family); line-height: var(--text-h2--line-height); }
-.map-sub,
-.notmapped-note {
-  margin: 0.5rem 0 0;
-  font-size: var(--text-caption);
-  line-height: var(--text-caption--line-height);
-  color: var(--color-on-ground-soft);
-}
-.notmapped-note { font-size: var(--text-body); line-height: var(--text-body--line-height); }
-.map-season { margin-top: 1.5rem; }
-.map-season-label {
-  flex-shrink: 0;
-  margin-right: 0.125rem;
-  font-size: var(--text-caption);
-  color: var(--color-on-ground-soft);
-}
-
-.map-list { margin: 0.5rem 0 0; padding: 0; list-style: none; }
-.map-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 0; }
-.map-row-open {
-  flex-grow: 1;
-  min-width: 0;
+/* The organism counts: a row of pills, an icon in mist and a count, the name kept for screen
+   readers. Never written out as text. The row takes the full card width so five fit. */
+.pills { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.pill-org {
+  height: 2rem;
+  padding: 0 0.5625rem 0 0.5rem;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0;
-  text-align: left;
-  background: none;
-  border: 0;
+  gap: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-pill-fill);
+  border: 0.5px solid var(--color-inner-edge);
+  color: var(--color-mist);
+}
+.pill-org b {
   color: var(--color-on-ground);
-  text-decoration: none;
-  cursor: pointer;
-  transition: transform 160ms var(--ease-out);
+  font-size: var(--text-pill-count);
+  font-weight: var(--text-pill-count--font-weight);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
-.map-row-open:active { transform: scale(0.99); }
-/* a tint, not a pane: the sheet behind it is already frosted, and a frost inside a surface the
-   screen animates would be switched off for good */
-.map-row-tile {
+
+/* a state such as "Not mapped yet" */
+.tag {
+  height: 1.625rem;
+  padding: 0 0.625rem;
   flex-shrink: 0;
-  width: 3.5rem;
-  height: 3.5rem;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-pill-fill);
+  border: 0.5px solid var(--color-inner-edge);
+  font-size: var(--text-stat-label);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* ── cards ─────────────────────────────────────────────────────────────────────────────────── */
+
+/* A route or a saved spot. On the phone the photograph runs across the top of the card; the A4
+   card is the tall one, with the stat tiles. From 64rem every card is the compact one, a thumbnail
+   beside the name. The pill row always runs the full card width. */
+.card {
+  position: relative;
+  flex-shrink: 0;
+  padding: 1.25rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  border-radius: var(--radius-inner);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+.card-photo {
+  width: 100%;
+  height: 5.5rem;
+  display: block;
   border-radius: var(--radius-tile);
-  overflow: hidden;
-  background: rgb(255 255 255 / 0.12);
-  border: 0.5px solid var(--color-glass-edge);
-  box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
+  object-fit: cover;
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.1) 0%, rgb(255 255 255 / 0.02) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-sizing: border-box;
 }
-.map-row-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.map-row-text { min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-.map-row-name {
-  font-size: var(--text-title-sm);
-  font-family: var(--text-title-sm--font-family);
-  line-height: var(--text-title-sm--line-height);
-  font-weight: var(--text-title-sm--font-weight);
-}
-.map-row-meta,
-.map-row-notable {
-  font-size: var(--text-caption);
-  line-height: 1.35;
-  color: var(--color-on-ground-soft);
-}
-/* one long name must not push the counts out of the row */
-.map-row-name,
-.map-row-meta,
-.map-row-notable { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.map-row-save {
-  flex-shrink: 0;
+.card-rich .card-photo { height: 10.5rem; }
+.card-text { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+.card-name { margin: 0; font-family: var(--text-title--font-family); font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--text-title--font-weight); }
+.card-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
+.card-rich .card-line,
+.card:not(.card-rich) .card-where { display: none; }
+
+/* the save control: on a photograph it frosts the photograph, the one blur allowed inside glass */
+.card-save {
+  position: absolute;
+  top: 1.875rem;
+  right: 1.875rem;
   width: 2.75rem;
   height: 2.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: 0;
-  border-radius: var(--radius-pill);
-  color: var(--color-on-ground);
-  cursor: pointer;
-  transition: transform 160ms var(--ease-out);
-}
-.map-row-save:active { transform: scale(0.92); }
-
-.map-all { margin-top: 0.75rem; }
-
-/* ── A2 and A3: the search over the map ───────────────────────────────────────────────────── */
-
-/* the results are their own surface, so the panel behind them stays the screen and the card the
-   thing being read: on the phone that is the whole screen, on the desktop the side panel */
-.search-panel {
-  top: var(--top-chrome);
-  bottom: auto;
-  max-height: calc(100dvh - var(--top-chrome) - var(--spacing-tabbar-clearance));
-  overflow-y: auto;
-  padding-top: 0;
-  background: none;
-  backdrop-filter: none;
-  border: 0;
-  box-shadow: none;
-}
-.search-head { display: flex; align-items: center; gap: 0.75rem; }
-.search-back {
-  flex-shrink: 0;
-  width: 3.125rem;
-  height: 3.125rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-pill);
-  color: var(--color-on-ground);
-  text-decoration: none;
-  transition: transform 160ms var(--ease-out);
-}
-.search-back:active { transform: scale(0.97); }
-.search-form { flex-grow: 1; min-width: 0; }
-
-
-.search-instead {
-  align-self: flex-start;
-  margin-top: 0.5rem;
-  height: 3rem;
   padding: 0;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background: none;
-  border: 0;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  background: rgb(14 28 18 / 0.45);
+  backdrop-filter: blur(1.25rem);
+  border: 0.5px solid rgb(255 255 255 / 0.22);
   color: var(--color-on-ground);
-  font-size: var(--text-chip);
-  font-family: var(--text-chip--font-family);
-  font-weight: var(--text-chip--font-weight);
   cursor: pointer;
+  transition: transform 160ms var(--ease-out);
 }
-.search-instead span { text-decoration: underline; text-underline-offset: 0.1875rem; }
+.card-save:active { transform: scale(0.94); }
 
-.search-title { margin-top: 0.5rem; font-size: var(--text-h2); font-family: var(--text-h2--font-family); line-height: var(--text-h2--line-height); }
-.search-note {
-  margin: 0.75rem 0 0;
-  font-size: var(--text-body);
-  line-height: var(--text-body--line-height);
-  color: var(--color-on-ground-soft);
+/* Distance, Time, Spots: three inner glass tiles, only on the A4 card on the phone */
+.card-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+.card-stat {
+  padding: 0.875rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  border-radius: var(--radius-tile);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
 }
+.card-stat dt { font-size: var(--text-stat-label); line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
+.card-stat dd { margin: 0; display: flex; align-items: baseline; gap: 0.25rem; }
+.card-stat dd b { font-family: var(--text-stat-sm--font-family); font-size: var(--text-stat-sm); font-weight: var(--text-stat-sm--font-weight); line-height: 1; font-variant-numeric: tabular-nums; }
+.card-stat dd span { font-size: var(--text-caption); line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
+.card:not(.card-rich) .card-stats { display: none; }
+.card-rich .card-spots { display: none; }
+/* on the tall card a rule sets the organisms apart from the numbers above them */
+.card-rich .pills { padding-top: 1rem; border-top: 1px solid var(--color-divider); }
 
-.search-results {
-  margin-top: 1rem;
-  padding: 1.25rem 1.5rem 0.5rem;
-  border-radius: var(--radius-card);
-}
-.search-results-label {
-  margin: 0;
-  font-size: var(--text-caption);
-  line-height: var(--text-caption--line-height);
-  color: var(--color-on-ground-soft);
-}
-.search-results ul { margin: 0.5rem 0 0; padding: 0; list-style: none; border-top: 1px solid rgb(255 255 255 / 0.22); }
-.search-result {
-  min-height: 4.75rem;
+/* ── list rows: search results ─────────────────────────────────────────────────────────────── */
+
+.rows { margin: 0; padding: 0; list-style: none; }
+.row {
+  min-height: 4.25rem;
   padding: 0.75rem 0;
   display: flex;
   align-items: center;
   gap: 0.875rem;
-  border-bottom: 1px solid rgb(255 255 255 / 0.22);
   color: var(--color-on-ground);
   text-decoration: none;
+  position: relative;
 }
-.search-results li:last-child .search-result { border-bottom: 0; }
-/* a place with nothing recorded is still worth reaching, and says so before it is opened */
-.search-result.is-empty { color: var(--color-on-ground-soft); }
-.search-result-mark {
+/* the rule starts after the disc and fades to the right */
+.rows li + li .row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 3.375rem;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-divider) 0%, rgb(255 255 255 / 0.04) 100%);
+}
+.row-disc {
+  width: 2.5rem;
+  height: 2.5rem;
   flex-shrink: 0;
-  width: 2.75rem;
-  height: 2.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-pill);
-  background: rgb(255 255 255 / 0.12);
-  border: 0.5px solid var(--color-glass-edge);
-  box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  color: var(--color-mist);
 }
-.search-result-text { min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-.search-result-name {
-  font-size: var(--text-title-sm);
-  font-family: var(--text-title-sm--font-family);
-  line-height: var(--text-title-sm--line-height);
-  font-weight: var(--text-title-sm--font-weight);
-}
-.search-result-meta { font-size: var(--text-caption); line-height: 1.35; color: inherit; opacity: 0.8; }
+.row-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.row-name { font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: 400; }
+.row-meta { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
+.row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
+.rows-label { margin: 0 0 0.5rem; font-family: var(--font-text); font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 
-/* ── the permission dialog ────────────────────────────────────────────────────────────────── */
+/* ── the screen ────────────────────────────────────────────────────────────────────────────── */
+
+/* the screen is its own layer over the layout's photograph, and the map runs edge to edge */
+.ms { position: fixed; inset: 0; overflow: hidden; --sheet-top: 12.25rem; }
+.a1-map { position: absolute; inset: 0; }
+.a1-map.leaflet-container { font: inherit; background: var(--color-basemap-land); }
+
+/* the panel is only a box on the desktop; on the phone its parts lay themselves out */
+.ms-panel { display: contents; }
+.ms-logo { display: none; }
+.ms-back-desk { display: none; }
+
+/* the wordmark over the map on the phone A1, centred at the top */
+.ms-wordmark {
+  position: absolute;
+  top: calc(var(--top-chrome) + 2.375rem);
+  left: 50%;
+  translate: -50% 0;
+  height: 1.6875rem;
+  color: var(--color-on-ground);
+  pointer-events: none;
+}
+
+/* the bar over the top of the map: the field, the segment, A5's location line */
+.ms-bar {
+  position: absolute;
+  top: calc(var(--top-chrome) + 0.5rem);
+  left: var(--spacing-screen-phone);
+  right: var(--spacing-screen-phone);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-control-stack);
+}
+.ms-bar-row { display: flex; gap: var(--spacing-control-stack); }
+
+/* the sheet: glass from the bar down to the bottom edge, its content scrolls under the tab bar */
+.ms-sheet {
+  position: absolute;
+  inset: var(--sheet-top) 0 0;
+  z-index: 1;
+  padding: 0.75rem 1.5rem var(--spacing-tabbar-clearance);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  border-bottom: 0;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+}
+.ms-sheet::-webkit-scrollbar { display: none; }
+/* a sheet that only holds a message rests on the bottom edge at its own height */
+.ms-sheet.is-short { inset: auto 0 0; overflow: visible; }
+/* A1: a card floating over the map, clear of the tab bar */
+.ms-sheet.is-card {
+  inset: auto var(--spacing-screen-phone) 7rem;
+  padding: 2rem;
+  gap: 0;
+  overflow: visible;
+  border-bottom: 0.5px solid var(--color-glass-edge);
+  border-radius: var(--radius-card);
+}
+.ms-handle { flex-shrink: 0; width: 2.25rem; height: 0.3125rem; margin: 0 auto -0.25rem; border-radius: var(--radius-handle); background: rgb(255 255 255 / 0.4); }
+
+.ms-title {
+  margin: 0;
+  font-family: var(--text-h2--font-family);
+  font-size: var(--text-h2);
+  line-height: var(--text-h2--line-height);
+  font-weight: var(--text-h2--font-weight);
+  letter-spacing: var(--text-h2--letter-spacing);
+}
+/* the closing phrase of the page title, the one lime words on a screen */
+.ms-title em {
+  font-style: normal;
+  background-image: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-primary) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ms-lead { margin: 0.25rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
+.ms-lead-desk { display: none; }
+.ms-note { margin: 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
+.ms-list { display: flex; flex-direction: column; gap: 1.25rem; }
+.ms-stack { display: flex; flex-direction: column; gap: var(--spacing-control-stack); }
+
+/* the controls in the map's top right on the desktop, the Saved pill and locate */
+.ms-tools { display: none; }
+
+/* ── A1 ────────────────────────────────────────────────────────────────────────────────────── */
+
+.a1 .ms-lead { margin-top: 0.75rem; }
+.a1 .ms-stack { margin-top: 1.5rem; }
+.a1 .btn-browse,
+.a1 .ms-note-desk { display: none; }
+
+/* ── A2, A3: search ────────────────────────────────────────────────────────────────────────── */
+
+/* on the phone search takes the screen: the keyboard is up and the map would only be in the way */
+.search .a1-map,
+.search .a1-pin,
+.search .a1-credit { display: none; }
+.ms.search { overflow-y: auto; padding-bottom: var(--spacing-tabbar-clearance); box-sizing: border-box; }
+.search .ms-bar { position: static; margin: calc(var(--top-chrome) + 0.5rem) var(--spacing-screen-phone) 0; }
+.search .ms-sheet {
+  position: static;
+  margin: 0 var(--spacing-screen-phone);
+  padding: 0;
+  overflow: visible;
+  gap: 0;
+}
+.search-results {
+  margin-top: 1.25rem;
+  padding: 1.75rem 2rem 0.75rem;
+  border-radius: var(--radius-card);
+}
+.search-results.is-compact { padding: 1.25rem; }
+.search-miss { margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.search-miss .ms-title { font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
+.search-miss .ms-lead { margin-top: 0.5rem; font-size: var(--text-body); line-height: var(--text-body--line-height); }
+.search .float-pill.is-after { margin-top: 1rem; }
+
+/* ── A5: the location line in the bar ──────────────────────────────────────────────────────── */
+
+.a5 { --sheet-top: 22.375rem; }
+
+/* ── A6: a place that is not mapped yet ─────────────────────────────────────────────────────── */
+
+.unmapped-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: rgb(255 255 255 / 0.55);
+  background: var(--color-scrim);
+}
+.a6 .ms-sheet { gap: 0; }
+.a6 .ms-title { margin-top: 1.25rem; }
+.a6 .ms-lead { margin-top: 0.75rem; }
+.a6 .ms-lead + .ms-lead { margin-top: 0.5rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
+.a6 .btn { margin-top: 1.5rem; }
+
+/* ── offline ───────────────────────────────────────────────────────────────────────────────── */
+
+.offline-map {
+  position: absolute;
+  inset: 0;
+  padding-bottom: 45vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: var(--color-scrim);
+  color: var(--color-on-ground-soft);
+  font-size: var(--text-secondary);
+  font-weight: 500;
+}
+.offline .ms-sheet { gap: 0; }
+.offline .ms-title { margin-top: 1.25rem; }
+.offline .ms-lead { margin-top: 0.75rem; }
+.offline .btn { margin-top: 1.5rem; }
+.offline .ms-note { margin-top: 1rem; text-align: center; }
+
+/* ── the map's own marks: count pins, route pins, where you are, names ─────────────────────── */
+
+/* a pin is a sibling of the map, never a marker inside it: a Leaflet pane carries a transform, and
+   a transformed ancestor switches the frost off. It is placed from the map on every move. */
+.a1-pin {
+  position: absolute;
+  width: 2.875rem;
+  height: 2.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  border-radius: var(--radius-pill);
+  color: var(--color-on-ground);
+  font-family: var(--text-count--font-family);
+  font-size: var(--text-count);
+  font-weight: var(--text-count--font-weight);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+.a1-pin:active { transform: translate(-50%, -50%) scale(0.94); }
+/* a single route is a lime spot marker with a leaf, not a count */
+.a1-pin-place {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  backdrop-filter: none;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  box-shadow: 0 0 0 0.1875rem rgb(255 255 255 / 0.22), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
+  color: var(--color-on-primary);
+}
+.a1-pin-place::after { display: none; }
+.a1-pin-place::before { content: ""; position: absolute; inset: -0.25rem; border-radius: inherit; }
+
+.a1-here { position: absolute; width: 0; height: 0; pointer-events: none; }
+.a1-here-dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+  border-radius: var(--radius-pill);
+  background: var(--color-ground);
+  border: 0.25rem solid var(--color-on-ground);
+  box-shadow: 0 0 0 0.5rem rgb(255 255 255 / 0.22), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
+}
+.a1-here-label {
+  position: absolute;
+  right: 1.375rem;
+  top: 0;
+  transform: translateY(-50%);
+  height: 1.875rem;
+  padding: 0 0.75rem;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  border-radius: var(--radius-pill);
+  background: var(--color-glass-solid);
+  border: 0.5px solid var(--color-glass-edge);
+  color: var(--color-on-ground);
+  font-size: var(--text-caption);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.a1-lbl-anchor { width: 0 !important; height: 0 !important; margin: 0 !important; }
+.a1-lbl {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-size: var(--text-caption);
+  line-height: 1;
+  font-weight: 500;
+  color: var(--color-basemap-label);
+  text-shadow: 0 0 2px var(--color-basemap-halo), 0 0 3px var(--color-basemap-halo), 0 0 4px var(--color-basemap-halo);
+  pointer-events: none;
+}
+.a1-lbl-city { font-size: var(--text-body); font-weight: 500; color: var(--color-basemap-label-strong); }
+.a1-lbl-nature { transform: translate(-50%, 1.7rem); font-style: italic; color: var(--color-basemap-label-nature); }
+.a1-lbl-water { font-style: italic; font-weight: 400; color: var(--color-basemap-label-water); }
+.a1-lbl.is-hidden { display: none; }
+
+.a1-credit {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.25rem;
+  margin: 0;
+  font-size: 0.625rem;
+  line-height: 1;
+  color: var(--color-on-ground-soft);
+  opacity: 0.7;
+  pointer-events: none;
+}
+/* on the phone the sheet or the tab bar covers the corner, so the credit moves to the top */
+@media (max-width: 63.99rem) {
+  .a1-credit { right: auto; left: 0.5rem; bottom: auto; top: calc(0.25rem + env(safe-area-inset-top, 0px)); }
+}
+
+/* ── the location prompt, drawn the way the phone and the browser draw their own ───────────── */
 
 .dialog-scrim {
   position: fixed;
@@ -365,159 +646,268 @@
   z-index: 40;
   padding: 0;
   border: 0;
-  background: rgb(6 18 9 / 0.55);
+  background: linear-gradient(180deg, rgb(6 16 8 / 0.3) 0%, rgb(6 16 8 / 0.58) 100%);
+  backdrop-filter: blur(1.875rem) saturate(1.8);
   cursor: default;
   animation: fade-in 200ms var(--ease-out) both;
 }
 .dialog {
   position: fixed;
-  inset: auto 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
+  top: 50%;
+  left: 50%;
   z-index: 41;
-  padding: 1.5rem;
+  width: 17.5rem;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
-  border-radius: var(--radius-card);
-  /* the sheet comes up from the edge it is attached to, and leaves the same way */
-  animation: dialog-in 280ms var(--ease-out) both;
-}
-.dialog-title { margin: 0; font-size: var(--text-title); line-height: 1.35; font-weight: 500; }
-.dialog-note {
-  margin: 0;
-  font-size: var(--text-caption);
-  line-height: var(--text-caption--line-height);
-  color: var(--color-on-ground-soft);
-}
-.dialog-actions { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
-.dialog-btn {
-  height: 3.125rem;
-  padding: 0 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-pill);
-  background: rgb(255 255 255 / 0.12);
-  border: 0.5px solid var(--color-glass-edge);
-  box-shadow: inset 0.125rem 0.125rem 0.375rem -0.1875rem rgb(255 255 255 / 0.3), inset -0.125rem -0.125rem 0.375rem -0.1875rem rgb(0 0 0 / 0.18);
+  text-align: center;
+  border-radius: 2rem;
+  font-family: -apple-system, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: var(--color-on-ground);
-  font-size: var(--text-button);
-  font-family: var(--text-button--font-family);
-  line-height: var(--text-button--line-height);
-  font-weight: var(--text-button--font-weight);
-  cursor: pointer;
-  transition: transform 160ms var(--ease-out);
+  background: var(--color-system-alert);
+  backdrop-filter: blur(2.5rem) saturate(1.8);
+  box-shadow: 0 1.25rem 3.125rem rgb(0 0 0 / 0.4);
+  transform: translate(-50%, -50%);
+  animation: dialog-pop 220ms var(--ease-out) both;
 }
-.dialog-btn:active { transform: scale(0.97); }
-.dialog-btn.is-strong {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
-  border: 1px solid var(--color-marker);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 0.625rem 1.875rem rgb(0 0 0 / 0.25);
-  color: var(--color-ground);
+.dialog-head { padding: 1.375rem 1.125rem 1.125rem; display: flex; flex-direction: column; gap: 0.375rem; }
+.dialog-title { margin: 0; font-size: 1.0625rem; font-weight: 600; line-height: 1.375rem; letter-spacing: -0.02em; }
+.dialog-note { margin: 0; font-size: 0.8125rem; line-height: 1.125rem; color: rgb(255 255 255 / 0.85); }
+.dialog-btn {
+  height: 2.75rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-top: 0.5px solid var(--color-system-alert-rule);
+  background: none;
+  color: var(--color-system-alert-action);
+  font: inherit;
+  font-size: 1.0625rem;
+  cursor: pointer;
+}
+.dialog-btn:active { background: rgb(255 255 255 / 0.08); }
+
+.dialog-actions { display: flex; flex-direction: column; }
+
+/* the browser's prompt on the desktop: a plain dark card with pill buttons in the browser's blue */
+.dialog.is-browser {
+  width: 23.75rem;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  gap: 0.5rem;
+  text-align: left;
+  border-radius: 1rem;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--color-system-prompt-text);
+  background: var(--color-system-prompt);
+  backdrop-filter: none;
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 0.3), 0 1rem 2.5rem rgb(0 0 0 / 0.45);
+}
+.dialog.is-browser .dialog-head { padding: 0; gap: 0.5rem; }
+.dialog.is-browser .dialog-title { font-size: 1rem; font-weight: 400; line-height: 1.375rem; letter-spacing: 0; }
+.dialog.is-browser .dialog-note { margin-bottom: 0.75rem; font-size: 0.875rem; line-height: 1.25rem; color: var(--color-system-prompt-soft); }
+.dialog.is-browser .dialog-actions { gap: 0.5rem; }
+.dialog.is-browser .dialog-btn {
+  height: 2.5rem;
+  border: 1px solid var(--color-system-prompt-rule);
+  border-radius: var(--radius-pill);
+  color: var(--color-system-prompt-action);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.dialog.is-browser .dialog-btn.is-strong {
+  border-color: transparent;
+  background: var(--color-system-prompt-action);
+  color: var(--color-system-prompt-on-action);
 }
 
-@keyframes dialog-in {
-  from { opacity: 0; transform: translateY(100%); }
-  to { opacity: 1; transform: none; }
-}
 @keyframes dialog-pop {
-  from { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
+  from { opacity: 0; transform: translate(-50%, -50%) scale(1.08); }
   to { opacity: 1; transform: translate(-50%, -50%); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .dialog,
-  .dialog-scrim { animation: fade-in 160ms var(--ease-out) both; }
-  .map-chip,
-  .map-tool,
-  .map-row-open,
-  .map-row-save,
-  .search-back,
-  .dialog-btn { transition: none; }
-}
-
-/* ── from 64rem the sheet becomes the side panel, as it does on A1 ────────────────────────── */
+/* ── from 64rem: the panel down the left, the map beside it ────────────────────────────────── */
 
 @media (min-width: 64rem) {
-  .map-sheet,
-  .search-panel {
-    inset: var(--panel-inset) auto var(--panel-inset) var(--panel-inset);
-    max-width: none;
-    max-height: calc(100dvh - var(--panel-inset) * 2);
-    margin-inline: 0;
-    width: var(--panel-w);
-    padding: var(--panel-pad) var(--panel-pad) 2rem;
-    overflow-y: auto;
-    border: 0.5px solid var(--color-glass-edge);
-    border-radius: var(--radius-card);
-  }
-  /* the panel is the glass here, so the search screen stops being a plain column */
-  .search-panel {
-    background: linear-gradient(135deg, rgb(255 255 255 / 0.22) 0%, rgb(255 255 255 / 0.07) 100%), rgb(10 28 14 / 0.3);
-    backdrop-filter: blur(30px) saturate(1.8);
-    box-shadow: inset 6px 6px 16px -8px rgb(255 255 255 / 0.35), inset -6px -6px 16px -8px rgb(0 0 0 / 0.22), 0 1px 2px rgb(0 0 0 / 0.3), 0 24px 60px rgb(0 0 0 / 0.32);
-  }
-  .map-sheet .a1-handle { display: none; }
-
-  /* The bar moves into the panel, laid over it rather than inside it: the panel is a glass
-     surface the screen animates, and a frosted field inside an animated surface loses its frost
-     for good. It is placed on the panel's own padding, and the panel keeps that height clear.
-     3.25rem field + 0.875rem gap + two 2.25rem chip lines with their 0.5rem gap is what it
-     stands at the narrowest panel: change one, change this. */
-  .map-top {
-    left: calc(var(--panel-inset) + var(--panel-pad));
-    top: calc(var(--panel-inset) + var(--panel-pad));
-    right: auto;
-    width: calc(var(--panel-w) - var(--panel-pad) * 2);
-    z-index: 4;
-    gap: 0.875rem;
-    align-content: flex-start;
-  }
-  .map-sheet { padding-top: calc(var(--panel-pad) + 9.125rem + 1.5rem); }
-  /* A6 has no filter under its field, so it only keeps the field's height clear */
-  .notmapped-screen .map-sheet { padding-top: calc(var(--panel-pad) + 3.25rem + 1.5rem); }
-  .map-top .map-search { margin-right: 0; }
-  .map-chip { padding: 0 0.6875rem; }
-
-  /* what is left over the map: the state line beside the panel, the controls under the nav */
-  .map-state {
+  .ms-panel {
     position: absolute;
-    left: calc(100% + 4rem);
-    top: 0;
-    margin: 0;
-    font-size: var(--text-body);
-  }
-  .map-tools { top: 6.5rem; right: 2.5rem; }
-  .map-tool { height: 2.75rem; padding: 0 1rem 0 0.75rem; gap: 0.5rem; }
-  .map-tool-label { display: inline; }
-  .map-tool.is-round { margin-top: 0; width: 2.75rem; padding: 0; }
-
-  /* A1 gives its one big line room in an empty panel; a map screen's panel is full, so the
-     heading starts where the bar above it ends */
-  .map-title,
-  .search-title { margin-top: 0; font-size: var(--text-h2); }
-  .map-sub { font-size: var(--text-body); }
-  .map-row-tile { width: 3.75rem; height: 3.75rem; }
-
-  .search-panel { display: flex; flex-direction: column; }
-  .search-head { gap: 0.875rem; }
-  /* the panel is its own way back, so the arrow makes way for the field */
-  .search-back { width: 2.75rem; height: 2.75rem; background: none; border: 0; box-shadow: none; backdrop-filter: none; }
-  .search-results { margin-top: 1.25rem; padding: 0; background: none; backdrop-filter: none; border: 0; box-shadow: none; }
-  .search-results ul { border-top: 0; }
-  .search-result { min-height: 0; padding: 0.6875rem 0; border-bottom: 0; }
-
-  /* the browser asks in the middle of the window, not at an edge */
-  .dialog {
-    inset: 50% auto auto 50%;
-    width: min(23.75rem, calc(100vw - 3rem));
-    padding: 1.75rem;
+    inset: 1.5rem auto 1.5rem 1.5rem;
+    z-index: 2;
+    width: 27.5rem;
+    padding: 2rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     border-radius: var(--radius-card);
-    transform: translate(-50%, -50%);
-    animation: dialog-pop 240ms var(--ease-out) both;
   }
-  .dialog-btn { height: 3rem; }
+  .ms-logo { display: block; flex-shrink: 0; height: 1.5rem; margin-bottom: 1.75rem; color: var(--color-on-ground); align-self: flex-start; }
+  .ms-wordmark,
+  .ms-handle { display: none; }
 
-  @media (prefers-reduced-motion: reduce) {
-    .dialog { animation: fade-in 160ms var(--ease-out) both; }
+  .ms-bar,
+  .ms-sheet,
+  .ms-sheet.is-card,
+  .ms-sheet.is-short {
+    position: static;
+    inset: auto;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
   }
+  .ms-sheet {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: 2.5rem;
+    gap: 0;
+    overflow: visible;
+  }
+  .ms-title { font-size: var(--text-h2); }
+  .ms-lead-phone { display: none; }
+  .ms-lead-desk { display: block; }
+
+  /* the list scrolls inside the panel, and the button that closes it stays in view below */
+  .ms-list {
+    flex: 0 1 auto;
+    min-height: 0;
+    margin: 1.25rem -0.5rem 0;
+    padding: 0 0.5rem;
+    gap: 0.75rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .ms-list::-webkit-scrollbar { display: none; }
+  .ms-sheet > .chips { margin-top: 1.25rem; }
+  .chips-label,
+  .chips-desk { display: flex; }
+  .chips-label { display: block; }
+  .chips-desk { margin: 0 0 2rem; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .ms-sheet > .chips-desk { margin-top: 0; }
+  .a7 .ms-sheet { margin-top: 0.75rem; }
+
+  /* buttons hug their label: centred under a list, start-aligned after text or a field */
+  .btn { align-self: flex-start; }
+  .btn.is-closing { align-self: center; margin-top: 1rem; }
+
+  /* the compact card: a thumbnail beside the name, the pill row under both */
+  .card {
+    padding: 0.5rem 0.5rem 0.75rem;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    column-gap: 0.875rem;
+    row-gap: 0.75rem;
+  }
+  .card-photo,
+  .card-rich .card-photo { width: 5rem; height: 5rem; grid-row: 1; }
+  .card-text { grid-row: 1; padding-right: 3rem; }
+  .card-rich .card-line { display: inline; }
+  .card-rich .card-where,
+  .card-rich .card-stats,
+  .card-rich .card-spots-none { display: none; }
+  .card-rich .card-spots { display: inline; }
+  .card .pills { grid-column: 1 / -1; padding-top: 0; border-top: 0; padding-left: 0.5rem; }
+  /* beside a thumbnail the save control sits on the card, so it is inner glass, not a frost */
+  .card-save {
+    top: 0.5rem;
+    right: 0.5rem;
+    backdrop-filter: none;
+    background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+    border-color: var(--color-inner-edge);
+  }
+
+  .ms-tools {
+    position: absolute;
+    top: 6.5rem;
+    right: 2.5rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+  }
+  .ms-tools .round { width: 2.75rem; height: 2.75rem; }
+  .tool-pill {
+    height: 2.75rem;
+    padding: 0 1.25rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-pill);
+    color: var(--color-on-ground);
+    font-size: var(--text-chip);
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+  }
+  .tool-pill[aria-current="page"] {
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+    color: var(--color-on-primary);
+    backdrop-filter: none;
+  }
+
+  /* A1: the heading sits lower in the panel, Browse joins the stack and the note goes to the foot */
+  .a1 .ms-sheet { margin-top: 0; }
+  .a1 .ms-title { margin-top: 4.5rem; font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
+  .a1 .ms-lead { font-size: var(--text-body); line-height: var(--text-body--line-height); }
+  .a1 .ms-stack { margin-top: 2.5rem; }
+  .a1 .btn-browse { display: flex; }
+  .a1 .ms-note-phone { display: none; }
+  .a1 .ms-note-desk { display: block; margin-top: auto; }
+
+  /* search: the map comes back beside the panel */
+  .search .a1-map,
+  .search .a1-pin,
+  .search .a1-credit { display: revert; }
+  .search .a1-pin { display: flex; }
+  .search .ms-bar { margin: 0; }
+  .search .ms-sheet { margin: 1.5rem 0 0; }
+  .search-results,
+  .search-results.is-compact { margin-top: 0; padding: 0; border-radius: 0; }
+  .search-miss { margin-top: 0; margin-bottom: 1.25rem; }
+  .search-miss .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
+  .search-miss .ms-lead { font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); }
+  .ms-back-phone { display: none; }
+  .ms-back-desk {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.75rem;
+    margin: -0.75rem 0 0 -0.25rem;
+    color: var(--color-on-ground);
+    font-size: var(--text-chip);
+    font-weight: 400;
+    text-decoration: none;
+  }
+  .search .ms-bar-row { flex-direction: column; }
+
+  /* A6 and offline: the message sits in the middle of the panel */
+  .a6 .ms-logo,
+  .offline .ms-logo { margin-bottom: auto; }
+  .a6 .ms-sheet,
+  .offline .ms-sheet { flex: 0 0 auto; margin-top: 2.5rem; margin-bottom: auto; }
+  .a6 .btn,
+  .offline .btn { align-self: center; }
+  .offline .ms-note { text-align: left; }
+  .offline-map { padding-bottom: 0; padding-left: 29rem; }
+  .unmapped-outline { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .chip,
+  .seg-opt,
+  .round,
+  .card-save,
+  .a1-pin,
+  button.float-pill { transition: none; }
+  .dialog,
+  .dialog-scrim { animation: fade-in 160ms var(--ease-out) both; }
+}
+
+@media (min-width: 64rem) {
+  .ms.search { overflow: hidden; padding-bottom: 0; }
 }

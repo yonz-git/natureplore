@@ -1,49 +1,46 @@
 "use client";
 
-// A1 · Start sheet: the one line saying what this is, and the three equally weighted ways in.
-// Search goes to A2, using your location asks first and then goes to A4, browsing goes to A5.
+// A1 · Start sheet: the one line saying what this is, and the ways in. On the phone it is a card
+// floating over the map with search and location; declining the location prompt goes to A5, which
+// is how the phone browses. On the desktop it is the panel, and Browse joins the stack.
+// Boards: "A1 · Start sheet" and "A1 · Start panel, desktop".
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
-import LocationDialog from "@/components/LocationDialog";
-import { LocationIcon, MapSearchField } from "@/components/MapParts";
+import { LocationIcon } from "@/components/Icons";
+import { useLocationPrompt } from "@/components/LocationDialog";
+import { SearchField } from "@/components/MapParts";
 
 export default function StartSheet() {
-  const router = useRouter();
-  const [asking, setAsking] = useState(false);
+  const { ask, prompt } = useLocationPrompt("/map/region");
 
   return (
-    <>
-      <div className="a1-sheet glass glass-top glass-card">
-        <div className="a1-handle" aria-hidden="true" />
-        <h1 className="a1-title">
+    <div className="ms-panel glass-desk">
+      <div className="ms-sheet is-card glass-phone">
+        <h1 className="ms-title">
           See what lives <em>around you</em>
         </h1>
+        <p className="ms-lead ms-lead-phone">Location stays on this device. An account is needed only to save.</p>
+        <p className="ms-lead ms-lead-desk">
+          Routes near you, the plants, mushrooms and birds recorded along them, and what is happening to them.
+        </p>
 
-        <div className="a1-actions">
-          <MapSearchField label="Search for a region" />
-
-          <button type="button" className="a1-btn a1-btn-primary" onClick={() => setAsking(true)}>
+        <div className="ms-stack">
+          <SearchField label="Search for a region" inner />
+          <button type="button" className="btn btn-primary" onClick={ask}>
             <LocationIcon />
             Use my location
           </button>
-
-          <Link href="/map/region" className="a1-btn a1-btn-outline">
+          <Link href="/map/region" className="btn btn-secondary btn-browse">
             Browse Berlin and Brandenburg
           </Link>
         </div>
 
-        <p className="a1-note">Location stays on this device. No account needed.</p>
+        <p className="ms-note ms-note-desk">
+          Your browser asks before sharing your location, and it stays on this device. No account needed.
+        </p>
       </div>
-
-      {asking && (
-        <LocationDialog
-          onAllow={() => router.push("/map/near-you")}
-          onDecline={() => setAsking(false)}
-        />
-      )}
-    </>
+      {prompt}
+    </div>
   );
 }

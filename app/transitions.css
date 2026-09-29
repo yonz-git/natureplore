@@ -17,28 +17,28 @@
   --ease-move: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-/* the map screen in layers: the map settles first, the pins follow, the sheet rises into place */
+/* the map screens in layers: the map settles first, the pins follow, then each pane rises on its
+   own. The panel on the desktop is glass with glass inside it, so it is never animated itself:
+   on the phone the panel has no box at all, and on the desktop its children move instead. */
 .screen-enter .a1-map { animation: layer-in 380ms var(--ease-out) both; }
 .screen-enter .a1-pin,
-.screen-enter .a1-credit { animation: fade-in 380ms var(--ease-out) 40ms both; }
-.screen-enter .a1-sheet:not(.search-panel) { animation: sheet-in 360ms var(--ease-out) 60ms both; }
-
-/* A2 to A7 put glass over the map and inside the panel. Each pane arrives on its own: animating
-   the bar, the tool stack or the search panel would make it a backdrop root and switch the frost
-   off inside it for good. The search panel is only a column on the phone, so it is the panes in
-   it that move, not the column. */
-.screen-enter .map-top .a1-field,
-.screen-enter .map-chip,
-.screen-enter .map-state,
-.screen-enter .map-tools > *,
-.screen-enter .search-head .search-back,
-.screen-enter .search-head .a1-field,
-.screen-enter .search-panel > *:not(.search-head) { animation: sheet-in 360ms var(--ease-out) 60ms both; }
+.screen-enter .a1-here,
+.screen-enter .ms-wordmark { animation: fade-in 380ms var(--ease-out) 40ms both; }
+.screen-enter .ms-bar > *,
+.screen-enter .ms-tools > * { animation: sheet-in 320ms var(--ease-out) 40ms both; }
+@media (max-width: 63.99rem) {
+  .screen-enter .ms-sheet { animation: sheet-in 360ms var(--ease-out) 60ms both; }
+  .screen-enter .search .ms-sheet > * { animation: sheet-in 320ms var(--ease-out) 60ms both; }
+  .screen-enter .search .ms-sheet { animation: none; }
+}
+@media (min-width: 64rem) {
+  .screen-enter .ms-panel > :not(.ms-bar),
+  .screen-enter .ms-panel > .ms-bar > * { animation: sheet-in 320ms var(--ease-out) 60ms both; }
+}
 
 /* every other screen is one block of content: its parts carry the animation, not the section, so a
-   glass surface anywhere inside still frosts. Equal delays, so the block still arrives as one.
-   .a1 is left out, its layers are animated above. */
-.screen-enter > section:not(.a1) > * { animation: sheet-in 320ms var(--ease-out) both; }
+   glass surface anywhere inside still frosts. */
+.screen-enter > section:not(.ms) > * { animation: sheet-in 320ms var(--ease-out) both; }
 
 @keyframes fade-in {
   from { opacity: 0; }
@@ -58,14 +58,13 @@
 @media (prefers-reduced-motion: reduce) {
   .screen-enter .a1-map,
   .screen-enter .a1-pin,
-  .screen-enter .a1-credit,
-  .screen-enter .a1-sheet:not(.search-panel),
-  .screen-enter .map-top .a1-field,
-  .screen-enter .map-chip,
-  .screen-enter .map-state,
-  .screen-enter .map-tools > *,
-  .screen-enter .search-head .search-back,
-  .screen-enter .search-head .a1-field,
-  .screen-enter .search-panel > *:not(.search-head),
-  .screen-enter > section:not(.a1) > * { animation: fade-in 160ms var(--ease-out) both; }
+  .screen-enter .a1-here,
+  .screen-enter .ms-wordmark,
+  .screen-enter .ms-bar > *,
+  .screen-enter .ms-tools > *,
+  .screen-enter .ms-sheet,
+  .screen-enter .search .ms-sheet > *,
+  .screen-enter .ms-panel > :not(.ms-bar),
+  .screen-enter .ms-panel > .ms-bar > *,
+  .screen-enter > section:not(.ms) > * { animation: fade-in 160ms var(--ease-out) both; }
 }

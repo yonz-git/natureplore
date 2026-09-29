@@ -3,14 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+// the icons of the version 6 boards, the same set the welcome's nav uses
 const TABS = [
   {
     href: "/map",
     label: "Map",
     icon: (
       <>
-        <path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z" />
-        <circle cx="12" cy="10" r="2.6" />
+        <path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20z" />
+        <path d="M9 4v13.5M15 6.5V20" />
       </>
     ),
   },
@@ -19,8 +20,8 @@ const TABS = [
     label: "Learn",
     icon: (
       <>
-        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z" />
-        <path d="M19 18v3H6.5A2.5 2.5 0 0 1 4 18.5" />
+        <path d="M12 6.5C10.4 5.2 8 4.6 4 4.8v13.6c4-.2 6.4.4 8 1.6 1.6-1.2 4-1.8 8-1.6V4.8c-4-.2-6.4.4-8 1.7z" />
+        <path d="M12 6.5V20" />
       </>
     ),
   },
@@ -31,7 +32,7 @@ const TABS = [
       <>
         <rect x="5" y="3.5" width="14" height="17" rx="2" />
         <path d="M9 3.5v17" />
-        <path d="M12.5 9H16M12.5 13H16" />
+        <path d="M12.5 9h3.5M12.5 13h3.5" />
       </>
     ),
   },
@@ -58,7 +59,7 @@ export default function TabBar() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="1.6"
+                  strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   aria-hidden="true"

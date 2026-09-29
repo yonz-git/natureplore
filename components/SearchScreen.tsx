@@ -1,120 +1,94 @@
 "use client";
 
-// A2 · Search for a region, results, and A3 · no match, which is the same screen once nothing
-// matches: the heading names what was typed, and the nearest spellings are offered instead.
-// Every result says how many places are mapped there, or that none are, so picking one is never
-// a guess. On the desktop the map stays behind the panel, as it does on every other A screen.
+// A2 · Search for a region, results, and A3 · no match. The results follow the field as it is
+// typed in. A mapped region opens A5, one that is not mapped opens A6, and a miss offers the
+// nearest spellings. On the phone search takes the screen, as the keyboard does; on the desktop
+// it is the panel beside the map. Boards: A2 and A3, phone and desktop, version 6.
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-import LocationDialog from "@/components/LocationDialog";
-import { LocationIcon, PinIcon, SearchIcon } from "@/components/MapParts";
+import { BackIcon, LocationIcon } from "@/components/Icons";
+import { useLocationPrompt } from "@/components/LocationDialog";
+import { PanelLogo, RegionRow, SearchField } from "@/components/MapParts";
 import RegionMap from "@/components/RegionMap";
-import { placeLine, regionHref, searchRegions, type Region } from "@/lib/places";
-import { useIsDesktop } from "@/lib/useIsDesktop";
+import { searchRegions, suggestRegions } from "@/lib/routes";
 
 export default function SearchScreen({ query }: { query: string }) {
-  const router = useRouter();
-  const desktop = useIsDesktop();
-  const [value, setValue] = useState(query);
-  const [asking, setAsking] = useState(false);
+  const [q, setQ] = useState(query);
+  const { ask, prompt } = useLocationPrompt("/map/region");
 
-  const { results, suggestions } = searchRegions(value);
-  const empty = value.trim().length >= 2 && results.length === 0;
+  const results = useMemo(() => searchRegions(q), [q]);
+  const suggestions = useMemo(() => (results.length ? [] : suggestRegions(q)), [q, results]);
+  const miss = q.trim() !== "" && results.length === 0;
+
+  const useLocation = (
+    <button type="button" className={`float-pill glass glass-pill${miss ? " is-after" : ""}`} onClick={ask}>
+      <LocationIcon size={18} />
+      Use my location instead
+    </button>
+  );
 
   return (
-    <section className="a1 search-screen">
-      {/* The phone gives the whole screen to the results, the way the boards do, so the map is
-          only drawn where there is room for it beside the panel. */}
-      {desktop && <RegionMap className="a1-map" />}
+    <section className="ms search">
+      <RegionMap className="a1-map" />
 
-      <div className="a1-sheet search-panel glass glass-top glass-card">
-        <div className="search-head">
-          <Link href="/map" className="search-back glass glass-pill" aria-label="Back to the start">
-            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-              <path d="m15 5-7 7 7 7" />
-            </svg>
-          </Link>
-
-          <form
-            className="search-form"
-            role="search"
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (results.length === 1) router.push(regionHref(results[0]));
-            }}
-          >
-            <label htmlFor="q" className="sr-only">
-              Search for a region
-            </label>
-            <div className="a1-field glass glass-pill">
-              <SearchIcon />
-              <input
-                id="q"
-                type="search"
-                placeholder="Search for a region"
-                value={value}
-                autoFocus
-                onChange={(e) => setValue(e.target.value)}
-              />
-              {value && (
-                <button type="button" className="map-clear" aria-label="Clear" onClick={() => setValue("")}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="9" />
-                    <path d="M9 9l6 6M15 9l-6 6" />
-                  </svg>
-                </button>
-              )}
-            </div>
-          </form>
+      <div className="ms-panel glass-desk">
+        <PanelLogo />
+        <Link href="/map" className="ms-back-desk">
+          <BackIcon size={18} />
+          Map
+        </Link>
+        <div className="ms-bar">
+          <div className="ms-bar-row">
+            <Link href="/map" className="round glass glass-pin ms-back-phone" aria-label="Back to the map">
+              <BackIcon size={20} />
+            </Link>
+            <SearchField label="Search for a region" defaultValue={query} autoFocus onChange={setQ} />
+          </div>
+          {!miss && useLocation}
         </div>
 
-        <button type="button" className="search-instead" onClick={() => setAsking(true)}>
-          <LocationIcon />
-          <span>Use my location instead</span>
-        </button>
+        <div className="ms-sheet" aria-live="polite">
+          {results.length > 0 && (
+            <section className="search-results glass-phone" aria-labelledby="regions-label">
+              <h2 id="regions-label" className="rows-label">
+                Regions
+              </h2>
+              <ul className="rows">
+                {results.map((r) => (
+                  <RegionRow key={r.name} region={r} />
+                ))}
+              </ul>
+            </section>
+          )}
 
-        {empty ? (
-          <>
-            <h1 className="a1-title search-title">
-              No places match <em>“{value.trim()}”</em>
-            </h1>
-            <p className="search-note">Check the spelling, or try another region.</p>
-            {suggestions.length > 0 && <ResultList label="Did you mean" regions={suggestions} />}
-          </>
-        ) : (
-          results.length > 0 && <ResultList label="Places" regions={results} />
-        )}
+          {miss && (
+            <>
+              <div className="search-miss">
+                <h1 className="ms-title">
+                  No regions match <em>“{q.trim()}”</em>
+                </h1>
+                <p className="ms-lead">Check the spelling, or try another region.</p>
+              </div>
+              {suggestions.length > 0 && (
+                <section className="search-results is-compact glass-phone" aria-labelledby="suggest-label">
+                  <h2 id="suggest-label" className="rows-label">
+                    Did you mean
+                  </h2>
+                  <ul className="rows">
+                    {suggestions.map((r) => (
+                      <RegionRow key={r.name} region={r} />
+                    ))}
+                  </ul>
+                </section>
+              )}
+              {useLocation}
+            </>
+          )}
+        </div>
       </div>
-
-      {asking && (
-        <LocationDialog onAllow={() => router.push("/map/near-you")} onDecline={() => setAsking(false)} />
-      )}
+      {prompt}
     </section>
-  );
-}
-
-function ResultList({ label, regions }: { label: string; regions: Region[] }) {
-  return (
-    <div className="search-results glass glass-card">
-      <p className="search-results-label">{label}</p>
-      <ul>
-        {regions.map((r) => (
-          <li key={r.name}>
-            <Link href={regionHref(r)} className={`search-result${r.places === 0 ? " is-empty" : ""}`}>
-              <span className="search-result-mark">
-                <PinIcon />
-              </span>
-              <span className="search-result-text">
-                <span className="search-result-name">{r.name}</span>
-                <span className="search-result-meta">{placeLine(r)}</span>
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }

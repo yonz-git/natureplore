@@ -1,7 +1,7 @@
-import MapScreen from "@/components/MapScreen";
+import RoutesScreen from "@/components/RoutesScreen";
 
-// A4 · Map home, near you: where the person is, the places recorded around them, nearest first.
+// A4 · Map home, routes near you: after the location is allowed.
 
 export default function NearYou() {
-  return <MapScreen variant="near" />;
+  return <RoutesScreen near />;
 }

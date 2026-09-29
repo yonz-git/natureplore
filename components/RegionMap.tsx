@@ -24,7 +24,7 @@ declare global {
   }
 }
 
-// [places, lat, lon, where]
+// [routes, lat, lon, where]
 const CLUSTERS: [number, number, number, string][] = [
   [164, 52.59, 13.22, "around Berlin"],
   [48, 52.95, 13.6, "in Schorfheide-Chorin"],
@@ -81,7 +81,7 @@ const REGION_POINTS: MapPoint[] = CLUSTERS.map(([count, lat, lon, where]) => ({
   lat,
   lon,
   count,
-  label: `${count} places ${where}, zoom in`,
+  label: `${count} routes ${where}, zoom in`,
 }));
 
 type Pin = MapPoint & { x: number; y: number; free: boolean };
@@ -285,10 +285,12 @@ export default function RegionMap({
         }
       };
 
-      const sheetEl = () => (host.parentElement?.querySelector(".a1-sheet") as HTMLElement | null) ?? null;
-      const navEl = () => (document.querySelector(".tabbar-pill") as HTMLElement | null) ?? null;
-      const barEl = () => (host.parentElement?.querySelector(".map-top") as HTMLElement | null) ?? null;
       const wide = matchMedia(DESKTOP);
+      // what covers the map: the sheet on the phone, the panel it moves into on the desktop
+      const sheetEl = () =>
+        (host.parentElement?.querySelector(wide.matches ? ".ms-panel" : ".ms-sheet") as HTMLElement | null) ?? null;
+      const navEl = () => (document.querySelector(".tabbar-pill") as HTMLElement | null) ?? null;
+      const barEl = () => (host.parentElement?.querySelector(".ms-bar") as HTMLElement | null) ?? null;
       // the phone keeps its bar over the map, the desktop moves it into the panel and the nav
       // pill takes that band instead
       const bandEl = () => (wide.matches ? navEl() : barEl());
@@ -444,9 +446,9 @@ export default function RegionMap({
               }
             >
               {pin.count ?? (
-                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M19 5c0 7.2-4.2 11-9 11-2.2 0-4-.6-5.2-1.6C6 9.6 10.2 6.2 19 5Z" />
-                  <path d="M5 19c1.4-3.4 3.4-5.8 6-7.4" />
+                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 19c0-9 5-14 15-14 0 10-5 15-14 15" />
+                  <path d="M5 19 13 11" />
                 </svg>
               )}
             </button>

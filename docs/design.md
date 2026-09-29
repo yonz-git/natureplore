@@ -54,6 +54,15 @@ colors:
   field-glow: "#80A57D"
   field-flow: "#5F8058"
   on-field: "#FAFBF5"
+  system-alert: "rgb(37 37 37 / 0.78)"
+  system-alert-rule: "rgb(255 255 255 / 0.18)"
+  system-alert-action: "#0A84FF"
+  system-prompt: "#282A2C"
+  system-prompt-text: "#E3E3E3"
+  system-prompt-soft: "#C4C7C5"
+  system-prompt-action: "#A8C7FA"
+  system-prompt-on-action: "#062E6F"
+  system-prompt-rule: "#8E918F"
 typography:
   display-desktop:
     fontFamily: Comfortaa
@@ -424,7 +433,7 @@ The system comes from the redesign canvas (welcome on phone and desktop, start s
 
 `primary` to `primary-deep` is the olive lime, always as a 135 degree gradient. It is allowed in exactly six places: the primary button, the active tab, segment or chip, spot markers and the route line, the current month bar, the logo symbol, and the closing phrase of the page title. That phrase appears once per screen, on the title only; section headings stay white, so the lime never competes with the one action. Ink on lime is `on-primary`, the forest green, at about 7.5:1. Everything else is white: `on-ground` for titles and values, `on-ground-soft` (white 78%) for secondary text and icons, `on-ground-tab` (white 82%) for tabs you are not on. `mist` tints icons inside discs and draws the focus ring.
 
-The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group-birds`, `group-mammals`) appear only as icon tints, dots and proportion bar segments, always next to the group's name or icon, never as fills behind text. `marker`, `keyboard` and the `map-`, `basemap-` and `field-` colours are carried from the prototype for the base map and the welcome animation; the boards do not use them.
+The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group-birds`, `group-mammals`) appear only as icon tints, dots and proportion bar segments, always next to the group's name or icon, never as fills behind text. `marker`, `keyboard` and the `map-`, `basemap-` and `field-` colours are carried from the prototype for the base map and the welcome animation; the boards do not use them. The `system-` colours belong to the platform, not to Natureplore: they draw the location prompt the way the phone and the browser draw their own, and nothing else may use them.
 
 ## Typography
 
