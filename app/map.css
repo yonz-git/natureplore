@@ -455,6 +455,36 @@ button.float-pill:active { transform: scale(0.97); }
   border-radius: var(--radius-card);
 }
 .ms-handle { flex-shrink: 0; width: 2.25rem; height: 0.3125rem; margin: 0 auto -0.25rem; border-radius: var(--radius-handle); background: rgb(255 255 255 / 0.4); }
+/* the handle as a control (components/SheetGrab.tsx): a 44 target centred on the bar, clear of the
+   head's own buttons, that drags, taps or takes Enter to open the sheet to just under the top */
+.ms-grab {
+  /* over the head's top edge, which the negative margin tucks under it */
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  align-self: center;
+  width: 6rem;
+  height: 2.75rem;
+  margin: -0.75rem 0 -1.9375rem;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 0.75rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  cursor: grab;
+  touch-action: none;
+}
+.ms-grab:active { cursor: grabbing; }
+.ms-grab .ms-handle { margin: 0; transition: background-color 160ms var(--ease-out); }
+.ms-grab:hover .ms-handle,
+.ms-grab:focus-visible .ms-handle { background: rgb(255 255 255 / 0.7); }
+.ms-grab:focus-visible { outline: 2px solid var(--color-mist); outline-offset: -2px; }
+@media (max-width: 63.99rem) {
+  .ms-sheet.is-open { --sheet-top: var(--sheet-open, calc(var(--top-chrome) + 4rem)); }
+}
 
 .ms-title {
   margin: 0;
@@ -592,10 +622,9 @@ button.float-pill:active { transform: scale(0.97); }
   .map-start-label { top: 3rem; right: auto; left: 50%; transform: translateX(-50%); }
 }
 
-/* the map gives way before the page does: on a short screen or with large text the sheet rises so
-   at least 22rem of it (the pinned bar, the tab bar and the start of the page) stays on screen, but
-   never over the round controls at the top */
-.b1 { --sheet-top: max(min(27.5rem, 100dvh - 22rem), var(--top-chrome) + 4rem); }
+/* the map gives way before the page does: the sheet rises so the route's name shows above the
+   pinned bar on arrival, whatever the phone's height, but never over the round controls at the top */
+.b1 { --sheet-top: max(min(26rem, 100dvh - 27.5rem), var(--top-chrome) + 4rem); }
 .b1-top {
   position: absolute;
   top: calc(var(--top-chrome) + 0.5rem);
@@ -886,7 +915,8 @@ button.float-pill:active { transform: scale(0.97); }
     flex-direction: column;
     border-radius: var(--radius-card);
   }
-  .ms-handle { display: none; }
+  .ms-handle,
+  .ms-grab { display: none; }
 
   .ms-bar,
   .ms-sheet,

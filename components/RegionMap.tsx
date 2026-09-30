@@ -167,6 +167,7 @@ export default function RegionMap({
   maxZoom = REGION_ZOOM_MAX,
   line,
   detail,
+  mapLabel = "Map of Berlin and Brandenburg",
   ref,
 }: {
   className?: string;
@@ -177,6 +178,8 @@ export default function RegionMap({
   line?: [number, number][];
   /** a GeoJSON file of the paths, water and land around a route, for the zoom a route is seen at */
   detail?: string;
+  /** what the map shows, for screen readers: the region, or the route on a route's own map */
+  mapLabel?: string;
   /** a screen holds this to move the map from a control of its own */
   ref?: React.Ref<MapHandle>;
 }) {
@@ -235,7 +238,7 @@ export default function RegionMap({
       if (!still) {
         host.setAttribute("role", "region");
         host.setAttribute("aria-roledescription", "map");
-        host.setAttribute("aria-label", "Map of Berlin and Brandenburg. Arrow keys move it.");
+        host.setAttribute("aria-label", `${mapLabel}. Arrow keys move it.`);
       }
 
       const fill = (name: string) => () => ({
@@ -476,7 +479,7 @@ export default function RegionMap({
       mapRef.current = null;
       centreRef.current = null;
     };
-  }, [still, points, maxZoom, line, detail]);
+  }, [still, points, maxZoom, line, detail, mapLabel]);
 
   return (
     <>

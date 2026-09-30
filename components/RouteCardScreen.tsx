@@ -11,7 +11,8 @@
 import Link from "next/link";
 import { useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { BackIcon, BookmarkIcon, CalendarIcon, ChevronIcon, LocationIcon, WalkIcon } from "@/components/Icons";
+import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, LocationIcon, WalkIcon } from "@/components/Icons";
+import { useSheet } from "@/components/SheetGrab";
 import { MapTools } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { ClaimCard, SpotMark } from "@/components/SpotParts";
@@ -45,14 +46,17 @@ function SectionHead({ id, lead, close, note }: { id: string; lead: string; clos
 }
 
 /**
- * Save, pinned. Once saved it becomes Walk it, with Saved beside it. Tapping Saved removes the
- * route and its download, so the bar then says so and offers Undo until the page is left. After
- * each change focus moves to the control that took the pressed one's place.
+ * Save, pinned. Once saved it becomes Walk it, with Saved beside it, and the bar says the route
+ * was downloaded and where to find it, on screen, for the rest of the visit. Tapping Saved removes
+ * the route and its download, so the bar then says so and offers Undo until the page is left.
+ * After each change focus moves to the control that took the pressed one's place.
  */
 function Pin({ route, walkable }: { route: Route; walkable: boolean }) {
   const { isSaved, toggle } = useSaved();
   const saved = isSaved(route.id);
   const [removed, setRemoved] = useState(false);
+  // saved on this visit: the bar shows where the route went; a route already saved says nothing
+  const [justSaved, setJustSaved] = useState(false);
   const moved = useRef(false);
   const focusIfMoved = (el: HTMLElement | null) => {
     if (el && moved.current) {
@@ -66,8 +70,16 @@ function Pin({ route, walkable }: { route: Route; walkable: boolean }) {
     after();
   };
 
+  const note = saved && justSaved;
   return (
-    <div className="b1-pin glass-phone">
+    <div className={`b1-pin glass-phone${note ? " has-note" : ""}`}>
+      {/* on screen for sighted people; the live region below says the same to screen readers */}
+      {note && (
+        <p className="b1-note" aria-hidden="true">
+          <CheckCircleIcon size={16} />
+          Saved and downloaded. Find it in Saved.
+        </p>
+      )}
       {saved ? (
         <>
           <button
@@ -75,7 +87,10 @@ function Pin({ route, walkable }: { route: Route; walkable: boolean }) {
             type="button"
             className="btn btn-secondary b1-saved"
             aria-pressed="true"
-            onClick={() => act(() => setRemoved(true))}
+            onClick={() => act(() => {
+              setRemoved(true);
+              setJustSaved(false);
+            })}
           >
             <BookmarkIcon size={19} filled />
             Saved
@@ -97,12 +112,15 @@ function Pin({ route, walkable }: { route: Route; walkable: boolean }) {
       ) : removed ? (
         <>
           <p className="b1-removed">Removed from Saved</p>
-          <button ref={focusIfMoved} type="button" className="btn btn-secondary b1-undo" onClick={() => act(() => setRemoved(false))}>
+          <button ref={focusIfMoved} type="button" className="btn btn-secondary b1-undo" onClick={() => act(() => {
+              setRemoved(false);
+              setJustSaved(true);
+            })}>
             Undo
           </button>
         </>
       ) : (
-        <button ref={focusIfMoved} type="button" className="btn btn-primary b1-walk" onClick={() => act(() => {})}>
+        <button ref={focusIfMoved} type="button" className="btn btn-primary b1-walk" onClick={() => act(() => setJustSaved(true))}>
           <BookmarkIcon size={19} />
           Save this route
         </button>
@@ -116,6 +134,8 @@ function Pin({ route, walkable }: { route: Route; walkable: boolean }) {
 
 export default function RouteCardScreen({ route }: { route: Route }) {
   const map = useRef<MapHandle>(null);
+  const sheetEl = useRef<HTMLDivElement>(null);
+  const sheet = useSheet(sheetEl);
   const detail = routeDetail(route.id);
   const spots = useMemo(() => spotsOf(route), [route]);
   const inSeasonPhotos = (suggestionById(route.id)?.inSeason ?? []).map((o) => organismPhoto(o.name)?.src).slice(0, 2);
@@ -155,7 +175,7 @@ export default function RouteCardScreen({ route }: { route: Route }) {
 
   return (
     <section className="ms b1">
-      <RegionMap className="a1-map" ref={map} points={points} line={line} detail={route.detail} maxZoom={15} />
+      <RegionMap className="a1-map" ref={map} points={points} line={line} detail={route.detail} maxZoom={15} mapLabel={`Map of ${route.name}`} />
 
       <div className="b1-top">
         <Link href={back} className="round glass glass-pin" aria-label={backLabel}>
@@ -167,8 +187,13 @@ export default function RouteCardScreen({ route }: { route: Route }) {
       </div>
 
       <div className="ms-panel glass-desk">
-        <div className="ms-sheet glass-phone" aria-labelledby="route-title">
-          <div className="ms-handle" aria-hidden="true" />
+        <div
+          ref={sheetEl}
+          className={`ms-sheet glass-phone${sheet.open ? " is-open" : ""}`}
+          aria-labelledby="route-title"
+          onScroll={sheet.onScroll}
+        >
+          {sheet.grab("route")}
           <Link href={back} className="fb-backlink b1-back-desk">
             <BackIcon size={18} />
             {backLabel}

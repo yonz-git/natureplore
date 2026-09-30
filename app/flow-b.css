@@ -284,6 +284,20 @@ a.fb-claim-act:active { transform: scale(0.985); }
   border-radius: var(--radius-pill);
 }
 .b1-pin .btn { animation: fade-in 200ms var(--ease-out) both; }
+/* saved on this visit: where the route went, on screen, above the two buttons */
+.b1-pin.has-note { flex-wrap: wrap; border-radius: var(--radius-card); }
+.b1-note {
+  flex-basis: 100%;
+  margin: 0;
+  padding: 0.25rem 0.75rem 0.125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--text-caption);
+  line-height: 1.25rem;
+  animation: fade-in 200ms var(--ease-out) both;
+}
+.b1-note svg { flex-shrink: 0; color: var(--color-mist); }
 .b1-pin .b1-walk { flex-grow: 1; }
 /* with large text a label wraps inside its button rather than running out of the bar */
 .b1-pin .btn,
@@ -305,7 +319,13 @@ a.fb-claim-act:active { transform: scale(0.985); }
 
 /* ── L4, the walk ──────────────────────────────────────────────────────────────────────────── */
 
-.walk { --sheet-top: max(min(25rem, 100dvh - 22rem), var(--top-chrome) + 4rem); background: var(--color-ground); }
+/* the map strip gives way to the spot: what to look for and what not to do show above Previous and
+   Next without scrolling, on a 375 × 667 phone too */
+.walk { --sheet-top: max(min(24rem, 100dvh - 31rem), var(--top-chrome) + 4rem); background: var(--color-ground); }
+/* the route's name is in the pill over the map, so the spot does not repeat it, and the block sits
+   a little closer, read at a glance rather than at length */
+.walk .fb-spot-head .fb-soft:last-child { display: none; }
+.walk .fb-spot { padding: 1.125rem 1.125rem 1rem; gap: 1rem; }
 .walk .walk-top {
   position: absolute;
   top: calc(var(--top-chrome) + 0.5rem);
