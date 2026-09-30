@@ -33,11 +33,11 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
   const total = LINUM_RECORDED.reduce((a, g) => a + g.total, 0);
 
   return (
-    <section className="saved a8">
+    <section className="saved a8" aria-labelledby="a8-title">
       <Link href={routeHref} className="round glass glass-pin a8-top" aria-label={`Back to ${routeName}`}>
         <BackIcon size={20} />
       </Link>
-      <div className="saved-sheet glass" aria-labelledby="a8-title">
+      <div className="saved-sheet glass">
         <h1 id="a8-title">
           Recorded along <em>{routeName}</em>
         </h1>

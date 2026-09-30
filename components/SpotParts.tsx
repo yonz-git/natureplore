@@ -1,14 +1,16 @@
 // The pieces Flow B shares, each built once (flow and IA redesign §2):
 // the spot block, the whole walk sheet and the top of the spot page; the claim card, with its
 // first action printed on it (B1, L3, L4, B4); the action row, a restraint and its mechanism
-// (L3, L4, B4); and the month grid (L3, L4, B4). Flow C, the claim and action pages, is not built
-// in the prototype yet, so the claim card is text and its action line a control with nowhere to go.
+// (L3, L4, B4); and the month grid (L3, L4, B4). The claim card lives in components/ClaimCard.tsx,
+// a client component because its links remember where they were opened from.
 
 import Link from "next/link";
 
 import { ChevronIcon } from "@/components/Icons";
-import { MONTH_LETTERS, MONTH_NAMES, NOW, type Claim, type Spot } from "@/lib/spots";
+import { MONTH_LETTERS, MONTH_NAMES, NOW, type Spot } from "@/lib/spots";
 import { MONTH } from "@/lib/suggestions";
+
+export { ClaimCard } from "@/components/ClaimCard";
 
 export function MonthGrid({ months, label = "In season" }: { months: number[]; label?: string }) {
   // one picture with one name: the twelve letters are drawn, the months are read out
@@ -23,32 +25,6 @@ export function MonthGrid({ months, label = "In season" }: { months: number[]; l
           {m}
         </span>
       ))}
-    </div>
-  );
-}
-
-export function ClaimCard({ claim }: { claim: Claim }) {
-  // the claim stays readable as text until its page (C1) exists; only the action line is a control
-  return (
-    <div className="fb-claim">
-      <div className="fb-claim-open">
-        <span>
-          <span className="fb-claim-text">{claim.claim}</span>
-          <span className="fb-claim-scope">
-            {claim.scope}
-            <br />
-            Sample figure for the prototype
-          </span>
-        </span>
-      </div>
-      <button type="button" className="fb-claim-act" aria-disabled="true">
-        <span>
-          <span className="fb-soft">What you can do: </span>
-          {claim.action}
-          <span className="fb-claim-soon">Not in this prototype yet</span>
-        </span>
-        <ChevronIcon size={18} />
-      </button>
     </div>
   );
 }

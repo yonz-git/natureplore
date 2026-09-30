@@ -3,7 +3,8 @@
 // The suggestion card, one route in season this month, as on A5 and A4 (the redesign's section 2):
 // the photograph with Save over its top right, the name, its line, the spots in season as numbered
 // dots, and what is in season along it, each with its group icon first and a last-recorded date.
-// Save works in place and says where the route went. Only a route whose page is built opens.
+// Save works in place and says where the route went, on the photograph beside the bookmark, where
+// the eye already is. Only a route whose page is built opens.
 // Layout: app/suggestions.css.
 
 import Link from "next/link";
@@ -54,7 +55,7 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
         <span className="sug-photo" aria-hidden="true" />
       )}
       <div className="sug-head">
-        <h3 className="sug-name">
+        <h2 className="sug-name">
           {route.href ? (
             <Link href={route.href} className="sug-open">
               {route.name}
@@ -62,7 +63,7 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
           ) : (
             route.name
           )}
-        </h3>
+        </h2>
         <p className="sug-meta">{route.meta}</p>
       </div>
       <SpotDots route={route} />
@@ -96,7 +97,7 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
         {saved && (
           <>
             <CheckCircleIcon size={16} />
-            Saved and downloaded. Find it in Saved.
+            Saved and downloaded<span className="sr-only">. Find it in Saved.</span>
           </>
         )}
       </p>

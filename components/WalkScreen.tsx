@@ -103,18 +103,20 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
   );
 
   return (
-    <section className="ms walk">
-      <RegionMap className="a1-map" ref={map} points={points} line={line} detail={route.detail} maxZoom={15} />
+    // the walk sits outside the tabbed layout, so the whole screen is the page's main landmark:
+    // the map's spot markers and the top controls belong to it too
+    <main className="ms walk" aria-labelledby="walk-route">
+      <RegionMap className="a1-map" ref={map} points={points} line={line} detail={route.detail} maxZoom={15} mapLabel={`Map of ${route.name}`} />
 
       <div className="walk-top">
-        <p className="walk-title glass glass-pill">Walking {route.name}</p>
+        <p id="walk-route" className="walk-title glass glass-pill">Walking {route.name}</p>
         <Link href="/saved" className="walk-end glass glass-pill">
           End walk
         </Link>
       </div>
 
       <div className="ms-panel walk-panel">
-        <main className="ms-sheet walk-sheet" aria-label="The spot you are at">
+        <section className="ms-sheet walk-sheet" aria-label="The spot you are at">
           <div className="walk-spot" key={n}>
             <SpotBlock
               spot={spot}
@@ -139,7 +141,7 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
               </div>
             )}
           </div>
-        </main>
+        </section>
         <div className="walk-bar">{nav}</div>
         <p className="sr-only" aria-live="polite">
           Spot {n} of {total}, {spot.name}
@@ -152,6 +154,6 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
           map.current?.centre(two.lat, two.lon, 14, !matchMedia("(prefers-reduced-motion: reduce)").matches);
         }}
       />
-    </section>
+    </main>
   );
 }

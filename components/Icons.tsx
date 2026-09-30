@@ -216,3 +216,75 @@ export const InfoIcon = (p: P) => (
     <path d="M12 11v5.5M12 8v.01" />
   </Svg>
 );
+
+// Flow C: the claim tags, the action facts and the source notes, as on the C boards.
+
+export const DownIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M12 5v14" />
+    <path d="m6 13 6 6 6-6" />
+  </Svg>
+);
+
+export const UpIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M12 19V5" />
+    <path d="m6 11 6-6 6 6" />
+  </Svg>
+);
+
+export const WaterIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M3 17c3 0 3-3 6-3s3 3 6 3 3-3 6-3" />
+    <path d="M3 11c3 0 3-3 6-3s3 3 6 3 3-3 6-3" />
+  </Svg>
+);
+
+export const PeopleIcon = (p: P) => (
+  <Svg {...p}>
+    <circle cx="9" cy="8.5" r="3.2" />
+    <path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5" />
+    <path d="M16 6.2a3.2 3.2 0 0 1 0 6M17 14.9c2 .6 3.5 2.4 3.5 4.6" />
+  </Svg>
+);
+
+export const BagIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M5 8h14l-1 12H6z" />
+    <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+  </Svg>
+);
+
+export const LockIcon = (p: P) => (
+  <Svg {...p}>
+    <rect x="5" y="10.5" width="14" height="10" rx="2" />
+    <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" />
+  </Svg>
+);
+
+export const ExternalIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M14 4h6v6" />
+    <path d="M20 4 11 13" />
+    <path d="M18 13v6H5V6h6" />
+  </Svg>
+);
+
+export const GlobeIcon = (p: P) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M3.5 12h17M12 3.5c2.5 2.6 3.6 5.4 3.6 8.5s-1.1 5.9-3.6 8.5c-2.5-2.6-3.6-5.4-3.6-8.5s1.1-5.9 3.6-8.5z" />
+  </Svg>
+);
+
+export const CheckIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="m5 12.5 4.5 4.5L19 7.5" />
+  </Svg>
+);
+
+export const CarbonIcon = (p: P) => (
+  <Svg {...p}>
+    <path d="M12 3.5c3 3.4 5.5 6.6 5.5 10a5.5 5.5 0 0 1-11 0c0-3.4 2.5-6.6 5.5-10z" />
+  </Svg>
+);

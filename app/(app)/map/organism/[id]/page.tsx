@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import OrganismPage from "@/components/OrganismPage";
@@ -6,6 +7,12 @@ import { spotOf } from "@/lib/spots";
 
 // B4 · Organism, and B5 when its location is generalised. Back returns where the page was opened:
 // the walk on the spot it showed (B4-walk, `?from=walk&spot=`), or the spot page (`?spot=`).
+
+export async function generateMetadata({ params }: PageProps<"/map/organism/[id]">): Promise<Metadata> {
+  const { id } = await params;
+  const o = organismById(id);
+  return { title: o && `${o.name} ${o.close}` };
+}
 
 export default async function Organism({ params, searchParams }: PageProps<"/map/organism/[id]">) {
   const { id } = await params;

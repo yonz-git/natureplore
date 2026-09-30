@@ -13,6 +13,8 @@ import Link from "next/link";
 import { ArrowIcon, BackIcon, BookmarkIcon, ChevronIcon, EyeOffIcon, ShareIcon } from "@/components/Icons";
 import { ActionRow, ClaimCard, MonthGrid, SpotMark } from "@/components/SpotParts";
 import type { Organism } from "@/lib/organisms";
+import { leaveFor } from "@/lib/back";
+import { docById, docLine } from "@/lib/docs";
 import { useSaved } from "@/lib/saved";
 import { creditLine, organismPhoto } from "@/lib/photos";
 
@@ -189,16 +191,21 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
           {o.docs && (
             <>
               <h2 className="org-h2">Documentaries</h2>
-              {o.docs.map((d) => (
-                <Link key={d.title} href="/learn" className="org-box org-doc">
-                  <span className="org-doc-thumb" aria-hidden="true" />
-                  <span>
-                    <b>{d.title}</b>
-                    <span>{d.line}</span>
-                  </span>
-                  <ChevronIcon size={18} />
-                </Link>
-              ))}
+              {o.docs.map((id) => {
+                const d = docById(id)!;
+                const href = `/learn/documentaries/${id}`;
+                return (
+                  <Link key={id} href={href} className="org-box org-doc" onClick={() => leaveFor(href)}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img className="org-doc-thumb" src={d.photo.src} alt="" />
+                    <span>
+                      <b>{d.title}</b>
+                      <span>{docLine(d)}</span>
+                    </span>
+                    <ChevronIcon size={18} />
+                  </Link>
+                );
+              })}
             </>
           )}
         </aside>

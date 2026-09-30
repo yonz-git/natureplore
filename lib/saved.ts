@@ -45,6 +45,9 @@ export function useSaved() {
     ids: list,
     isSaved: (id: string) => list.includes(id),
     toggle: (id: string) => write(list.includes(id) ? list.filter((x) => x !== id) : [...list, id]),
+    /** Removes several at once (E4 and E5 in edit), and `restore` puts them back for Undo. */
+    remove: (gone: string[]) => write(list.filter((x) => !gone.includes(x))),
+    restore: (back: string[]) => write([...list, ...back.filter((x) => !list.includes(x))]),
   };
 }
 

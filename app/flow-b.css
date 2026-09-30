@@ -26,7 +26,7 @@
 .fb-mark.is-lg { width: 2.25rem; height: 2.25rem; font-size: 1.125rem; }
 
 /* a heading with its closing words in the lime of the titles */
-.fb-sec { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; scroll-margin-top: 1rem; }
+.fb-sec { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem; scroll-margin-top: 1rem; }
 .fb-sec h2 {
   margin: 0;
   font-family: var(--text-h2--font-family);
@@ -35,7 +35,7 @@
   font-weight: var(--text-h2--font-weight);
   letter-spacing: var(--text-h2--letter-spacing);
 }
-.fb-sec span { flex-shrink: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-sec span { min-width: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-sec h2 em,
 .l3 .saved-sheet h2 em,
 .org-h2 em {
@@ -102,25 +102,27 @@ a.fb-row:active { transform: scale(0.985); }
   border: 0.5px solid var(--color-inner-edge);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
 }
-.fb-claim button {
-  width: 100%;
+.fb-claim-open,
+.fb-claim-act {
   margin: 0;
   display: flex;
   gap: 0.75rem;
-  border: 0;
-  background: none;
   color: var(--color-on-ground);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
+  text-decoration: none;
 }
-.fb-claim button > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
-.fb-claim-open { padding: 1.25rem 1.25rem 1rem; display: flex; }
+a.fb-claim-open,
+a.fb-claim-act { transition: transform 160ms var(--ease-out); }
+a.fb-claim-open:active,
+a.fb-claim-act:active { transform: scale(0.985); }
+.fb-claim-open > svg,
+.fb-claim-act > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
+.fb-claim-open { padding: 1.25rem 1.25rem 1rem; align-items: flex-start; border-radius: var(--radius-inner) var(--radius-inner) 0 0; }
+.fb-claim-open > svg { margin-top: 0.1875rem; }
 .fb-claim-open > span:first-child { flex-grow: 1; display: flex; flex-direction: column; gap: 0.5rem; }
 .fb-claim-text { font-size: var(--text-body); line-height: 1.5rem; font-weight: 400; }
 .fb-claim-scope { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-claim .fb-claim-act {
-  width: auto;
+  min-height: 2.75rem;
   margin: 0 1.25rem;
   padding: 0.875rem 0 1rem;
   align-items: center;
@@ -129,9 +131,7 @@ a.fb-row:active { transform: scale(0.985); }
   line-height: 1.3125rem;
 }
 .fb-claim-act > span:first-child { flex-grow: 1; }
-.fb-claim .fb-claim-act[aria-disabled="true"] { opacity: 1; }
-.fb-claim .fb-claim-act[aria-disabled="true"] > svg { opacity: 0.45; }
-.fb-claim-soon { display: block; margin-top: 0.25rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
+
 
 /* the action row: what not to do here, the line, and why */
 .fb-rule { display: flex; flex-direction: column; gap: 0.375rem; }
@@ -265,7 +265,10 @@ a.fb-row:active { transform: scale(0.985); }
 .fb-season > div.is-now .fb-season-bar { background: var(--color-mist); }
 
 .fb-facts { padding: 0.375rem 1.25rem; }
-.fb-facts > div { padding: 0.75rem 0; display: grid; grid-template-columns: 7.5rem 1fr; gap: 0.75rem; }
+/* label and value side by side; with large text the value drops under its label instead of running off */
+.fb-facts > div { padding: 0.75rem 0; display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; }
+.fb-facts dt { flex: 0 0 7.5rem; }
+.fb-facts dd { flex: 1 1 10rem; min-width: 0; }
 .fb-facts > div + div { border-top: 1px solid var(--color-divider); }
 .fb-facts dt { font-size: var(--text-caption); line-height: 1.25rem; color: var(--color-on-ground-soft); }
 .fb-facts dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.25rem; }
@@ -284,6 +287,20 @@ a.fb-row:active { transform: scale(0.985); }
   border-radius: var(--radius-pill);
 }
 .b1-pin .btn { animation: fade-in 200ms var(--ease-out) both; }
+/* saved on this visit: where the route went, on screen, above the two buttons */
+.b1-pin.has-note { flex-wrap: wrap; border-radius: var(--radius-card); }
+.b1-note {
+  flex-basis: 100%;
+  margin: 0;
+  padding: 0.25rem 0.75rem 0.125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--text-caption);
+  line-height: 1.25rem;
+  animation: fade-in 200ms var(--ease-out) both;
+}
+.b1-note svg { flex-shrink: 0; color: var(--color-mist); }
 .b1-pin .b1-walk { flex-grow: 1; }
 /* with large text a label wraps inside its button rather than running out of the bar */
 .b1-pin .btn,
@@ -305,7 +322,13 @@ a.fb-row:active { transform: scale(0.985); }
 
 /* ── L4, the walk ──────────────────────────────────────────────────────────────────────────── */
 
-.walk { --sheet-top: max(min(25rem, 100dvh - 22rem), var(--top-chrome) + 4rem); background: var(--color-ground); }
+/* the map strip gives way to the spot: what to look for and what not to do show above Previous and
+   Next without scrolling, on a 375 × 667 phone too */
+.walk { --sheet-top: max(min(24rem, 100dvh - 31rem), var(--top-chrome) + 4rem); background: var(--color-ground); }
+/* the route's name is in the pill over the map, so the spot does not repeat it, and the block sits
+   a little closer, read at a glance rather than at length */
+.walk .fb-spot-head .fb-soft:last-child { display: none; }
+.walk .fb-spot { padding: 1.125rem 1.125rem 1rem; gap: 1rem; }
 .walk .walk-top {
   position: absolute;
   top: calc(var(--top-chrome) + 0.5rem);
@@ -331,7 +354,8 @@ a.fb-row:active { transform: scale(0.985); }
   font-size: var(--text-caption);
   line-height: 1;
 }
-.walk-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: block; line-height: 2.75rem; }
+/* wraps rather than cutting the route name off, with large text */
+.walk-title { min-width: 0; height: auto; min-height: 2.75rem; padding-block: 0.625rem; line-height: 1.2; }
 .walk-end { flex-shrink: 0; padding: 0 1.125rem; font-size: var(--text-body-sm); font-weight: 500; text-decoration: none; transition: transform 160ms var(--ease-out); }
 .walk-end:active { transform: scale(0.97); }
 
@@ -419,6 +443,8 @@ a.fb-row:active { transform: scale(0.985); }
 
 @media (prefers-reduced-motion: reduce) {
   .fb-row,
+  a.fb-claim-open,
+  a.fb-claim-act,
   .fb-nav-btn,
   .fb-strip a,
   .fb-look-link,

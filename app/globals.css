@@ -12,7 +12,11 @@
 @import "./flow-a.css";
 @import "./flow-b.css";
 @import "./organism.css";
+@import "./flow-c.css";
+@import "./flow-d.css";
+@import "./flow-e.css";
 @import "./tabbar.css";
+@import "./tablet.css";
 @import "./transitions.css";
 
 /* The room a screen leaves above its first element. A status bar only exists when the app is
@@ -53,6 +57,9 @@ h3 {
   outline: 2px solid var(--color-mist);
   outline-offset: 3px;
 }
+
+/* A heading word longer than its line breaks rather than running off, with very large text */
+:where(h1, h2, h3) { overflow-wrap: break-word; }
 
 /* Disabled: 45% and no press. In the prototype this marks a control whose page is not built yet;
    the reason is in its accessible name. */

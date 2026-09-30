@@ -1,9 +1,13 @@
 // The spots of a route and what B1 says about it beyond its card: the six spots of Linum wet meadows
-// loop, the spots in season per month, getting there, and the claim cards along it. Content is the
+// loop, the spots in season per month, getting there, and which claims are along it. Content is the
 // sample content of the flow and IA redesign (§3), as on the boards B1, L3-1 to L3-6, L4 and B4.
 // Only Linum has it; the other routes are sample cards and open nothing.
 
+import { CLAIMS, type Claim } from "@/lib/claims";
 import { MONTH } from "@/lib/suggestions";
+
+// the claims live in lib/claims.ts; they are re-exported here for the screens that read spots
+export { CLAIMS, type Claim };
 
 /** The prototype's month, September, as an index from 0 for January. */
 export const NOW = 8;
@@ -26,14 +30,6 @@ export type Spot = {
   why: string;
 };
 
-export type Claim = {
-  id: string;
-  claim: string;
-  /** the site is a scope label, not a link: there is no site page */
-  scope: string;
-  action: string;
-};
-
 export type RouteDetail = {
   spots: Spot[];
   /** how many spots are in season in each month, January first */
@@ -46,21 +42,6 @@ export type RouteDetail = {
   gettingNote: string;
   claims: Claim[];
   foot: string;
-};
-
-export const CLAIMS: Record<string, Claim> = {
-  c1a: {
-    id: "c1a",
-    claim: "Lost about 40% of its wet meadow to drainage since 1990.",
-    scope: "NSG and FFH-Gebiet Oberes Rhinluch. Landesamt für Umwelt Brandenburg, 2023",
-    action: "Join the September clean-up, Sat 26 Sep",
-  },
-  c1b: {
-    id: "c1b",
-    claim: "Summer water levels have dropped by around 30 cm since 2005.",
-    scope: "NSG and FFH-Gebiet Oberes Rhinluch. Landesamt für Umwelt Brandenburg, 2022",
-    action: "Help rewet Linum meadow",
-  },
 };
 
 const LINUM_SPOTS: Spot[] = [

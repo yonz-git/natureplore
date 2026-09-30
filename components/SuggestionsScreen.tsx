@@ -14,6 +14,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ChevronIcon, LeafIcon, ListIcon, MapIcon, PinIcon, RoutesIcon } from "@/components/Icons";
 import { useLocationPrompt } from "@/components/LocationDialog";
 import { MapTools, SearchField } from "@/components/MapParts";
+import { useSheet } from "@/components/SheetGrab";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { SuggestionCard } from "@/components/SuggestionCard";
 import { HERE } from "@/lib/routes";
@@ -45,7 +46,9 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   // The sheet moves between its two heights by its own transform, never an ancestor's (that would
   // switch off the frost): its top jumps, then it slides from where it was. The map measures the
   // new top at once, so the labels land in the space the sheet leaves free.
+  // on the map view the sheet keeps only its head, so it has nothing to open
   const sheet = useRef<HTMLDivElement>(null);
+  const grab = useSheet(sheet, !onMap);
   const from = useRef<number | null>(null);
   useLayoutEffect(() => {
     const el = sheet.current;
@@ -72,7 +75,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
 
   return (
     <section className={`ms sg ${near ? "a4" : "a5"}${onMap ? " is-map" : ""}`}>
-      <RegionMap className="a1-map" ref={map} points={points} maxZoom={home ? 9.5 : 11} />
+      <RegionMap className="a1-map" behind={!onMap} ref={map} points={points} maxZoom={home ? 9.5 : 11} />
 
       <div className="ms-panel glass-desk">
         <div className="ms-bar">
@@ -89,8 +92,13 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           </div>
         </div>
 
-        <div ref={sheet} className="ms-sheet glass-phone glass-top" aria-labelledby="sg-title">
-          <div className="ms-handle" aria-hidden="true" />
+        <div
+          ref={sheet}
+          className={`ms-sheet glass-phone glass-top${grab.open ? " is-open" : ""}`}
+          aria-labelledby="sg-title"
+          onScroll={grab.onScroll}
+        >
+          {grab.grab("list")}
           <div className="sg-head">
             <div>
               <h1 id="sg-title" className="ms-title">
