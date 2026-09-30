@@ -13,7 +13,9 @@ import {
   CalendarIcon,
   CarbonIcon,
   CheckIcon,
+  ChevronIcon,
   DownIcon,
+  GlobeIcon,
   LeafIcon,
   PeopleIcon,
   PinIcon,
@@ -22,12 +24,57 @@ import {
   WalkIcon,
   WaterIcon,
 } from "@/components/Icons";
-import type { Benefit, Fact } from "@/lib/actions";
+import { ACTION_ROWS, actionById, type Benefit, type Fact } from "@/lib/actions";
+import { leaveFor } from "@/lib/back";
 import type { Tag } from "@/lib/claims";
 
 const TAG_ICON = { down: DownIcon, up: UpIcon, leaf: LeafIcon, water: WaterIcon } as const;
-const FACT_ICON = { calendar: CalendarIcon, pin: PinIcon, people: PeopleIcon, walk: WalkIcon, bag: BagIcon, check: CheckIcon } as const;
+const FACT_ICON = { calendar: CalendarIcon, pin: PinIcon, people: PeopleIcon, walk: WalkIcon, bag: BagIcon, check: CheckIcon, globe: GlobeIcon } as const;
 const BENEFIT_ICON: Record<Benefit, typeof WaterIcon> = { "Habitat condition": WaterIcon, Biodiversity: LeafIcon, Carbon: CarbonIcon };
+
+/**
+ * The rows of "What you can do": a date tile for the clean-up, an icon for the rest. On a claim
+ * (C1) and in Saved a row has one line; on Learn (D0) the long form adds when and where, then what
+ * it does. Each opens its action and remembers the page it was opened from.
+ */
+export function ActionRows({ ids, long = false }: { ids: string[]; long?: boolean }) {
+  return (
+    <ul className="fb-card fb-rows cp-rows">
+      {ids.map((id) => {
+        const row = ACTION_ROWS[id];
+        const a = actionById(id);
+        return (
+          <li key={id}>
+            <Link href={`/learn/action/${id}`} className="fb-row" onClick={() => leaveFor(`/learn/action/${id}`)}>
+              {row.date ? (
+                <span className="cp-date" aria-hidden="true">
+                  <b>{row.date[0]}</b>
+                  <small>{row.date[1]}</small>
+                </span>
+              ) : (
+                <span className="cp-icon" aria-hidden="true">
+                  {a?.type === "practice" ? <BagIcon size={22} /> : <LeafIcon size={22} />}
+                </span>
+              )}
+              <span className="fb-row-text">
+                <b>{row.title}</b>
+                {long ? (
+                  <>
+                    <span>{row.where}</span>
+                    <span>{row.does}</span>
+                  </>
+                ) : (
+                  <span>{row.line}</span>
+                )}
+              </span>
+              <ChevronIcon size={18} />
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
 
 /** Round back control over the photograph on the phone, a text link at the top of the sheet from 64rem. */
 export function BackTop({ href, label, share }: { href: string; label: string; share?: string }) {

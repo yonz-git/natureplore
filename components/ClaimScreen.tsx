@@ -11,43 +11,10 @@
 import Link from "next/link";
 import { useEffect } from "react";
 
-import { BackLink, BackTop, Stat, Tags } from "@/components/CParts";
-import { BagIcon, CheckIcon, ChevronIcon, LeafIcon, MapIcon } from "@/components/Icons";
-import { ACTION_ROWS, actionById } from "@/lib/actions";
-import { backLabel, leaveFor, useBack } from "@/lib/back";
+import { ActionRows, BackLink, BackTop, Stat, Tags } from "@/components/CParts";
+import { CheckIcon, ChevronIcon, MapIcon } from "@/components/Icons";
+import { backLabel, useBack } from "@/lib/back";
 import type { Claim } from "@/lib/claims";
-
-function ActionRows({ ids }: { ids: string[] }) {
-  return (
-    <ul className="fb-card fb-rows cp-rows">
-      {ids.map((id) => {
-        const row = ACTION_ROWS[id];
-        const a = actionById(id);
-        return (
-          <li key={id}>
-            <Link href={`/learn/action/${id}`} className="fb-row" onClick={() => leaveFor(`/learn/action/${id}`)}>
-              {row.date ? (
-                <span className="cp-date" aria-hidden="true">
-                  <b>{row.date[0]}</b>
-                  <small>{row.date[1]}</small>
-                </span>
-              ) : (
-                <span className="cp-icon" aria-hidden="true">
-                  {a?.type === "practice" ? <BagIcon size={22} /> : <LeafIcon size={22} />}
-                </span>
-              )}
-              <span className="fb-row-text">
-                <b>{row.title}</b>
-                <span>{row.line}</span>
-              </span>
-              <ChevronIcon size={18} />
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
 
 export default function ClaimScreen({ claim }: { claim: Claim }) {
   const back = useBack("/learn");

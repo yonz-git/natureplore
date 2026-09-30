@@ -1,9 +1,9 @@
 "use client";
 
 // E1 · Saved, the Saved tab: what is kept on this device. Routes, each downloaded, with Walk it;
-// the organisms saved on B4; the clean-up registered for (C4) and the practices saved (C7). It
-// reads the same store as every Save control, so a route saved on A5 is here. Walk it opens the
-// walk (L4). Board: E1 · Saved, phone.
+// the organisms saved on B4; the clean-up registered for (C4), the practices saved (C7) and the
+// documentaries saved to watch later (D3). It reads the same store as every Save control, so a
+// route saved on A5 is here. Walk it opens the walk (L4). Board: E1 · Saved, phone.
 
 import Link from "next/link";
 import { useEffect } from "react";
@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { BagIcon, CheckCircleIcon, ChevronIcon, WalkIcon } from "@/components/Icons";
 import { ACTION_ROWS } from "@/lib/actions";
 import { leaveFor } from "@/lib/back";
+import { docById, docLine } from "@/lib/docs";
 import { ORGANISMS } from "@/lib/organisms";
 import { organismPhoto } from "@/lib/photos";
 import { rememberList, useSaved } from "@/lib/saved";
@@ -21,8 +22,9 @@ export default function SavedScreen() {
   const { ids } = useSaved();
   const routes = SUGGESTIONS.filter((s) => ids.includes(s.id));
   const organisms = ORGANISMS.filter((o) => ids.includes(`org:${o.id}`));
-  // the clean-up you registered for and the practices you saved, in the order they were kept
-  const actions = ids.filter((id) => id.startsWith("action:")).map((id) => id.slice(7)).filter((id) => ACTION_ROWS[id]);
+  // the clean-up you registered for, the practices and the documentaries you saved, in the order
+  // they were kept
+  const kept = ids.filter((id) => (id.startsWith("action:") && ACTION_ROWS[id.slice(7)]) || (id.startsWith("doc:") && docById(id.slice(4))));
   // a route opened from here goes back here
   useEffect(() => rememberList("/saved"), []);
 
@@ -118,14 +120,32 @@ export default function SavedScreen() {
         )}
 
         <h2>Actions and documentaries</h2>
-        {actions.length === 0 ? (
+        {kept.length === 0 ? (
           <p className="saved-empty">Clean-ups you register for, everyday practices and documentaries you save appear here.</p>
         ) : (
           <ul className="fb-card fb-rows cp-rows">
-            {actions.map((id) => {
+            {kept.map((key) => {
+              if (key.startsWith("doc:")) {
+                const d = docById(key.slice(4))!;
+                const href = `/learn/documentaries/${d.id}`;
+                return (
+                  <li key={key}>
+                    <Link href={href} className="fb-row" onClick={() => leaveFor(href)}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img className="cp-icon" src={d.photo.src} alt="" />
+                      <span className="fb-row-text">
+                        <b>{d.title}</b>
+                        <span>To watch later. {docLine(d)}</span>
+                      </span>
+                      <ChevronIcon size={18} />
+                    </Link>
+                  </li>
+                );
+              }
+              const id = key.slice(7);
               const row = ACTION_ROWS[id];
               return (
-                <li key={id}>
+                <li key={key}>
                   <Link href={`/learn/action/${id}`} className="fb-row" onClick={() => leaveFor(`/learn/action/${id}`)}>
                     {row.date ? (
                       <span className="cp-date" aria-hidden="true">

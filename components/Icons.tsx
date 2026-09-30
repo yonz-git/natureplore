@@ -270,6 +270,13 @@ export const ExternalIcon = (p: P) => (
   </Svg>
 );
 
+export const GlobeIcon = (p: P) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M3.5 12h17M12 3.5c2.5 2.6 3.6 5.4 3.6 8.5s-1.1 5.9-3.6 8.5c-2.5-2.6-3.6-5.4-3.6-8.5s1.1-5.9 3.6-8.5z" />
+  </Svg>
+);
+
 export const CheckIcon = (p: P) => (
   <Svg {...p}>
     <path d="m5 12.5 4.5 4.5L19 7.5" />

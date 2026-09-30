@@ -33,7 +33,8 @@ export type Organism = {
   /** Impact here for a species without a spot, where the place stays generalised */
   impact?: { text: string; source: string };
   actions?: { title: string; sub: string }[];
-  docs?: { title: string; line: string }[];
+  /** documentaries about it, by id in lib/docs.ts */
+  docs?: string[];
 };
 
 export const ORGANISMS: Organism[] = [
@@ -60,7 +61,7 @@ export const ORGANISMS: Organism[] = [
     ],
     claim: CLAIMS.c1a,
     rule: spotOf("linum", 2),
-    docs: [{ title: "Documentary title", line: "2019, 45 min, crane migration across Europe" }],
+    docs: ["migration"],
   },
   {
     id: "early-marsh-orchid",

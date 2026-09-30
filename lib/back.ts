@@ -1,6 +1,6 @@
 "use client";
 
-// Where a claim or an action page was opened from, so its back control returns there: a claim
+// Where a claim, an action or a documentary page was opened from, so its back control returns there: a claim
 // card on a route, a spot, the walk or the crane; an action row on a claim; Saved. The boards send
 // every claim back to Learn and every action back to its claim, one fixed target each; the
 // prototype remembers the real one for this visit and falls back to the board's target.
@@ -44,6 +44,8 @@ export function useBack(fallback: string): string {
 /** A name for a back target, for its accessible label and its visible text on the desktop. */
 export function backLabel(href: string, fallback: string): string {
   if (href.startsWith("/walk")) return "Back to the walk";
+  if (href.startsWith("/learn/documentaries/")) return "Back to the documentary";
+  if (href.startsWith("/learn/documentaries")) return "Back to Documentaries";
   if (href.startsWith("/map/route/") && href.includes("/spot/")) return "Back to the spot";
   if (href.startsWith("/map/route/")) return "Back to the route";
   if (href.startsWith("/map/organism/")) return "Back to the organism";

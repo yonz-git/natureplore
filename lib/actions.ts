@@ -3,7 +3,7 @@
 // the redesign canvas; the figures are sample content and say so. Registering for the clean-up and
 // saving the everyday practice are kept on the device in lib/saved.ts, as `action:<id>`.
 
-export type Fact = { icon: "calendar" | "pin" | "people" | "walk" | "bag" | "check"; text: string };
+export type Fact = { icon: "calendar" | "pin" | "people" | "walk" | "bag" | "check" | "globe"; text: string };
 export type Benefit = "Habitat condition" | "Biodiversity" | "Carbon";
 
 type Base = {
@@ -154,9 +154,31 @@ export const ACTIONS: Record<string, Action> = {
 
 export const actionById = (id: string): Action | undefined => ACTIONS[id];
 
-/** The row an action gets in a claim's "What you can do" and in Saved. */
-export const ACTION_ROWS: Record<string, { title: string; line: string; date?: [string, string] }> = {
-  "clean-up": { title: "Join the September clean-up", line: "Sat 26 Sep, removes old drainage pipes", date: ["26", "Sep"] },
-  rewet: { title: "Help rewet Linum meadow", line: "Support the group that manages it" },
-  "peat-free": { title: "Buy peat-free compost", line: "Everyday habit, less pressure to drain bogs" },
+/**
+ * The row an action gets in a claim's "What you can do", in Saved and on Learn (D0). Learn prints
+ * the longer form: when and where, then what it does.
+ */
+export const ACTION_ROWS: Record<string, { title: string; line: string; date?: [string, string]; where: string; does: string }> = {
+  "clean-up": {
+    title: "Join the September clean-up",
+    line: "Sat 26 Sep, removes old drainage pipes",
+    date: ["26", "Sep"],
+    where: "Sat 26 Sep, 2 hours, Linum wet meadow, local nature group",
+    does: "Removes old drainage pipes",
+  },
+  rewet: {
+    title: "Help rewet Linum meadow",
+    line: "Support the group that manages it",
+    where: "Support the group that manages Linum wet meadow",
+    does: "Blocks ditches, keeps water on the meadow",
+  },
+  "peat-free": {
+    title: "Buy peat-free compost",
+    line: "Everyday habit, less pressure to drain bogs",
+    where: "Everyday habit, any time you buy compost",
+    does: "Less pressure to drain bogs and fens",
+  },
 };
+
+/** Learn's order: soonest first, then everyday habits. */
+export const LEARN_ACTIONS = ["clean-up", "rewet", "peat-free"];
