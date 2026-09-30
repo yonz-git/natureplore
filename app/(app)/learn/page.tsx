@@ -1,12 +1,10 @@
-import Screen from "@/components/Screen";
+import type { Metadata } from "next";
+import LearnScreen from "@/components/LearnScreen";
+
+// D0 · Learn: the Learn tab, impact, what you can do and documentaries.
+
+export const metadata: Metadata = { title: "Learn" };
 
 export default function Learn() {
-  return (
-    <Screen
-      code="D0 · Learn home"
-      title="Understand and help"
-      blurb="Flow C content kept local, and Flow D documentaries as a section inside Learn."
-      next="D0 Learn home with its three sections, then D2 the documentaries collection."
-    />
-  );
+  return <LearnScreen />;
 }

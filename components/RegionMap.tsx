@@ -11,6 +11,7 @@
 // are placed from map.latLngToContainerPoint on every move. The place names are plain text, so
 // they stay ordinary markers.
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import type { Map as LeafletMap, GeoJSON as LeafletGeoJSON } from "leaflet";
@@ -53,6 +54,8 @@ const LABELS: [string, number, number, "nature" | "water"][] = [
 ];
 
 const DESKTOP = "(min-width: 64rem)";
+// the tablet step where the suggestions dock their sheet beside the map (app/tablet.css)
+const TABLET = "(min-width: 48rem) and (max-width: 63.99rem) and (min-height: 36rem)";
 // The region is fitted to whatever space the sheet leaves free rather than shown at one fixed
 // zoom, so a wide window frames Berlin and Brandenburg instead of half of northern Europe.
 // REGION_ZOOM_MIN is the zoom the phone has always used: the band above a sheet that tall cannot
@@ -85,6 +88,10 @@ export type MapPoint = {
   start?: boolean;
   /** a spot's name goes on the left of its marker */
   left?: boolean;
+  /** a route drawn with its name, the second line under it ("4 of 6 in season"), as on A5's map */
+  tag?: string;
+  /** the visible name of a tagged route, when `label` says more for screen readers */
+  name?: string;
 };
 
 const REGION_POINTS: MapPoint[] = CLUSTERS.map(([count, lat, lon, where]) => ({
@@ -162,6 +169,8 @@ export default function RegionMap({
   maxZoom = REGION_ZOOM_MAX,
   line,
   detail,
+  mapLabel = "Map of Berlin and Brandenburg",
+  behind = false,
   ref,
 }: {
   className?: string;
@@ -172,6 +181,14 @@ export default function RegionMap({
   line?: [number, number][];
   /** a GeoJSON file of the paths, water and land around a route, for the zoom a route is seen at */
   detail?: string;
+  /** what the map shows, for screen readers: the region, or the route on a route's own map */
+  mapLabel?: string;
+  /**
+   * the map sits under a sheet on the phone, so it is not a tab stop there: its focus ring and its
+   * arrow keys would be out of sight. The list above it holds the same places. From 64rem it is
+   * beside the panel and takes focus again.
+   */
+  behind?: boolean;
   /** a screen holds this to move the map from a control of its own */
   ref?: React.Ref<MapHandle>;
 }) {
@@ -182,6 +199,8 @@ export default function RegionMap({
   const [zooming, setZooming] = useState(false);
   // set once the map exists: puts a point in the middle of the free space, not the screen
   const centreRef = useRef<Centre>(null);
+  // set by the tab stop effect below, called again once Leaflet has made the map focusable
+  const tabStopRef = useRef<() => void>(() => {});
   // read at the moment it is called, so the handle survives the map being rebuilt
   useImperativeHandle(ref, () => ({ centre: (...args) => centreRef.current?.(...args) }), []);
 
@@ -226,7 +245,13 @@ export default function RegionMap({
       mapRef.current = map;
       // a layer added before the map has a view throws, so put it somewhere first and fit below
       map.setView(REGION, REGION_ZOOM_MIN, { animate: false });
-      if (!still) host.setAttribute("aria-label", "Map of Berlin and Brandenburg. Arrow keys move it.");
+      // a named region, so the label belongs to something (a bare div cannot carry one)
+      if (!still) {
+        host.setAttribute("role", "region");
+        host.setAttribute("aria-roledescription", "map");
+        host.setAttribute("aria-label", `${mapLabel}. Arrow keys move it.`);
+        tabStopRef.current();
+      }
 
       const fill = (name: string) => () => ({
         stroke: false,
@@ -348,28 +373,33 @@ export default function RegionMap({
       };
 
       const wide = matchMedia(DESKTOP);
-      // what covers the map: the sheet on the phone, the panel it moves into on the desktop
+      // on a tablet the suggestions dock their sheet to the left (app/tablet.css), so the free
+      // space is beside it, as on the desktop; every other screen keeps the phone's
+      const tablet = matchMedia(TABLET);
+      const docked = !!host.closest(".sg");
+      const side = () => wide.matches || (tablet.matches && docked);
+      // what covers the map: the sheet on the phone and the tablet, the panel it moves into on the desktop
       const sheetEl = () =>
         (host.parentElement?.querySelector(wide.matches ? ".ms-panel" : ".ms-sheet") as HTMLElement | null) ?? null;
       const navEl = () => (document.querySelector(".tabbar-pill") as HTMLElement | null) ?? null;
       const barEl = () => (host.parentElement?.querySelector(".ms-bar") as HTMLElement | null) ?? null;
       // the phone keeps its bar over the map, the desktop moves it into the panel and the nav
-      // pill takes that band instead
-      const bandEl = () => (wide.matches ? navEl() : barEl());
+      // pill takes that band instead; a docked tablet sheet has its bar above it, not over the map
+      const bandEl = () => (wide.matches ? navEl() : side() ? null : barEl());
 
       const placePins = () => {
         if (still) return;
-        const box = freeBox(host, sheetEl(), bandEl(), wide.matches);
+        const box = freeBox(host, sheetEl(), bandEl(), side());
         setPins(
           pts.map((pt) => {
             const p = map.latLngToContainerPoint([pt.lat, pt.lon]);
             // inside the free box on both axes, with half a pin of margin on the side the
             // sheet is on, so a pin is never clipped by the screen edge or covered by the glass
             const free =
-              p.x >= box.x + (wide.matches ? PIN_EDGE : 0) &&
+              p.x >= box.x + (side() ? PIN_EDGE : 0) &&
               p.x <= box.x + box.w &&
               p.y >= box.y &&
-              p.y <= box.y + box.h - (wide.matches ? 0 : PIN_EDGE);
+              p.y <= box.y + box.h - (side() ? 0 : PIN_EDGE);
             return { ...pt, x: p.x, y: p.y, free };
           }),
         );
@@ -379,7 +409,7 @@ export default function RegionMap({
       // screen, so neither the region nor a cluster you tapped ends up under the glass.
       const centreOn = (lat: number, lon: number, zoom: number, animate: boolean) => {
         const r = { width: host.offsetWidth, height: host.offsetHeight };
-        const box = freeBox(host, sheetEl(), bandEl(), wide.matches);
+        const box = freeBox(host, sheetEl(), bandEl(), side());
         const off = L.point(r.width / 2 - (box.x + box.w / 2), r.height / 2 - (box.y + box.h / 2));
         map.setView(map.unproject(map.project([lat, lon], zoom).add(off), zoom), zoom, { animate });
       };
@@ -413,7 +443,7 @@ export default function RegionMap({
       const fit = still
         ? () => map.fitBounds(cluster, { animate: false, padding: L.point(28, 28) })
         : () => {
-            const box = freeBox(host, sheetEl(), bandEl(), wide.matches);
+            const box = freeBox(host, sheetEl(), bandEl(), side());
             const z = zoomForBox(box);
             // a box that cannot hold the whole region keeps the anchor the phone was drawn around,
             // rather than centring on clusters half of which would be off the band anyway. A
@@ -433,7 +463,7 @@ export default function RegionMap({
       // that box changes rather than only when the 64rem breakpoint flips. Once the person has
       // moved the map themselves it is theirs, and a resize must not pull it back.
       const boxKey = () => {
-        const b = freeBox(host, sheetEl(), bandEl(), wide.matches);
+        const b = freeBox(host, sheetEl(), bandEl(), side());
         return `${b.x}:${b.y}:${b.w}:${b.h}`;
       };
       let fitted = "";
@@ -466,7 +496,20 @@ export default function RegionMap({
       mapRef.current = null;
       centreRef.current = null;
     };
-  }, [still, points, maxZoom, line, detail]);
+  }, [still, points, maxZoom, line, detail, mapLabel]);
+
+  // the tab stop follows `behind` and the width without rebuilding the map
+  useEffect(() => {
+    const wide = matchMedia(DESKTOP);
+    const set = () => {
+      const host = hostRef.current;
+      if (host && !still && host.getAttribute("role") === "region") host.tabIndex = behind && !wide.matches ? -1 : 0;
+    };
+    tabStopRef.current = set;
+    set();
+    wide.addEventListener("change", set);
+    return () => wide.removeEventListener("change", set);
+  }, [behind, still]);
 
   return (
     <>
@@ -481,14 +524,25 @@ export default function RegionMap({
             visibility: zooming || !pin.free ? ("hidden" as const) : undefined,
           };
 
-          // a spot on the route: a lime disc numbered in walking order, its name beside it
+          // a spot on the route: a lime disc numbered in walking order, its name beside it. It opens
+          // the spot's page where there is one, and otherwise its row further down the same page.
           if (pin.n !== undefined) {
-            return (
-              <a key={pin.id} href={`#spot-${pin.n}`} className={`map-spot${pin.left ? " is-left" : ""}`} style={style} aria-label={`Spot ${pin.n}, ${pin.label}`}>
+            const body = (
+              <>
                 <span className="spot-mark">{pin.n}</span>
                 <span className="map-spot-label" aria-hidden="true">
                   {pin.label}
                 </span>
+              </>
+            );
+            const cls = `map-spot${pin.left ? " is-left" : ""}${pin.current ? " is-current" : ""}`;
+            return pin.href ? (
+              <Link key={pin.id} href={pin.href} className={cls} style={style} aria-label={`Spot ${pin.n}, ${pin.label}`}>
+                {body}
+              </Link>
+            ) : (
+              <a key={pin.id} href={`#spot-${pin.n}`} className={cls} style={style} aria-label={`Spot ${pin.n}, ${pin.label}`}>
+                {body}
               </a>
             );
           }
@@ -502,6 +556,25 @@ export default function RegionMap({
                 <span className="map-start-label" aria-hidden="true">
                   Start and finish
                 </span>
+              </div>
+            );
+          }
+
+          // a route on A5's map: its name and how many spots are in season, in a glass label
+          if (pin.tag !== undefined) {
+            const body = (
+              <>
+                <b>{pin.name}</b>
+                <span>{pin.tag}</span>
+              </>
+            );
+            return pin.href ? (
+              <Link key={pin.id} href={pin.href} className="map-route glass glass-pin" style={style} aria-label={pin.label}>
+                {body}
+              </Link>
+            ) : (
+              <div key={pin.id} className="map-route glass glass-pin" style={style} role="img" aria-label={pin.label}>
+                {body}
               </div>
             );
           }

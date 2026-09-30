@@ -1,0 +1,576 @@
+/* Flow A after the flow and IA redesign: the suggestions (A5, A4), search (A2, A3), Saved (E1) and
+   Recorded along this route (A8). The screen shell, the panel, the buttons and the field are in
+   app/map.css; this file only adds what these screens bring. Phone first, the panel from 64rem.
+   Glass is app/glass.css. */
+
+/* ── the suggestion card ───────────────────────────────────────────────────────────────────── */
+
+.sug {
+  position: relative;
+  flex-shrink: 0;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: var(--radius-inner);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+.sug-photo {
+  width: 100%;
+  height: 6rem;
+  display: block;
+  box-sizing: border-box;
+  border-radius: var(--radius-tile);
+  object-fit: cover;
+  background: radial-gradient(90% 90% at 30% 30%, rgb(174 183 121 / 0.3) 0%, transparent 65%),
+    linear-gradient(170deg, var(--color-field-mid) 0%, var(--color-field-shade) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+}
+.sug-head { display: flex; flex-direction: column; gap: 0.25rem; }
+.sug-name {
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+.sug-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+
+/* the name opens the route: its link covers the card, Save sits above it */
+.sug-open { color: inherit; text-decoration: none; }
+.sug-open::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.sug-open:focus-visible { outline: none; }
+.sug:has(.sug-open:focus-visible) { outline: 2px solid var(--color-mist); outline-offset: 3px; }
+
+/* Save: a round frost on the photograph's top right, the one blur allowed inside glass */
+.sug-save {
+  position: absolute;
+  z-index: 1;
+  top: 1.75rem;
+  right: 1.75rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  background: rgb(14 28 18 / 0.45);
+  backdrop-filter: blur(1.25rem);
+  border: 0.5px solid rgb(255 255 255 / 0.22);
+  color: var(--color-on-ground);
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+.sug-save:active { transform: scale(0.94); }
+.sug-save svg { transition: transform 200ms var(--ease-out); }
+.sug-save[aria-pressed="true"] svg { animation: save-pop 280ms var(--ease-out); }
+@keyframes save-pop {
+  from { transform: scale(0.7); }
+  to { transform: scale(1); }
+}
+/* the confirmation sits on the photograph beside the bookmark, where the tap was, not at the card's
+   foot below the fold */
+.sug-saved {
+  position: absolute;
+  z-index: 1;
+  top: 2.125rem;
+  left: 1.75rem;
+  margin: 0;
+  width: max-content;
+  max-width: calc(100% - 6.75rem);
+  box-sizing: border-box;
+  min-height: 2rem;
+  padding: 0.3125rem 0.75rem 0.3125rem 0.625rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-glass-solid);
+  border: 0.5px solid var(--color-inner-edge);
+  color: var(--color-on-ground);
+  font-size: var(--text-caption);
+  line-height: 1.25;
+  font-weight: 400;
+}
+.sug-saved svg { flex-shrink: 0; color: var(--color-mist); }
+.sug-saved:empty { display: none; }
+.sug-saved:not(:empty) { animation: sheet-in 240ms var(--ease-out) both; }
+
+/* the spots in season: numbered dots, the lit ones filled with mist */
+.dots { display: flex; flex-wrap: wrap; align-items: center; gap: 0.625rem; }
+.dots-row { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.dot {
+  width: 1.375rem;
+  height: 1.375rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgb(255 255 255 / 0.4);
+  color: var(--color-on-ground-soft);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.dot.is-lit { border-color: transparent; background: var(--color-mist); color: var(--color-ground); }
+.dots-line { font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); font-weight: 400; }
+
+/* what is in season along it, each with its group first */
+.sug-season { display: flex; flex-direction: column; gap: 0.5rem; }
+.sug-season-label { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
+.sug-orgs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.625rem; }
+.sug-orgs li { display: flex; align-items: center; gap: 0.75rem; }
+.sug-org { min-width: 0; display: flex; flex-direction: column; gap: 0.125rem; }
+.sug-org-name { font-size: var(--text-body-sm); line-height: 1.3125rem; font-weight: 400; }
+.sug-org-note { font-weight: 300; color: var(--color-on-ground-soft); }
+.sug-org-last { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+
+/* a group icon in a round mist tile, the same icon as the count pills */
+.group-tile {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-pill-fill);
+  border: 0.5px solid var(--color-inner-edge);
+  color: var(--color-mist);
+}
+
+/* ── A5, A4: the suggestions ───────────────────────────────────────────────────────────────── */
+
+/* the sheet rests high enough that the first route shows above the tab bar: its name on a
+   390 × 844 phone, its photograph on a 375 × 667 one. Opened, it stops under the search bar. */
+.sg { --sheet-top: max(min(20.5rem, 100dvh - 27rem), var(--top-chrome) + 8rem); --sheet-open: calc(var(--top-chrome) + 8rem); }
+.sg .ms-sheet { gap: 1.25rem; }
+.sg-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
+/* the heading shrinks first; "Show on map" only drops under it when the text is very large */
+.sg-head > div { flex: 1 1 11rem; min-width: 0; }
+.sg .ms-title { font-size: 1.75rem; line-height: 2.125rem; }
+.sg-scope { margin: 0.5rem 0 0; font-size: var(--text-body-sm); line-height: 1.3125rem; font-weight: 400; }
+.sg .ms-lead { margin-top: 0.125rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
+
+/* Show on map / Show as a list: inner glass on the sheet, the phone only */
+.sg-toggle {
+  flex-shrink: 0;
+  height: 2.75rem;
+  padding: 0 1rem 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  color: var(--color-on-ground);
+  font-family: var(--font-text);
+  font-size: var(--text-chip);
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+.sg-toggle:active { transform: scale(0.97); }
+
+.sg-where { margin: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+p.sg-where { flex-direction: row; align-items: center; gap: 0.5rem; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); font-weight: 400; }
+p.sg-where svg { color: var(--color-mist); flex-shrink: 0; }
+.sg-locate {
+  align-self: flex-start;
+  min-height: 2.75rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 0;
+  background: none;
+  color: var(--color-on-ground);
+  font-family: var(--font-text);
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+.sg-locate span { text-decoration: underline; text-underline-offset: 0.1875rem; }
+.sg-where .ms-note { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
+
+.sg-list { display: flex; flex-direction: column; gap: 1rem; }
+.sg-list > .btn { margin-top: 0.25rem; }
+.sg-map-note { display: none; margin: 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
+
+/* on the phone the map takes the screen and the sheet keeps only its head */
+@media (max-width: 63.99rem) {
+  .sg.is-map { --sheet-top: max(calc(100dvh - 24rem), 45dvh); }
+  .sg.is-map .sg-list { display: none; }
+  .sg.is-map .sg-map-note { display: block; animation: sheet-in 240ms var(--ease-out) both; }
+  .sg:not(.is-map) .sg-list { animation: sheet-in 280ms var(--ease-out) both; }
+  /* the route labels only show on the map view: over the list they would crowd the strip above it */
+  .sg:not(.is-map) .map-route { display: none; }
+}
+
+/* a route on the map: its name, and how many of its spots are in season */
+.map-route {
+  position: absolute;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border-radius: var(--radius-tile);
+  color: var(--color-on-ground);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 160ms var(--ease-out);
+}
+a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
+.map-route b { font-size: var(--text-caption); line-height: 1; font-weight: 500; }
+.map-route span { font-size: 0.6875rem; line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
+
+/* ── A2, A3: search, inside the panel ──────────────────────────────────────────────────────── */
+
+/* over the busy map the results need more frost than a sheet: a stronger blur and a denser fill,
+   over a darker veil (the canvas's A2 comment) */
+.sr-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgb(6 18 9 / 0.55);
+  pointer-events: none;
+}
+.sr-panel {
+  position: relative;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.04) 100%),
+    rgb(20 38 26 / 0.62);
+  backdrop-filter: blur(2.75rem) saturate(1.3);
+  border: 0.5px solid var(--color-glass-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.11), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
+}
+.sr-panel:empty { display: none; }
+.sr-group {
+  padding: 1rem 1.25rem 0.25rem;
+  border-radius: var(--radius-inner);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+.sr-group .rows-label { margin: 0 0 0.25rem; }
+.sr-row {
+  min-height: 4.25rem;
+  padding: 0.75rem 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  color: var(--color-on-ground);
+  text-decoration: none;
+}
+.sr-group li + li .sr-row { border-top: 1px solid var(--color-divider); }
+.sr-row .row-disc { border-radius: var(--radius-tile); color: var(--color-on-ground); }
+.sr-row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
+.sr-miss h1 { margin: 0; font-family: var(--font-heading); font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: 300; }
+.sr-miss h1 em {
+  font-style: normal;
+  background-image: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-primary) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.sr-miss p { margin: 0.5rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
+.notice {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  display: flex;
+  gap: 0.75rem;
+  border-radius: var(--radius-inner);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  font-size: var(--text-secondary);
+  line-height: var(--text-secondary--line-height);
+}
+.notice svg { flex-shrink: 0; color: var(--color-mist); }
+
+/* on the phone search takes the screen: the field on top, the frosted results under it */
+.sr .ms-bar { position: relative; top: auto; left: auto; right: auto; margin: calc(var(--top-chrome) + 0.5rem) var(--spacing-screen-phone) 0; }
+@media (max-width: 63.99rem) {
+  .sr .a1-pin,
+  .sr .map-route { display: none; }
+}
+.sr .ms-sheet {
+  position: relative;
+  inset: auto;
+  z-index: 2;
+  margin: 1rem var(--spacing-screen-phone) 0;
+  padding: 0 0 var(--spacing-tabbar-clearance);
+  overflow: visible;
+  border: 0;
+  background: none;
+  gap: 1rem;
+}
+.ms.sr { overflow-y: auto; }
+.screen-enter .sr .sr-panel { animation: sheet-in 320ms var(--ease-out) 60ms both; }
+
+/* ── E1: Saved ─────────────────────────────────────────────────────────────────────────────── */
+
+/* hidden sideways: only hit areas and rims reach past the edge, never content */
+.saved { position: fixed; inset: 0; overflow-x: hidden; overflow-y: auto; scroll-padding-bottom: var(--spacing-tabbar-clearance); }
+.saved-sheet {
+  min-height: calc(100% - 4.75rem);
+  margin-top: 4.75rem;
+  padding: 1.5rem 1.5rem var(--spacing-tabbar-clearance);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 0;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+}
+.saved-sheet h1 { margin: 0; font-family: var(--font-heading); font-size: var(--text-h1); line-height: var(--text-h1--line-height); font-weight: 300; }
+.saved-sheet > p { margin: 0.5rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
+.saved-sheet h2 { margin: 2.5rem 0 0.75rem; font-family: var(--font-heading); font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: 300; }
+.saved-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.saved-card {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: var(--radius-inner);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+.saved-row { display: flex; align-items: center; gap: 0.875rem; color: var(--color-on-ground); text-decoration: none; }
+.saved-row img,
+.saved-row .saved-thumb {
+  width: 4.5rem;
+  height: 4.5rem;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border-radius: var(--radius-tile);
+  object-fit: cover;
+  background: linear-gradient(170deg, var(--color-field-mid) 0%, var(--color-field-shade) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+}
+.saved-row > span:not(.saved-thumb) { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.saved-row b { font-size: 1.0625rem; line-height: 1.375rem; font-weight: 400; }
+.saved-row small { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+.saved-row em { display: flex; align-items: center; gap: 0.375rem; font-style: normal; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-mist); }
+.saved-row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
+.saved-empty {
+  margin: 0;
+  padding: 1.25rem;
+  border-radius: var(--radius-inner);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  font-size: var(--text-body-sm);
+  line-height: 1.375rem;
+  font-weight: 300;
+  color: var(--color-on-ground-soft);
+}
+
+/* ── A8: recorded along this route ─────────────────────────────────────────────────────────── */
+
+.a8-top {
+  position: fixed;
+  top: calc(var(--top-chrome) + 0.5rem);
+  left: var(--spacing-screen-phone);
+  z-index: 3;
+}
+.a8 .saved-sheet { margin-top: 8.25rem; min-height: calc(100% - 8.25rem); }
+.saved-sheet h1 em {
+  font-style: normal;
+  background-image: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-primary) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.a8-box { margin-top: 1.25rem; }
+.a8-box .b1-bar { height: 0.625rem; }
+.a8-legend { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.a8-filter {
+  height: 2.75rem;
+  padding: 0 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  color: var(--color-on-ground);
+  font-family: var(--font-text);
+  font-size: var(--text-caption);
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+.a8-filter:active { transform: scale(0.97); }
+/* nothing recorded: full white for contrast, the dashed edge says it is empty */
+.a8-filter.is-none { border-style: dashed; }
+.a8-filter i { width: 0.5rem; height: 0.5rem; border-radius: var(--radius-pill); }
+/* a picked group takes the lime, as every selected control does; its dot keeps its colour on a ring */
+.a8-filter[aria-pressed="true"] {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  color: var(--color-on-primary);
+  font-weight: 500;
+}
+.a8-filter[aria-pressed="true"] i { box-shadow: 0 0 0 1.5px var(--color-on-primary); }
+.a8-clear {
+  align-self: flex-start;
+  min-height: 2.75rem;
+  margin-top: -0.5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-on-ground);
+  font-family: var(--font-text);
+  font-size: var(--text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 0.1875rem;
+  cursor: pointer;
+}
+.b1-bar span { transition: opacity 200ms var(--ease-out); }
+.b1-bar span.is-dim { opacity: 0.25; }
+.a8-section { animation: sheet-in 260ms var(--ease-out) both; }
+@media (hover: hover) and (pointer: fine) {
+  .a8-filter:not([aria-pressed="true"]):hover { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0.08); }
+}
+.a8-group-head { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem; }
+.a8-group-head h2 { margin: 0; }
+.a8-group-head span { font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
+.saved-sheet .a8-group-head h2 { margin: 0; }
+.a8-group { margin-top: 0.75rem; padding: 0.125rem 1.25rem; }
+.a8-rows { margin: 0; padding: 0; list-style: none; }
+.a8-rows li { padding: 0.875rem 0; display: flex; align-items: center; gap: 0.875rem; }
+.a8-rows li + li { border-top: 1px solid var(--color-divider); }
+.a8-rows li.is-new { animation: sheet-in 240ms var(--ease-out) both; }
+.a8-thumb {
+  width: 3.5rem;
+  height: 3.5rem;
+  flex-shrink: 0;
+  border-radius: var(--radius-tile);
+  border: 0.5px solid var(--color-inner-edge);
+  background: radial-gradient(80% 80% at 35% 30%, rgb(255 255 255 / 0.16) 0%, transparent 60%),
+    linear-gradient(160deg, var(--a8-tint) 0%, var(--color-field-shade) 110%);
+}
+img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; background: var(--color-field-shade); }
+.a8-rows li > span:last-child { min-width: 0; display: flex; flex-direction: column; gap: 0.1875rem; }
+.a8-rows b { font-size: var(--text-body); line-height: 1.375rem; font-weight: 400; }
+.a8-rows small { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+.a8-group > .saved-empty { margin: 0.875rem 0; padding: 0; background: none; border: 0; }
+.a8-more { padding: 0.25rem 0 1rem; display: flex; }
+.a8-more .btn { align-self: auto; flex-grow: 1; min-width: 0; }
+/* with large text the card is narrow for its button: tighter padding so the label wraps inside it */
+.a8-group { container-type: inline-size; }
+@container (max-width: 12rem) {
+  .a8-more .btn { padding-inline: 0.75rem; gap: 0.25rem; }
+}
+
+/* ── from 64rem ────────────────────────────────────────────────────────────────────────────── */
+
+@media (min-width: 64rem) {
+  /* one panel frame for every Routes screen: it stays in place from the suggestions into search */
+  .ms-panel { inset: 2.5rem auto 2.5rem 2.5rem; }
+
+  .sg-toggle,
+  .sg-map-note,
+  .sg .ms-handle { display: none; }
+  .sg .ms-sheet { margin-top: 2rem; gap: 1.25rem; }
+  .sg .ms-title { font-size: 2rem; line-height: 2.5rem; }
+  .sg-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0 -0.5rem;
+    padding: 0 0.5rem 0.5rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .sg-list::-webkit-scrollbar { display: none; }
+  .sg-list > .btn { align-self: center; }
+
+  .sr-veil { display: none; }
+  .sr .ms-bar { position: static; margin: 0; }
+  .sr .ms-sheet { margin: 1.25rem 0 0; padding: 0; overflow-y: auto; scrollbar-width: none; }
+  .sr .ms-sheet::-webkit-scrollbar { display: none; }
+  .sr-panel { padding: 0; background: none; backdrop-filter: none; border: 0; box-shadow: none; }
+  .ms.sr { overflow: hidden; }
+
+  .saved { display: flex; justify-content: center; }
+  .saved-sheet {
+    width: min(40rem, 100% - 5rem);
+    min-height: 0;
+    height: max-content;
+    margin: 7.5rem 0 2.5rem;
+    padding: 2.5rem 2.5rem 2rem;
+    border-bottom: 0.5px solid var(--color-glass-edge);
+    border-radius: var(--radius-card);
+  }
+  .saved-card .btn { align-self: flex-start; }
+  /* the back control sits on the nav pill's line, centred on its 3.625rem height (app/tabbar.css) */
+  .a8-top { top: calc(2rem + (3.625rem - 3.25rem) / 2); left: 2.5rem; }
+  .a8 .saved-sheet { margin-top: 7.5rem; min-height: 0; }
+  .a8-more { justify-content: flex-start; }
+  .a8-more .btn { flex-grow: 0; }
+}
+
+/* The nav pill is centred in the window, as on the desktop boards. Only where the window is too
+   narrow for the centred pill to clear the panel (under 80rem) does it move right, beside the panel. */
+@media (min-width: 64rem) and (max-width: 79.99rem) {
+  body:has(.ms-panel) .tabbar { padding-left: 30rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sug-save,
+  .sg-toggle,
+  .map-route { transition: none; }
+  .sug-save[aria-pressed="true"] svg,
+  .sug-saved:not(:empty),
+  .sg.is-map .sg-map-note,
+  .sg:not(.is-map) .sg-list,
+  .a8-rows li.is-new,
+  .a8-section { animation: fade-in 160ms var(--ease-out) both; }
+  .a8-filter,
+  .b1-bar span { transition: none; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .sr-panel,
+  .sug-save { background: var(--color-glass-solid); backdrop-filter: none; }
+}
+
+/* See all points down, Show fewer up */
+.a8-chev { transform: rotate(90deg); transition: transform 200ms var(--ease-out); }
+.a8-chev.is-up { transform: rotate(-90deg); }
+
+/* Routes or Organisms: what the suggestions list, the one picked in lime */
+.seg-opt[aria-pressed="true"] {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  color: var(--color-on-primary);
+  font-weight: var(--text-chip-active--font-weight);
+}
+@media (hover: hover) and (pointer: fine) {
+  .seg-opt[aria-pressed="false"]:hover { background-color: rgb(255 255 255 / 0.08); }
+}
+.sg .seg { flex-shrink: 0; }
+.sg-org-link { flex-grow: 1; min-width: 0; display: flex; align-items: center; gap: 0.875rem; color: var(--color-on-ground); text-decoration: none; }
+.sg-org-link > span:nth-child(2) { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1875rem; }
+.sg-org-link > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
+.sg .a8-group { margin-top: 0; }
+@media (min-width: 64rem) {
+  .sg .seg { align-self: flex-start; }
+}

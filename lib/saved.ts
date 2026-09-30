@@ -1,16 +1,14 @@
 "use client";
 
-// What the person has saved, kept on this device. v1 has no sign-in in the prototype, so saving
-// works as it would once signed in. Every save button and A7 read the same store, so a route saved
-// on A4 is saved on A5 and listed on A7.
+// What the person has saved, kept on this device. There are no accounts: saving a route keeps it
+// and downloads it here. Every Save control and E1 read the same store, so a route saved on A5 is
+// saved on A4 and on B1, and listed in Saved.
 
 import { useSyncExternalStore } from "react";
 
-import { HERE, ROUTES, SAVED, type Saved } from "@/lib/routes";
-
-const KEY = "np-saved";
-// what the boards start with: a spot and two routes
-const START = SAVED.map((s) => s.id);
+const KEY = "np-saved-v2";
+// nothing is saved at first: saving on A5 is the first task of the test, and Saved shows what it kept
+const START: string[] = [];
 
 let ids: string[] | null = null;
 const listeners = new Set<() => void>();
@@ -47,31 +45,15 @@ export function useSaved() {
     ids: list,
     isSaved: (id: string) => list.includes(id),
     toggle: (id: string) => write(list.includes(id) ? list.filter((x) => x !== id) : [...list, id]),
+    /** Removes several at once (E4 and E5 in edit), and `restore` puts them back for Undo. */
+    remove: (gone: string[]) => write(list.filter((x) => !gone.includes(x))),
+    restore: (back: string[]) => write([...list, ...back.filter((x) => !list.includes(x))]),
   };
-}
-
-/** Everything saved, as A7 lists it: nearest to the person first. */
-export function savedItems(list: string[]): Saved[] {
-  const known = SAVED.filter((s) => list.includes(s.id));
-  const extra = ROUTES.filter((r) => list.includes(r.id) && !SAVED.some((s) => s.id === r.id)).map(
-    (r): Saved => ({
-      id: r.id,
-      kind: "route",
-      name: r.name,
-      line: `${r.km} km, ${r.spots} spots`,
-      counts: r.counts,
-      lat: r.lat,
-      lon: r.lon,
-      image: r.image,
-    }),
-  );
-  const away = (s: Saved) => (s.lat - HERE.lat) ** 2 + ((s.lon - HERE.lon) * Math.cos((HERE.lat * Math.PI) / 180)) ** 2;
-  return [...known, ...extra].sort((a, b) => away(a) - away(b));
 }
 
 const LIST_KEY = "np-last-list";
 
-/** The list a route card was opened from, so closing the card goes back to it. */
+/** The list a route was opened from, A5 or A4, so going back from it returns there. */
 export function rememberList(path: string) {
   try {
     sessionStorage.setItem(LIST_KEY, path);
@@ -82,8 +64,8 @@ export function rememberList(path: string) {
 
 export function lastList(): string {
   try {
-    return sessionStorage.getItem(LIST_KEY) ?? "/map/near-you";
+    return sessionStorage.getItem(LIST_KEY) ?? "/map";
   } catch {
-    return "/map/near-you";
+    return "/map";
   }
 }

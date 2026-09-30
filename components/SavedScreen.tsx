@@ -1,102 +1,228 @@
 "use client";
 
-// A7 · Map home, saved spots and routes: what the person saved on this device, nearest first, on
-// the map as route pins around them. The first two show, "Show all" opens the rest in place.
-// From 64rem the panel adds the group filter. Boards: A7, phone and desktop, version 6.
+// E1 · Saved, the Saved tab: what is kept on this device. Routes, each downloaded, with Walk it;
+// the organisms saved on B4; the clean-up registered for (C4), the practices saved (C7) and the
+// documentaries saved to watch later (D3). It reads the same store as every Save control, so a
+// route saved on A5 is here. Walk it opens the walk (L4). Each section shows its first five and
+// its heading opens the whole list (E4, E6, E5); "On this device" opens recent searches (E7),
+// downloaded routes (E8) and notifications (E3). Boards: E1 · Saved, and E1 · Saved, all sections.
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import { useEffect } from "react";
 
-import { ChevronIcon } from "@/components/Icons";
-import { MapTools, SavedCard, SearchField, Segment } from "@/components/MapParts";
-import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
-import { GROUPS, HERE, SAVED, type Group } from "@/lib/routes";
-import { rememberList, savedItems, useSaved } from "@/lib/saved";
-
-// every thing that can be saved has a pin, so the map is built once and does not follow the list
-const POINTS: MapPoint[] = [
-  { id: "here", lat: HERE.lat, lon: HERE.lon, label: "You are here", here: true },
-  ...SAVED.map((s) => ({
-    id: s.id,
-    lat: s.lat,
-    lon: s.lon,
-    label: s.kind === "route" ? `${s.name}, open the route card` : `${s.name}, show on the map`,
-    href: s.kind === "route" ? `/map/route/${s.id}` : undefined,
-  })),
-];
-
-const FIRST = 2;
+import { BagIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, OfflineIcon, SearchIcon, WalkIcon } from "@/components/Icons";
+import { ACTION_ROWS } from "@/lib/actions";
+import { leaveFor } from "@/lib/back";
+import { docById, docLine } from "@/lib/docs";
+import { ORGANISMS } from "@/lib/organisms";
+import { organismPhoto } from "@/lib/photos";
+import { useRecent } from "@/lib/recent";
+import { rememberList, useSaved } from "@/lib/saved";
+import { routeDetail } from "@/lib/spots";
+import { SUGGESTIONS } from "@/lib/suggestions";
 
 export default function SavedScreen() {
-  const map = useRef<MapHandle>(null);
   const { ids } = useSaved();
-  const [group, setGroup] = useState<Group | null>(null);
-  const [all, setAll] = useState(false);
-  useEffect(() => rememberList("/map/saved"), []);
-
-  const items = useMemo(() => {
-    const list = savedItems(ids);
-    return group ? list.filter((s) => s.counts[group]) : list;
-  }, [ids, group]);
-  const shown = all ? items : items.slice(0, FIRST);
-  const count = savedItems(ids).length;
+  const routes = SUGGESTIONS.filter((s) => ids.includes(s.id));
+  const organisms = ORGANISMS.filter((o) => ids.includes(`org:${o.id}`));
+  // the clean-up you registered for, the practices and the documentaries you saved, in the order
+  // they were kept
+  const actions = ids.filter((id) => id.startsWith("action:") && ACTION_ROWS[id.slice(7)]);
+  const docs = ids.filter((id) => id.startsWith("doc:") && docById(id.slice(4)));
+  const recent = useRecent();
+  const notes = ids.includes("action:clean-up") ? 1 : 0;
+  // a route opened from here goes back here
+  useEffect(() => rememberList("/saved"), []);
 
   return (
-    <section className="ms a7">
-      <RegionMap className="a1-map" ref={map} points={POINTS} maxZoom={11} />
+    <section className="saved" aria-labelledby="e1-title">
+      <div className="saved-sheet glass">
+        <h1 id="e1-title">
+          <em>Saved</em>
+        </h1>
+        <p>Kept on this device</p>
 
-      <div className="ms-panel glass-desk">
-        <div className="ms-bar">
-          <SearchField />
-          <Segment />
-        </div>
-
-        <div className="ms-sheet glass-phone" aria-labelledby="saved-title">
-          <div className="ms-handle" aria-hidden="true" />
-          <div className="chips chips-desk" role="group" aria-label="Filter by group">
-            <button type="button" className="chip" aria-pressed={group === null} onClick={() => setGroup(null)}>
-              All
-            </button>
-            {GROUPS.map((g) => (
-              <button
-                key={g.id}
-                type="button"
-                className="chip"
-                aria-pressed={group === g.id}
-                onClick={() => setGroup(group === g.id ? null : g.id)}
-              >
-                {g.label}
-              </button>
-            ))}
+        <h2>Routes</h2>
+        {routes.length === 0 ? (
+          <p className="saved-empty">Routes you save appear here, downloaded so you can walk them offline.</p>
+        ) : (
+          <div className="saved-list">
+            {routes.map((r) => {
+              const row = (
+                <>
+                  {r.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={r.image} alt="" />
+                  ) : (
+                    <span className="saved-thumb" aria-hidden="true" />
+                  )}
+                  <span>
+                    <b>{r.name}</b>
+                    <small>{r.meta.replace(/, [^,]* at a looking pace/, "")}</small>
+                    <em>
+                      <CheckCircleIcon size={16} />
+                      Downloaded
+                    </em>
+                  </span>
+                  {r.href && <ChevronIcon size={18} />}
+                </>
+              );
+              return (
+                <article key={r.id} className="saved-card" aria-label={r.name}>
+                  {r.href ? (
+                    <Link href={r.href} className="saved-row">
+                      {row}
+                    </Link>
+                  ) : (
+                    <div className="saved-row">{row}</div>
+                  )}
+                  {/* L4, the walk, is built for Linum wet meadows loop only */}
+                  {routeDetail(r.id) ? (
+                    <Link href={`/walk/${r.id}`} className="btn btn-primary">
+                      <WalkIcon size={18} />
+                      Walk it
+                    </Link>
+                  ) : (
+                    <button type="button" className="btn btn-primary" aria-disabled="true">
+                      <WalkIcon size={18} />
+                      Walk it
+                      <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
+                    </button>
+                  )}
+                  {!routeDetail(r.id) && <p className="org-small">The walk is built for Linum wet meadows loop only.</p>}
+                </article>
+              );
+            })}
           </div>
-          <div>
-            <h1 id="saved-title" className="ms-title">
-              Saved <em>spots and routes</em>
-            </h1>
-            <p className="ms-lead">
-              {count === 0
-                ? "Nothing saved on this device yet. The bookmark on a route or a spot keeps it here."
-                : `${count} saved on this device, sorted by distance`}
-            </p>
-          </div>
+        )}
 
-          <div className="ms-list">
-            {shown.map((s) => (
-              <SavedCard key={s.id} item={s} />
-            ))}
-          </div>
+        <Head title="Organisms" href="/saved/organisms" n={organisms.length} />
+        {organisms.length === 0 ? (
+          <p className="saved-empty">Organisms you save appear here.</p>
+        ) : (
+          <ul className="fb-card fb-rows">
+            {organisms.slice(0, 5).map((o) => {
+              const photo = organismPhoto(`${o.name} ${o.close}`);
+              return (
+                <li key={o.id}>
+                  <Link href={`/map/organism/${o.id}`} className="fb-row">
+                    {photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img className="a8-thumb" src={photo.src} alt="" />
+                    ) : (
+                      <span className="a8-thumb" aria-hidden="true" />
+                    )}
+                    <span className="fb-row-text">
+                      <b>
+                        {o.name} {o.close}
+                      </b>
+                      <span>
+                        {o.kind}, <i>{o.latin}</i>
+                      </span>
+                    </span>
+                    <ChevronIcon size={18} />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
 
-          {!all && items.length > FIRST && (
-            <button type="button" className="btn btn-secondary btn-chev is-closing" onClick={() => setAll(true)}>
-              Show all {items.length} saved spots and routes
-              <ChevronIcon size={18} />
-            </button>
-          )}
-        </div>
+        <Head title="Your actions" href="/saved/actions" n={actions.length} />
+        {actions.length === 0 ? (
+          <p className="saved-empty">Clean-ups you register for and everyday practices you save appear here.</p>
+        ) : (
+          <ul className="fb-card fb-rows cp-rows">{actions.slice(0, 5).map(actionRow)}</ul>
+        )}
+
+        <Head title="Documentaries" href="/saved/documentaries" n={docs.length} />
+        {docs.length === 0 ? (
+          <p className="saved-empty">Documentaries you save to watch later appear here.</p>
+        ) : (
+          <ul className="fb-card fb-rows cp-rows">{docs.slice(0, 5).map(docRow)}</ul>
+        )}
+
+        <h2>On this device</h2>
+        <ul className="fb-card fb-rows saved-device">
+          <Device href="/saved/searches" icon={<SearchIcon size={18} />} title="Recent searches" line={recent.length ? recent.slice(0, 3).map((r) => r.label).join(", ") : "Nothing yet"} n={recent.length} />
+          <Device href="/saved/offline" icon={<OfflineIcon size={18} />} title="Downloaded routes" line={routes.length ? routes.map((r) => r.name).join(", ") : "Saving a route downloads it"} n={routes.length} />
+          <Device href="/saved/notifications" icon={<CalendarIcon size={18} />} title="Notifications" line={notes ? "1 about the September clean-up" : "Only changes to something you started"} n={notes} />
+        </ul>
       </div>
-
-      <MapTools
-        locate={() => map.current?.centre(HERE.lat, HERE.lon, 12, !matchMedia("(prefers-reduced-motion: reduce)").matches)}
-      />
     </section>
+  );
+}
+
+function Head({ title, href, n }: { title: string; href: string; n: number }) {
+  return (
+    <div className="saved-head">
+      <h2>{title}</h2>
+      {n > 0 && <Link href={href} aria-label={`See all ${title.toLowerCase()}`}>{n > 5 ? `See all ${n}` : "See all"}</Link>}
+    </div>
+  );
+}
+
+function Device({ href, icon, title, line, n }: { href: string; icon: React.ReactNode; title: string; line: string; n: number }) {
+  return (
+    <li>
+      <Link href={href} className="fb-row">
+        <span className="row-disc" aria-hidden="true">
+          {icon}
+        </span>
+        <span className="fb-row-text">
+          <b>{title}</b>
+          <span>{line}</span>
+        </span>
+        {n > 0 && <span className="fb-pill">{n}</span>}
+        <ChevronIcon size={18} />
+      </Link>
+    </li>
+  );
+}
+
+function docRow(key: string) {
+  const d = docById(key.slice(4))!;
+  const href = `/learn/documentaries/${d.id}`;
+  return (
+    <li key={key}>
+      <Link href={href} className="fb-row" onClick={() => leaveFor(href)}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="cp-icon" src={d.photo.src} alt="" />
+        <span className="fb-row-text">
+          <b>{d.title}</b>
+          <span>To watch later. {docLine(d)}</span>
+        </span>
+        <ChevronIcon size={18} />
+      </Link>
+    </li>
+  );
+}
+
+function actionRow(key: string) {
+  const id = key.slice(7);
+  const row = ACTION_ROWS[id];
+  return (
+    <li key={key}>
+      <Link href={`/learn/action/${id}`} className="fb-row" onClick={() => leaveFor(`/learn/action/${id}`)}>
+        {row.date ? (
+          <span className="cp-date" aria-hidden="true">
+            <b>{row.date[0]}</b>
+            <small>{row.date[1]}</small>
+          </span>
+        ) : (
+          <span className="cp-icon" aria-hidden="true">
+            <BagIcon size={22} />
+          </span>
+        )}
+        <span className="fb-row-text">
+          <b>{row.title}</b>
+          <span>
+            {row.date ? "Registered. " : ""}
+            {row.line}
+          </span>
+        </span>
+        <ChevronIcon size={18} />
+      </Link>
+    </li>
   );
 }

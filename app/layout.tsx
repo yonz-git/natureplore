@@ -19,7 +19,7 @@ const comfortaa = Comfortaa({
 });
 
 export const metadata: Metadata = {
-  title: "Natureplore",
+  title: { default: "Natureplore", template: "%s, Natureplore" },
   description: "v1 prototype: find nature near you, understand it, help it.",
 };
 

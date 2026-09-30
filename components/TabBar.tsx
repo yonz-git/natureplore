@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// the icons of the version 6 boards, the same set the welcome's nav uses
+// Routes, Learn, Saved, as on every board of the redesign: Routes is A5, Learn is D0, Saved is E1.
+// The icons are the same set the welcome's nav uses.
 const TABS = [
   {
     href: "/map",
-    label: "Map",
+    label: "Routes",
     icon: (
       <>
         <path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20z" />
@@ -26,15 +27,9 @@ const TABS = [
     ),
   },
   {
-    href: "/notebook",
-    label: "Notebook",
-    icon: (
-      <>
-        <rect x="5" y="3.5" width="14" height="17" rx="2" />
-        <path d="M9 3.5v17" />
-        <path d="M12.5 9h3.5M12.5 13h3.5" />
-      </>
-    ),
+    href: "/saved",
+    label: "Saved",
+    icon: <path d="M7 3.8h10V20l-5-3.6L7 20z" />,
   },
 ];
 

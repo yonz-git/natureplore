@@ -8,6 +8,7 @@
   z-index: 20;
   display: flex;
   justify-content: center;
+  padding: 0 var(--spacing-screen-phone);
   pointer-events: none;
 }
 .tabbar-pill {
@@ -19,11 +20,14 @@
   align-items: center;
   gap: 0.25rem;
   border-radius: var(--radius-pill);
+  max-width: 100%;
   list-style: none;
   pointer-events: auto;
 }
+.tabbar-pill > li { min-width: 0; flex: 0 1 auto; }
 .tabbar-tab {
   width: 5.25rem;
+  max-width: 100%;
   height: 3.5rem;
   display: flex;
   flex-direction: column;

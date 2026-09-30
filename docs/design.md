@@ -231,6 +231,11 @@ spacing:
   tabbar-clearance: 7.375rem
   screen-phone: 1rem
   screen-tablet: 2rem
+  sheet-tablet: 3rem
+  measure: 40rem
+  button-tablet: 21.375rem
+  pin-tablet: 22.625rem
+  panel-tablet: 26.25rem
   inset-screen: "clamp(1rem, 0.1216rem + 3.6036vw, 2rem)"
   screen-desktop: 7.5rem
   chrome-desktop: 2.5rem
@@ -485,6 +490,8 @@ Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet
 Tokens are in rem so screens follow the reader's font size; the numbers in this prose are pixels at the default 16px root. Layout sits on a 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 80, 120. Inside a component, 2px half-steps (2, 6, 10, 14) are allowed for icon to label gaps and optical padding, never for gaps between components. Element gaps are 16 to 24, card padding 32, and page sections on desktop are 80 to 120 apart with content capped at 1200. Two tighter rules come from the boards: a control stack (search bar over a chip, button or segment) is 12, and a stack of cards on tablet is 24.
 
 Screen margins are 16 on phone, 32 on tablet, 40 for desktop chrome (logo and nav) and 120 for the desktop welcome's main block. Margins are equal left and right: a column is pinned to both sides, never left to size itself. Between the two, `inset-screen` runs from 16 at 390 wide to 32 at 834, so one inset serves every phone and tablet. Scrolling content ends 40 above the tab bar or bottom bar, which on phone makes `tabbar-clearance` 118: the 8 float, the 70 bar and the 40 gap. On tablet the bar floats 28 up, so the clearance is 138. The tab bar floats 8 from the bottom on phone and 28 on tablet; the tablet bottom bar also sits 28 up.
+
+On tablet, from 768 wide and at least 576 tall, the screens follow the tablet boards. The suggestions and search become a 420 panel down the left beside the map (`panel-tablet`). Every other screen keeps the phone's shape with 48 side padding on its sheet (`sheet-tablet`). Reading text is capped at 640 (`measure`, about 70 characters), left-aligned, while photographs, stat tiles, maps and card grids keep the sheet's width. Buttons are at most 342 and centred (`button-tablet`), and the route's pinned bar is 362 (`pin-tablet`). A phone turned sideways is not a tablet: under 576 tall it keeps the phone layout.
 
 Chip rows scroll sideways and bleed to the screen edge through negative margins equal to the container padding. A row inside a flex column never shrinks: it keeps its own height.
 

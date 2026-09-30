@@ -1,8 +1,7 @@
 import { LINUM_LINE } from "@/lib/route-lines";
 
-// The routes, spots and regions the A screens show. One list, so a route reads the same on A4
-// (near you), A5 (the region), A7 (saved) and in search, and the counts agree everywhere.
-// Content comes from the version 6 boards, A1 to A7, on the redesign canvas.
+// The routes and their spots, for B1, the route page. The suggestion cards on A5 and A4 and search
+// read lib/suggestions.ts, which follows the flow and IA redesign.
 
 export type Group = "plants" | "herbs" | "mushrooms" | "birds" | "mammals";
 
@@ -68,7 +67,7 @@ export const ROUTES: Route[] = [
     season: ["meadow"],
     lat: 52.4735,
     lon: 13.403,
-    image: "/img/place-tempelhof.jpg",
+    image: "/img/routes/tempelhof.jpg",
     summary: "Grassland, 5 spots, 96 records within 250 m of the line, last recorded yesterday",
     notable: { text: "Notable now: skylarks on the open meadow, until October" },
     from: "Loop from the Columbiadamm entrance, Tempelhof, Berlin",
@@ -94,6 +93,7 @@ export const ROUTES: Route[] = [
     season: ["fungi", "meadow"],
     lat: 52.5965,
     lon: 13.2965,
+    image: "/img/routes/tegel.jpg",
     summary: "River meadow, 7 spots, 164 records within 250 m of the line, last recorded 3 days ago",
     notable: { text: "Notable now: autumn fungi along the alder carr" },
     from: "From Hermsdorf station to Lübars, Reinickendorf, Berlin",
@@ -113,15 +113,15 @@ export const ROUTES: Route[] = [
     id: "linum",
     name: "Linum wet meadows loop",
     where: "Loop in Linum, Brandenburg",
-    line: "6.3 km loop, 1 h 55 at a looking pace",
-    km: "6.3",
-    time: "1:55",
+    line: "6.0 km loop, 1 h 45 at a looking pace",
+    km: "6.0",
+    time: "1:45",
     spots: 6,
     counts: { plants: 19, herbs: 48, birds: 64, mammals: 7 },
     season: ["meadow"],
     lat: 52.75963,
     lon: 12.87651,
-    image: "/img/place-linum.jpg",
+    image: "/img/routes/linum.jpg",
     summary: "Wetland, 6 spots, 138 records within 250 m of the line, last recorded 2 days ago",
     notable: { text: "Notable now: cranes gathering, September to November", organism: "common-crane" },
     from: "Loop from the village church in Linum, Brandenburg",
@@ -150,7 +150,7 @@ export const ROUTES: Route[] = [
     season: ["fungi"],
     lat: 52.985,
     lon: 13.9,
-    image: "/img/place-grumsin.jpg",
+    image: "/img/routes/grumsin.jpg",
     summary: "Beech forest, 5 spots, 120 records within 250 m of the line, last recorded 4 days ago",
     notable: { text: "Notable now: beech fungi after the first rain" },
     from: "Loop from the Altkünkendorf car park, Uckermark, Brandenburg",
@@ -203,128 +203,5 @@ function spotsOnPath(path: [number, number][], count: number) {
 /** The total of what is recorded along a route. */
 export const recordsOf = (c: Counts) => Object.values(c).reduce((a, b) => a + (b ?? 0), 0);
 
-/** How many routes the region holds in all, for "Show all". */
-export const ROUTE_TOTAL = 48;
-
 /** Where the person is when they share their location: Tempelhof, as on the boards. */
 export const HERE = { lat: 52.512, lon: 13.355 };
-
-/** A saved thing is a spot on a route or a whole route. */
-export type Saved = {
-  id: string;
-  kind: "spot" | "route";
-  name: string;
-  line: string;
-  counts: Counts;
-  lat: number;
-  lon: number;
-  image?: string;
-};
-
-export const SAVED: Saved[] = [
-  {
-    id: "ditch",
-    kind: "spot",
-    name: "The flooded ditch",
-    line: "Spot 1, Linum wet meadows loop, in season now",
-    counts: { plants: 24, herbs: 72, birds: 41 },
-    lat: 52.749,
-    lon: 12.89,
-    image: "/img/place-linum.jpg",
-  },
-  {
-    id: "linum",
-    kind: "route",
-    name: "Linum wet meadows loop",
-    line: "6.3 km loop, 6 spots, 5 in season",
-    counts: { plants: 19, herbs: 48, birds: 64, mammals: 7 },
-    lat: 52.755,
-    lon: 12.87,
-    image: "/img/place-linum.jpg",
-  },
-  {
-    id: "tempelhof",
-    kind: "route",
-    name: "Tempelhofer Feld loop",
-    line: "6.2 km loop, 5 spots, 3 in season",
-    counts: { plants: 24, herbs: 72, birds: 41, mammals: 6 },
-    lat: 52.4735,
-    lon: 13.403,
-    image: "/img/place-tempelhof.jpg",
-  },
-];
-
-export type Region = {
-  name: string;
-  /** what kind of place and where, as the result row's second line */
-  kind: string;
-  /** routes mapped there, or none when the region is not mapped yet */
-  routes?: number;
-};
-
-export const REGIONS: Region[] = [
-  { name: "Brandenburg", kind: "Region, Germany", routes: 212 },
-  { name: "Brandenburg an der Havel", kind: "Town, Germany", routes: 18 },
-  { name: "Brandenburg Gate area", kind: "Berlin, Germany", routes: 3 },
-  { name: "Berlin", kind: "City, Germany", routes: 164 },
-  { name: "Potsdam", kind: "City, Germany", routes: 27 },
-  { name: "Spreewald", kind: "Region, Germany", routes: 36 },
-  { name: "Uckermark", kind: "Region, Germany", routes: 30 },
-  { name: "New Brandenburg", kind: "Kentucky, USA" },
-];
-
-/** The second line of a result: where it is, and how many routes are mapped there. */
-export function regionLine(r: Region) {
-  return r.routes === undefined ? r.kind : `${r.kind}, ${r.routes} routes mapped`;
-}
-
-const fold = (s: string) =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .trim();
-
-/** Regions whose name contains the query, the ones that start with it first. */
-export function searchRegions(query: string): Region[] {
-  const q = fold(query);
-  if (!q) return [];
-  return REGIONS.filter((r) => fold(r.name).includes(q)).sort(
-    (a, b) => Number(fold(b.name).startsWith(q)) - Number(fold(a.name).startsWith(q)),
-  );
-}
-
-// the number of single letter edits between two words
-function distance(a: string, b: string) {
-  const row = Array.from({ length: b.length + 1 }, (_, i) => i);
-  for (let i = 1; i <= a.length; i++) {
-    let prev = row[0];
-    row[0] = i;
-    for (let j = 1; j <= b.length; j++) {
-      const next = row[j];
-      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
-      prev = next;
-    }
-  }
-  return row[b.length];
-}
-
-/**
- * What a misspelt search probably meant, for A3: mapped regions whose name, or the start of it,
- * is a few letters away from the query. Only mapped regions are suggested, so every suggestion
- * leads somewhere.
- */
-export function suggestRegions(query: string): Region[] {
-  const q = fold(query);
-  if (q.length < 3) return [];
-  const limit = Math.max(2, Math.round(q.length / 4));
-  return REGIONS.filter((r) => r.routes !== undefined)
-    .map((r) => {
-      const name = fold(r.name);
-      return { r, d: Math.min(distance(q, name), distance(q, name.slice(0, q.length))) };
-    })
-    .filter(({ d }) => d <= limit)
-    .sort((a, b) => a.d - b.d || (b.r.routes ?? 0) - (a.r.routes ?? 0))
-    .slice(0, 2)
-    .map(({ r }) => r);
-}

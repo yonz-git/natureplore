@@ -2,9 +2,8 @@
 
 // The permission prompt, asked only after the person chooses to use their location. It stands in
 // for the one the platform shows, so it reads the way each platform's does: the system alert on the
-// phone, the browser's own prompt on the desktop. Allowing goes to A4, declining to A5, the region
-// without a location. Boards: "System location dialog over A1" and "Browser location prompt over
-// A1, desktop".
+// phone, the browser's own prompt on the desktop. Allowing goes to A4, declining stays on A5.
+// Boards: "System location dialog over A5" and "Browser location prompt over A5, desktop".
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -64,7 +63,7 @@ export default function LocationDialog({
             {copy.title}
           </p>
           <p id="dialog-note" className="dialog-note">
-            Shows routes and spots near you. Only used on this device.
+            Sorts the routes by distance from you. Only used on this device.
           </p>
         </div>
         <div className="dialog-actions">
