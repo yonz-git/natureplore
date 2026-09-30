@@ -13,9 +13,10 @@ import { useMemo, useState } from "react";
 import { BackIcon, ChevronIcon, GroupIcon, InfoIcon, PinIcon } from "@/components/Icons";
 import { SearchField } from "@/components/MapParts";
 import RegionMap from "@/components/RegionMap";
+import { rememberSearch } from "@/lib/recent";
 import { didYouMean, groupWord, ROUTE_POINTS, search } from "@/lib/suggestions";
 
-function Row({ name, line, href, icon }: { name: string; line: React.ReactNode; href?: string; icon: React.ReactNode }) {
+function Row({ name, line, href, icon, kind }: { name: string; line: React.ReactNode; href?: string; icon: React.ReactNode; kind: string }) {
   const body = (
     <>
       {icon}
@@ -29,7 +30,7 @@ function Row({ name, line, href, icon }: { name: string; line: React.ReactNode; 
   return (
     <li>
       {href ? (
-        <Link href={href} className="sr-row">
+        <Link href={href} className="sr-row" onClick={() => rememberSearch({ label: name, kind, href })}>
           {body}
         </Link>
       ) : (
@@ -72,7 +73,7 @@ export default function SearchScreen({ query }: { query: string }) {
                   </h2>
                   <ul className="rows">
                     {found.regions.map(({ region, line, href }) => (
-                      <Row key={region.id} name={region.name} line={line} href={href} icon={disc(<PinIcon size={18} />)} />
+                      <Row key={region.id} kind="Region" name={region.name} line={line} href={href} icon={disc(<PinIcon size={18} />)} />
                     ))}
                   </ul>
                 </section>
@@ -86,6 +87,7 @@ export default function SearchScreen({ query }: { query: string }) {
                     {found.organisms.map(({ organism: o, line, href }) => (
                       <Row
                         key={o.name}
+                        kind={`Organism, ${groupWord(o.group).toLowerCase()}`}
                         href={href}
                         name={o.name}
                         line={
@@ -118,11 +120,12 @@ export default function SearchScreen({ query }: { query: string }) {
                   </h2>
                   <ul className="rows">
                     {meant.regions.map(({ region, line, href }) => (
-                      <Row key={region.id} name={region.name} line={line} href={href} icon={disc(<PinIcon size={18} />)} />
+                      <Row key={region.id} kind="Region" name={region.name} line={line} href={href} icon={disc(<PinIcon size={18} />)} />
                     ))}
                     {meant.organisms.map((o) => (
                       <Row
                         key={o.name}
+                        kind={`Organism, ${groupWord(o.group).toLowerCase()}`}
                         name={o.name}
                         line={
                           <>
