@@ -175,7 +175,7 @@ export default function RouteCardScreen({ route }: { route: Route }) {
 
   return (
     <section className="ms b1">
-      <RegionMap className="a1-map" ref={map} points={points} line={line} detail={route.detail} maxZoom={15} mapLabel={`Map of ${route.name}`} />
+      <RegionMap className="a1-map" behind ref={map} points={points} line={line} detail={route.detail} maxZoom={15} mapLabel={`Map of ${route.name}`} />
 
       <div className="b1-top">
         <Link href={back} className="round glass glass-pin" aria-label={backLabel}>

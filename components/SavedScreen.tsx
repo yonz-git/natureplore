@@ -35,8 +35,8 @@ export default function SavedScreen() {
   useEffect(() => rememberList("/saved"), []);
 
   return (
-    <section className="saved">
-      <div className="saved-sheet glass" aria-labelledby="e1-title">
+    <section className="saved" aria-labelledby="e1-title">
+      <div className="saved-sheet glass">
         <h1 id="e1-title">
           <em>Saved</em>
         </h1>
@@ -89,6 +89,7 @@ export default function SavedScreen() {
                       <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
                     </button>
                   )}
+                  {!routeDetail(r.id) && <p className="org-small">The walk is built for Linum wet meadows loop only.</p>}
                 </article>
               );
             })}

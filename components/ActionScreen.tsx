@@ -149,7 +149,7 @@ function SupportSide({ a }: { a: Support }) {
         Open the group&apos;s page
         <span className="sr-only">, not linked in the prototype, the group is sample content</span>
       </button>
-      <p className="org-small">Opens outside Natureplore</p>
+      <p className="org-small">Opens outside Natureplore. Not linked in the prototype.</p>
     </div>
   );
 }

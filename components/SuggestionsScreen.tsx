@@ -75,7 +75,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
 
   return (
     <section className={`ms sg ${near ? "a4" : "a5"}${onMap ? " is-map" : ""}`}>
-      <RegionMap className="a1-map" ref={map} points={points} maxZoom={home ? 9.5 : 11} />
+      <RegionMap className="a1-map" behind={!onMap} ref={map} points={points} maxZoom={home ? 9.5 : 11} />
 
       <div className="ms-panel glass-desk">
         <div className="ms-bar">

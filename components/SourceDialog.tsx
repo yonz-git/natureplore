@@ -72,7 +72,7 @@ export default function SourceDialog({ claim }: { claim: Claim }) {
           Open the publisher&apos;s page
           <span className="sr-only">, not linked while the figure is sample content</span>
         </button>
-        <p className="org-small">Opens outside Natureplore</p>
+        <p className="org-small">Opens outside Natureplore. Not linked in the prototype.</p>
       </div>
     </Dialog>
   );

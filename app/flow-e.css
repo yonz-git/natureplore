@@ -23,6 +23,8 @@
 .ln-intro + .fb-card { margin-top: 2rem; }
 .se-empty { margin-top: 0; }
 .se .fb-small { max-width: var(--spacing-measure); }
+/* a label that holds a sentence wraps inside itself with large text */
+.se .fb-pill { height: auto; min-height: 1.75rem; padding-block: 0.3125rem; white-space: normal; line-height: 1.2; }
 .se-note { display: flex; gap: 0.5rem; align-items: flex-start; margin-top: 1.25rem; }
 .se-note svg { flex-shrink: 0; margin-top: 0.0625rem; color: var(--color-mist); }
 
@@ -80,9 +82,9 @@
 .se-confirm .cp-link { margin: 0; }
 
 /* E1: the section heads open their page; the counts are pills, not lime */
-.saved-head { margin: 2.5rem 0 0.75rem; display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; }
-.saved-sheet .saved-head h2 { margin: 0; }
-.saved-head a { font-size: var(--text-caption); color: var(--color-on-ground); text-underline-offset: 0.1875rem; }
+.saved-head { margin: 2.5rem 0 0.75rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 0.75rem; }
+.saved-sheet .saved-head h2 { margin: 0; min-width: 0; }
+.saved-head a { min-height: 2.75rem; margin-right: -0.5rem; padding-inline: 0.5rem; display: inline-flex; align-items: center; font-size: var(--text-caption); color: var(--color-on-ground); text-underline-offset: 0.1875rem; }
 .saved-device .fb-pill { font-variant-numeric: tabular-nums; }
 
 @media (min-width: 64rem) {

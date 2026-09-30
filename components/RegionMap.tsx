@@ -170,6 +170,7 @@ export default function RegionMap({
   line,
   detail,
   mapLabel = "Map of Berlin and Brandenburg",
+  behind = false,
   ref,
 }: {
   className?: string;
@@ -182,6 +183,12 @@ export default function RegionMap({
   detail?: string;
   /** what the map shows, for screen readers: the region, or the route on a route's own map */
   mapLabel?: string;
+  /**
+   * the map sits under a sheet on the phone, so it is not a tab stop there: its focus ring and its
+   * arrow keys would be out of sight. The list above it holds the same places. From 64rem it is
+   * beside the panel and takes focus again.
+   */
+  behind?: boolean;
   /** a screen holds this to move the map from a control of its own */
   ref?: React.Ref<MapHandle>;
 }) {
@@ -192,6 +199,8 @@ export default function RegionMap({
   const [zooming, setZooming] = useState(false);
   // set once the map exists: puts a point in the middle of the free space, not the screen
   const centreRef = useRef<Centre>(null);
+  // set by the tab stop effect below, called again once Leaflet has made the map focusable
+  const tabStopRef = useRef<() => void>(() => {});
   // read at the moment it is called, so the handle survives the map being rebuilt
   useImperativeHandle(ref, () => ({ centre: (...args) => centreRef.current?.(...args) }), []);
 
@@ -241,6 +250,7 @@ export default function RegionMap({
         host.setAttribute("role", "region");
         host.setAttribute("aria-roledescription", "map");
         host.setAttribute("aria-label", `${mapLabel}. Arrow keys move it.`);
+        tabStopRef.current();
       }
 
       const fill = (name: string) => () => ({
@@ -487,6 +497,19 @@ export default function RegionMap({
       centreRef.current = null;
     };
   }, [still, points, maxZoom, line, detail, mapLabel]);
+
+  // the tab stop follows `behind` and the width without rebuilding the map
+  useEffect(() => {
+    const wide = matchMedia(DESKTOP);
+    const set = () => {
+      const host = hostRef.current;
+      if (host && !still && host.getAttribute("role") === "region") host.tabIndex = behind && !wide.matches ? -1 : 0;
+    };
+    tabStopRef.current = set;
+    set();
+    wide.addEventListener("change", set);
+    return () => wide.removeEventListener("change", set);
+  }, [behind, still]);
 
   return (
     <>

@@ -216,6 +216,7 @@ body:has(.cp-dialog) .tabbar { display: none; }
 }
 .cp-dialog-title {
   margin: 1rem 0 0;
+  overflow-wrap: anywhere;
   font-family: var(--font-heading);
   font-size: 2rem;
   line-height: 2.5rem;

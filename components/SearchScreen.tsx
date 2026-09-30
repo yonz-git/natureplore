@@ -54,6 +54,8 @@ export default function SearchScreen({ query }: { query: string }) {
       <div className="sr-veil" aria-hidden="true" />
 
       <div className="ms-panel glass-desk">
+        {/* A3 has its own heading, the no-match line */}
+        {!miss && <h1 className="sr-only">Search regions and organisms</h1>}
         <div className="ms-bar">
           <div className="ms-bar-row">
             <Link href="/map" className="round glass glass-pin" aria-label="Back to the map">

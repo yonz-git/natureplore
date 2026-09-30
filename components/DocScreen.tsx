@@ -69,7 +69,7 @@ function WatchBox({ doc }: { doc: Doc }) {
           {doc.access === "Rental" ? "Rent" : "Watch"} on {site}
           <span className="sr-only">, not linked in the prototype, the documentary is sample content</span>
         </button>
-        <p className="org-small">Opens outside Natureplore</p>
+        <p className="org-small">Opens outside Natureplore. Not linked in the prototype.</p>
         {/* one button that stays mounted, so focus stays on it when it changes */}
         <button type="button" className="btn btn-secondary" aria-pressed={saved} onClick={() => toggle(key)}>
           <BookmarkIcon size={19} filled={saved} />

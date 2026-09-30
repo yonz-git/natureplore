@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import WalkScreen from "@/components/WalkScreen";
@@ -9,6 +10,12 @@ import { routeDetail } from "@/lib/spots";
 // sheet shows, so the previous and next buttons, the map's markers and the way back from an
 // organism all land on the same spot. Without it the walk opens on spot 2, the one nearest the
 // person, as on the location-on board.
+
+export async function generateMetadata({ params }: PageProps<"/walk/[id]">): Promise<Metadata> {
+  const { id } = await params;
+  const route = routeById(id);
+  return { title: route && `Walking ${route.name}` };
+}
 
 export default async function Walk({ params, searchParams }: PageProps<"/walk/[id]">) {
   const { id } = await params;

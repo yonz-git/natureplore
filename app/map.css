@@ -105,7 +105,9 @@
 /* Routes or Organisms: a 48 glass pill with two options, the one you are on in lime */
 .seg {
   align-self: flex-start;
-  height: 3rem;
+  max-width: 100%;
+  min-height: 3rem;
+  flex-wrap: wrap;
   padding: 0.25rem;
   box-sizing: border-box;
   display: flex;
@@ -113,6 +115,8 @@
   border-radius: var(--radius-pill);
 }
 .seg-opt {
+  position: relative;
+  min-height: 2.5rem;
   padding: 0 1.125rem 0 0.875rem;
   display: flex;
   align-items: center;
@@ -130,6 +134,8 @@
   transition: transform 160ms var(--ease-out);
 }
 .seg-opt:active { transform: scale(0.97); }
+/* 44 to touch, inside the 48 pill (accessibility review #6) */
+.seg-opt::before { content: ""; position: absolute; inset: -0.125rem 0; }
 .seg-opt[aria-current="page"] {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
   color: var(--color-on-primary);
@@ -158,6 +164,9 @@
   transition: transform 160ms var(--ease-out);
 }
 .chip:active { transform: scale(0.97); }
+/* a 36 chip, 44 to touch: the rows keep 8 between them, so hit areas meet but never overlap */
+.chip { position: relative; }
+.chip::before { content: ""; position: absolute; inset: -0.25rem 0; }
 .chip[aria-pressed="true"] {
   border-color: transparent;
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
@@ -354,7 +363,7 @@ button.float-pill:active { transform: scale(0.97); }
 .card-stat dt { font-size: var(--text-stat-label); line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
 .card-stat dd { margin: 0; display: flex; align-items: baseline; gap: 0.25rem; }
 .card-stat dd b { font-family: var(--text-stat-sm--font-family); font-size: var(--text-stat-sm); font-weight: var(--text-stat-sm--font-weight); line-height: 1; font-variant-numeric: tabular-nums; }
-.card-stat dd span { font-size: var(--text-caption); line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
+.card-stat dd span { font-size: var(--text-caption); line-height: 1; font-weight: 400; color: var(--color-on-ground); }
 .card:not(.card-rich) .card-stats { display: none; }
 .card-rich .card-spots { display: none; }
 /* on the tall card a rule sets the organisms apart from the numbers above them */
@@ -502,7 +511,8 @@ button.float-pill:active { transform: scale(0.97); }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.ms-lead { margin: 0.25rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
+/* full white: over a bright map the soft white fell under 4.5:1 (accessibility review #2) */
+.ms-lead { margin: 0.25rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground); }
 .ms-lead-desk { display: none; }
 .ms-note { margin: 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
 .ms-list { display: flex; flex-direction: column; gap: 1.25rem; }
@@ -586,6 +596,8 @@ button.float-pill:active { transform: scale(0.97); }
   line-height: 1;
 }
 .map-spot { position: absolute; transform: translate(-50%, -50%); text-decoration: none; }
+/* a 32 marker, 44 to touch */
+.map-spot::before { content: ""; position: absolute; inset: -0.375rem; border-radius: var(--radius-pill); }
 .map-spot-label,
 .map-start-label {
   position: absolute;
