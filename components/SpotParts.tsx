@@ -11,18 +11,19 @@ import { MONTH_LETTERS, MONTH_NAMES, NOW, type Claim, type Spot } from "@/lib/sp
 import { MONTH } from "@/lib/suggestions";
 
 export function MonthGrid({ months, label = "In season" }: { months: number[]; label?: string }) {
+  // one picture with one name: the twelve letters are drawn, the months are read out
   return (
-    <ol className="fb-months" aria-label={`${label}: ${months.length === 12 ? "all year" : months.map((m) => MONTH_NAMES[m]).join(", ")}`}>
+    <div
+      className="fb-months"
+      role="img"
+      aria-label={`${label}: ${months.length === 12 ? "all year" : months.map((m) => MONTH_NAMES[m]).join(", ")}`}
+    >
       {MONTH_LETTERS.map((m, i) => (
-        <li
-          key={i}
-          aria-hidden="true"
-          className={months.includes(i) ? (i === NOW ? "is-now" : "is-on") : undefined}
-        >
+        <span key={i} className={months.includes(i) ? (i === NOW ? "is-now" : "is-on") : undefined}>
           {m}
-        </li>
+        </span>
       ))}
-    </ol>
+    </div>
   );
 }
 
@@ -44,8 +45,8 @@ export function ClaimCard({ claim }: { claim: Claim }) {
         <span>
           <span className="fb-soft">What you can do: </span>
           {claim.action}
+          <span className="fb-claim-soon">Not in this prototype yet</span>
         </span>
-        <span className="sr-only">, not built in the prototype yet</span>
         <ChevronIcon size={18} />
       </button>
     </div>

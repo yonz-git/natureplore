@@ -9,7 +9,7 @@
 // and B1-saved are one page. Boards: B1 phone, tablet and desktop, and B1-saved phone.
 
 import Link from "next/link";
-import { useMemo, useRef, useSyncExternalStore } from "react";
+import { useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import { BackIcon, BookmarkIcon, CalendarIcon, ChevronIcon, LocationIcon, WalkIcon } from "@/components/Icons";
 import { MapTools } from "@/components/MapParts";
@@ -44,15 +44,39 @@ function SectionHead({ id, lead, close, note }: { id: string; lead: string; clos
   );
 }
 
-/** Save, pinned. Once saved it becomes Walk it, with Saved beside it to undo. */
+/**
+ * Save, pinned. Once saved it becomes Walk it, with Saved beside it. Tapping Saved removes the
+ * route and its download, so the bar then says so and offers Undo until the page is left. After
+ * each change focus moves to the control that took the pressed one's place.
+ */
 function Pin({ route, walkable }: { route: Route; walkable: boolean }) {
   const { isSaved, toggle } = useSaved();
   const saved = isSaved(route.id);
+  const [removed, setRemoved] = useState(false);
+  const moved = useRef(false);
+  const focusIfMoved = (el: HTMLElement | null) => {
+    if (el && moved.current) {
+      moved.current = false;
+      el.focus();
+    }
+  };
+  const act = (after: () => void) => {
+    moved.current = true;
+    toggle(route.id);
+    after();
+  };
+
   return (
     <div className="b1-pin glass-phone">
       {saved ? (
         <>
-          <button type="button" className="btn btn-secondary b1-saved" aria-pressed="true" onClick={() => toggle(route.id)}>
+          <button
+            ref={focusIfMoved}
+            type="button"
+            className="btn btn-secondary b1-saved"
+            aria-pressed="true"
+            onClick={() => act(() => setRemoved(true))}
+          >
             <BookmarkIcon size={19} filled />
             Saved
             <span className="sr-only">, remove it from Saved</span>
@@ -70,14 +94,21 @@ function Pin({ route, walkable }: { route: Route; walkable: boolean }) {
             </button>
           )}
         </>
+      ) : removed ? (
+        <>
+          <p className="b1-removed">Removed from Saved</p>
+          <button ref={focusIfMoved} type="button" className="btn btn-secondary b1-undo" onClick={() => act(() => setRemoved(false))}>
+            Undo
+          </button>
+        </>
       ) : (
-        <button type="button" className="btn btn-primary b1-walk" onClick={() => toggle(route.id)}>
+        <button ref={focusIfMoved} type="button" className="btn btn-primary b1-walk" onClick={() => act(() => {})}>
           <BookmarkIcon size={19} />
           Save this route
         </button>
       )}
       <p className="sr-only" aria-live="polite">
-        {saved ? "Saved and downloaded. Find it in Saved." : ""}
+        {saved ? "Saved and downloaded. Find it in Saved." : removed ? "Removed from Saved, and its download deleted." : ""}
       </p>
     </div>
   );
@@ -293,18 +324,19 @@ export default function RouteCardScreen({ route }: { route: Route }) {
               <section aria-labelledby="sec-season-title">
                 <SectionHead id="season" lead="When to " close="walk it" note="Spots in season" />
                 <div className="fb-card">
-                  <ol
+                  <div
                     className="fb-season"
+                    role="img"
                     aria-label={`Spots in season by month. ${MONTH_NAMES[NOW]}: ${detail.season[NOW]} of ${detail.spots.length}`}
                   >
                     {detail.season.map((c, i) => (
-                      <li key={i} aria-hidden="true" className={i === NOW ? "is-now" : undefined}>
+                      <div key={i} className={i === NOW ? "is-now" : undefined}>
                         <span>{c}</span>
                         <span className="fb-season-bar" style={{ height: `${0.75 + (4.375 * c) / most}rem` }} />
                         <span>{MONTH_LETTERS[i]}</span>
-                      </li>
+                      </div>
                     ))}
-                  </ol>
+                  </div>
                   <p className="fb-small">{detail.seasonNote}</p>
                 </div>
               </section>

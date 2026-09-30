@@ -132,7 +132,7 @@
 
 /* ── A5, A4: the suggestions ───────────────────────────────────────────────────────────────── */
 
-.sg { --sheet-top: 22.5rem; }
+.sg { --sheet-top: max(min(22.5rem, 100dvh - 18rem), var(--top-chrome) + 8rem); }
 .sg .ms-sheet { gap: 1.25rem; }
 .sg-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
 .sg .ms-title { font-size: 1.75rem; line-height: 2.125rem; }
@@ -189,7 +189,7 @@ p.sg-where svg { color: var(--color-mist); flex-shrink: 0; }
 
 /* on the phone the map takes the screen and the sheet keeps only its head */
 @media (max-width: 63.99rem) {
-  .sg.is-map { --sheet-top: calc(100dvh - 24rem); }
+  .sg.is-map { --sheet-top: max(calc(100dvh - 24rem), 45dvh); }
   .sg.is-map .sg-list { display: none; }
   .sg.is-map .sg-map-note { display: block; animation: sheet-in 240ms var(--ease-out) both; }
   .sg:not(.is-map) .sg-list { animation: sheet-in 280ms var(--ease-out) both; }
@@ -307,7 +307,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 
 /* ── E1: Saved ─────────────────────────────────────────────────────────────────────────────── */
 
-.saved { position: fixed; inset: 0; overflow-y: auto; }
+.saved { position: fixed; inset: 0; overflow-y: auto; scroll-padding-bottom: var(--spacing-tabbar-clearance); }
 .saved-sheet {
   min-height: calc(100% - 4.75rem);
   margin-top: 4.75rem;

@@ -428,6 +428,8 @@ button.float-pill:active { transform: scale(0.97); }
   position: absolute;
   inset: var(--sheet-top) 0 0;
   z-index: 1;
+  /* a focused control scrolls clear of the tab bar floating over the sheet (WCAG 2.4.11) */
+  scroll-padding-bottom: var(--spacing-tabbar-clearance);
   padding: 0.75rem 1.5rem var(--spacing-tabbar-clearance);
   display: flex;
   flex-direction: column;
@@ -512,7 +514,7 @@ button.float-pill:active { transform: scale(0.97); }
 
 /* ── A5: the location line in the bar ──────────────────────────────────────────────────────── */
 
-.a5 { --sheet-top: 22.375rem; }
+.a5 { --sheet-top: max(min(22.375rem, 100dvh - 18rem), var(--top-chrome) + 8rem); }
 
 /* ── A6: a place that is not mapped yet ─────────────────────────────────────────────────────── */
 
@@ -588,7 +590,10 @@ button.float-pill:active { transform: scale(0.97); }
   .map-start-label { top: 3rem; right: auto; left: 50%; transform: translateX(-50%); }
 }
 
-.b1 { --sheet-top: 27.5rem; }
+/* the map gives way before the page does: on a short screen or with large text the sheet rises so
+   at least 22rem of it (the pinned bar, the tab bar and the start of the page) stays on screen, but
+   never over the round controls at the top */
+.b1 { --sheet-top: max(min(27.5rem, 100dvh - 22rem), var(--top-chrome) + 4rem); }
 .b1-top {
   position: absolute;
   top: calc(var(--top-chrome) + 0.5rem);

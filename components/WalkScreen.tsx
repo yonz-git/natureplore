@@ -65,24 +65,40 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
   }, [n, marks]);
 
   const go = (to: number) => router.replace(`${here}?spot=${to}`, { scroll: false });
+  // Previous and next stay the same two buttons from spot to spot, so keyboard focus stays on the
+  // one that was pressed. At either end the button says so and does nothing, rather than vanishing.
   const nav = (
     <nav aria-label="Spots" className="fb-nav walk-nav">
-      {n > 1 ? (
-        <button type="button" className="fb-nav-btn" onClick={() => go(n - 1)}>
-          <BackIcon size={19} />
-          Spot {n - 1}
-        </button>
-      ) : (
-        <span />
-      )}
-      {n < total ? (
-        <button type="button" className="fb-nav-btn" onClick={() => go(n + 1)}>
-          Spot {n + 1}
-          <ChevronIcon size={19} />
-        </button>
-      ) : (
-        <span />
-      )}
+      <button
+        type="button"
+        className="fb-nav-btn"
+        aria-disabled={n === 1 || undefined}
+        onClick={() => n > 1 && go(n - 1)}
+      >
+        {n > 1 ? (
+          <>
+            <BackIcon size={19} />
+            Spot {n - 1}
+          </>
+        ) : (
+          "First spot"
+        )}
+      </button>
+      <button
+        type="button"
+        className="fb-nav-btn"
+        aria-disabled={n === total || undefined}
+        onClick={() => n < total && go(n + 1)}
+      >
+        {n < total ? (
+          <>
+            Spot {n + 1}
+            <ChevronIcon size={19} />
+          </>
+        ) : (
+          "Last spot"
+        )}
+      </button>
     </nav>
   );
 
@@ -104,15 +120,15 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
               spot={spot}
               total={total}
               routeName={route.name}
-              nav={nav}
+              nav={null}
               titleId="walk-title"
               organismHref={(id) => `/map/organism/${id}?from=walk&spot=${n}`}
             />
-            <p className="sr-only" aria-live="polite">
-              Spot {n} of {total}, {spot.name}
-            </p>
-
-            {open ? (
+            {/* one toggle that stays in place, so focus is not lost when the rest of the spot opens */}
+            <button type="button" className="walk-toggle" aria-expanded={open} aria-controls="walk-more" onClick={() => setOpenOn(open ? null : n)}>
+              {open ? "Show less" : "More about this spot"}
+            </button>
+            {open && (
               <div className="walk-more" id="walk-more">
                 <h2>When</h2>
                 <MonthGrid months={spot.months} />
@@ -120,17 +136,14 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
                 <ClaimCard claim={detail.claims[0]} />
                 <h2>Recorded here too</h2>
                 <RecordedToo />
-                <button type="button" className="walk-toggle" aria-expanded="true" aria-controls="walk-more" onClick={() => setOpenOn(null)}>
-                  Show less
-                </button>
               </div>
-            ) : (
-              <button type="button" className="walk-toggle" aria-expanded="false" onClick={() => setOpenOn(n)}>
-                More about this spot
-              </button>
             )}
           </div>
         </main>
+        <div className="walk-bar">{nav}</div>
+        <p className="sr-only" aria-live="polite">
+          Spot {n} of {total}, {spot.name}
+        </p>
       </div>
 
       <MapTools

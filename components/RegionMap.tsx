@@ -231,7 +231,12 @@ export default function RegionMap({
       mapRef.current = map;
       // a layer added before the map has a view throws, so put it somewhere first and fit below
       map.setView(REGION, REGION_ZOOM_MIN, { animate: false });
-      if (!still) host.setAttribute("aria-label", "Map of Berlin and Brandenburg. Arrow keys move it.");
+      // a named region, so the label belongs to something (a bare div cannot carry one)
+      if (!still) {
+        host.setAttribute("role", "region");
+        host.setAttribute("aria-roledescription", "map");
+        host.setAttribute("aria-label", "Map of Berlin and Brandenburg. Arrow keys move it.");
+      }
 
       const fill = (name: string) => () => ({
         stroke: false,

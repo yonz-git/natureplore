@@ -129,6 +129,9 @@ a.fb-row:active { transform: scale(0.985); }
   line-height: 1.3125rem;
 }
 .fb-claim-act > span:first-child { flex-grow: 1; }
+.fb-claim .fb-claim-act[aria-disabled="true"] { opacity: 1; }
+.fb-claim .fb-claim-act[aria-disabled="true"] > svg { opacity: 0.45; }
+.fb-claim-soon { display: block; margin-top: 0.25rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
 
 /* the action row: what not to do here, the line, and why */
 .fb-rule { display: flex; flex-direction: column; gap: 0.375rem; }
@@ -146,9 +149,10 @@ a.fb-row:active { transform: scale(0.985); }
   background: var(--color-glass-solid);
   border: 1px solid var(--color-glass-edge);
 }
-.fb-spot-head { display: flex; align-items: flex-start; gap: 0.875rem; }
-.fb-spot-head > div { min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; font-size: var(--text-body-sm); line-height: 1.375rem; }
+.fb-spot-head { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.875rem; }
+.fb-spot-head > div { flex: 1 1 12rem; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; font-size: var(--text-body-sm); line-height: 1.375rem; }
 .fb-spot .fb-spot-title {
+  overflow-wrap: break-word;
   margin: 0;
   font-family: var(--font-heading);
   font-size: 1.5rem;
@@ -199,7 +203,7 @@ a.fb-row:active { transform: scale(0.985); }
 
 /* ── B1 ────────────────────────────────────────────────────────────────────────────────────── */
 
-.b1 .ms-sheet { padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); }
+.b1 .ms-sheet { padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); scroll-padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); }
 .b1 .ms-sheet > section { flex-shrink: 0; display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
 .b1-back-desk { display: none; }
 
@@ -245,7 +249,7 @@ a.fb-row:active { transform: scale(0.985); }
 
 /* spots in season by month: this month in mist */
 .fb-season { margin: 0; padding: 0; list-style: none; display: flex; align-items: flex-end; gap: 0.25rem; }
-.fb-season li {
+.fb-season > div {
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
@@ -257,8 +261,8 @@ a.fb-row:active { transform: scale(0.985); }
   color: var(--color-on-ground-soft);
 }
 .fb-season-bar { width: 100%; border-radius: 0.375rem; background: var(--color-bar-rest); }
-.fb-season li.is-now { color: var(--color-on-ground); font-weight: 500; }
-.fb-season li.is-now .fb-season-bar { background: var(--color-mist); }
+.fb-season > div.is-now { color: var(--color-on-ground); font-weight: 500; }
+.fb-season > div.is-now .fb-season-bar { background: var(--color-mist); }
 
 .fb-facts { padding: 0.375rem 1.25rem; }
 .fb-facts > div { padding: 0.75rem 0; display: grid; grid-template-columns: 7.5rem 1fr; gap: 0.75rem; }
@@ -281,8 +285,13 @@ a.fb-row:active { transform: scale(0.985); }
 }
 .b1-pin .btn { animation: fade-in 200ms var(--ease-out) both; }
 .b1-pin .b1-walk { flex-grow: 1; }
+/* with large text a label wraps inside its button rather than running out of the bar */
+.b1-pin .btn,
+.walk-nav .fb-nav-btn { min-width: 0; flex-shrink: 1; height: auto; min-height: 3.375rem; padding-top: 0.5rem; padding-bottom: 0.5rem; white-space: normal; text-align: center; }
 .b1-pin .b1-saved { padding: 0 1.25rem; }
 .b1-pin .b1-saved svg { color: var(--color-mist); }
+.b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-sm); line-height: 1.375rem; animation: fade-in 200ms var(--ease-out) both; }
+.b1-pin .b1-undo { padding: 0 1.5rem; }
 
 /* ── L3 ────────────────────────────────────────────────────────────────────────────────────── */
 
@@ -296,7 +305,7 @@ a.fb-row:active { transform: scale(0.985); }
 
 /* ── L4, the walk ──────────────────────────────────────────────────────────────────────────── */
 
-.walk { --sheet-top: 25rem; background: var(--color-ground); }
+.walk { --sheet-top: max(min(25rem, 100dvh - 22rem), var(--top-chrome) + 4rem); background: var(--color-ground); }
 .walk .walk-top {
   position: absolute;
   top: calc(var(--top-chrome) + 0.5rem);
@@ -335,7 +344,24 @@ a.fb-row:active { transform: scale(0.985); }
   box-shadow: 0 -1.5rem 3.75rem rgb(6 18 9 / 0.35);
 }
 .walk-spot { display: flex; flex-direction: column; gap: 1rem; animation: sheet-in 260ms var(--ease-out) both; }
-.walk-nav .fb-nav-btn { height: 3.5rem; font-size: var(--text-body); background: var(--color-field-shade); border: 1px solid var(--color-inner-edge); box-shadow: none; }
+/* previous and next are pinned to the bottom of the sheet, in reach of the thumb, and stay mounted
+   from spot to spot so keyboard focus stays on them */
+.walk-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  background: var(--color-ground);
+  border-top: 1px solid var(--color-divider);
+}
+.walk .walk-sheet { padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px)); scroll-padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px)); }
+.walk-nav .fb-nav-btn[aria-disabled="true"] { opacity: 1; color: var(--color-on-ground-soft); background: none; border-style: dashed; }
+/* read outdoors: the walk's secondary lines are regular weight and full white */
+.walk .fb-rule-why,
+.walk .fb-spot-head .fb-soft { font-weight: 400; color: var(--color-on-ground); }
+.walk-nav .fb-nav-btn { min-height: 3.5rem; font-size: var(--text-body); background: var(--color-field-shade); border: 1px solid var(--color-inner-edge); box-shadow: none; }
 .walk-toggle {
   align-self: flex-start;
   min-height: 2.75rem;
@@ -386,7 +412,9 @@ a.fb-row:active { transform: scale(0.985); }
 
   .walk .walk-top { top: 2.5rem; left: 31.5rem; right: 5.5rem; justify-content: flex-start; }
   .walk-panel { overflow: hidden; background: var(--color-ground); border: 1px solid var(--color-glass-edge); padding: 0; }
-  .walk .walk-sheet { margin: 0; padding: 1.5rem; overflow-y: auto; background: none; border: 0; box-shadow: none; }
+  .walk .walk-sheet { flex: 1 1 auto; min-height: 0; margin: 0; padding: 1.5rem; overflow-y: auto; background: none; border: 0; box-shadow: none; scroll-padding-bottom: 1.5rem; }
+  .walk-panel { display: flex; flex-direction: column; }
+  .walk-bar { position: static; padding: 1rem 1.5rem 1.5rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

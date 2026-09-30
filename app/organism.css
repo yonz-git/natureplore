@@ -9,6 +9,7 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: none;
+  scroll-padding-bottom: var(--spacing-tabbar-clearance);
 }
 .org::-webkit-scrollbar { display: none; }
 
@@ -23,6 +24,10 @@
   align-items: center;
 }
 .org-actions { display: flex; gap: 0.75rem; }
+
+/* B4-walk: opened from the walk, which hides the tab bar, so this page hides it too; back is the way out */
+body:has(.org.is-walk) .tabbar { display: none; }
+.org.is-walk .org-sheet { padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px)); }
 
 .org-sheet {
   margin-top: 8.25rem;
@@ -103,7 +108,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
 /* the months, shared by B4, L3 and the walk: white 30% when in season, this month in mist (lime is
    for controls only) */
 .fb-months { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 0.25rem; }
-.fb-months li {
+.fb-months > span {
   height: 2.125rem;
   display: flex;
   align-items: center;
@@ -116,8 +121,8 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
   font-weight: 400;
   line-height: 1;
 }
-.fb-months li.is-on { border-color: transparent; background: var(--color-bar-rest); color: var(--color-on-ground); }
-.fb-months li.is-now { border-color: transparent; background: var(--color-mist); color: var(--color-ground); font-weight: 500; }
+.fb-months > span.is-on { border-color: transparent; background: var(--color-bar-rest); color: var(--color-on-ground); }
+.fb-months > span.is-now { border-color: transparent; background: var(--color-mist); color: var(--color-ground); font-weight: 500; }
 
 
 .org-impact .org-body { margin-top: 0.5rem; }

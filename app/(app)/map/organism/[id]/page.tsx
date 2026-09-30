@@ -19,5 +19,5 @@ export default async function Organism({ params, searchParams }: PageProps<"/map
       : at
         ? { href: `/map/route/linum/spot/${at.n}`, label: `Back to spot ${at.n}, ${at.name}` }
         : o.back;
-  return <OrganismPage o={o} back={back} />;
+  return <OrganismPage o={o} back={back} walk={from === "walk"} />;
 }

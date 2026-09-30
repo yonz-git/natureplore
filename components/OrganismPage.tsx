@@ -46,12 +46,13 @@ function Actions({ o }: { o: Organism }) {
   );
 }
 
-export default function OrganismPage({ o, back }: { o: Organism; back: { href: string; label: string } }) {
+/** `walk` is set when the page was opened from the walk: the tab bar stays hidden, as on the walk. */
+export default function OrganismPage({ o, back, walk = false }: { o: Organism; back: { href: string; label: string }; walk?: boolean }) {
   const photo = organismPhoto(`${o.name} ${o.close}`);
   const name = `${o.name} ${o.close}`;
 
   return (
-    <section className="org" aria-labelledby="org-title">
+    <section className={`org${walk ? " is-walk" : ""}`} aria-labelledby="org-title">
       <div className="org-top">
         <Link href={back.href} className="round glass glass-pin" aria-label={back.label}>
           <BackIcon size={20} />
