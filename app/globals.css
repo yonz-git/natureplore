@@ -15,6 +15,7 @@
 @import "./flow-c.css";
 @import "./flow-d.css";
 @import "./tabbar.css";
+@import "./tablet.css";
 @import "./transitions.css";
 
 /* The room a screen leaves above its first element. A status bar only exists when the app is

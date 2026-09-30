@@ -54,6 +54,8 @@ const LABELS: [string, number, number, "nature" | "water"][] = [
 ];
 
 const DESKTOP = "(min-width: 64rem)";
+// the tablet step where the suggestions dock their sheet beside the map (app/tablet.css)
+const TABLET = "(min-width: 48rem) and (max-width: 63.99rem) and (min-height: 36rem)";
 // The region is fitted to whatever space the sheet leaves free rather than shown at one fixed
 // zoom, so a wide window frames Berlin and Brandenburg instead of half of northern Europe.
 // REGION_ZOOM_MIN is the zoom the phone has always used: the band above a sheet that tall cannot
@@ -361,28 +363,33 @@ export default function RegionMap({
       };
 
       const wide = matchMedia(DESKTOP);
-      // what covers the map: the sheet on the phone, the panel it moves into on the desktop
+      // on a tablet the suggestions dock their sheet to the left (app/tablet.css), so the free
+      // space is beside it, as on the desktop; every other screen keeps the phone's
+      const tablet = matchMedia(TABLET);
+      const docked = !!host.closest(".sg");
+      const side = () => wide.matches || (tablet.matches && docked);
+      // what covers the map: the sheet on the phone and the tablet, the panel it moves into on the desktop
       const sheetEl = () =>
         (host.parentElement?.querySelector(wide.matches ? ".ms-panel" : ".ms-sheet") as HTMLElement | null) ?? null;
       const navEl = () => (document.querySelector(".tabbar-pill") as HTMLElement | null) ?? null;
       const barEl = () => (host.parentElement?.querySelector(".ms-bar") as HTMLElement | null) ?? null;
       // the phone keeps its bar over the map, the desktop moves it into the panel and the nav
-      // pill takes that band instead
-      const bandEl = () => (wide.matches ? navEl() : barEl());
+      // pill takes that band instead; a docked tablet sheet has its bar above it, not over the map
+      const bandEl = () => (wide.matches ? navEl() : side() ? null : barEl());
 
       const placePins = () => {
         if (still) return;
-        const box = freeBox(host, sheetEl(), bandEl(), wide.matches);
+        const box = freeBox(host, sheetEl(), bandEl(), side());
         setPins(
           pts.map((pt) => {
             const p = map.latLngToContainerPoint([pt.lat, pt.lon]);
             // inside the free box on both axes, with half a pin of margin on the side the
             // sheet is on, so a pin is never clipped by the screen edge or covered by the glass
             const free =
-              p.x >= box.x + (wide.matches ? PIN_EDGE : 0) &&
+              p.x >= box.x + (side() ? PIN_EDGE : 0) &&
               p.x <= box.x + box.w &&
               p.y >= box.y &&
-              p.y <= box.y + box.h - (wide.matches ? 0 : PIN_EDGE);
+              p.y <= box.y + box.h - (side() ? 0 : PIN_EDGE);
             return { ...pt, x: p.x, y: p.y, free };
           }),
         );
@@ -392,7 +399,7 @@ export default function RegionMap({
       // screen, so neither the region nor a cluster you tapped ends up under the glass.
       const centreOn = (lat: number, lon: number, zoom: number, animate: boolean) => {
         const r = { width: host.offsetWidth, height: host.offsetHeight };
-        const box = freeBox(host, sheetEl(), bandEl(), wide.matches);
+        const box = freeBox(host, sheetEl(), bandEl(), side());
         const off = L.point(r.width / 2 - (box.x + box.w / 2), r.height / 2 - (box.y + box.h / 2));
         map.setView(map.unproject(map.project([lat, lon], zoom).add(off), zoom), zoom, { animate });
       };
@@ -426,7 +433,7 @@ export default function RegionMap({
       const fit = still
         ? () => map.fitBounds(cluster, { animate: false, padding: L.point(28, 28) })
         : () => {
-            const box = freeBox(host, sheetEl(), bandEl(), wide.matches);
+            const box = freeBox(host, sheetEl(), bandEl(), side());
             const z = zoomForBox(box);
             // a box that cannot hold the whole region keeps the anchor the phone was drawn around,
             // rather than centring on clusters half of which would be off the band anyway. A
@@ -446,7 +453,7 @@ export default function RegionMap({
       // that box changes rather than only when the 64rem breakpoint flips. Once the person has
       // moved the map themselves it is theirs, and a resize must not pull it back.
       const boxKey = () => {
-        const b = freeBox(host, sheetEl(), bandEl(), wide.matches);
+        const b = freeBox(host, sheetEl(), bandEl(), side());
         return `${b.x}:${b.y}:${b.w}:${b.h}`;
       };
       let fitted = "";

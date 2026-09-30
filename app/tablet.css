@@ -1,0 +1,68 @@
+/* Tablet: from 48rem wide and at least 36rem tall, up to the desktop at 64rem. The screens follow
+   the tablet boards on the redesign canvas, not the IA brief's "list left, map right everywhere":
+   only the suggestions (A5, A4) and search (A2, A3) become a column down the left beside the map,
+   as their boards draw them. Every other screen keeps the phone's shape, with the board's 48 side
+   padding on its sheet, reading text capped at the measure, and buttons capped and centred. A
+   phone turned sideways is under 36rem tall, so it keeps the phone layout.
+
+   The panel is the phone's own sheet, docked: it keeps its glass and its list, and the search bar
+   stays floating over the map above it, the same relation as on the phone. Nothing here animates
+   an ancestor of glass; the pinned bar moves by its own `translate`. Values are tokens from
+   docs/design.md (sheet-tablet, measure, button-tablet, pin-tablet, panel-tablet). */
+
+@media (min-width: 48rem) and (max-width: 63.99rem) and (min-height: 36rem) {
+  /* ── buttons: 342 and centred, except where two share a bar ─────────────────────────────── */
+
+  .btn { align-self: center; width: min(100%, var(--spacing-button-tablet)); }
+  .b1-pin .btn,
+  .a8-more .btn { width: auto; }
+
+  /* ── A5, A4: the sheet docks to the left as a panel, the map fills the rest ──────────────── */
+
+  .sg .ms-bar { right: auto; width: var(--spacing-panel-tablet); }
+  .sg .ms-sheet {
+    inset: calc(var(--top-chrome) + 8rem) auto 6.25rem var(--spacing-screen-phone);
+    width: var(--spacing-panel-tablet);
+    padding-bottom: 1.5rem;
+    scroll-padding-bottom: 1.5rem;
+    border-bottom: 0.5px solid var(--color-glass-edge);
+    border-radius: var(--radius-card);
+  }
+  /* the map is always beside the list, so there is nothing to open or switch to */
+  .sg .ms-grab,
+  .sg .ms-handle,
+  .sg .sg-toggle { display: none; }
+  .sg:not(.is-map) .map-route { display: flex; }
+
+  /* ── A2, A3: search keeps a column on the left, over the dimmed map, as on its board ──────── */
+
+  .sr .ms-bar,
+  .sr .ms-sheet { width: var(--spacing-panel-tablet); }
+
+  /* ── B1: the board's sheet, the photographs at full width, the reading capped ────────────── */
+
+  .b1 .ms-sheet { padding-left: var(--spacing-sheet-tablet); padding-right: var(--spacing-sheet-tablet); }
+  .b1 .ms-sheet > :not(.b1-photos, .ms-grab, .ms-handle) { max-width: var(--spacing-measure); }
+  /* the pinned bar is 362 and centred, as on the B1 tablet board */
+  .b1-pin { left: 50%; right: auto; width: var(--spacing-pin-tablet); translate: -50% 0; }
+
+  /* ── L4: B1's shape, the spot capped, Previous and Next in a 362 pair ────────────────────── */
+
+  /* the spot needs about 31rem, so on a tablet the map strip takes the rest */
+  .walk { --sheet-top: max(min(34rem, 100dvh - 31rem), var(--top-chrome) + 4rem); }
+  .walk .walk-sheet { padding-left: var(--spacing-sheet-tablet); padding-right: var(--spacing-sheet-tablet); }
+  .walk-spot { max-width: var(--spacing-measure); }
+  .walk-nav { max-width: var(--spacing-pin-tablet); margin-left: auto; margin-right: auto; }
+
+  /* ── pages: B4, B5, C1 to C7, D0 to D4, E1, A8, L3 ──────────────────────────────────────── */
+
+  .org-sheet,
+  .saved-sheet,
+  .cp-dialog-sheet { padding-left: var(--spacing-sheet-tablet); padding-right: var(--spacing-sheet-tablet); }
+  .l3 .saved-sheet { padding-left: var(--spacing-sheet-tablet); padding-right: var(--spacing-sheet-tablet); }
+  .l3 .saved-sheet > * { margin-left: 0; margin-right: 0; }
+  /* reading text at the measure, left-aligned; photographs, stat tiles and maps keep the width */
+  :is(.org-main, .org-side, .saved-sheet, .cp-dialog-sheet) > :not(.org-photo, .cp-photo, .dc-hero, .cp-aerial, .cp-stats, .org-credit) {
+    max-width: var(--spacing-measure);
+  }
+}
