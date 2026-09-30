@@ -370,7 +370,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   z-index: 3;
 }
 .a8 .saved-sheet { margin-top: 8.25rem; min-height: calc(100% - 8.25rem); }
-.a8 .saved-sheet h1 em {
+.saved-sheet h1 em {
   font-style: normal;
   background-image: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-primary) 100%);
   background-clip: text;

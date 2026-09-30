@@ -31,7 +31,9 @@ export default function SavedScreen() {
   return (
     <section className="saved">
       <div className="saved-sheet glass" aria-labelledby="e1-title">
-        <h1 id="e1-title">Saved</h1>
+        <h1 id="e1-title">
+          <em>Saved</em>
+        </h1>
         <p>Kept on this device</p>
 
         <h2>Routes</h2>
