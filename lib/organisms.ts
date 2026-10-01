@@ -46,7 +46,7 @@ export const ORGANISMS: Organism[] = [
     kind: "Bird",
     latin: "Grus grus",
     credit: "M. Keller, CC BY",
-    back: { href: "/map/route/linum/spot/2", label: "Back to spot 2, The dam between the ponds" },
+    back: { href: "/map/route/linum?spot=2", label: "Back to Linum wet meadows loop" },
     scope: "Recorded at The dam between the ponds, Linum wet meadows loop",
     record: {
       title: "Recorded here, last 11 Sep 2026",

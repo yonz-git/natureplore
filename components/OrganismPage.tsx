@@ -130,7 +130,7 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
               <ol className="fb-card fb-rows">
                 {o.where.map((w) => (
                   <li key={w.n}>
-                    <Link href={`/map/route/linum/spot/${w.n}`} className="fb-row">
+                    <Link href={`/map/route/linum?spot=${w.n}`} className="fb-row">
                       <SpotMark n={w.n} />
                       <span className="fb-row-text">
                         <b>

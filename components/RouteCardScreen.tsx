@@ -9,13 +9,13 @@
 // and B1-saved are one page. Boards: B1 phone, tablet and desktop, and B1-saved phone.
 
 import Link from "next/link";
-import { useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, LocationIcon, WalkIcon } from "@/components/Icons";
 import { useSheet } from "@/components/SheetGrab";
 import { MapTools } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
-import { ClaimCard, SpotMark } from "@/components/SpotParts";
+import { ActionRow, ClaimCard, MonthGrid, RecordedToo, SpotLook, SpotMark } from "@/components/SpotParts";
 import { organismPhoto } from "@/lib/photos";
 import { GROUPS, recordsOf, spotsOf, type Route } from "@/lib/routes";
 import { lastList, useSaved } from "@/lib/saved";
@@ -145,7 +145,7 @@ function Pin({ route, walkable, save }: { route: Route; walkable: boolean; save:
   );
 }
 
-export default function RouteCardScreen({ route }: { route: Route }) {
+export default function RouteCardScreen({ route, spot: initialSpot }: { route: Route; spot?: number }) {
   const map = useRef<MapHandle>(null);
   const sheetEl = useRef<HTMLDivElement>(null);
   const sheet = useSheet(sheetEl);
@@ -163,7 +163,7 @@ export default function RouteCardScreen({ route }: { route: Route }) {
       route.path ?? [[route.lat, route.lon], ...spots.map((s) => [s.lat, s.lon] as [number, number]), [route.lat, route.lon]],
     [route, spots],
   );
-  // a spot's marker opens its page where the route has spot pages
+  // a spot's marker opens the spot in the list below (its #spot-n anchor)
   const points = useMemo<MapPoint[]>(
     () => [
       { id: "start", lat: route.lat, lon: route.lon, label: `Start and finish, ${route.from}`, start: true },
@@ -174,11 +174,50 @@ export default function RouteCardScreen({ route }: { route: Route }) {
         n: s.n,
         label: route.stops[i]?.name ?? `Spot ${s.n}`,
         left: route.stops[i]?.left,
-        href: routeDetail(route.id) ? `/map/route/${route.id}/spot/${s.n}` : undefined,
       })),
     ],
     [route, spots],
   );
+
+  // one spot open at a time, inside its row. The URL keeps it (?spot=n), so coming back from an
+  // organism opened there finds it open; a marker on the map opens it through its #spot-n anchor.
+  const [openSpot, setOpenSpot] = useState<number | null>(detail && initialSpot ? initialSpot : null);
+  const toggleSpot = (n: number, open: boolean) => {
+    setOpenSpot(open ? n : null);
+    history.replaceState(history.state, "", open ? `?spot=${n}` : location.pathname);
+    const at = spots.find((s) => s.n === n);
+    if (open && at) map.current?.centre(at.lat, at.lon, 15, !matchMedia("(prefers-reduced-motion: reduce)").matches);
+  };
+  useEffect(() => {
+    const smooth = () => (matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth");
+    // only the sheet scrolls to the spot: scrollIntoView, or the #spot-n jump itself, would also
+    // scroll the screen around it, which never scrolls
+    const reveal = (n: number, behavior: ScrollBehavior = smooth()) => {
+      const el = sheetEl.current;
+      const row = document.getElementById(`spot-${n}`);
+      el?.closest(".ms")?.scrollTo({ top: 0 });
+      if (!el || !row) return;
+      const top = el.scrollTop + row.getBoundingClientRect().top - el.getBoundingClientRect().top - 16;
+      el.scrollTo({ top, behavior });
+    };
+    // arriving with a spot open (back from its organism) lands on it at once
+    if (openSpot) requestAnimationFrame(() => reveal(openSpot, "auto"));
+    const onHash = () => {
+      const m = /^#spot-(\d+)$/.exec(location.hash);
+      if (!m || !detail) return;
+      const n = Number(m[1]);
+      setOpenSpot(n);
+      history.replaceState(history.state, "", `?spot=${n}`);
+      // the jump has already moved the sheet; once the spot that was open has folded away, the
+      // new one is brought to the top
+      sheetEl.current?.closest(".ms")?.scrollTo({ top: 0 });
+      setTimeout(() => reveal(n), smooth() === "smooth" ? 340 : 0);
+    };
+    addEventListener("hashchange", onHash);
+    return () => removeEventListener("hashchange", onHash);
+    // the first open spot is revealed once, on arrival
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [detail]);
 
   const total = recordsOf(route.counts);
   const [name, ...rest] = route.name.split(" ").reverse();
@@ -268,22 +307,51 @@ export default function RouteCardScreen({ route }: { route: Route }) {
             <SectionHead id="spots" lead="Spots along " close="this route" note="In walking order" />
             <ol className="fb-card fb-rows">
               {detail
-                ? detail.spots.map((s) => (
-                    <li key={s.n}>
-                      <Link href={`/map/route/${route.id}/spot/${s.n}`} className="fb-row">
-                        <SpotMark n={s.n} />
-                        <span className="fb-row-text">
-                          <b>{s.name}</b>
-                          <span>{spotLine(s)}</span>
-                          <span className="fb-pill">
-                            <CalendarIcon size={14} />
-                            {s.when}
+                ? detail.spots.map((s) => {
+                    const open = openSpot === s.n;
+                    return (
+                      <li key={s.n} id={`spot-${s.n}`} className={`fb-spot-row${open ? " is-open" : ""}`}>
+                        <button
+                          type="button"
+                          className="fb-row"
+                          aria-expanded={open}
+                          aria-controls={`spot-${s.n}-detail`}
+                          onClick={() => toggleSpot(s.n, !open)}
+                        >
+                          <SpotMark n={s.n} />
+                          <span className="fb-row-text">
+                            <b>{s.name}</b>
+                            <span>{spotLine(s)}</span>
+                            <span className="fb-pill">
+                              <CalendarIcon size={14} />
+                              {s.when}
+                            </span>
                           </span>
-                        </span>
-                        <ChevronIcon size={18} />
-                      </Link>
-                    </li>
-                  ))
+                          <ChevronIcon size={18} />
+                        </button>
+                        {/* the spot's detail opens in place: what to look for and what not to do */}
+                        <div id={`spot-${s.n}-detail`} className="fb-spot-detail" inert={!open}>
+                          <div>
+                            <SpotLook spot={s} organismHref={(id) => `/map/organism/${id}?from=route&spot=${s.n}`} />
+                            <ActionRow spot={s} />
+                            <div className="fb-spot-part">
+                              <h3 className="fb-label">When</h3>
+                              <MonthGrid months={s.months} />
+                              <p className="fb-small">In season {s.when === "All year" ? "all year" : s.when}</p>
+                            </div>
+                            <div className="fb-spot-part">
+                              <h3 className="fb-label">What is happening here</h3>
+                              <ClaimCard claim={detail.claims[0]} />
+                            </div>
+                            <div className="fb-spot-part">
+                              <h3 className="fb-label">Recorded here too</h3>
+                              <RecordedToo />
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })
                 : route.stops.map((s, i) => (
                     <li key={s.name}>
                       <div className="fb-row">
