@@ -22,8 +22,7 @@
    on the phone the panel has no box at all, and on the desktop its children move instead. */
 .screen-enter .a1-map { animation: layer-in 380ms var(--ease-out) both; }
 .screen-enter .a1-pin,
-.screen-enter .a1-here,
-.screen-enter .ms-wordmark { animation: fade-in 380ms var(--ease-out) 40ms both; }
+.screen-enter .a1-here { animation: fade-in 380ms var(--ease-out) 40ms both; }
 .screen-enter .ms-bar > *,
 .screen-enter .ms-tools > * { animation: sheet-in 320ms var(--ease-out) 40ms both; }
 @media (max-width: 63.99rem) {
@@ -35,10 +34,23 @@
   .screen-enter .ms-panel > :not(.ms-bar),
   .screen-enter .ms-panel > .ms-bar > * { animation: sheet-in 320ms var(--ease-out) 60ms both; }
 }
+/* B1's panel keeps its scroll-driven edge fade (app/flow-a.css) while it rises */
+@media (min-width: 64rem) {
+  @supports (animation-timeline: scroll()) {
+    .screen-enter .b1 .ms-panel > .ms-sheet {
+      animation: sheet-in 320ms var(--ease-out) 60ms both, sg-fade linear both;
+      animation-timeline: auto, scroll(self);
+    }
+  }
+}
 
 /* every other screen is one block of content: its parts carry the animation, not the section, so a
    glass surface anywhere inside still frosts. */
-.screen-enter > section:not(.ms) > * { animation: sheet-in 320ms var(--ease-out) both; }
+.screen-enter > section:not(.ms, .org) > * { animation: sheet-in 320ms var(--ease-out) both; }
+
+/* the organism page: the sheet rises, the round controls arrive on their own over the photograph */
+.screen-enter .org-sheet { animation: sheet-in 360ms var(--ease-out) 60ms both; }
+.screen-enter .org-top .round { animation: fade-in 320ms var(--ease-out) both; }
 
 @keyframes fade-in {
   from { opacity: 0; }
@@ -59,12 +71,13 @@
   .screen-enter .a1-map,
   .screen-enter .a1-pin,
   .screen-enter .a1-here,
-  .screen-enter .ms-wordmark,
   .screen-enter .ms-bar > *,
   .screen-enter .ms-tools > *,
   .screen-enter .ms-sheet,
   .screen-enter .search .ms-sheet > *,
   .screen-enter .ms-panel > :not(.ms-bar),
   .screen-enter .ms-panel > .ms-bar > *,
-  .screen-enter > section:not(.ms) > * { animation: fade-in 160ms var(--ease-out) both; }
+  .screen-enter > section:not(.ms, .org) > *,
+  .screen-enter .org-sheet,
+  .screen-enter .org-top .round { animation: fade-in 160ms var(--ease-out) both; }
 }

@@ -1,17 +1,14 @@
-import Logo from "@/components/Logo";
-import RegionMap from "@/components/RegionMap";
-import StartSheet from "@/components/StartSheet";
+import type { Metadata } from "next";
+import SuggestionsScreen from "@/components/SuggestionsScreen";
 
-// A1 · Start sheet, the first open of the map, where "Go to map" on A0 lands: Berlin and
-// Brandenburg with their route counts, and the sheet that offers search or location. The map is
-// real OSM geometry drawn by Leaflet (components/RegionMap.tsx), the layout is app/map.css.
+// A5 · Suggestions, location off: the Routes tab. The routes in season this month in Berlin and
+// Brandenburg, or in the region picked in search (`?region=linum`), with Routes or Organisms to
+// choose what is listed. "Use my location" asks first; allowing opens A4.
 
-export default function MapHome() {
-  return (
-    <section className="ms a1">
-      <RegionMap className="a1-map" />
-      <Logo className="ms-wordmark" />
-      <StartSheet />
-    </section>
-  );
+export const metadata: Metadata = { title: "Routes in season" };
+
+export default async function Suggestions({ searchParams }: PageProps<"/map">) {
+  const { region } = await searchParams;
+  const id = typeof region === "string" ? region : undefined;
+  return <SuggestionsScreen key={id} near={false} regionId={id} />;
 }

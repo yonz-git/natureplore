@@ -11,7 +11,9 @@
 // are placed from map.latLngToContainerPoint on every move. The place names are plain text, so
 // they stay ordinary markers.
 
-import { useEffect, useImperativeHandle, useRef, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react";
 import type { Map as LeafletMap, GeoJSON as LeafletGeoJSON } from "leaflet";
 
 import "leaflet/dist/leaflet.css";
@@ -52,6 +54,8 @@ const LABELS: [string, number, number, "nature" | "water"][] = [
 ];
 
 const DESKTOP = "(min-width: 64rem)";
+// the tablet step where the suggestions dock their sheet beside the map (app/tablet.css)
+const TABLET = "(min-width: 48rem) and (max-width: 63.99rem) and (min-height: 36rem)";
 // The region is fitted to whatever space the sheet leaves free rather than shown at one fixed
 // zoom, so a wide window frames Berlin and Brandenburg instead of half of northern Europe.
 // REGION_ZOOM_MIN is the zoom the phone has always used: the band above a sheet that tall cannot
@@ -74,6 +78,20 @@ export type MapPoint = {
   label: string;
   /** the person's own position, drawn as a dot with its name beside it */
   here?: boolean;
+  /** a pin that opens something, such as a route's card, instead of zooming to itself */
+  href?: string;
+  /** the pin whose card is open, drawn with a ring */
+  current?: boolean;
+  /** a spot on a route, numbered in walking order */
+  n?: number;
+  /** where a route starts and finishes */
+  start?: boolean;
+  /** a spot's name goes on the left of its marker */
+  left?: boolean;
+  /** a route drawn with its name, the second line under it ("4 of 6 in season"), as on A5's map */
+  tag?: string;
+  /** the visible name of a tagged route, when `label` says more for screen readers */
+  name?: string;
 };
 
 const REGION_POINTS: MapPoint[] = CLUSTERS.map(([count, lat, lon, where]) => ({
@@ -129,7 +147,10 @@ function freeBox(host: HTMLElement, sheet: HTMLElement | null, band: HTMLElement
   // sit under the sheet and still count as free
   if (!desktop) return { x: 0, y: top, w, h: Math.max(1, sheet.offsetTop - top) };
   const right = sheet.offsetLeft + sheet.offsetWidth;
-  return { x: right, y: top, w: Math.max(1, w - right), h: Math.max(1, h - top) };
+  // the map's own controls down the right edge are not free either
+  const tools = host.parentElement?.querySelector<HTMLElement>(".ms-tools");
+  const end = tools && tools.offsetWidth ? tools.offsetLeft - 8 : w;
+  return { x: right, y: top, w: Math.max(1, end - right), h: Math.max(1, h - top) };
 }
 
 // half a pin, so one is hidden before it slides under the edge of the glass
@@ -146,21 +167,43 @@ export default function RegionMap({
   still = false,
   points,
   maxZoom = REGION_ZOOM_MAX,
+  line,
+  detail,
+  mapLabel = "Map of Berlin and Brandenburg",
+  behind = false,
+  hot,
   ref,
 }: {
   className?: string;
   still?: boolean;
   points?: MapPoint[];
   maxZoom?: number;
+  /** a route's line, [lat, lon] in walking order, drawn in lime over the map. Pass a constant. */
+  line?: [number, number][];
+  /** a GeoJSON file of the paths, water and land around a route, for the zoom a route is seen at */
+  detail?: string;
+  /** what the map shows, for screen readers: the region, or the route on a route's own map */
+  mapLabel?: string;
+  /**
+   * the map sits under a sheet on the phone, so it is not a tab stop there: its focus ring and its
+   * arrow keys would be out of sight. The list above it holds the same places. From 64rem it is
+   * beside the panel and takes focus again.
+   */
+  behind?: boolean;
+  /** the route whose card is under the pointer or focus in the list: its label on the map lightens */
+  hot?: string;
   /** a screen holds this to move the map from a control of its own */
   ref?: React.Ref<MapHandle>;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const [pins, setPins] = useState<Pin[]>([]);
+  const router = useRouter();
   const [zooming, setZooming] = useState(false);
   // set once the map exists: puts a point in the middle of the free space, not the screen
   const centreRef = useRef<Centre>(null);
+  // set by the tab stop effect below, called again once Leaflet has made the map focusable
+  const tabStopRef = useRef<() => void>(() => {});
   // read at the moment it is called, so the handle survives the map being rebuilt
   useImperativeHandle(ref, () => ({ centre: (...args) => centreRef.current?.(...args) }), []);
 
@@ -187,7 +230,7 @@ export default function RegionMap({
         attributionControl: false,
         renderer: L.canvas({ padding: 0.5 }),
         minZoom: 7.75,
-        maxZoom: 12,
+        maxZoom: Math.max(12, maxZoom),
         zoomSnap: 0.25,
         zoomDelta: 0.5,
         wheelPxPerZoomLevel: 120,
@@ -205,14 +248,20 @@ export default function RegionMap({
       mapRef.current = map;
       // a layer added before the map has a view throws, so put it somewhere first and fit below
       map.setView(REGION, REGION_ZOOM_MIN, { animate: false });
-      if (!still) host.setAttribute("aria-label", "Map of Berlin and Brandenburg. Arrow keys move it.");
+      // a named region, so the label belongs to something (a bare div cannot carry one)
+      if (!still) {
+        host.setAttribute("role", "region");
+        host.setAttribute("aria-roledescription", "map");
+        host.setAttribute("aria-label", `${mapLabel}. Arrow keys move it.`);
+        tabStopRef.current();
+      }
 
       const fill = (name: string) => () => ({
         stroke: false,
         fillColor: token(name),
         fillOpacity: 1,
       });
-      const line = (name: string, weight: number, extra: object = {}) => () => ({
+      const stroke = (name: string, weight: number, extra: object = {}) => () => ({
         color: token(name),
         weight,
         fill: false,
@@ -224,8 +273,8 @@ export default function RegionMap({
         wood: fill("--color-basemap-wood"),
         urban: fill("--color-basemap-urban"),
         water: fill("--color-basemap-water"),
-        waterway: line("--color-basemap-water", 2),
-        states: line("--color-basemap-border", 1.2, { dashArray: "6 4" }),
+        waterway: stroke("--color-basemap-water", 2),
+        states: stroke("--color-basemap-border", 1.2, { dashArray: "6 4" }),
       };
       const roadStyle = (f?: GeoJSON.Feature) =>
         ({
@@ -239,6 +288,47 @@ export default function RegionMap({
         L.geoJSON(geo[k], { style: styles[k], interactive: false }).addTo(map);
       }
       L.geoJSON(geo.roads, { style: roadStyle, interactive: false }).addTo(map);
+
+      // The region data holds main roads only. A route is seen close up, so the tracks, ditches and
+      // ponds it follows come from its own detail file, drawn in the same basemap colours.
+      if (detail) {
+        const kinds: Record<string, object> = {
+          meadow: { stroke: false, fillColor: token("--color-basemap-wood"), fillOpacity: 0.45 },
+          urban: { stroke: false, fillColor: token("--color-basemap-urban"), fillOpacity: 1 },
+          wood: { stroke: false, fillColor: token("--color-basemap-wood"), fillOpacity: 1 },
+          wetland: { stroke: false, fillColor: token("--color-basemap-water"), fillOpacity: 0.55 },
+          water: { stroke: false, fillColor: token("--color-basemap-water"), fillOpacity: 1 },
+          ditch: { color: token("--color-basemap-label-water"), weight: 0.8, opacity: 0.6, fill: false },
+          river: { color: token("--color-basemap-label-water"), weight: 2, opacity: 0.7, fill: false },
+          service: { color: token("--color-basemap-rail"), weight: 1, fill: false },
+          track: { color: token("--color-basemap-label"), weight: 1, opacity: 0.55, dashArray: "4 3", fill: false },
+          path: { color: token("--color-basemap-label"), weight: 1, opacity: 0.55, dashArray: "2 3", fill: false },
+          street: { color: token("--color-basemap-road"), weight: 2, fill: false },
+          road: { color: token("--color-basemap-trunk"), weight: 3, fill: false },
+        };
+        fetch(detail)
+          .then((r) => r.json())
+          .then((fc: GeoJSON.FeatureCollection) => {
+            if (!live || mapRef.current !== map) return;
+            const layer = L.geoJSON(fc, {
+              style: (f) => ({ lineCap: "round", lineJoin: "round", ...kinds[f?.properties?.k as string] }),
+              interactive: false,
+            }).addTo(map);
+            layer.bringToBack();
+            // the region fills stay underneath, so the detail sits between them and the route
+            routeLayers.forEach((l) => l.bringToFront());
+          })
+          .catch(() => {});
+      }
+
+      // the route itself: a lime line on a dark casing, so it reads over water and land alike
+      const routeLayers: ReturnType<typeof L.polyline>[] = [];
+      if (line) {
+        routeLayers.push(
+          L.polyline(line, { color: token("--color-ground"), weight: 9, opacity: 0.85, lineCap: "round", lineJoin: "round", interactive: false }).addTo(map),
+          L.polyline(line, { color: token("--color-primary"), weight: 4.5, lineCap: "round", lineJoin: "round", interactive: false }).addTo(map),
+        );
+      }
 
       // Names, thinned as the map zooms out so they never pile up
       const labels: { marker: LeafletGeoJSON | ReturnType<typeof L.marker>; from: number }[] = [];
@@ -286,28 +376,33 @@ export default function RegionMap({
       };
 
       const wide = matchMedia(DESKTOP);
-      // what covers the map: the sheet on the phone, the panel it moves into on the desktop
+      // on a tablet the suggestions dock their sheet to the left (app/tablet.css), so the free
+      // space is beside it, as on the desktop; every other screen keeps the phone's
+      const tablet = matchMedia(TABLET);
+      const docked = !!host.closest(".sg");
+      const side = () => wide.matches || (tablet.matches && docked);
+      // what covers the map: the sheet on the phone and the tablet, the panel it moves into on the desktop
       const sheetEl = () =>
         (host.parentElement?.querySelector(wide.matches ? ".ms-panel" : ".ms-sheet") as HTMLElement | null) ?? null;
       const navEl = () => (document.querySelector(".tabbar-pill") as HTMLElement | null) ?? null;
       const barEl = () => (host.parentElement?.querySelector(".ms-bar") as HTMLElement | null) ?? null;
       // the phone keeps its bar over the map, the desktop moves it into the panel and the nav
-      // pill takes that band instead
-      const bandEl = () => (wide.matches ? navEl() : barEl());
+      // pill takes that band instead; a docked tablet sheet has its bar above it, not over the map
+      const bandEl = () => (wide.matches ? navEl() : side() ? null : barEl());
 
       const placePins = () => {
         if (still) return;
-        const box = freeBox(host, sheetEl(), bandEl(), wide.matches);
+        const box = freeBox(host, sheetEl(), bandEl(), side());
         setPins(
           pts.map((pt) => {
             const p = map.latLngToContainerPoint([pt.lat, pt.lon]);
             // inside the free box on both axes, with half a pin of margin on the side the
             // sheet is on, so a pin is never clipped by the screen edge or covered by the glass
             const free =
-              p.x >= box.x + (wide.matches ? PIN_EDGE : 0) &&
+              p.x >= box.x + (side() ? PIN_EDGE : 0) &&
               p.x <= box.x + box.w &&
               p.y >= box.y &&
-              p.y <= box.y + box.h - (wide.matches ? 0 : PIN_EDGE);
+              p.y <= box.y + box.h - (side() ? 0 : PIN_EDGE);
             return { ...pt, x: p.x, y: p.y, free };
           }),
         );
@@ -317,7 +412,7 @@ export default function RegionMap({
       // screen, so neither the region nor a cluster you tapped ends up under the glass.
       const centreOn = (lat: number, lon: number, zoom: number, animate: boolean) => {
         const r = { width: host.offsetWidth, height: host.offsetHeight };
-        const box = freeBox(host, sheetEl(), bandEl(), wide.matches);
+        const box = freeBox(host, sheetEl(), bandEl(), side());
         const off = L.point(r.width / 2 - (box.x + box.w / 2), r.height / 2 - (box.y + box.h / 2));
         map.setView(map.unproject(map.project([lat, lon], zoom).add(off), zoom), zoom, { animate });
       };
@@ -334,7 +429,7 @@ export default function RegionMap({
         taken = true;
       });
       // the welcome card has no sheet over it, so the whole region fits inside it
-      const cluster = L.latLngBounds(pts.map((pt) => [pt.lat, pt.lon] as [number, number]));
+      const cluster = L.latLngBounds([...pts.map((pt) => [pt.lat, pt.lon] as [number, number]), ...(line ?? [])]);
       // the zoom at which every point fits the box, on whichever axis runs out first
       const zoomForBox = (box: { w: number; h: number }) => {
         const nw = map.project(cluster.getNorthWest(), 0);
@@ -351,7 +446,7 @@ export default function RegionMap({
       const fit = still
         ? () => map.fitBounds(cluster, { animate: false, padding: L.point(28, 28) })
         : () => {
-            const box = freeBox(host, sheetEl(), bandEl(), wide.matches);
+            const box = freeBox(host, sheetEl(), bandEl(), side());
             const z = zoomForBox(box);
             // a box that cannot hold the whole region keeps the anchor the phone was drawn around,
             // rather than centring on clusters half of which would be off the band anyway. A
@@ -371,7 +466,7 @@ export default function RegionMap({
       // that box changes rather than only when the 64rem breakpoint flips. Once the person has
       // moved the map themselves it is theirs, and a resize must not pull it back.
       const boxKey = () => {
-        const b = freeBox(host, sheetEl(), bandEl(), wide.matches);
+        const b = freeBox(host, sheetEl(), bandEl(), side());
         return `${b.x}:${b.y}:${b.w}:${b.h}`;
       };
       let fitted = "";
@@ -404,7 +499,58 @@ export default function RegionMap({
       mapRef.current = null;
       centreRef.current = null;
     };
-  }, [still, points, maxZoom]);
+  }, [still, points, maxZoom, line, detail, mapLabel]);
+
+  // A spot's name goes on the side its route data prefers, unless that side runs into another
+  // marker, a name already placed, the panel or the edge of the map; then it takes the other side.
+  // Names are placed in walking order, so the earlier spot keeps its side when two compete.
+  useLayoutEffect(() => {
+    const host = hostRef.current;
+    const scope = host?.parentElement;
+    if (!host || !scope) return;
+    const spots = [...scope.querySelectorAll<HTMLElement>(".map-spot")];
+    if (!spots.length) return;
+    const hit = (a: DOMRect, b: DOMRect) =>
+      a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+    const bounds = host.getBoundingClientRect();
+    const marks = [...scope.querySelectorAll<HTMLElement>(".spot-mark, .map-start, .map-start-label, .a1-here-dot")];
+    const cover = [...scope.querySelectorAll<HTMLElement>(".ms-panel, .ms-sheet")].map((el) => el.getBoundingClientRect());
+    const placed: DOMRect[] = [];
+    for (const spot of spots) {
+      const label = spot.querySelector<HTMLElement>(".map-spot-label");
+      const mark = spot.querySelector<HTMLElement>(".spot-mark");
+      if (!label || !mark || !label.offsetWidth || spot.style.visibility === "hidden") continue;
+      const m = mark.getBoundingClientRect();
+      const now = label.getBoundingClientRect();
+      const cx = m.left + m.width / 2;
+      // the room between the disc's centre and its name, read from wherever the name sits now
+      const off = now.left >= cx ? now.left - cx : cx - now.right;
+      const rect = (left: boolean) => new DOMRect(left ? cx - off - now.width : cx + off, now.top, now.width, now.height);
+      const cost = (r: DOMRect) =>
+        (r.left < bounds.left || r.right > bounds.right ? 2 : 0) +
+        cover.filter((c) => hit(r, c)).length * 2 +
+        marks.filter((el) => !mark.contains(el) && hit(r, el.getBoundingClientRect())).length +
+        placed.filter((p) => hit(r, p)).length;
+      const prefersLeft = spot.classList.contains("is-left");
+      const [a, b] = [rect(prefersLeft), rect(!prefersLeft)];
+      const left = cost(b) < cost(a) ? !prefersLeft : prefersLeft;
+      spot.dataset.side = left ? "left" : "right";
+      placed.push(left ? (prefersLeft ? a : b) : prefersLeft ? b : a);
+    }
+  }, [pins, zooming]);
+
+  // the tab stop follows `behind` and the width without rebuilding the map
+  useEffect(() => {
+    const wide = matchMedia(DESKTOP);
+    const set = () => {
+      const host = hostRef.current;
+      if (host && !still && host.getAttribute("role") === "region") host.tabIndex = behind && !wide.matches ? -1 : 0;
+    };
+    tabStopRef.current = set;
+    set();
+    wide.addEventListener("change", set);
+    return () => wide.removeEventListener("change", set);
+  }, [behind, still]);
 
   return (
     <>
@@ -418,6 +564,61 @@ export default function RegionMap({
             // so a pin that is off the free space or mid-zoom hides with visibility instead
             visibility: zooming || !pin.free ? ("hidden" as const) : undefined,
           };
+
+          // a spot on the route: a lime disc numbered in walking order, its name beside it. It opens
+          // the spot's page where there is one, and otherwise its row further down the same page.
+          if (pin.n !== undefined) {
+            const body = (
+              <>
+                <span className="spot-mark">{pin.n}</span>
+                <span className="map-spot-label" aria-hidden="true">
+                  {pin.label}
+                </span>
+              </>
+            );
+            const cls = `map-spot${pin.left ? " is-left" : ""}${pin.current ? " is-current" : ""}`;
+            return pin.href ? (
+              <Link key={pin.id} href={pin.href} className={cls} style={style} aria-label={`Spot ${pin.n}, ${pin.label}`}>
+                {body}
+              </Link>
+            ) : (
+              <a key={pin.id} href={`#spot-${pin.n}`} className={cls} style={style} aria-label={`Spot ${pin.n}, ${pin.label}`}>
+                {body}
+              </a>
+            );
+          }
+          if (pin.start) {
+            return (
+              <div key={pin.id} className="map-start" style={style} role="img" aria-label={pin.label}>
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 21V4" />
+                  <path d="M6 4h11l-2 4 2 4H6" />
+                </svg>
+                <span className="map-start-label" aria-hidden="true">
+                  Start and finish
+                </span>
+              </div>
+            );
+          }
+
+          // a route on A5's map: its name and how many spots are in season, in a glass label
+          if (pin.tag !== undefined) {
+            const body = (
+              <>
+                <b>{pin.name}</b>
+                <span>{pin.tag}</span>
+              </>
+            );
+            return pin.href ? (
+              <Link key={pin.id} href={pin.href} className={`map-route glass glass-pin${pin.id === hot ? " is-hot" : ""}`} style={style} aria-label={pin.label}>
+                {body}
+              </Link>
+            ) : (
+              <div key={pin.id} className={`map-route glass glass-pin${pin.id === hot ? " is-hot" : ""}`} style={style} role="img" aria-label={pin.label}>
+                {body}
+              </div>
+            );
+          }
 
           // the person's own position is a mark, not a control: a dot with its name beside it
           if (pin.here) {
@@ -433,11 +634,12 @@ export default function RegionMap({
             <button
               key={pin.id}
               type="button"
-              className={`a1-pin glass glass-pin${pin.count === undefined ? " a1-pin-place" : ""}`}
+              className={`a1-pin glass glass-pin${pin.count === undefined ? " a1-pin-place" : ""}${pin.current ? " is-current" : ""}`}
+              aria-current={pin.current ? "true" : undefined}
               style={style}
               aria-label={pin.label}
               onClick={() =>
-                centreRef.current?.(
+                pin.href ? router.push(pin.href) : centreRef.current?.(
                   pin.lat,
                   pin.lon,
                   pin.count === undefined ? 12 : 10.5,

@@ -1,0 +1,523 @@
+/* Flow B after the flow and IA redesign: the route (B1, B1-saved), the spots (L3), the walk (L4)
+   and the organism (B4, B4-walk). The shared pieces come first, the spot block, the claim card,
+   the action row and the rows, because the same element reads the same on every screen. The
+   screen shell, the panel and the buttons are in app/map.css; the organism page is
+   app/organism.css. Phone first, the panel from 64rem. Glass is app/glass.css. */
+
+/* ── the shared pieces ─────────────────────────────────────────────────────────────────────── */
+
+.fb-card {
+  margin: 0;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-inner);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+.fb-stack { display: flex; flex-direction: column; gap: 0.75rem; }
+.fb-soft { color: var(--color-on-ground-soft); }
+.fb-small { margin: 0.625rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-label { font-size: var(--text-body-sm); line-height: 1.375rem; font-weight: 500; color: var(--color-mist); }
+.fb-placeholder { font-size: var(--text-body-sm); line-height: 1.4375rem; font-weight: 300; color: var(--color-on-ground-soft); }
+
+/* the spot marker, larger at the head of a spot block */
+.fb-mark.is-lg { --mark: 2.25rem; font-size: 1.125rem; }
+
+/* a heading with its closing words in the lime of the titles */
+.fb-sec { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem; scroll-margin-top: 1rem; }
+.fb-sec h2 {
+  margin: 0;
+  font-family: var(--text-h2--font-family);
+  font-size: var(--text-h2);
+  line-height: var(--text-h2--line-height);
+  font-weight: var(--text-h2--font-weight);
+  letter-spacing: var(--text-h2--letter-spacing);
+}
+.fb-sec span { min-width: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-sec h2 em,
+.l3 .saved-sheet h2 em,
+.org-h2 em {
+  font-style: normal;
+  background-image: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-primary) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* a row that opens something: the spot marker, two lines, what it carries, the chevron */
+.fb-rows { padding: 0.25rem 1.25rem; list-style: none; }
+.fb-rows li + li { border-top: 1px solid var(--color-divider); }
+.fb-row {
+  min-height: 4.25rem;
+  padding: 0.875rem 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  color: var(--color-on-ground);
+  text-decoration: none;
+  transition: transform 160ms var(--ease-out);
+}
+a.fb-row:active { transform: scale(0.985); }
+.fb-row-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.fb-row-text b { font-size: var(--text-body); line-height: 1.375rem; font-weight: 400; }
+.fb-row-text > span:not(.fb-pill) { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
+.fb-row-text .fb-pill { align-self: flex-start; margin-top: 0.25rem; }
+
+/* a label pill: glass benefit style, never lime, because it is not a control */
+.fb-pill {
+  flex-shrink: 0;
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-pill-fill);
+  border: 0.5px solid var(--color-inner-edge);
+  font-size: var(--text-caption);
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+}
+.fb-pill svg { color: var(--color-mist); }
+.fb-pill.is-none { color: var(--color-on-ground-soft); }
+.fb-pill i { width: 0.5rem; height: 0.5rem; border-radius: var(--radius-pill); }
+.fb-pill i.is-plants { background: var(--color-group-plants); }
+.fb-pill i.is-herbs { background: var(--color-group-herbs); }
+.fb-pill i.is-mushrooms { background: var(--color-group-mushrooms); }
+.fb-pill i.is-birds { background: var(--color-group-birds); }
+.fb-pill i.is-mammals { background: var(--color-group-mammals); }
+
+/* the claim card: the claim opens its page, the line under it opens the first action */
+.fb-claim {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-inner);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+.fb-claim-photo { width: auto; margin: 0.75rem 0.75rem 0; }
+.fb-claim-photo + .fb-claim-open { padding-top: 1rem; }
+.fb-claim-open,
+.fb-claim-act {
+  margin: 0;
+  display: flex;
+  gap: 0.75rem;
+  color: var(--color-on-ground);
+  text-decoration: none;
+}
+a.fb-claim-open,
+a.fb-claim-act { transition: transform 160ms var(--ease-out); }
+a.fb-claim-open:active,
+a.fb-claim-act:active { transform: scale(0.985); }
+.fb-claim-open > svg,
+.fb-claim-act > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
+.fb-claim-open { padding: 1.25rem 1.25rem 1rem; align-items: flex-start; border-radius: var(--radius-inner) var(--radius-inner) 0 0; }
+.fb-claim-open > svg { margin-top: 0.1875rem; }
+.fb-claim-open > span:first-child { flex-grow: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.fb-claim-text { font-size: var(--text-body); line-height: 1.5rem; font-weight: 400; }
+.fb-claim-scope { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-claim .fb-claim-act {
+  min-height: 2.75rem;
+  margin: 0 1.25rem;
+  padding: 0.875rem 0 1rem;
+  align-items: center;
+  border-top: 1px solid var(--color-divider);
+  font-size: var(--text-body-sm);
+  line-height: 1.3125rem;
+}
+.fb-claim-act > span:first-child { flex-grow: 1; }
+
+
+/* the action row: a marked callout, what not to do here (or what to do), the line, and why */
+.fb-rule { display: flex; flex-direction: column; gap: 0.375rem; }
+.fb-callout {
+  padding: 1rem;
+  flex-direction: row;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  border-radius: var(--radius-inner);
+  background: var(--color-field-shade);
+  border: 0.5px solid var(--color-inner-edge);
+}
+.fb-rule-icon {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--color-mist);
+  background: rgb(255 255 255 / 0.06);
+  border: 0.5px solid var(--color-inner-edge);
+}
+.fb-rule-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.fb-rule-text .fb-label { margin-bottom: 0.125rem; }
+.fb-rule-line { font-size: var(--text-body); line-height: 1.5rem; font-weight: 500; text-wrap: pretty; }
+.fb-rule-why { font-size: var(--text-body-sm); line-height: 1.4375rem; font-weight: 300; color: var(--color-on-ground-soft); text-wrap: pretty; }
+
+/* the spot block: solid, not glass, the same on the spot page and as the walk sheet */
+.fb-spot {
+  padding: 1.5rem 1.25rem 1.25rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-radius: var(--radius-inner);
+  background: var(--color-glass-solid);
+  border: 1px solid var(--color-glass-edge);
+}
+/* the number and the name read as one: the marker sits centred on the two lines beside it */
+.fb-spot-head { display: flex; align-items: center; gap: 1rem; }
+.fb-spot-head > div { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.125rem; font-size: var(--text-body-sm); line-height: 1.375rem; }
+.fb-spot .fb-spot-title {
+  overflow-wrap: break-word;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  line-height: 1.875rem;
+  font-weight: 300;
+  text-wrap: balance;
+}
+.fb-out { margin: 0; font-size: var(--text-body); line-height: 1.4375rem; }
+.fb-look { display: flex; flex-direction: column; gap: 0.625rem; }
+.fb-look ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+/* what to look for: the organism, its photograph, what it is doing and when it was last seen */
+.fb-look-row {
+  min-height: 2.75rem;
+  padding: 0.625rem 0.875rem 0.625rem 0.625rem;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  border-radius: var(--radius-inner);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.1) 0%, rgb(255 255 255 / 0.03) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 0 0 10rem rgb(255 255 255 / 0), inset 0 1px 0 rgb(255 255 255 / 0.08);
+  color: var(--color-on-ground);
+  text-decoration: none;
+}
+.fb-look-photo {
+  flex-shrink: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+  border-radius: calc(var(--radius-inner) - 0.375rem);
+  background: var(--color-field-shade);
+}
+.fb-look-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.0625rem; }
+.fb-look-name { font-size: var(--text-body); line-height: 1.5rem; font-weight: 500; }
+.fb-look-what { font-size: var(--text-body-sm); line-height: 1.375rem; font-weight: 400; color: var(--color-on-ground); }
+.fb-look-last { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-look-link { transition: transform 160ms var(--ease-out), box-shadow 240ms var(--ease-out), border-color 240ms var(--ease-out); }
+@media (hover: hover) {
+  .fb-look-link:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 0 0 10rem rgb(255 255 255 / 0.06), inset 0 1px 0 rgb(255 255 255 / 0.08); }
+}
+.fb-look-link:active { transform: scale(0.985); }
+.fb-look-link > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
+
+/* previous and next: buttons, not swipes */
+.fb-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; }
+
+/* L3: the way on names the next spot and fills the row; the spot before is a round control */
+.l3 .fb-nav { margin-top: 0.25rem; }
+.l3 .fb-nav,
+.fb-nav.walk-nav { display: flex; gap: 0.625rem; }
+.fb-nav-prev,
+.fb-nav-next {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  box-shadow: inset 0 0 0 10rem rgb(255 255 255 / 0), inset 0 1px 0 rgb(255 255 255 / 0.09);
+  color: var(--color-on-ground);
+  font-family: var(--font-text);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out), box-shadow 240ms var(--ease-out), border-color 240ms var(--ease-out);
+}
+.fb-nav-prev { padding: 0; flex-shrink: 0; width: 3.5rem; height: 3.5rem; justify-content: center; }
+.fb-nav-next { flex: 1 1 auto; min-width: 0; min-height: 3.5rem; padding: 0.5rem 1.125rem 0.5rem 1.5rem; gap: 0.75rem; }
+.fb-nav-next > svg { flex-shrink: 0; }
+.fb-nav-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+.fb-nav-kicker { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-nav-name { font-size: var(--text-body-sm); line-height: 1.375rem; font-weight: 500; overflow-wrap: break-word; }
+@media (hover: hover) {
+  .fb-nav-prev:hover,
+  .fb-nav-next:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 0 0 10rem rgb(255 255 255 / 0.06), inset 0 1px 0 rgb(255 255 255 / 0.09); }
+}
+.fb-nav-prev:active,
+.fb-nav-next:active { transform: scale(0.97); }
+
+/* ── B1 ────────────────────────────────────────────────────────────────────────────────────── */
+
+.b1 .ms-sheet { padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); scroll-padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); }
+.b1 .ms-sheet > section { flex-shrink: 0; display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+.b1-back-desk { display: none; }
+
+/* jump to a section: chips that scroll sideways, bleeding to the sheet's edges */
+.fb-strip {
+  flex-shrink: 0;
+  margin: 0 -1.5rem;
+  padding: 0 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.fb-strip::-webkit-scrollbar { display: none; }
+.fb-strip a {
+  flex-shrink: 0;
+  height: 2.75rem;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  border: 0.5px solid var(--color-inner-edge);
+  color: var(--color-on-ground);
+  font-size: var(--text-caption);
+  line-height: 1;
+  text-decoration: none;
+  transition: transform 160ms var(--ease-out);
+}
+.fb-strip a:active { transform: scale(0.97); }
+.b1 .ms-sheet { scroll-behavior: smooth; }
+
+/* the route drawn flat: the spots along its length, with the same numbers as the map */
+.fb-axis { position: relative; height: 2.5rem; }
+.fb-axis-line { position: absolute; left: 0; right: 0; top: 1.0625rem; height: 0.1875rem; border-radius: 0.125rem; background: var(--color-mist); opacity: 0.8; }
+/* the marks on the route's distance axis, 30% smaller than the 1.75rem they were, centred on the line */
+.fb-axis-mark { position: absolute; top: calc(1.15625rem - 1.25rem / 2); transform: translateX(-50%); }
+.fb-axis-mark .spot-mark { --mark: 1.25rem; font-size: 0.625rem; }
+.fb-axis-ticks { margin-top: 0.625rem; display: flex; justify-content: space-between; font-size: 0.75rem; line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); }
+
+.fb-recorded { gap: 1rem; }
+.fb-recorded .btn { margin-top: 0.25rem; }
+.fb-legend { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+/* spots in season by month: this month in mist */
+.fb-season { margin: 0; padding: 0; list-style: none; display: flex; align-items: flex-end; gap: 0.25rem; }
+.fb-season > div {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1;
+  font-weight: 300;
+  color: var(--color-on-ground-soft);
+}
+.fb-season-bar { width: 100%; border-radius: 0.375rem; background: var(--color-bar-rest); }
+.fb-season > div.is-now { color: var(--color-on-ground); font-weight: 500; }
+.fb-season > div.is-now .fb-season-bar { background: var(--color-mist); }
+
+.fb-facts { padding: 0.375rem 1.25rem; }
+/* label and value side by side; with large text the value drops under its label instead of running off */
+.fb-facts > div { padding: 0.75rem 0; display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; }
+.fb-facts dt { flex: 0 0 7.5rem; }
+.fb-facts dd { flex: 1 1 10rem; min-width: 0; }
+.fb-facts > div + div { border-top: 1px solid var(--color-divider); }
+.fb-facts dt { font-size: var(--text-caption); line-height: 1.25rem; color: var(--color-on-ground-soft); }
+.fb-facts dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.25rem; }
+.b1-foot { margin-top: 0.5rem; }
+
+/* pinned over the tab bar on the phone, once saved: Walk it; after a removal, Undo */
+.b1-pin {
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+  z-index: 3;
+  padding: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  border-radius: var(--radius-pill);
+}
+.b1-pin .btn { animation: fade-in 200ms var(--ease-out) both; }
+/* saved on this visit: where the route went, on screen, above the two buttons */
+.b1-pin.has-note { flex-wrap: wrap; border-radius: var(--radius-card); }
+.b1-note {
+  flex-basis: 100%;
+  margin: 0;
+  padding: 0.25rem 0.75rem 0.125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--text-caption);
+  line-height: 1.25rem;
+  animation: fade-in 200ms var(--ease-out) both;
+}
+.b1-note svg { flex-shrink: 0; color: var(--color-mist); }
+.b1-pin .b1-walk { flex-grow: 1; }
+/* with large text a label wraps inside its button rather than running out of the bar */
+.b1-pin .btn { min-width: 0; flex-shrink: 1; height: auto; min-height: 3.375rem; padding-top: 0.5rem; padding-bottom: 0.5rem; white-space: normal; text-align: center; }
+.b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-sm); line-height: 1.375rem; animation: fade-in 200ms var(--ease-out) both; }
+.b1-pin .b1-undo { padding: 0 1.5rem; }
+
+/* ── L3 ────────────────────────────────────────────────────────────────────────────────────── */
+
+.l3 .saved-sheet { margin-top: 8.25rem; min-height: calc(100% - 8.25rem); padding-top: 1rem; padding-left: 1rem; padding-right: 1rem; }
+.l3 .saved-sheet > h2,
+.l3 .saved-sheet > .fb-months,
+.l3 .saved-sheet > .fb-small,
+.l3 .saved-sheet > .fb-claim,
+.l3 .saved-sheet > .fb-card { margin-left: 0.5rem; margin-right: 0.5rem; }
+.l3 .saved-sheet > .fb-spot { animation: sheet-in 260ms var(--ease-out) both; }
+
+/* ── L4, the walk ──────────────────────────────────────────────────────────────────────────── */
+
+/* the map strip gives way to the spot: what to look for and what not to do show above Previous and
+   Next without scrolling, on a 375 × 667 phone too */
+.walk { --sheet-top: max(min(24rem, 100dvh - 31rem), var(--top-chrome) + 4rem); background: var(--color-ground); }
+/* the route's name is in the pill over the map, so the spot does not repeat it, and the block sits
+   a little closer, read at a glance rather than at length */
+.walk .fb-spot-head .fb-soft:last-child { display: none; }
+.walk .fb-spot { padding: 1.125rem 1.125rem 1rem; gap: 1rem; }
+.walk .walk-top {
+  position: absolute;
+  top: calc(var(--top-chrome) + 0.5rem);
+  left: var(--spacing-screen-phone);
+  right: var(--spacing-screen-phone);
+  z-index: 3;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+.walk-title,
+.walk-end {
+  height: 2.75rem;
+  margin: 0;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  color: var(--color-on-ground);
+  font-size: var(--text-caption);
+  line-height: 1;
+}
+/* wraps rather than cutting the route name off, with large text */
+.walk-title { min-width: 0; height: auto; min-height: 2.75rem; padding-block: 0.625rem; line-height: 1.2; }
+.walk-end { flex-shrink: 0; padding: 0 1.125rem; font-size: var(--text-body-sm); font-weight: 500; text-decoration: none; transition: transform 160ms var(--ease-out); }
+.walk-end:active { transform: scale(0.97); }
+
+/* the sheet is solid ground, so it reads in daylight; everything in it may move */
+.walk .walk-sheet {
+  padding: 1rem 1rem calc(2.5rem + env(safe-area-inset-bottom, 0px));
+  gap: 0;
+  background: var(--color-ground);
+  border-top: 1px solid var(--color-glass-edge);
+  box-shadow: 0 -1.5rem 3.75rem rgb(6 18 9 / 0.35);
+}
+.walk-spot { display: flex; flex-direction: column; gap: 1rem; animation: sheet-in 260ms var(--ease-out) both; }
+/* previous and next are pinned to the bottom of the sheet, in reach of the thumb, and stay mounted
+   from spot to spot so keyboard focus stays on them */
+.walk-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  background: var(--color-ground);
+  border-top: 1px solid var(--color-divider);
+}
+.walk .walk-sheet { padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px)); scroll-padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px)); }
+.walk-nav .fb-nav-prev[aria-disabled="true"],
+.walk-nav .fb-nav-next[aria-disabled="true"] { color: var(--color-on-ground-soft); background: none; border-style: dashed; box-shadow: none; cursor: default; }
+.walk-nav [aria-disabled="true"]:active { transform: none; }
+@media (hover: hover) {
+  .walk-nav [aria-disabled="true"]:hover { border-color: var(--color-inner-edge); }
+}
+/* read outdoors: the walk's secondary lines are regular weight and full white */
+.walk .fb-rule-why,
+.walk .fb-spot-head .fb-soft { font-weight: 400; color: var(--color-on-ground); }
+.walk-nav .fb-nav-prev,
+.walk-nav .fb-nav-next { background: var(--color-field-shade); border: 1px solid var(--color-inner-edge); box-shadow: none; }
+.walk-nav .fb-nav-name { font-size: var(--text-body); line-height: 1.5rem; }
+.walk-nav .fb-nav-kicker { font-weight: 400; color: var(--color-on-ground); }
+.walk-toggle {
+  align-self: flex-start;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-on-ground);
+  font-family: var(--font-text);
+  font-size: var(--text-body);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 0.1875rem;
+  cursor: pointer;
+}
+.walk-more { display: flex; flex-direction: column; gap: 0.75rem; animation: sheet-in 260ms var(--ease-out) both; }
+.walk-more h2 { margin: 1rem 0 0; font-family: var(--text-h3--font-family); font-size: var(--text-h3); line-height: var(--text-h3--line-height); font-weight: var(--text-h3--font-weight); }
+.walk-more h2:first-child { margin-top: 0.25rem; }
+.walk .a1-here-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.walk .a1-map { animation: fade-in 380ms var(--ease-out) both; }
+.walk .walk-top > * { animation: sheet-in 320ms var(--ease-out) 40ms both; }
+
+/* ── from 64rem ────────────────────────────────────────────────────────────────────────────── */
+
+@media (min-width: 64rem) {
+  .b1 .ms-sheet { padding-bottom: 1.5rem; scroll-padding-top: 1rem; }
+  .b1-back-desk { display: inline-flex; flex-shrink: 0; align-self: flex-start; }
+  .fb-backlink {
+    align-self: flex-start;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.75rem;
+    margin: -0.5rem 0 -0.5rem -0.25rem;
+    color: var(--color-on-ground);
+    font-size: var(--text-chip);
+    text-decoration: none;
+  }
+  .fb-strip { margin: 0 -2rem; padding: 0 2rem; }
+  .b1-pin {
+    position: static;
+    flex-shrink: 0;
+    padding: 1rem 2rem 1.75rem;
+    border-top: 1px solid var(--color-divider);
+    border-radius: 0;
+  }
+  .b1-pin .b1-walk { flex-grow: 0; }
+
+  .l3 .saved-sheet { margin-top: 7.5rem; min-height: 0; padding: 2rem; }
+
+  .walk .walk-top { top: 2.5rem; left: 31.5rem; right: 5.5rem; justify-content: flex-start; }
+  .walk-panel { overflow: hidden; background: var(--color-ground); border: 1px solid var(--color-glass-edge); padding: 0; }
+  .walk .walk-sheet { flex: 1 1 auto; min-height: 0; margin: 0; padding: 1.5rem; overflow-y: auto; background: none; border: 0; box-shadow: none; scroll-padding-bottom: 1.5rem; }
+  .walk-panel { display: flex; flex-direction: column; }
+  .walk-bar { position: static; padding: 1rem 1.5rem 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fb-row,
+  a.fb-claim-open,
+  a.fb-claim-act,
+  .fb-nav-prev,
+  .fb-nav-next,
+  .fb-strip a,
+  .fb-look-link,
+  .walk-end { transition: none; }
+  .b1 .ms-sheet { scroll-behavior: auto; }
+  .b1-pin .btn,
+  .walk-spot,
+  .walk-more,
+  .walk .a1-map,
+  .walk .walk-top > *,
+  .l3 .saved-sheet > .fb-spot { animation: fade-in 160ms var(--ease-out) both; }
+}
