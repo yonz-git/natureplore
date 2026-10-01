@@ -208,9 +208,8 @@ export default function RouteCardScreen({ route }: { route: Route }) {
           onScroll={sheet.onScroll}
         >
           {sheet.grab("route")}
-          <Link href={back} className="fb-backlink b1-back-desk">
-            <BackIcon size={18} />
-            {backLabel}
+          <Link href={back} className="round glass glass-pin b1-back-desk" aria-label={backLabel}>
+            <BackIcon size={20} />
           </Link>
 
           <div className="b1-photos">

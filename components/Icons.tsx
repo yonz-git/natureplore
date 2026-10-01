@@ -188,6 +188,14 @@ export const EyeOffIcon = (p: P) => (
   </Svg>
 );
 
+/** a circle struck through: what not to do at a spot */
+export const BanIcon = (p: P) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="9.5" />
+    <path d="m5.3 5.3 13.4 13.4" />
+  </Svg>
+);
+
 export const CheckCircleIcon = (p: P) => (
   <Svg {...p}>
     <circle cx="12" cy="12" r="9.5" />

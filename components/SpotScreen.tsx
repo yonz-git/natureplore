@@ -8,28 +8,27 @@ import Link from "next/link";
 import { BackIcon, ChevronIcon } from "@/components/Icons";
 import { ClaimCard, MonthGrid, RecordedToo, SpotBlock } from "@/components/SpotParts";
 import type { Route } from "@/lib/routes";
-import type { Claim, Spot } from "@/lib/spots";
+import { routeDetail, type Claim, type Spot } from "@/lib/spots";
 
 export default function SpotScreen({ route, spot, total, claim }: { route: Route; spot: Spot; total: number; claim: Claim }) {
   const href = (n: number) => `/map/route/${route.id}/spot/${n}`;
+  const names = routeDetail(route.id)?.spots.map((s) => s.name) ?? [];
+  // the way on names where it goes: the next spot, or back to the route after the last one; the
+  // spot before is a round control beside it, the less likely move
   const nav = (
     <nav aria-label="Spots" className="fb-nav">
-      {spot.n > 1 ? (
-        <Link href={href(spot.n - 1)} className="fb-nav-btn" replace>
-          <BackIcon size={18} />
-          Spot {spot.n - 1}
+      {spot.n > 1 && (
+        <Link href={href(spot.n - 1)} className="fb-nav-prev" aria-label={`Spot ${spot.n - 1}, ${names[spot.n - 2] ?? ""}`} replace>
+          <BackIcon size={20} />
         </Link>
-      ) : (
-        <span />
       )}
-      {spot.n < total ? (
-        <Link href={href(spot.n + 1)} className="fb-nav-btn" replace>
-          Spot {spot.n + 1}
-          <ChevronIcon size={18} />
-        </Link>
-      ) : (
-        <span />
-      )}
+      <Link href={spot.n < total ? href(spot.n + 1) : `/map/route/${route.id}`} className="fb-nav-next" replace={spot.n < total}>
+        <span className="fb-nav-text">
+          <span className="fb-nav-kicker">{spot.n < total ? `Next, spot ${spot.n + 1}` : "Last spot"}</span>
+          <span className="fb-nav-name">{spot.n < total ? names[spot.n] : `Back to ${route.name}`}</span>
+        </span>
+        <ChevronIcon size={20} />
+      </Link>
     </nav>
   );
 
@@ -42,7 +41,6 @@ export default function SpotScreen({ route, spot, total, claim }: { route: Route
         <SpotBlock
           spot={spot}
           total={total}
-          routeName={route.name}
           nav={nav}
           titleId="l3-title"
           organismHref={(id) => `/map/organism/${id}?spot=${spot.n}`}

@@ -537,8 +537,14 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
     --fade-bottom: 2.5rem;
     mask-image: linear-gradient(to bottom, transparent, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent);
   }
+  /* B1's panel scrolls the same way, so its edges fade the same way */
+  .b1 .ms-sheet {
+    --fade-top: 0rem;
+    --fade-bottom: 2.5rem;
+    mask-image: linear-gradient(to bottom, transparent, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent);
+  }
   @supports (animation-timeline: scroll()) {
-    .sg-list { animation: sg-fade linear both; animation-timeline: scroll(self); }
+    .sg-list, .b1 .ms-sheet { animation: sg-fade linear both; animation-timeline: scroll(self); }
   }
 
   .sr-veil { display: none; }

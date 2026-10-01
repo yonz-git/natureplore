@@ -34,6 +34,15 @@
   .screen-enter .ms-panel > :not(.ms-bar),
   .screen-enter .ms-panel > .ms-bar > * { animation: sheet-in 320ms var(--ease-out) 60ms both; }
 }
+/* B1's panel keeps its scroll-driven edge fade (app/flow-a.css) while it rises */
+@media (min-width: 64rem) {
+  @supports (animation-timeline: scroll()) {
+    .screen-enter .b1 .ms-panel > .ms-sheet {
+      animation: sheet-in 320ms var(--ease-out) 60ms both, sg-fade linear both;
+      animation-timeline: auto, scroll(self);
+    }
+  }
+}
 
 /* every other screen is one block of content: its parts carry the animation, not the section, so a
    glass surface anywhere inside still frosts. */

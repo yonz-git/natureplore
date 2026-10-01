@@ -66,38 +66,25 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
 
   const go = (to: number) => router.replace(`${here}?spot=${to}`, { scroll: false });
   // Previous and next stay the same two buttons from spot to spot, so keyboard focus stays on the
-  // one that was pressed. At either end the button says so and does nothing, rather than vanishing.
+  // one that was pressed. Next names the spot it goes to, as on L3; at either end the button says
+  // so and does nothing, rather than vanishing.
   const nav = (
     <nav aria-label="Spots" className="fb-nav walk-nav">
       <button
         type="button"
-        className="fb-nav-btn"
+        className="fb-nav-prev"
         aria-disabled={n === 1 || undefined}
+        aria-label={n > 1 ? `Spot ${n - 1}, ${detail.spots[n - 2].name}` : "First spot"}
         onClick={() => n > 1 && go(n - 1)}
       >
-        {n > 1 ? (
-          <>
-            <BackIcon size={19} />
-            Spot {n - 1}
-          </>
-        ) : (
-          "First spot"
-        )}
+        <BackIcon size={20} />
       </button>
-      <button
-        type="button"
-        className="fb-nav-btn"
-        aria-disabled={n === total || undefined}
-        onClick={() => n < total && go(n + 1)}
-      >
-        {n < total ? (
-          <>
-            Spot {n + 1}
-            <ChevronIcon size={19} />
-          </>
-        ) : (
-          "Last spot"
-        )}
+      <button type="button" className="fb-nav-next" aria-disabled={n === total || undefined} onClick={() => n < total && go(n + 1)}>
+        <span className="fb-nav-text">
+          <span className="fb-nav-kicker">{n < total ? `Next, spot ${n + 1}` : `Spot ${n} of ${total}`}</span>
+          <span className="fb-nav-name">{n < total ? detail.spots[n].name : "Last spot"}</span>
+        </span>
+        {n < total && <ChevronIcon size={20} />}
       </button>
     </nav>
   );
@@ -121,7 +108,6 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
             <SpotBlock
               spot={spot}
               total={total}
-              routeName={route.name}
               nav={null}
               titleId="walk-title"
               organismHref={(id) => `/map/organism/${id}?from=walk&spot=${n}`}
