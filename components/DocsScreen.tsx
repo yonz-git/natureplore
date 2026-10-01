@@ -9,7 +9,7 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 
-import { BackLink, BackTop } from "@/components/CParts";
+import { BackTop } from "@/components/CParts";
 import { DocList } from "@/components/DocParts";
 import { BookmarkIcon } from "@/components/Icons";
 import { backLabel, useBack } from "@/lib/back";
@@ -43,7 +43,6 @@ export default function DocsScreen() {
       <BackTop href={back} label={label} />
       <div className="org-sheet glass glass-top">
         <div className="org-main">
-          <BackLink href={back} label={label} />
           <h1 id="d2-title" className="org-title ln-title">
             <em>Documentaries</em>
           </h1>

@@ -92,15 +92,6 @@ export function BackTop({ href, label, share }: { href: string; label: string; s
   );
 }
 
-export function BackLink({ href, label }: { href: string; label: string }) {
-  return (
-    <Link href={href} className="org-back">
-      <BackIcon size={18} />
-      {label.replace(/^Back to /, "").replace(/^./, (c) => c.toUpperCase())}
-    </Link>
-  );
-}
-
 export function ShareButton({ title, className, label = false }: { title: string; className: string; label?: boolean }) {
   const share = async () => {
     try {

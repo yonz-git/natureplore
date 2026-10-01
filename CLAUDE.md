@@ -8,7 +8,7 @@ from. The rules that are easy to get wrong:
   use the Tailwind utilities the tokens create (`bg-ground`, `text-on-ground-soft`,
   `rounded-sheet`, `p-inset-screen`, `text-body`).
 - **v1 scope only.** No booking, guided walks, guides or payments. No sighting
-  reporting, that moved to v2. Tabs are Routes, Learn, Saved (A5, D0, E1). Learn
+  reporting, that moved to v2. Tabs are Map, Learn, Saved (A5, D0, E1); the boards still call Map "Routes". Learn
   holds the claims and actions (Flow C) and the documentaries (Flow D).
 - **No accounts.** Nothing asks for sign-in or an email; saving keeps a route
   on the device. The flow and IA redesign (`../.forge/briefs/flow-ia-redesign-final.md`)

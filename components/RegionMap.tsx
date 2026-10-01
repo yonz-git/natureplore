@@ -13,7 +13,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useImperativeHandle, useRef, useState } from "react";
+import { useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react";
 import type { Map as LeafletMap, GeoJSON as LeafletGeoJSON } from "leaflet";
 
 import "leaflet/dist/leaflet.css";
@@ -171,6 +171,7 @@ export default function RegionMap({
   detail,
   mapLabel = "Map of Berlin and Brandenburg",
   behind = false,
+  hot,
   ref,
 }: {
   className?: string;
@@ -189,6 +190,8 @@ export default function RegionMap({
    * beside the panel and takes focus again.
    */
   behind?: boolean;
+  /** the route whose card is under the pointer or focus in the list: its label on the map lightens */
+  hot?: string;
   /** a screen holds this to move the map from a control of its own */
   ref?: React.Ref<MapHandle>;
 }) {
@@ -498,6 +501,44 @@ export default function RegionMap({
     };
   }, [still, points, maxZoom, line, detail, mapLabel]);
 
+  // A spot's name goes on the side its route data prefers, unless that side runs into another
+  // marker, a name already placed, the panel or the edge of the map; then it takes the other side.
+  // Names are placed in walking order, so the earlier spot keeps its side when two compete.
+  useLayoutEffect(() => {
+    const host = hostRef.current;
+    const scope = host?.parentElement;
+    if (!host || !scope) return;
+    const spots = [...scope.querySelectorAll<HTMLElement>(".map-spot")];
+    if (!spots.length) return;
+    const hit = (a: DOMRect, b: DOMRect) =>
+      a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+    const bounds = host.getBoundingClientRect();
+    const marks = [...scope.querySelectorAll<HTMLElement>(".spot-mark, .map-start, .map-start-label, .a1-here-dot")];
+    const cover = [...scope.querySelectorAll<HTMLElement>(".ms-panel, .ms-sheet")].map((el) => el.getBoundingClientRect());
+    const placed: DOMRect[] = [];
+    for (const spot of spots) {
+      const label = spot.querySelector<HTMLElement>(".map-spot-label");
+      const mark = spot.querySelector<HTMLElement>(".spot-mark");
+      if (!label || !mark || !label.offsetWidth || spot.style.visibility === "hidden") continue;
+      const m = mark.getBoundingClientRect();
+      const now = label.getBoundingClientRect();
+      const cx = m.left + m.width / 2;
+      // the room between the disc's centre and its name, read from wherever the name sits now
+      const off = now.left >= cx ? now.left - cx : cx - now.right;
+      const rect = (left: boolean) => new DOMRect(left ? cx - off - now.width : cx + off, now.top, now.width, now.height);
+      const cost = (r: DOMRect) =>
+        (r.left < bounds.left || r.right > bounds.right ? 2 : 0) +
+        cover.filter((c) => hit(r, c)).length * 2 +
+        marks.filter((el) => !mark.contains(el) && hit(r, el.getBoundingClientRect())).length +
+        placed.filter((p) => hit(r, p)).length;
+      const prefersLeft = spot.classList.contains("is-left");
+      const [a, b] = [rect(prefersLeft), rect(!prefersLeft)];
+      const left = cost(b) < cost(a) ? !prefersLeft : prefersLeft;
+      spot.dataset.side = left ? "left" : "right";
+      placed.push(left ? (prefersLeft ? a : b) : prefersLeft ? b : a);
+    }
+  }, [pins, zooming]);
+
   // the tab stop follows `behind` and the width without rebuilding the map
   useEffect(() => {
     const wide = matchMedia(DESKTOP);
@@ -569,11 +610,11 @@ export default function RegionMap({
               </>
             );
             return pin.href ? (
-              <Link key={pin.id} href={pin.href} className="map-route glass glass-pin" style={style} aria-label={pin.label}>
+              <Link key={pin.id} href={pin.href} className={`map-route glass glass-pin${pin.id === hot ? " is-hot" : ""}`} style={style} aria-label={pin.label}>
                 {body}
               </Link>
             ) : (
-              <div key={pin.id} className="map-route glass glass-pin" style={style} role="img" aria-label={pin.label}>
+              <div key={pin.id} className={`map-route glass glass-pin${pin.id === hot ? " is-hot" : ""}`} style={style} role="img" aria-label={pin.label}>
                 {body}
               </div>
             );

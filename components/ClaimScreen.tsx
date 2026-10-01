@@ -11,7 +11,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 
-import { ActionRows, BackLink, BackTop, Stat, Tags } from "@/components/CParts";
+import { ActionRows, BackTop, Stat, Tags } from "@/components/CParts";
 import { CheckIcon, ChevronIcon, MapIcon } from "@/components/Icons";
 import { backLabel, useBack } from "@/lib/back";
 import type { Claim } from "@/lib/claims";
@@ -133,7 +133,6 @@ export default function ClaimScreen({ claim }: { claim: Claim }) {
       <BackTop href={back} label={label} share={claim.claim} />
       <div className="org-sheet glass glass-top">
         <div className="org-main">
-          <BackLink href={back} label={label} />
           {main}
         </div>
         <aside className="org-side">{side}</aside>

@@ -10,7 +10,6 @@
 
 .ln-home .org-sheet { margin-top: 4.75rem; min-height: calc(100% - 4.75rem); }
 .ln-title { margin-top: 0; }
-.ln .org-back + .ln-title { margin-top: 0.5rem; }
 .ln-sub { margin-top: 0.5rem; }
 .ln-intro { margin-top: 0.75rem; max-width: 40rem; color: var(--color-on-ground-soft); }
 .ln-jump,
@@ -216,7 +215,7 @@ img.cp-icon { padding: 0; object-fit: cover; }
   /* D3: the film and why it is here on the left, where to watch beside it on the right */
   .dc-top { grid-column: 1; grid-row: 1; }
   .dc-more { grid-column: 1; grid-row: 2; }
-  .dc .dc-side { grid-column: 2; grid-row: 1 / span 2; position: sticky; top: 2rem; margin-top: 0; padding-top: 2.75rem; }
+  .dc .dc-side { grid-column: 2; grid-row: 1 / span 2; position: sticky; top: 2rem; margin-top: 0; }
   .dc-hero .org-photo { height: 28.125rem; }
   .dc-watch { padding: 1.5rem; }
   .dc-off .dc-side > .org-h2 { margin-top: 0; }

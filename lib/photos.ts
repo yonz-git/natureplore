@@ -6,6 +6,9 @@
 export type Photo = { src: string; by: string; page: string };
 
 export const PHOTOS: Record<string, Photo> = {
+  "claims/c1a": { src: "/img/claims/c1a.jpg", by: "Ries Bosch", page: "https://unsplash.com/photos/a-puddle-of-water-in-the-middle-of-a-grassy-field-TJjkdzKQGsY" },
+  "claims/c1b": { src: "/img/claims/c1b.jpg", by: "Gennady Zakharin", page: "https://unsplash.com/photos/cracked-dry-earth-along-a-lake-shore-with-green-reeds-3qZHXRYxtxA" },
+  "claims/c6": { src: "/img/claims/c6.jpg", by: "Scott Huddleston", page: "https://unsplash.com/photos/wooden-boardwalk-through-grassy-wetland-HLwYdqItSu8" },
   "organisms/bearded-reedling": { src: "/img/organisms/bearded-reedling.jpg", by: "Vincent van Zalinge", page: "https://unsplash.com/photos/photo-of-brown-and-gray-short-beak-bird-r_VSC5yhwuM" },
   "organisms/black-alder": { src: "/img/organisms/black-alder.jpg", by: "Austris Augusts", page: "https://unsplash.com/photos/a-close-up-of-some-berries-ZGwhvc9fFBw" },
   "organisms/black-woodpecker": { src: "/img/organisms/black-woodpecker.jpg", by: "Daniil Komov", page: "https://unsplash.com/photos/a-black-bird-perched-on-a-tree-trunk-yFWYHKefLwk" },

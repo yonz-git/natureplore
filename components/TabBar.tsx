@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLayoutEffect, useRef, useState } from "react";
 
-// Routes, Learn, Saved, as on every board of the redesign: Routes is A5, Learn is D0, Saved is E1.
+// Map, Learn, Saved: Map is A5, Learn is D0, Saved is E1. The redesign's boards call the first tab
+// Routes; it was renamed Map in the prototype on 1 Oct 2026.
 // The icons are the same set the welcome's nav uses.
 const TABS = [
   {
     href: "/map",
-    label: "Routes",
+    label: "Map",
     icon: (
       <>
         <path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20z" />
@@ -33,12 +35,60 @@ const TABS = [
   },
 ];
 
+type Thumb = { x: number; y: number; w: number; h: number };
+
 export default function TabBar() {
   const pathname = usePathname();
+  const pill = useRef<HTMLUListElement>(null);
+  // The lime pill under the current tab is one element that slides and resizes to the tab, so a
+  // change of tab is a movement rather than a swap. It only animates once it has a place: on the
+  // first paint it appears under its tab without sliding in from the corner.
+  const [thumb, setThumb] = useState<Thumb | null>(null);
+  const [placed, setPlaced] = useState(false);
+
+  useLayoutEffect(() => {
+    const ul = pill.current;
+    if (!ul) return;
+    const measure = () => {
+      const tab = ul.querySelector<HTMLElement>(".tabbar-tab.is-current");
+      if (!tab) return setThumb(null);
+      // from the rects, not offsetLeft and offsetTop, which round: the pill's 0.5px edge would
+      // otherwise leave the thumb a pixel off its tab
+      const u = ul.getBoundingClientRect();
+      const t = tab.getBoundingClientRect();
+      const cs = getComputedStyle(ul);
+      setThumb({
+        x: t.left - u.left - parseFloat(cs.borderLeftWidth),
+        y: t.top - u.top - parseFloat(cs.borderTopWidth),
+        w: t.width,
+        h: t.height,
+      });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(ul);
+    ul.querySelectorAll(".tabbar-tab").forEach((t) => ro.observe(t));
+    return () => ro.disconnect();
+  }, [pathname]);
+
+  useLayoutEffect(() => {
+    if (!thumb || placed) return;
+    const id = requestAnimationFrame(() => setPlaced(true));
+    return () => cancelAnimationFrame(id);
+  }, [thumb, placed]);
 
   return (
     <nav aria-label="Tabs" className="tabbar">
-      <ul className="tabbar-pill glass glass-nav">
+      <ul ref={pill} className="tabbar-pill glass glass-nav">
+        <li
+          className={`tabbar-thumb${placed ? " is-placed" : ""}`}
+          aria-hidden="true"
+          style={
+            thumb
+              ? { width: thumb.w, height: thumb.h, transform: `translate(${thumb.x}px, ${thumb.y}px)` }
+              : { opacity: 0 }
+          }
+        />
         {TABS.map((tab) => {
           const current = pathname.startsWith(tab.href);
           return (

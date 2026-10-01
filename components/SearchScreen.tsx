@@ -12,6 +12,7 @@ import { useMemo, useState } from "react";
 
 import { BackIcon, ChevronIcon, GroupIcon, InfoIcon, PinIcon } from "@/components/Icons";
 import { SearchField } from "@/components/MapParts";
+import { useIsDesktop } from "@/lib/useIsDesktop";
 import RegionMap from "@/components/RegionMap";
 import { rememberSearch } from "@/lib/recent";
 import { didYouMean, groupWord, ROUTE_POINTS, search } from "@/lib/suggestions";
@@ -44,26 +45,32 @@ const disc = (icon: React.ReactNode) => <span className="row-disc">{icon}</span>
 
 export default function SearchScreen({ query }: { query: string }) {
   const [q, setQ] = useState(query);
+  // from 64rem the field and its back control sit at the top of the screen, centred, as on A5
+  const desk = useIsDesktop();
   const found = useMemo(() => search(q), [q]);
   const miss = q.trim() !== "" && found.regions.length === 0 && found.organisms.length === 0;
   const meant = useMemo(() => (miss ? didYouMean(q) : { regions: [], organisms: [] }), [miss, q]);
+
+  const bar = (
+    <div className="ms-bar-row">
+      <Link href="/map" className="round glass glass-pin" aria-label="Back to the map">
+        <BackIcon size={20} />
+      </Link>
+      <SearchField defaultValue={query} autoFocus onChange={setQ} />
+    </div>
+  );
 
   return (
     <section className="ms sr">
       <RegionMap className="a1-map" points={ROUTE_POINTS} maxZoom={9.5} />
       <div className="sr-veil" aria-hidden="true" />
 
+      {desk && <div className="ms-search-top">{bar}</div>}
+
       <div className="ms-panel glass-desk">
         {/* A3 has its own heading, the no-match line */}
         {!miss && <h1 className="sr-only">Search regions and organisms</h1>}
-        <div className="ms-bar">
-          <div className="ms-bar-row">
-            <Link href="/map" className="round glass glass-pin" aria-label="Back to the map">
-              <BackIcon size={20} />
-            </Link>
-            <SearchField defaultValue={query} autoFocus onChange={setQ} />
-          </div>
-        </div>
+        {!desk && <div className="ms-bar">{bar}</div>}
 
         <div className="ms-sheet" aria-live="polite">
           {(found.regions.length > 0 || found.organisms.length > 0) && (

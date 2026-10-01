@@ -64,10 +64,6 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
 
       <div className="org-sheet glass glass-top">
         <div className="org-main">
-          <Link href={back.href} className="org-back">
-            <BackIcon size={18} />
-            {back.label}
-          </Link>
           {photo ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img className="org-photo" src={photo.src} alt={name.trim()} />
@@ -154,7 +150,6 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
         </div>
 
         <aside className="org-side">
-          <Actions o={o} />
 
           <h2 className="org-h2 org-h2-first">
             Impact <em>here</em>

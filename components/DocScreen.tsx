@@ -12,7 +12,7 @@
 
 import Link from "next/link";
 
-import { BackLink, BackTop, Facts, Stat } from "@/components/CParts";
+import { BackTop, Facts, Stat } from "@/components/CParts";
 import { DocList } from "@/components/DocParts";
 import { BookmarkIcon, ChevronIcon, ExternalIcon, LockIcon, MapIcon } from "@/components/Icons";
 import { backLabel, useBack } from "@/lib/back";
@@ -83,11 +83,10 @@ function WatchBox({ doc }: { doc: Doc }) {
   );
 }
 
-function Available({ doc, back, label }: { doc: Doc; back: string; label: string }) {
+function Available({ doc }: { doc: Doc }) {
   return (
     <>
       <div className="org-main dc-top">
-        <BackLink href={back} label={label} />
         <Hero doc={doc} />
         <Title id="doc-title" text={doc.title} />
         <p className="org-small cp-reviewed">{doc.maker}</p>
@@ -166,12 +165,11 @@ function Available({ doc, back, label }: { doc: Doc; back: string; label: string
   );
 }
 
-function Unavailable({ doc, back, label }: { doc: Doc; back: string; label: string }) {
+function Unavailable({ doc }: { doc: Doc }) {
   const related = (doc.related ?? []).map((id) => docById(id)).filter((d): d is Doc => !!d);
   return (
     <>
       <div className="org-main">
-        <BackLink href={back} label={label} />
         <Hero doc={doc} off />
         <Title id="doc-title" text={doc.title} />
         <p className="org-small cp-reviewed">
@@ -207,7 +205,7 @@ export default function DocScreen({ id }: { id: string }) {
     <section className={`org dc${doc.available ? "" : " dc-off"}`} aria-labelledby="doc-title">
       <BackTop href={back} label={label} share={doc.available ? `${doc.title}, ${doc.covers}` : undefined} />
       <div className="org-sheet glass glass-top">
-        {doc.available ? <Available doc={doc} back={back} label={label} /> : <Unavailable doc={doc} back={back} label={label} />}
+        {doc.available ? <Available doc={doc} /> : <Unavailable doc={doc} />}
       </div>
     </section>
   );

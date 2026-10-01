@@ -4,8 +4,8 @@
 // its start and its spots in walking order; under it (phone) or beside it (desktop) the page, in
 // the order of the flow and IA redesign: Spots along this route (each opens its spot, L3), the
 // route and where its spots are, what is recorded along it (to A8), when to walk it, what is
-// happening along it (claim cards), and getting there. Save is pinned; once the route is saved the
-// same place holds Walk it, which opens the walk (L4). The store is real in the prototype, so B1
+// happening along it (claim cards), and getting there. Save is the bookmark on the photographs; once
+// the route is saved a pinned bar holds Walk it, which opens the walk (L4). The store is real in the prototype, so B1
 // and B1-saved are one page. Boards: B1 phone, tablet and desktop, and B1-saved phone.
 
 import Link from "next/link";
@@ -46,17 +46,48 @@ function SectionHead({ id, lead, close, note }: { id: string; lead: string; clos
 }
 
 /**
- * Save, pinned. Once saved it becomes Walk it, with Saved beside it, and the bar says the route
- * was downloaded and where to find it, on screen, for the rest of the visit. Tapping Saved removes
- * the route and its download, so the bar then says so and offers Undo until the page is left.
- * After each change focus moves to the control that took the pressed one's place.
+ * Saving lives in one place, the bookmark on the photograph's top right (SaveToggle). The pinned bar
+ * only appears once there is something to do next: Walk it when the route is saved, and Undo for
+ * the rest of the visit after it is removed. Saved on this visit, the bar also says the route was
+ * downloaded and where to find it.
  */
-function Pin({ route, walkable }: { route: Route; walkable: boolean }) {
+function useRouteSave(id: string) {
   const { isSaved, toggle } = useSaved();
-  const saved = isSaved(route.id);
+  const saved = isSaved(id);
   const [removed, setRemoved] = useState(false);
   // saved on this visit: the bar shows where the route went; a route already saved says nothing
   const [justSaved, setJustSaved] = useState(false);
+  return {
+    saved,
+    removed,
+    justSaved,
+    toggle: () => {
+      toggle(id);
+      setRemoved(saved);
+      setJustSaved(!saved);
+    },
+  };
+}
+type RouteSave = ReturnType<typeof useRouteSave>;
+
+/** The bookmark on the photograph, as on the suggestion cards: a round frost, filled once saved. */
+function SaveToggle({ route, save }: { route: Route; save: RouteSave }) {
+  return (
+    <button
+      type="button"
+      className="sug-save b1-save"
+      aria-pressed={save.saved}
+      aria-label={save.saved ? `Saved, ${route.name}, remove it from Saved` : `Save ${route.name}`}
+      onClick={save.toggle}
+    >
+      <BookmarkIcon size={20} filled={save.saved} />
+    </button>
+  );
+}
+
+function Pin({ route, walkable, save }: { route: Route; walkable: boolean; save: RouteSave }) {
+  const { saved, removed, justSaved } = save;
+  // Undo puts Walk it back where Undo was, so focus follows it there
   const moved = useRef(false);
   const focusIfMoved = (el: HTMLElement | null) => {
     if (el && moved.current) {
@@ -64,13 +95,14 @@ function Pin({ route, walkable }: { route: Route; walkable: boolean }) {
       el.focus();
     }
   };
-  const act = (after: () => void) => {
-    moved.current = true;
-    toggle(route.id);
-    after();
-  };
 
   const note = saved && justSaved;
+  const live = (
+    <p className="sr-only" aria-live="polite">
+      {saved ? "Saved and downloaded. Find it in Saved." : removed ? "Removed from Saved, and its download deleted." : ""}
+    </p>
+  );
+  if (!saved && !removed) return live;
   return (
     <div className={`b1-pin glass-phone${note ? " has-note" : ""}`}>
       {/* on screen for sighted people; the live region below says the same to screen readers */}
@@ -81,53 +113,34 @@ function Pin({ route, walkable }: { route: Route; walkable: boolean }) {
         </p>
       )}
       {saved ? (
-        <>
-          <button
-            ref={focusIfMoved}
-            type="button"
-            className="btn btn-secondary b1-saved"
-            aria-pressed="true"
-            onClick={() => act(() => {
-              setRemoved(true);
-              setJustSaved(false);
-            })}
-          >
-            <BookmarkIcon size={19} filled />
-            Saved
-            <span className="sr-only">, remove it from Saved</span>
+        walkable ? (
+          <Link ref={focusIfMoved} href={`/walk/${route.id}`} className="btn btn-primary b1-walk">
+            <WalkIcon size={19} />
+            Walk it
+          </Link>
+        ) : (
+          <button ref={focusIfMoved} type="button" className="btn btn-primary b1-walk" aria-disabled="true">
+            <WalkIcon size={19} />
+            Walk it
+            <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
           </button>
-          {walkable ? (
-            <Link href={`/walk/${route.id}`} className="btn btn-primary b1-walk">
-              <WalkIcon size={19} />
-              Walk it
-            </Link>
-          ) : (
-            <button type="button" className="btn btn-primary b1-walk" aria-disabled="true">
-              <WalkIcon size={19} />
-              Walk it
-              <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
-            </button>
-          )}
-        </>
-      ) : removed ? (
+        )
+      ) : (
         <>
           <p className="b1-removed">Removed from Saved</p>
-          <button ref={focusIfMoved} type="button" className="btn btn-secondary b1-undo" onClick={() => act(() => {
-              setRemoved(false);
-              setJustSaved(true);
-            })}>
+          <button
+            type="button"
+            className="btn btn-secondary b1-undo"
+            onClick={() => {
+              moved.current = true;
+              save.toggle();
+            }}
+          >
             Undo
           </button>
         </>
-      ) : (
-        <button ref={focusIfMoved} type="button" className="btn btn-primary b1-walk" onClick={() => act(() => setJustSaved(true))}>
-          <BookmarkIcon size={19} />
-          Save this route
-        </button>
       )}
-      <p className="sr-only" aria-live="polite">
-        {saved ? "Saved and downloaded. Find it in Saved." : removed ? "Removed from Saved, and its download deleted." : ""}
-      </p>
+      {live}
     </div>
   );
 }
@@ -138,6 +151,7 @@ export default function RouteCardScreen({ route }: { route: Route }) {
   const sheet = useSheet(sheetEl);
   const detail = routeDetail(route.id);
   const spots = useMemo(() => spotsOf(route), [route]);
+  const save = useRouteSave(route.id);
   const inSeasonPhotos = (suggestionById(route.id)?.inSeason ?? []).map((o) => organismPhoto(o.name)?.src).slice(0, 2);
   // back goes to the list the route was opened from, A5, A4 or Saved, read once the page is in the browser
   const back = useSyncExternalStore(noop, lastList, () => "/map");
@@ -209,6 +223,7 @@ export default function RouteCardScreen({ route }: { route: Route }) {
                 <span key={i} />
               ),
             )}
+            <SaveToggle route={route} save={save} />
           </div>
 
           <div className="b1-head">
@@ -392,7 +407,7 @@ export default function RouteCardScreen({ route }: { route: Route }) {
             </>
           )}
         </div>
-        <Pin route={route} walkable={!!detail} />
+        <Pin route={route} walkable={!!detail} save={save} />
       </div>
 
       <MapTools locate={locate} />

@@ -24,7 +24,7 @@ import WelcomeZoom from "@/components/WelcomeZoom";
 const TABS = [
   {
     href: "/map",
-    label: "Routes",
+    label: "Map",
     current: true,
     icon: (
       <>

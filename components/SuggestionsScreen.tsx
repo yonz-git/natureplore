@@ -15,6 +15,7 @@ import { ChevronIcon, LeafIcon, ListIcon, MapIcon, PinIcon, RoutesIcon } from "@
 import { useLocationPrompt } from "@/components/LocationDialog";
 import { MapTools, SearchField } from "@/components/MapParts";
 import { useSheet } from "@/components/SheetGrab";
+import { useIsDesktop } from "@/lib/useIsDesktop";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { SuggestionCard } from "@/components/SuggestionCard";
 import { HERE } from "@/lib/routes";
@@ -31,7 +32,13 @@ function pointsFor(regionId: string, near: boolean): MapPoint[] {
 
 export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { near: boolean; regionId?: string }) {
   const map = useRef<MapHandle>(null);
+  // from 64rem the search field leaves the panel for the top of the screen, centred on it
+  const desk = useIsDesktop();
   const [onMap, setOnMap] = useState(false);
+  // the route card under the pointer or holding focus: its label on the map lightens to match
+  const [hot, setHot] = useState<string>();
+  const hotFrom = (e: React.SyntheticEvent) =>
+    setHot((e.target as HTMLElement).closest<HTMLElement>("[data-route]")?.dataset.route);
   // what the list shows for the region: its routes, or what is in season along them
   const [show, setShow] = useState<"routes" | "organisms">("routes");
   const region = regionById(regionId);
@@ -75,11 +82,17 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
 
   return (
     <section className={`ms sg ${near ? "a4" : "a5"}${onMap ? " is-map" : ""}`}>
-      <RegionMap className="a1-map" behind={!onMap} ref={map} points={points} maxZoom={home ? 9.5 : 11} />
+      <RegionMap className="a1-map" behind={!onMap} hot={hot} ref={map} points={points} maxZoom={home ? 9.5 : 11} />
+
+      {desk && (
+        <div className="ms-search-top">
+          <SearchField />
+        </div>
+      )}
 
       <div className="ms-panel glass-desk">
         <div className="ms-bar">
-          <SearchField />
+          {!desk && <SearchField />}
           <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill">
             <button type="button" className="seg-opt" aria-pressed={show === "routes"} onClick={() => setShow("routes")}>
               <RoutesIcon size={18} />
@@ -132,7 +145,14 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           )}
 
           {show === "routes" ? (
-            <div className="sg-list" key="routes">
+            <div
+              className="sg-list"
+              key="routes"
+              onPointerOver={hotFrom}
+              onPointerLeave={() => setHot(undefined)}
+              onFocus={hotFrom}
+              onBlur={() => setHot(undefined)}
+            >
               {routes.map((s) => (
                 <SuggestionCard key={s.id} route={s} />
               ))}

@@ -103,15 +103,21 @@
 .dots { display: flex; flex-wrap: wrap; align-items: center; gap: 0.625rem; }
 .dots-row { display: flex; flex-wrap: wrap; gap: 0.25rem; }
 .dot {
-  width: 1.375rem;
-  height: 1.375rem;
+  --dot: 1.375rem;
+  width: var(--dot);
+  height: var(--dot);
   box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /* the spot marker's face and centring (app/map.css): Alpino's figures are old style, so 3, 4 and 5
+     hang below the line and no box can centre them all; Comfortaa's sit on one height. The line box
+     is trimmed to the cap height and the rest of the dot, inside its 1px ring, split evenly */
+  display: block;
+  padding-block: calc((var(--dot) - 1cap) / 2 - 1px);
+  text-align: center;
+  text-box: trim-both cap alphabetic;
   border-radius: var(--radius-pill);
   border: 1px solid rgb(255 255 255 / 0.4);
   color: var(--color-on-ground-soft);
+  font-family: var(--text-count--font-family);
   font-size: 0.6875rem;
   font-weight: 500;
   line-height: 1;
@@ -154,7 +160,8 @@
 .sg-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
 /* the heading shrinks first; "Show on map" only drops under it when the text is very large */
 .sg-head > div { flex: 1 1 11rem; min-width: 0; }
-.sg .ms-title { font-size: 1.75rem; line-height: 2.125rem; }
+/* the suggestions title takes the h3 step at every size; it stays the page's h1 */
+.sg .ms-title { font-size: var(--text-h3); line-height: var(--text-h3--line-height); }
 .sg-scope { margin: 0.5rem 0 0; font-size: var(--text-body-sm); line-height: 1.3125rem; font-weight: 400; }
 .sg .ms-lead { margin-top: 0.125rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
 
@@ -232,6 +239,27 @@ p.sg-where svg { color: var(--color-mist); flex-shrink: 0; }
   transition: transform 160ms var(--ease-out);
 }
 a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
+/* Lit: the route's card in the list is under the pointer or holds focus, or the label itself is under
+   the pointer. A white veil over the glass, drawn as an inset shadow so it can fade (a gradient
+   cannot), a brighter edge, and the label lifted over its neighbours. */
+.map-route {
+  /* the same three shadows as the lit state, the veil at zero, so the veil fades: a shadow list of
+     another length or order does not interpolate, it jumps */
+  box-shadow: inset 0 0 0 10rem rgb(255 255 255 / 0), inset 0 1px 0 rgb(255 255 255 / 0.11), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
+  transition: transform 160ms var(--ease-out), box-shadow 280ms var(--ease-out), border-color 280ms var(--ease-out);
+}
+.map-route.is-hot {
+  z-index: 2;
+  border-color: rgb(255 255 255 / 0.6);
+  box-shadow: inset 0 0 0 10rem rgb(255 255 255 / 0.24), inset 0 1px 0 rgb(255 255 255 / 0.2), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
+}
+@media (hover: hover) {
+  a.map-route:hover {
+    z-index: 2;
+    border-color: rgb(255 255 255 / 0.6);
+    box-shadow: inset 0 0 0 10rem rgb(255 255 255 / 0.24), inset 0 1px 0 rgb(255 255 255 / 0.2), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
+  }
+}
 .map-route b { font-size: var(--text-caption); line-height: 1; font-weight: 500; }
 .map-route span { font-size: 0.6875rem; line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
 
@@ -491,7 +519,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg-map-note,
   .sg .ms-handle { display: none; }
   .sg .ms-sheet { margin-top: 2rem; gap: 1.25rem; }
-  .sg .ms-title { font-size: 2rem; line-height: 2.5rem; }
   .sg-list {
     flex: 1 1 auto;
     min-height: 0;
@@ -502,6 +529,17 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   }
   .sg-list::-webkit-scrollbar { display: none; }
   .sg-list > .btn { align-self: center; }
+  /* Cards scroll out under a soft fade rather than a cut line. Each edge fades only once there is
+     something past it. The only glass inside is the save button, and it blurs the photo, which is
+     inside the mask too, so the mask does not flatten it. */
+  .sg-list {
+    --fade-top: 0rem;
+    --fade-bottom: 2.5rem;
+    mask-image: linear-gradient(to bottom, transparent, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent);
+  }
+  @supports (animation-timeline: scroll()) {
+    .sg-list { animation: sg-fade linear both; animation-timeline: scroll(self); }
+  }
 
   .sr-veil { display: none; }
   .sr .ms-bar { position: static; margin: 0; }
@@ -528,16 +566,12 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .a8-more .btn { flex-grow: 0; }
 }
 
-/* The nav pill is centred in the window, as on the desktop boards. Only where the window is too
-   narrow for the centred pill to clear the panel (under 80rem) does it move right, beside the panel. */
-@media (min-width: 64rem) and (max-width: 79.99rem) {
-  body:has(.ms-panel) .tabbar { padding-left: 30rem; }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .sug-save,
-  .sg-toggle,
-  .map-route { transition: none; }
+  .sg-toggle { transition: none; }
+  /* no press scale, but the lit veil still fades, shorter: a fade is not movement */
+  .map-route { transition: box-shadow 160ms ease, border-color 160ms ease; }
   .sug-save[aria-pressed="true"] svg,
   .sug-saved:not(:empty),
   .sg.is-map .sg-map-note,
@@ -573,4 +607,13 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg .a8-group { margin-top: 0; }
 @media (min-width: 64rem) {
   .sg .seg { align-self: flex-start; }
+}
+
+/* the suggestions list's edge fades (from 64rem), driven by its own scroll */
+@property --fade-top { syntax: "<length>"; inherits: false; initial-value: 0rem; }
+@property --fade-bottom { syntax: "<length>"; inherits: false; initial-value: 0rem; }
+@keyframes sg-fade {
+  0% { --fade-top: 0rem; --fade-bottom: 2.5rem; }
+  4%, 96% { --fade-top: 2.5rem; --fade-bottom: 2.5rem; }
+  100% { --fade-top: 2.5rem; --fade-bottom: 0rem; }
 }

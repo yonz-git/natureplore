@@ -23,7 +23,7 @@
 .fb-placeholder { font-size: var(--text-body-sm); line-height: 1.4375rem; font-weight: 300; color: var(--color-on-ground-soft); }
 
 /* the spot marker, larger at the head of a spot block */
-.fb-mark.is-lg { width: 2.25rem; height: 2.25rem; font-size: 1.125rem; }
+.fb-mark.is-lg { --mark: 2.25rem; font-size: 1.125rem; }
 
 /* a heading with its closing words in the lime of the titles */
 .fb-sec { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem; scroll-margin-top: 1rem; }
@@ -102,6 +102,8 @@ a.fb-row:active { transform: scale(0.985); }
   border: 0.5px solid var(--color-inner-edge);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
 }
+.fb-claim-photo { width: auto; margin: 0.75rem 0.75rem 0; }
+.fb-claim-photo + .fb-claim-open { padding-top: 1rem; }
 .fb-claim-open,
 .fb-claim-act {
   margin: 0;
@@ -240,7 +242,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-axis { position: relative; height: 2.5rem; }
 .fb-axis-line { position: absolute; left: 0; right: 0; top: 1.0625rem; height: 0.1875rem; border-radius: 0.125rem; background: var(--color-mist); opacity: 0.8; }
 .fb-axis-mark { position: absolute; top: 0.25rem; transform: translateX(-50%); }
-.fb-axis-mark .spot-mark { width: 1.75rem; height: 1.75rem; font-size: 0.875rem; }
+.fb-axis-mark .spot-mark { --mark: 1.75rem; font-size: 0.875rem; }
 .fb-axis-ticks { margin-top: 0.625rem; display: flex; justify-content: space-between; font-size: 0.75rem; line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); }
 
 .fb-recorded { gap: 1rem; }
@@ -274,7 +276,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-facts dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.25rem; }
 .b1-foot { margin-top: 0.5rem; }
 
-/* Save, pinned over the tab bar on the phone; once saved, Walk it, with Saved beside it */
+/* pinned over the tab bar on the phone, once saved: Walk it; after a removal, Undo */
 .b1-pin {
   position: absolute;
   left: 0.75rem;
@@ -305,8 +307,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
 /* with large text a label wraps inside its button rather than running out of the bar */
 .b1-pin .btn,
 .walk-nav .fb-nav-btn { min-width: 0; flex-shrink: 1; height: auto; min-height: 3.375rem; padding-top: 0.5rem; padding-bottom: 0.5rem; white-space: normal; text-align: center; }
-.b1-pin .b1-saved { padding: 0 1.25rem; }
-.b1-pin .b1-saved svg { color: var(--color-mist); }
 .b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-sm); line-height: 1.375rem; animation: fade-in 200ms var(--ease-out) both; }
 .b1-pin .b1-undo { padding: 0 1.5rem; }
 

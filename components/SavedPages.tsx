@@ -9,7 +9,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { BackLink, BackTop } from "@/components/CParts";
+import { BackTop } from "@/components/CParts";
 import { BagIcon, CalendarIcon, CheckCircleIcon, CheckIcon, ChevronIcon, InfoIcon, PinIcon, SearchIcon } from "@/components/Icons";
 import { ACTION_ROWS } from "@/lib/actions";
 import { leaveFor } from "@/lib/back";
@@ -46,7 +46,6 @@ function Page({
       <div className="org-sheet glass glass-top">
         <div className="org-main">
           <div className="se-head">
-            <BackLink href={back} label={label} />
             {action}
           </div>
           <h1 id={id} className="org-title ln-title">

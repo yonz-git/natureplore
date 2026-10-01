@@ -269,8 +269,7 @@ body:has(.cp-dialog) .tabbar { display: none; }
   .cp-claim { font-size: 2.5rem; line-height: 3rem; }
   .cp-aerial > div { height: 23.75rem; }
   .cp-photo { height: 22.5rem; }
-  .cp-side { position: sticky; top: 2rem; margin-top: 0; padding-top: 3.5rem; }
-  .cp .org-side { padding-top: 3.5rem; }
+  .cp-side { position: sticky; top: 2rem; margin-top: 0; }
   .cp-act { padding: 1.5rem; }
   .cp-act .btn { align-self: center; }
 

@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import { BackLink, BackTop, Benefits, Facts, KindTag, ShareButton, Stat } from "@/components/CParts";
+import { BackTop, Benefits, Facts, KindTag, ShareButton, Stat } from "@/components/CParts";
 import { BookmarkIcon, CalendarIcon, CheckCircleIcon, CheckIcon, ExternalIcon } from "@/components/Icons";
 import type { Action, CleanUp, Figure, Practice, Support } from "@/lib/actions";
 import { backLabel, useBack } from "@/lib/back";
@@ -249,7 +249,6 @@ export default function ActionScreen({ action: a }: { action: Action }) {
       <BackTop href={back} label={label} share={a.type === "support" ? undefined : `${a.title} ${a.close}`} />
       <div className="org-sheet glass glass-top">
         <div className="org-main">
-          <BackLink href={back} label={label} />
           {main}
         </div>
         <aside className="org-side cp-side" aria-label="Take part">

@@ -46,7 +46,7 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
   const saved = isSaved(route.id);
 
   return (
-    <article className="sug" aria-label={route.name}>
+    <article className="sug" aria-label={route.name} data-route={route.id}>
       {route.image ? (
         // small local files at a fixed size: the optimiser would add a round trip for nothing
         // eslint-disable-next-line @next/next/no-img-element

@@ -25,6 +25,22 @@
   pointer-events: auto;
 }
 .tabbar-pill > li { min-width: 0; flex: 0 1 auto; }
+/* the lime pill of the current tab: one element under the tabs, moved to the current one by
+   components/TabBar.tsx, so it slides from tab to tab. Its own transform, not an ancestor's, so the
+   frost of the pill it sits in is untouched. */
+.tabbar-pill > li.tabbar-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35);
+  pointer-events: none;
+}
+.tabbar-thumb.is-placed {
+  transition: transform 340ms var(--ease-out), width 340ms var(--ease-out), height 340ms var(--ease-out);
+}
+.tabbar-tab { position: relative; }
 .tabbar-tab {
   width: 5.25rem;
   max-width: 100%;
@@ -41,18 +57,18 @@
   font-weight: var(--text-tab--font-weight);
   letter-spacing: var(--text-tab--letter-spacing);
   text-decoration: none;
-  transition: transform 160ms var(--ease-out);
+  background-color: rgb(255 255 255 / 0);
+  transition: transform 160ms var(--ease-out), color 280ms var(--ease-out), background-color 220ms var(--ease-out);
 }
 .tabbar-tab:active { transform: scale(0.97); }
 .tabbar-tab.is-current {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35);
   color: var(--color-on-primary);
   font-weight: var(--text-tab-active--font-weight);
 }
 
 @media (min-width: 64rem) {
-  .tabbar { inset: 2rem 0 auto; }
+  /* at the top right, with the search field centred on the same line (app/map.css) */
+  .tabbar { inset: 2rem 0 auto; justify-content: flex-end; padding: 0 2.5rem; }
   .tabbar-pill { height: 3.625rem; gap: 0.125rem; }
   .tabbar-tab {
     width: auto;
@@ -74,5 +90,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tabbar-tab { transition: none; }
+  /* no slide and no press: the thumb moves at once, colours still fade, shorter */
+  .tabbar-thumb.is-placed { transition: none; }
+  .tabbar-tab { transition: color 160ms ease, background-color 160ms ease; }
+  .tabbar-tab:active { transform: none; }
 }

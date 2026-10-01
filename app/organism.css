@@ -40,9 +40,7 @@ body:has(.org.is-walk) .tabbar { display: none; }
 }
 .org-main,
 .org-side { display: flex; flex-direction: column; min-width: 0; }
-.org-side > .org-actions,
-.org-side > .org-small,
-.org-back { display: none; }
+.org-side > .org-small { display: none; }
 
 .org-photo {
   flex-shrink: 0;
@@ -196,7 +194,6 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
 .org-note { margin-top: 1.5rem; }
 
 @media (min-width: 64rem) {
-  .org-top { display: none; }
   .org-sheet {
     margin: 7.625rem 0 0;
     min-height: calc(100% - 7.625rem);
@@ -207,23 +204,32 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
     align-items: start;
     align-content: start;
   }
-  .org-back {
-    display: inline-flex;
-    align-self: flex-start;
-    align-items: center;
-    gap: 0.375rem;
-    min-height: 2.75rem;
-    margin: -0.75rem 0 0.25rem -0.25rem;
-    color: var(--color-on-ground);
-    font-size: var(--text-chip);
-    text-decoration: none;
-  }
   .org-photo { height: 26rem; }
   .org-title { font-size: var(--text-display-desktop); line-height: var(--text-display-desktop--line-height); letter-spacing: var(--text-display-desktop--letter-spacing); }
   .org-h2 { margin-top: 2.5rem; }
-    .org-side { padding-top: 2.5rem; }
-  .org-side > .org-actions { display: flex; margin-bottom: 1.5rem; }
-  .org-side .round { width: 3.25rem; height: 3.25rem; }
   .org-side > .org-small { display: block; margin-top: 0; }
   .org-side > .org-h2-first { margin-top: 0; }
+}
+
+/* The phone's round controls on the desktop too, rather than a text back link. Back leaves the sheet
+   for the nav pill's line (3.625rem tall at 2rem, app/tabbar.css), at the top left, fixed with the
+   nav. Save and share stay in the sheet, at the top right of its content, lined up with its columns,
+   and the content starts below them. B4, the claim, action and documentary pages, and the pages
+   under Saved. */
+@media (min-width: 64rem) {
+  .org > .org-top { display: contents; }
+  .org > .org-top > a {
+    position: fixed;
+    z-index: 2;
+    top: calc(2rem + (3.625rem - 3.25rem) / 2);
+    left: 2.5rem;
+  }
+  .org > .org-top > .org-actions {
+    position: absolute;
+    z-index: 2;
+    top: calc(7.625rem + 2rem);
+    right: max(6rem, calc((100% - 71.25rem) / 2));
+  }
+  .org.ln > .org-top > .org-actions { right: max(6rem, calc((100% - 78rem) / 2)); }
+  .org:has(> .org-top > .org-actions) > .org-sheet { padding-top: calc(2rem + 3.25rem + 1.5rem); }
 }
