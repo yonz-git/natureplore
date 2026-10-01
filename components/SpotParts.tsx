@@ -45,6 +45,49 @@ export function ActionRow({ spot, className = "" }: { spot: Spot; className?: st
   );
 }
 
+/** What to look for at a spot this month, each organism with its photo, or why nothing is in season. */
+export function SpotLook({ spot, organismHref }: { spot: Spot; organismHref?: (id: string) => string }) {
+  return spot.out ? (
+    <p className="fb-out">{spot.out}</p>
+  ) : (
+    <div className="fb-look">
+      <span className="fb-label">Look for in {MONTH}</span>
+      <ul>
+        {spot.look.map((l) => {
+          const photo = organismPhoto(l.name);
+          const body = (
+            <>
+              {photo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="fb-look-photo" src={photo.src} alt="" />
+              ) : (
+                <span className="fb-look-photo" aria-hidden="true" />
+              )}
+              <span className="fb-look-text">
+                <span className="fb-look-name">{l.name}</span>
+                {l.what && <span className="fb-look-what">{l.what[0].toUpperCase() + l.what.slice(1)}</span>}
+                <span className="fb-look-last">Last recorded {l.last}</span>
+              </span>
+            </>
+          );
+          return (
+            <li key={l.name}>
+              {l.organism && organismHref ? (
+                <Link href={organismHref(l.organism)} className="fb-look-row fb-look-link">
+                  {body}
+                  <ChevronIcon size={18} />
+                </Link>
+              ) : (
+                <div className="fb-look-row">{body}</div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
 export function SpotMark({ n, size = "md" }: { n: number; size?: "md" | "lg" }) {
   return (
     <span className={`spot-mark fb-mark${size === "lg" ? " is-lg" : ""}`} aria-hidden="true">
@@ -86,46 +129,7 @@ export function SpotBlock({
         </div>
       </div>
 
-      {spot.out ? (
-        <p className="fb-out">{spot.out}</p>
-      ) : (
-        <div className="fb-look">
-          <span className="fb-label">Look for in {MONTH}</span>
-          <ul>
-            {spot.look.map((l) => {
-              const photo = organismPhoto(l.name);
-              const body = (
-                <>
-                  {photo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img className="fb-look-photo" src={photo.src} alt="" />
-                  ) : (
-                    <span className="fb-look-photo" aria-hidden="true" />
-                  )}
-                  <span className="fb-look-text">
-                    <span className="fb-look-name">{l.name}</span>
-                    {l.what && <span className="fb-look-what">{l.what[0].toUpperCase() + l.what.slice(1)}</span>}
-                    <span className="fb-look-last">Last recorded {l.last}</span>
-                  </span>
-                </>
-              );
-              return (
-                <li key={l.name}>
-                  {l.organism && organismHref ? (
-                    <Link href={organismHref(l.organism)} className="fb-look-row fb-look-link">
-                      {body}
-                      <ChevronIcon size={18} />
-                    </Link>
-                  ) : (
-                    <div className="fb-look-row">{body}</div>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
-
+      <SpotLook spot={spot} organismHref={organismHref} />
       <ActionRow spot={spot} />
       {nav}
     </section>

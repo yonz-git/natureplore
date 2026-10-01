@@ -37,7 +37,6 @@
 }
 .fb-sec span { min-width: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-sec h2 em,
-.l3 .saved-sheet h2 em,
 .org-h2 em {
   font-style: normal;
   background-image: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-primary) 100%);
@@ -225,10 +224,15 @@ a.fb-claim-act:active { transform: scale(0.985); }
 /* previous and next: buttons, not swipes */
 .fb-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; }
 
-/* L3: the way on names the next spot and fills the row; the spot before is a round control */
-.l3 .fb-nav { margin-top: 0.25rem; }
-.l3 .fb-nav,
+/* the walk: the way on names the next spot and fills the row; the spot before is a round control.
+   At either end the button stays, dashed, and does nothing. */
 .fb-nav.walk-nav { display: flex; gap: 0.625rem; }
+.fb-nav .fb-nav-prev[aria-disabled="true"],
+.fb-nav .fb-nav-next[aria-disabled="true"] { color: var(--color-on-ground-soft); background: none; border-style: dashed; box-shadow: none; cursor: default; }
+.fb-nav [aria-disabled="true"]:active { transform: none; }
+@media (hover: hover) {
+  .fb-nav [aria-disabled="true"]:hover { border-color: var(--color-inner-edge); }
+}
 .fb-nav-prev,
 .fb-nav-next {
   box-sizing: border-box;
@@ -365,15 +369,44 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-sm); line-height: 1.375rem; animation: fade-in 200ms var(--ease-out) both; }
 .b1-pin .b1-undo { padding: 0 1.5rem; }
 
-/* ── L3 ────────────────────────────────────────────────────────────────────────────────────── */
+/* ── L3, a spot, opened in place in B1's spots list ─────────────────────────────────────────── */
 
-.l3 .saved-sheet { margin-top: 8.25rem; min-height: calc(100% - 8.25rem); padding-top: 1rem; padding-left: 1rem; padding-right: 1rem; }
-.l3 .saved-sheet > h2,
-.l3 .saved-sheet > .fb-months,
-.l3 .saved-sheet > .fb-small,
-.l3 .saved-sheet > .fb-claim,
-.l3 .saved-sheet > .fb-card { margin-left: 0.5rem; margin-right: 0.5rem; }
-.l3 .saved-sheet > .fb-spot { animation: sheet-in 260ms var(--ease-out) both; }
+/* the row is the toggle; the detail below it opens by its own height, its content fading in */
+button.fb-row {
+  width: 100%;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+button.fb-row:active { transform: scale(0.985); }
+/* the chevron points down to open and turns up once open */
+.fb-spot-row .fb-row > svg:last-child { rotate: 90deg; transition: rotate 280ms var(--ease-out); }
+.fb-spot-row.is-open .fb-row > svg:last-child { rotate: -90deg; }
+.fb-spot-row { scroll-margin-top: 1rem; }
+.fb-spot-detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 320ms var(--ease-out);
+}
+.fb-spot-detail > div {
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out);
+}
+.fb-spot-row.is-open .fb-spot-detail { grid-template-rows: 1fr; }
+/* the parts below what to look for: a small heading over the month grid, the claim, the rest */
+.fb-spot-part { display: flex; flex-direction: column; gap: 0.625rem; }
+.fb-spot-part h3 { margin: 0; font-family: var(--font-text); letter-spacing: normal; }
+.fb-spot-part .fb-small { margin: -0.25rem 0 0; }
+/* the space under the detail is a margin inside it, so it folds away with the rest */
+.fb-spot-detail > div > :last-child { margin-bottom: 1.125rem; }
+.fb-spot-row.is-open .fb-spot-detail > div { opacity: 1; transition: opacity 280ms var(--ease-out) 80ms; }
 
 /* ── L4, the walk ──────────────────────────────────────────────────────────────────────────── */
 
@@ -436,12 +469,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
   border-top: 1px solid var(--color-divider);
 }
 .walk .walk-sheet { padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px)); scroll-padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px)); }
-.walk-nav .fb-nav-prev[aria-disabled="true"],
-.walk-nav .fb-nav-next[aria-disabled="true"] { color: var(--color-on-ground-soft); background: none; border-style: dashed; box-shadow: none; cursor: default; }
-.walk-nav [aria-disabled="true"]:active { transform: none; }
-@media (hover: hover) {
-  .walk-nav [aria-disabled="true"]:hover { border-color: var(--color-inner-edge); }
-}
 /* read outdoors: the walk's secondary lines are regular weight and full white */
 .walk .fb-rule-why,
 .walk .fb-spot-head .fb-soft { font-weight: 400; color: var(--color-on-ground); }
@@ -495,8 +522,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
   }
   .b1-pin .b1-walk { flex-grow: 0; }
 
-  .l3 .saved-sheet { margin-top: 7.5rem; min-height: 0; padding: 2rem; }
-
   .walk .walk-top { top: 2.5rem; left: 31.5rem; right: 5.5rem; justify-content: flex-start; }
   .walk-panel { overflow: hidden; background: var(--color-ground); border: 1px solid var(--color-glass-edge); padding: 0; }
   .walk .walk-sheet { flex: 1 1 auto; min-height: 0; margin: 0; padding: 1.5rem; overflow-y: auto; background: none; border: 0; box-shadow: none; scroll-padding-bottom: 1.5rem; }
@@ -518,6 +543,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
   .walk-spot,
   .walk-more,
   .walk .a1-map,
-  .walk .walk-top > *,
-  .l3 .saved-sheet > .fb-spot { animation: fade-in 160ms var(--ease-out) both; }
+  .walk .walk-top > * { animation: fade-in 160ms var(--ease-out) both; }
+  .fb-spot-detail,
+  .fb-spot-row .fb-row > svg:last-child { transition: none; }
 }
