@@ -21,6 +21,9 @@ const comfortaa = Comfortaa({
 export const metadata: Metadata = {
   title: { default: "Natureplore", template: "%s, Natureplore" },
   description: "v1 prototype: find nature near you, understand it, help it.",
+  // the app is dark already: dark-mode extensions such as Dark Reader leave it alone, rather than
+  // rewriting the page before React hydrates it, which shows as a hydration error in development
+  other: { "darkreader-lock": "true" },
 };
 
 export const viewport: Viewport = {
@@ -30,7 +33,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${alpino.variable} ${comfortaa.variable} h-full`}>
+    // extensions mark <html> before React loads (Dark Reader's data-darkreader-* attributes)
+    <html lang="en" className={`${alpino.variable} ${comfortaa.variable} h-full`} suppressHydrationWarning>
       <body className="min-h-full">{children}</body>
     </html>
   );
