@@ -241,8 +241,9 @@ a.fb-claim-act:active { transform: scale(0.985); }
 /* the route drawn flat: the spots along its length, with the same numbers as the map */
 .fb-axis { position: relative; height: 2.5rem; }
 .fb-axis-line { position: absolute; left: 0; right: 0; top: 1.0625rem; height: 0.1875rem; border-radius: 0.125rem; background: var(--color-mist); opacity: 0.8; }
-.fb-axis-mark { position: absolute; top: 0.25rem; transform: translateX(-50%); }
-.fb-axis-mark .spot-mark { --mark: 1.75rem; font-size: 0.875rem; }
+/* the marks on the route's distance axis, 30% smaller than the 1.75rem they were, centred on the line */
+.fb-axis-mark { position: absolute; top: calc(1.15625rem - 1.25rem / 2); transform: translateX(-50%); }
+.fb-axis-mark .spot-mark { --mark: 1.25rem; font-size: 0.625rem; }
 .fb-axis-ticks { margin-top: 0.625rem; display: flex; justify-content: space-between; font-size: 0.75rem; line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); }
 
 .fb-recorded { gap: 1rem; }
