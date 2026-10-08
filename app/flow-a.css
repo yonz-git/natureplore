@@ -683,10 +683,12 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-group.is-mammals { color: var(--color-group-mammals); }
 .sg-group.glass[aria-pressed="true"] {
   /* frosted: the forest green at 55% over the toggle's own frost (glass in glass keeps one blur) */
-  background: rgb(from var(--color-ground) r g b / 0.55);
-  /* and a ring of the solid forest green, darker than the frost inside it, so it holds over the map */
-  border-color: var(--color-ground);
-  box-shadow: inset 0 0 0 1px var(--color-ground), 0 0 0 rgb(6 18 9 / 0);
+  /* shaded like the unselected glass: a touch lighter at the top, darker towards the bottom */
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 0.1) 0%, rgb(0 0 0 / 0.14) 100%),
+    rgb(from var(--color-ground) r g b / 0.55);
+  /* and the unselected toggle's faint edge, without it the lighter top melts into the panel */
+  border-color: var(--color-inner-edge);
 }
 @media (hover: hover) and (pointer: fine) {
   .sg-group[aria-pressed="false"]:not([aria-disabled="true"]):hover { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 0 0 rgb(6 18 9 / 0); }
