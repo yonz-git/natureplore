@@ -20,6 +20,13 @@ gsap.registerPlugin(MotionPathPlugin);
 // Sits inside the button (.a02-cta), so its distances are the button's: x from its left edge,
 // y from its top. Styles: .a02-squirrel in app/welcome2.css.
 
+// At the right end it sits up and waits in a pose of its own: the same squirrel, balloon tail and
+// all, drawn sitting upright, facing right, in a 100 by 100 box with its feet on the bottom edge.
+const SIT_TAIL =
+  "M56 93 C46 87 40 78 32 69 C15 65 4 53 4 36 C4 18 18 5 33 5 C49 5 59 18 57 34 C55 48 45 56 43 66 C42 76 48 85 58 88 Z";
+const SIT_BODY =
+  "M47 96 C43 90 45 80 53 76 C57 68 60 60 63 52 C65 46 66 40 68 34 C69 28 72 24 76 22 L74 12 C77 13 80 17 81 21 C86 22 90 26 92 30 C93 33 90 36 86 37 C83 38 82 41 82 44 C82 48 83 50 86 52 C88 54 87 57 84 56 C82 56 80 54 79 53 C78 62 80 72 82 80 C83 86 85 92 90 96 Z";
+
 const TILT_SIT = -38; // degrees: the drawing dives down and right, this sits it up facing right
 const TILT_RUN = -52; // stretched out along the button's top
 const TILT_LEAP = -70; // and this points its head up the leap
@@ -62,7 +69,12 @@ export default function CtaSquirrel() {
         // beside the button, its feet at the button's foot, never off the left of the screen
         const ground = { x: Math.max(-3.25 * r, 0.5 * r - button.getBoundingClientRect().left), y: h - s };
         const perch = { x: 1.25 * r, y: -s * 0.82 }; // on the top edge, toward the left end
-        const end = w - el.offsetWidth - 0.75 * r; // the right end of the top, clear of the curve
+        // the right end of the top, clear of the curve, for the sitting squirrel, which is as wide as it is tall
+        const end = w - s - 0.75 * r;
+        const runner = el.querySelector(".a02-squirrel-run");
+        const sitter = el.querySelector(".a02-squirrel-sit");
+        gsap.set(runner, { opacity: 1 });
+        gsap.set(sitter, { opacity: 0 });
 
         gsap.set(el, { x: ground.x, y: ground.y, rotation: TILT_SIT, scale: 0.9, opacity: 0, transformOrigin: "50% 100%" });
         tl = gsap
@@ -106,9 +118,14 @@ export default function CtaSquirrel() {
               "run",
             );
         }
-        tl.to(el, { rotation: TILT_SIT, duration: 0.18, ease: "power3.out" }, "-=0.06")
-          .to(el, { scaleY: 0.9, scaleX: 1.05, duration: 0.08, ease: "power2.out" })
-          .to(el, { scaleY: 1, scaleX: 1, duration: 0.14, ease: "power3.out" });
+        // at the end it sits up: straight, its feet on the button, turning into the sitting squirrel as
+        // it does, and settles with a little give
+        tl.addLabel("sit", "-=0.06")
+          .to(el, { rotation: 0, y: -s * 0.97, duration: 0.24, ease: "power2.out" }, "sit")
+          .to(runner, { opacity: 0, duration: 0.16, ease: "sine.inOut" }, "sit")
+          .to(sitter, { opacity: 1, duration: 0.16, ease: "sine.inOut" }, "sit")
+          .to(el, { scaleY: 0.94, scaleX: 1.04, duration: 0.1, ease: "power2.out" }, "sit+=0.18")
+          .to(el, { scaleY: 1, scaleX: 1, duration: 0.22, ease: "power3.out" });
       });
 
       // leaps away up and right from wherever it is, stretching out, and is gone
@@ -126,6 +143,9 @@ export default function CtaSquirrel() {
           .to(el, { scaleY: 0.88, scaleX: 1.06, duration: 0.08, ease: "power2.out" })
           .addLabel("leap")
           .to(el, { scaleY: 1.08, scaleX: 0.94, rotation: TILT_LEAP, duration: 0.16, ease: "power2.out" }, "leap")
+          // a sitting squirrel stretches back out into the running one as it goes
+          .to(el.querySelector(".a02-squirrel-sit"), { opacity: 0, duration: 0.12, ease: "sine.inOut" }, "leap")
+          .to(el.querySelector(".a02-squirrel-run"), { opacity: 1, duration: 0.12, ease: "sine.inOut" }, "leap")
           .to(
             el,
             {
@@ -163,7 +183,7 @@ export default function CtaSquirrel() {
 
   return (
     <span ref={ref} className="a02-squirrel" aria-hidden="true">
-      <svg viewBox="684 51 78 92">
+      <svg className="a02-squirrel-run" viewBox="684 51 78 92">
         <defs>
           {/* the button's fill, laid across the squirrel the same way */}
           <linearGradient id="a02-squirrel-fill" x1="0" y1="0" x2="1" y2="1">
@@ -172,6 +192,18 @@ export default function CtaSquirrel() {
           </linearGradient>
         </defs>
         <path fillRule="evenodd" d={SQUIRREL} fill="url(#a02-squirrel-fill)" />
+      </svg>
+      <svg className="a02-squirrel-sit" viewBox="0 0 100 100">
+        <defs>
+          <mask id="a02-squirrel-eye">
+            <rect width="100" height="100" fill="#fff" />
+            <circle cx="83.5" cy="28" r="1.8" fill="#000" />
+          </mask>
+        </defs>
+        <g mask="url(#a02-squirrel-eye)" fill="url(#a02-squirrel-fill)">
+          <path d={SIT_TAIL} />
+          <path d={SIT_BODY} />
+        </g>
       </svg>
     </span>
   );

@@ -231,7 +231,9 @@
   opacity: 0;
   pointer-events: none;
 }
-.a02-squirrel svg { display: block; width: 100%; height: 100%; }
+.a02-squirrel-run { display: block; width: 100%; height: 100%; }
+/* the sitting squirrel, square, on the same feet: as tall as the running one and a little wider */
+.a02-squirrel-sit { position: absolute; left: 0; bottom: 0; height: 100%; width: auto; aspect-ratio: 1; opacity: 0; }
 .a02-br { display: none; }
 .a02 :focus-visible { outline: 0.125rem solid var(--color-mist); outline-offset: 0.1875rem; }
 
