@@ -20,6 +20,8 @@ const ROUTE = {
 };
 
 const DRAW = 1.6; // seconds, the line from the first stop to the last
+const UNDER = 0.4; // the line's opacity under a label
+const FADE = 14; // px, how softly it fades back up around the label
 
 // How far along the path (0 to 1) each stop sits. The stops are the path's own points: the M and the
 // end of every curve, so each is found by walking the path for its nearest point.
@@ -49,11 +51,33 @@ export default function WelcomeRoute() {
     const el = root.current;
     const main = el?.parentElement?.querySelector<HTMLElement>(".a02-main");
     if (!el || !main) return;
-    const place = () => el.style.setProperty("--main-top", `${main.offsetTop}px`);
+    const place = () => {
+      el.style.setProperty("--main-top", `${main.offsetTop}px`);
+      requestAnimationFrame(quiet);
+    };
+    // Where a label sits over the line, the line fades to 40% under it, with a soft edge, so the words
+    // read clean. One soft ellipse per label in the line's mask, multiplied together.
+    const quiet = () => {
+      const labels = Array.from(el.querySelectorAll<HTMLElement>(".a02-label"));
+      el.querySelectorAll<SVGSVGElement>(".a02-line").forEach((svg) => {
+        const box = svg.getBoundingClientRect();
+        if (!box.width) return;
+        const layers = labels.map((label) => {
+          const r = label.getBoundingClientRect();
+          const rx = r.width * 0.62 + FADE;
+          const ry = r.height * 0.75 + FADE;
+          const solid = Math.round(((r.width * 0.62) / rx) * 100);
+          return `radial-gradient(${rx}px ${ry}px at ${r.left - box.left + r.width / 2}px ${r.top - box.top + r.height / 2}px, rgb(0 0 0 / ${UNDER}) ${solid}%, #000 100%)`;
+        });
+        svg.style.maskImage = layers.join(", ");
+        svg.style.maskComposite = layers.map(() => "intersect").join(", ");
+      });
+    };
     const watch = new ResizeObserver(place);
     watch.observe(main);
     watch.observe(el.parentElement!);
     place();
+    document.fonts?.ready.then(quiet); // the labels change width once the face has loaded
     return () => watch.disconnect();
   }, []);
 
