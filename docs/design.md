@@ -227,6 +227,9 @@ spacing:
   "20": 5rem
   "30": 7.5rem
   control-stack: 0.75rem
+  button-height: 3.1185rem
+  button-phone: 80%
+  phone-max: 30rem
   card-gap: 1.5rem
   bar-clearance: 2.5rem
   tabbar-clearance: 7.375rem
@@ -246,21 +249,21 @@ components:
     textColor: "{colors.on-primary}"
     typography: "{typography.button}"
     rounded: "{rounded.button}"
-    height: 3.1185rem
+    height: "{spacing.button-height}"
     padding: 0 1.75rem
   button-primary-pressed:
     backgroundColor: "{colors.primary-deep}"
     textColor: "{colors.on-primary}"
     typography: "{typography.button}"
     rounded: "{rounded.button}"
-    height: 3.1185rem
+    height: "{spacing.button-height}"
     padding: 0 1.75rem
   button-secondary:
     backgroundColor: "{colors.inner-fill}"
     textColor: "{colors.on-ground}"
     typography: "{typography.button-secondary}"
     rounded: "{rounded.button}"
-    height: 3.1185rem
+    height: "{spacing.button-height}"
     padding: 0 1.75rem
   field-search:
     backgroundColor: "{colors.glass-fill}"
@@ -487,7 +490,7 @@ Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet
 
 ## Layout
 
-Tokens are in rem so screens follow the reader's font size; the numbers in this prose are pixels at the default 16px root. Layout sits on a 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 80, 120. Inside a component, 2px half-steps (2, 6, 10, 14) are allowed for icon to label gaps and optical padding, never for gaps between components. Element gaps are 16 to 24, card padding 32, and page sections on desktop are 80 to 120 apart with content capped at 1200. Two tighter rules come from the boards: a control stack (search bar over a chip, button or segment) is 12, and a stack of cards on tablet is 24.
+Tokens are in rem so screens follow the reader's font size, and so are icons: an icon's size is written in pixels at the default root and drawn in rem (`components/Icons.tsx`). The only px left are the 0.5 and 1 hairlines, the 2 focus ring, two 2 rules and the map label halos; the numbers in this prose are pixels at the default 16px root. Layout sits on a 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 80, 120. Inside a component, 2px half-steps (2, 6, 10, 14) are allowed for icon to label gaps and optical padding, never for gaps between components. Element gaps are 16 to 24, card padding 32, and page sections on desktop are 80 to 120 apart with content capped at 1200. Two tighter rules come from the boards: a control stack (search bar over a chip, button or segment) is 12, and a stack of cards on tablet is 24.
 
 Screen margins are 16 on phone, 32 on tablet, 40 for desktop chrome (logo and nav) and 120 for the desktop welcome's main block. Margins are equal left and right: a column is pinned to both sides, never left to size itself. Between the two, `inset-screen` runs from 16 at 390 wide to 32 at 834, so one inset serves every phone and tablet. Scrolling content ends 40 above the tab bar or bottom bar, which on phone makes `tabbar-clearance` 118: the 8 float, the 70 bar and the 40 gap. On tablet the bar floats 28 up, so the clearance is 138. The tab bar floats 8 from the bottom on phone and 28 on tablet; the tablet bottom bar also sits 28 up.
 
@@ -515,7 +518,7 @@ Motion shows what changed and nothing else. Every movement uses one strong ease-
 
 ## Components
 
-`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule: 80% of the column and centred on phone (two sharing a bar split it instead), hugging their label on tablet and desktop. There they are centred when they close a full-width grid or list ("Show all", "See all", "Open the route") and start-aligned when they follow a text block or sit in a stack with a field. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in Alpino 400 15, the same 50 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so a button that ends in a chevron takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
+`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule, and no button is ever full width: on a phone, up to 480 wide (`phone-max`), they are 80% of the column and centred (`button-phone`); wider than that, tablet and desktop alike, they hug their label. Two sharing the route's pinned bar split it between them instead. There they are centred when they close a full-width grid or list ("Show all", "See all", "Open the route") and start-aligned when they follow a text block or sit in a stack with a field. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in Alpino 400 15, the same 50 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so a button that ends in a chevron takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
 
 States, for every control. Hover (mouse and pen only): the primary dims to brightness 0.96, glass and inner glass controls take a white 8% wash. Focus: a 2px `mist` outline 3 outside the shape, following its radius, never removed. Pressed: scale 0.97. Disabled: 45% opacity, no press, and the reason said next to it. Loading: the primary keeps its width, its label gives way to an 18 spinner in `on-primary`, and it is marked busy. A field with a problem keeps its shape, its edge rises to white 40%, and a `caption` line with an alert icon under it says what to do; there is no red, the words carry it.
 
@@ -531,7 +534,7 @@ Each organism group has one line icon, drawn on a 24 grid with a 1.5 stroke and 
 
 `list-row` is 68 tall with a 40 icon disc, a `title-sm` over a `caption`, and a chevron or tag; rows are divided by a 1px line that starts after the disc and fades to the right. `sheet` rises to 196 from the top on phone with a 36 by 5 handle, a heading, chips and cards. `bottom-bar` holds a short note and the primary button with a 54 round companion. `tab-bar` is 70 tall with 6 padding and three 84 by 56 items, icon over label; the active item is a lime pill. On desktop, `nav-desktop` is a 58 glass pill centred at the top with 44 tall items, icon beside label. Data: the proportion bar is 12 tall, 4 gaps, radius 6, in group colours; month bars are white 30% with the current month in lime.
 
-Route detail (B1) is the page a route opens to, over the map, modelled on how Komoot shows a route, without editing and without elevation. The map carries the route: `route-line`, a 4.5 lime line with round caps on a 9 `ground` casing at 85%, so it reads over water and land alike; `spot-marker` pins on the line in walking order; and `start-marker`, a 40 white disc with a forest flag and a 4 forest halo, labelled "Start and finish". On the desktop each spot takes a `spot-label` beside it, `label` 500 in white with a `ground` halo, on the side that does not cover the line; on the phone the names live in the list instead. Beside the map (desktop panel) or under it (phone sheet) come, in this order: `photo-group` (one large photograph and two small in a 2 to 1 grid, 4 apart, radius 18, 180 tall on phone and 200 on desktop, with a close control on the photograph on desktop), the title with its closing word in lime and the start place in `secondary`, three `stat-tile-nested` tiles (Distance, Time, Spots), a `body` description, `recorded-box`, the notable line (a 20 calendar icon in `mist`, `meta` 500, linked to the organism it is about), "Spots along the route" as `list-row`s led by a `spot-marker`, a `caption` footnote, and the actions. `recorded-box` is an `inner-card` holding an `h3` "What is recorded along this route" with "Within 250 m of the line" in `secondary`, a `proportion-bar` (12 tall, 4 gaps, radius 6, group colours, empty groups left out), five `group-row`s (48, group icon 20 in its colour, name in `body-sm`, count in Comfortaa 20, a group with none at 60%), and `button-secondary` "See all organisms" with a chevron. On the tablet the rows become five group tiles. The actions: on the phone Save and Share side by side as `button-secondary` and the primary "Navigate" full width under them; on the desktop `detail-footer` pins them to the foot of the panel under a 1px rule, Save and Share as text links with icons, "Navigate" hugging its label at the right. The panel scrolls, the footer does not.
+Route detail (B1) is the page a route opens to, over the map, modelled on how Komoot shows a route, without editing and without elevation. The map carries the route: `route-line`, a 4.5 lime line with round caps on a 9 `ground` casing at 85%, so it reads over water and land alike; `spot-marker` pins on the line in walking order; and `start-marker`, a 40 white disc with a forest flag and a 4 forest halo, labelled "Start and finish". On the desktop each spot takes a `spot-label` beside it, `label` 500 in white with a `ground` halo, on the side that does not cover the line; on the phone the names live in the list instead. Beside the map (desktop panel) or under it (phone sheet) come, in this order: `photo-group` (one large photograph and two small in a 2 to 1 grid, 4 apart, radius 18, 180 tall on phone and 200 on desktop, with a close control on the photograph on desktop), the title with its closing word in lime and the start place in `secondary`, three `stat-tile-nested` tiles (Distance, Time, Spots), a `body` description, `recorded-box`, the notable line (a 20 calendar icon in `mist`, `meta` 500, linked to the organism it is about), "Spots along the route" as `list-row`s led by a `spot-marker`, a `caption` footnote, and the actions. `recorded-box` is an `inner-card` holding an `h3` "What is recorded along this route" with "Within 250 m of the line" in `secondary`, a `proportion-bar` (12 tall, 4 gaps, radius 6, group colours, empty groups left out), five `group-row`s (48, group icon 20 in its colour, name in `body-sm`, count in Comfortaa 20, a group with none at 60%), and `button-secondary` "See all organisms" with a chevron. On the tablet the rows become five group tiles. The actions: on the phone Save and Share side by side as `button-secondary` and the primary "Navigate" 80% wide and centred under them; on the desktop `detail-footer` pins them to the foot of the panel under a 1px rule, Save and Share as text links with icons, "Navigate" hugging its label at the right. The panel scrolls, the footer does not.
 
 ## Do's and Don'ts
 

@@ -138,9 +138,9 @@
 }
 .a02-cta {
   align-self: center;
-  width: 80%; /* of the column, so 80% of the full-width button it was */
+  width: var(--spacing-button-phone);
   margin-top: 2.25rem;
-  height: 3.1185rem; /* the system button height, docs/design.md */
+  height: var(--spacing-button-height);
   padding: 0 2.125rem;
   display: flex;
   align-items: center;
@@ -162,7 +162,7 @@
 
 /* wider than a phone: the button hugs its label as on the desktop, centred; no screen has a
    full-width button */
-@media (min-width: 30rem) {
+@media (min-width: 30rem) { /* phone-max */
   .a02-cta { width: auto; font-size: 1.125rem; }
 }
 

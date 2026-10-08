@@ -11,7 +11,7 @@
    one line wherever it fits; with large text on a narrow screen it wraps inside the button rather
    than running out of it. */
 .btn {
-  min-height: 3.1185rem;
+  min-height: var(--spacing-button-height);
   padding: 0.75rem 1.75rem;
   box-sizing: border-box;
   display: flex;
@@ -19,7 +19,7 @@
   justify-content: center;
   gap: 0.625rem;
   align-self: center;
-  width: 80%;
+  width: var(--spacing-button-phone);
   flex-shrink: 0;
   border-radius: var(--radius-pill);
   text-decoration: none;
@@ -32,7 +32,7 @@
 .b1-pin .btn { width: auto; }
 /* 80% is for a phone's width only: anything wider than a phone hugs the label, as on the desktop,
    so no window between phone and tablet gets a stretched button */
-@media (min-width: 30rem) {
+@media (min-width: 30rem) { /* phone-max */
   .btn { width: auto; }
 }
 .btn-primary {
