@@ -139,7 +139,7 @@
 .a02-cta {
   align-self: stretch;
   margin-top: 2.25rem;
-  height: 3.375rem;
+  height: 2.835rem; /* the system button (3.375rem) less 16%, still over the 44px target */
   padding: 0 2.125rem;
   display: flex;
   align-items: center;
