@@ -51,6 +51,20 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   const has = (g: Group) => organisms.some(({ organism }) => organism.group === g);
   const shown = picked.length ? organisms.filter(({ organism }) => picked.includes(organism.group)) : organisms;
   const pick = (g: Group) => setPicked((now) => (now.includes(g) ? now.filter((x) => x !== g) : [...now, g]));
+  // the toggles line up under the Organisms option they filter: its left edge, measured, is their indent
+  const switchRow = useRef<HTMLDivElement>(null);
+  const orgOpt = useRef<HTMLButtonElement>(null);
+  useLayoutEffect(() => {
+    const row = switchRow.current;
+    const opt = orgOpt.current;
+    if (!row || !opt) return;
+    const place = () => row.style.setProperty("--org-x", `${opt.getBoundingClientRect().left - row.getBoundingClientRect().left}px`);
+    const watch = new ResizeObserver(place);
+    watch.observe(row);
+    watch.observe(opt);
+    place();
+    return () => watch.disconnect();
+  }, []);
   // the region's routes on the map, a memo so the map is built once per region
   const points = useMemo(() => pointsFor(regionId, near), [regionId, near]);
   const { ask, prompt } = useLocationPrompt();
@@ -99,13 +113,13 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
       <div className="ms-panel glass-desk">
         <div className="ms-bar">
           {!desk && <SearchField />}
-          <div className="sg-switch">
+          <div className="sg-switch" ref={switchRow}>
           <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill">
             <button type="button" className="seg-opt" aria-pressed={show === "routes"} onClick={() => setShow("routes")}>
               <RoutesIcon size={18} />
               Routes
             </button>
-            <button type="button" className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
+            <button type="button" ref={orgOpt} className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
               <LeafIcon size={18} />
               Organisms
             </button>
