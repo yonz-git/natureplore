@@ -654,9 +654,9 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-group.is-birds svg { translate: -0.047rem -0.0355rem; }
 .sg-group.is-mammals svg { translate: 0 -0.0095rem; }
 /* the pivots of the two moving group icons: the herbs at the foot of the stem (2.02, 21.9 on the 24
-   grid), the mushroom at the foot of its stem (12, 22.4), the plant where its leaves meet (12, 23.4) */
+   grid), the mushroom at the foot of its stem (12, 22), the plant where its leaves meet (12, 23.4) */
 .herbs-sway { transform-box: view-box; transform-origin: 2.02px 21.9px; }
-.mushroom-hop { transform-box: view-box; transform-origin: 12px 22.4px; }
+.mushroom-hop { transform-box: view-box; transform-origin: 12px 22px; }
 .plant-rise { transform-box: view-box; transform-origin: 12px 23.4px; }
 /* their motion is played from components/SuggestionsScreen.tsx (GROUP_MOTION): once as the toggles
    appear, dimmed or not, and again on hover and keyboard focus. A script, so a hover can restart a

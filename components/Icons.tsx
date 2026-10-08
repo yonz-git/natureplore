@@ -126,12 +126,11 @@ const GROUP_PATHS: Record<Group, React.ReactNode> = {
       </g>
     </>
   ),
-  // a cap with a highlight on a flared stem, a filled outline on a 32 grid: filled in the icon's
-  // colour, centred on the 24 grid by its drawing and scaled to 21 tall. Wrapped so it can hop
-  // (app/flow-a.css)
+  // the mushroom of the natureplore symbol (components/Logo.tsx): filled in the icon's colour,
+  // centred on the 24 grid by its drawing. Wrapped so it can hop (components/SuggestionsScreen.tsx)
   mushrooms: (
     <g className="mushroom-hop">
-      <path transform="translate(12 12) scale(0.832) translate(-16 -16.5)" fill="currentColor" stroke="none" d="M5.727 9.795a11.9 11.9 0 0 0-1.682 5.161C4.015 15.3 4 16.148 4 16.5c0 2.118.938 3.5 2.5 3.5h5.382l-1.829 4.963C9.332 26.92 10.781 29 12.868 29h6.12c2.146 0 3.597-2.187 2.765-4.164L19.717 20h5.748C27.483 20 28 18.023 28 16.5c0-.352-.015-1.2-.045-1.544c-.392-4.548-3.32-8.37-7.364-10.046A12 12 0 0 0 16 4c-1.123 0-2.21.154-3.242.443a12.03 12.03 0 0 0-7.031 5.352m8.159 10.55l.126-.345h3.551l.14.37l2.207 5.242A1 1 0 0 1 18.988 27h-6.12a1 1 0 0 1-.938-1.346zM19.55 8.7c-1.239-.715-1.916-1.86-1.513-2.559c.403-.698 1.734-.684 2.973.031s1.916 1.86 1.513 2.559c-.403.698-1.734.684-2.973-.03" />
+      <path transform="translate(12 12) scale(0.359) translate(-141.9 -176.45)" fill="currentColor" stroke="none" d="M119.53 180.75C114.68 178.02 112.85 171.65 114.68 165.29C118 155.27 128.93 149.22 140.14 148.61C152.58 148 163.48 154.97 168.03 164.68C171.97 173.16 169.25 180.45 161.68 181.36C155.31 182.25 151.62 180.36 150.06 176.98C154.75 178.29 158.63 175.59 159.25 171.96C160.26 166.02 153.24 159.55 148.03 158.69C140.74 157.49 136.52 160.41 135.59 167.08C134.39 175.27 143.38 178.5 149.45 183.35C155.52 188.2 155.6 194.09 154.09 199.24C152.88 203.48 146.81 205.3 141.96 203.79C137.11 202.26 136.19 200.14 136.19 195.59C136.19 192.27 135.59 188.92 135.59 186.2C135.59 182.87 134.39 181.05 131.34 181.36C127.4 182.57 122.55 182.57 119.53 180.75Z" />
     </g>
   ),
   birds: (
