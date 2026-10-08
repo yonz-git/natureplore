@@ -99,8 +99,8 @@ export default function TabBar() {
                 className={`tabbar-tab${current ? " is-current" : ""}`}
               >
                 <svg
-                  width="22"
-                  height="22"
+                  width="1.375rem"
+                  height="1.375rem"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"

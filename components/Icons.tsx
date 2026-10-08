@@ -1,5 +1,6 @@
 // The icons the map screens share, drawn as on the version 6 boards: a 24 box, round caps and
-// joins, stroke 1.5 for controls and 1.4 for the organism groups. Size is set where they are used.
+// joins, stroke 1.5 for controls and 1.4 for the organism groups. Size is set where they are used, in
+// px at the default text size, and drawn in rem so the icons grow with the reader's own font size.
 
 import type { Group } from "@/lib/routes";
 
@@ -8,8 +9,8 @@ type P = { size?: number; className?: string };
 function Svg({ size = 19, className, stroke = 1.5, fill = "none", children }: P & { stroke?: number; fill?: string; children: React.ReactNode }) {
   return (
     <svg
-      width={size}
-      height={size}
+      width={`${size / 16}rem`}
+      height={`${size / 16}rem`}
       viewBox="0 0 24 24"
       aria-hidden="true"
       className={className}
