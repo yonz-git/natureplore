@@ -45,10 +45,10 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   const home = region.id === HOME_REGION;
   const routes = routesIn(region);
   const organisms = organismsIn(region);
-  // On Organisms, the groups in season here sit beside the switch as filters. None picked shows all;
-  // each one picked narrows the list to those groups.
+  // On Organisms, all five groups sit beside the switch as filters, the ones with nothing in season
+  // here dimmed and unpickable. None picked shows all; each one picked narrows the list to those.
   const [picked, setPicked] = useState<Group[]>([]);
-  const groups = GROUPS.filter((g) => organisms.some(({ organism }) => organism.group === g.id));
+  const has = (g: Group) => organisms.some(({ organism }) => organism.group === g);
   const shown = picked.length ? organisms.filter(({ organism }) => picked.includes(organism.group)) : organisms;
   const pick = (g: Group) => setPicked((now) => (now.includes(g) ? now.filter((x) => x !== g) : [...now, g]));
   // the region's routes on the map, a memo so the map is built once per region
@@ -112,17 +112,18 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           </div>
           {/* inert, not removed, while on Routes, so the toggles can fade out as well as in */}
           <div role="group" aria-label="Filter by group" className={`sg-groups${show === "organisms" ? " is-on" : ""}`} inert={show !== "organisms"}>
-            {groups.map((g) => (
+            {GROUPS.map((g) => (
               <button
                 key={g.id}
                 type="button"
                 className={`sg-group glass glass-pill is-${g.id}`}
                 aria-pressed={picked.includes(g.id)}
-                aria-label={g.label}
-                title={g.label}
-                onClick={() => pick(g.id)}
+                aria-disabled={!has(g.id) || undefined}
+                aria-label={has(g.id) ? g.label : `${g.label}, none in season here`}
+                title={has(g.id) ? g.label : `${g.label}: none in season here`}
+                onClick={() => has(g.id) && pick(g.id)}
               >
-                <GroupIcon group={g.id} size={20} />
+                <GroupIcon group={g.id} size={14} />
               </button>
             ))}
           </div>
