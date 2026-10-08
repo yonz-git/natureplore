@@ -228,7 +228,6 @@
   z-index: 1;
   height: 2.5rem;
   aspect-ratio: 78 / 92;
-  color: var(--color-mist);
   opacity: 0;
   pointer-events: none;
 }
