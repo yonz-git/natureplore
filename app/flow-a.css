@@ -651,7 +651,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg .glass-desk .sg-group.glass { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 0 0 rgb(6 18 9 / 0); }
 }
 /* each group icon centred by its drawing, not its 24 box: most sit a touch low, the bird also right */
-.sg-group.is-mammals svg { translate: 0 -0.0095rem; }
 /* the pivots of the two moving group icons: the herbs at the foot of the stem (2.02, 21.9 on the 24
    grid), the mushroom at the foot of its stem (12, 22), the plant where its leaves meet (12, 23.4) */
 .herbs-sway { transform-box: view-box; transform-origin: 2.02px 21.9px; }
