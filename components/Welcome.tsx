@@ -126,7 +126,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
           </h1>
           <p className="a02-lead">What nests and grows there, and what is happening to them.</p>
           <Link href="/map/start" className="a02-cta">
-            View map
+            Start Natureploring
           </Link>
         </main>
 
