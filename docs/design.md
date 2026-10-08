@@ -246,21 +246,21 @@ components:
     textColor: "{colors.on-primary}"
     typography: "{typography.button}"
     rounded: "{rounded.button}"
-    height: 3.375rem
+    height: 3.1185rem
     padding: 0 1.75rem
   button-primary-pressed:
     backgroundColor: "{colors.primary-deep}"
     textColor: "{colors.on-primary}"
     typography: "{typography.button}"
     rounded: "{rounded.button}"
-    height: 3.375rem
+    height: 3.1185rem
     padding: 0 1.75rem
   button-secondary:
     backgroundColor: "{colors.inner-fill}"
     textColor: "{colors.on-ground}"
     typography: "{typography.button-secondary}"
     rounded: "{rounded.button}"
-    height: 3.375rem
+    height: 3.1185rem
     padding: 0 1.75rem
   field-search:
     backgroundColor: "{colors.glass-fill}"
@@ -505,7 +505,7 @@ Photographs always sit under a dark filter so white text holds. The standard fil
 
 ## Shapes
 
-Radius follows depth. A card on the photograph is 28. Anything inside a card is 18. Anything inside that is 12. Buttons are 28 at 54 tall, so they read as full pills. Every other pill (fields, chips, segments, tags, the tab bar, the desktop nav) has a radius of exactly half its height: 52 gives 26, 40 gives 20, 36 gives 18, 30 gives 15, 70 gives 35. Round controls, icon discs, orbs and markers are circles. Images are rounded rectangles on the same depth rule, never circles.
+Radius follows depth. A card on the photograph is 28. Anything inside a card is 18. Anything inside that is 12. Buttons are full pills at 50 tall. Every other pill (fields, chips, segments, tags, the tab bar, the desktop nav) has a radius of exactly half its height: 52 gives 26, 40 gives 20, 36 gives 18, 30 gives 15, 70 gives 35. Round controls, icon discs, orbs and markers are circles. Images are rounded rectangles on the same depth rule, never circles.
 
 The search field is a full pill. That overrides the earlier "inputs 8" line in the scale, and applies to every field. Sheets round only their top corners, 28. Month bars round 10 on top and 4 at the base. The only square-ish radius is the 3px sheet handle.
 
@@ -515,7 +515,7 @@ Motion shows what changed and nothing else. Every movement uses one strong ease-
 
 ## Components
 
-`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule: 80% of the column and centred on phone (two sharing a bar split it instead), hugging their label on tablet and desktop. There they are centred when they close a full-width grid or list ("Show all", "See all", "Open the route") and start-aligned when they follow a text block or sit in a stack with a field. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in Alpino 400 15, the same 54 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so a button that ends in a chevron takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
+`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule: 80% of the column and centred on phone (two sharing a bar split it instead), hugging their label on tablet and desktop. There they are centred when they close a full-width grid or list ("Show all", "See all", "Open the route") and start-aligned when they follow a text block or sit in a stack with a field. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in Alpino 400 15, the same 50 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so a button that ends in a chevron takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
 
 States, for every control. Hover (mouse and pen only): the primary dims to brightness 0.96, glass and inner glass controls take a white 8% wash. Focus: a 2px `mist` outline 3 outside the shape, following its radius, never removed. Pressed: scale 0.97. Disabled: 45% opacity, no press, and the reason said next to it. Loading: the primary keeps its width, its label gives way to an 18 spinner in `on-primary`, and it is marked busy. A field with a problem keeps its shape, its edge rises to white 40%, and a `caption` line with an alert icon under it says what to do; there is no red, the words carry it.
 

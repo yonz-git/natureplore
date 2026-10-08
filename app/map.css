@@ -11,7 +11,7 @@
    one line wherever it fits; with large text on a narrow screen it wraps inside the button rather
    than running out of it. */
 .btn {
-  min-height: 3.375rem;
+  min-height: 3.1185rem;
   padding: 0.75rem 1.75rem;
   box-sizing: border-box;
   display: flex;

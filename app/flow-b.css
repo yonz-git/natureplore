@@ -365,7 +365,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .b1-note svg { flex-shrink: 0; color: var(--color-mist); }
 .b1-pin .b1-walk { flex-grow: 1; }
 /* with large text a label wraps inside its button rather than running out of the bar */
-.b1-pin .btn { min-width: 0; flex-shrink: 1; height: auto; min-height: 3.375rem; padding-top: 0.5rem; padding-bottom: 0.5rem; white-space: normal; text-align: center; }
+.b1-pin .btn { min-width: 0; flex-shrink: 1; height: auto; min-height: 3.1185rem; padding-top: 0.5rem; padding-bottom: 0.5rem; white-space: normal; text-align: center; }
 .b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-sm); line-height: 1.375rem; animation: fade-in 200ms var(--ease-out) both; }
 .b1-pin .b1-undo { padding: 0 1.5rem; }
 
