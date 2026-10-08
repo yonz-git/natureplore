@@ -106,16 +106,6 @@
   font-weight: 400;
   text-shadow: 0 1px 0.5rem rgb(0 0 0 / 0.45);
 }
-/* each label sits in a frosted box (app/glass.css); the glass recipe sets position: relative, the
-   label keeps its own absolute place beside the dot. Nothing above it animates opacity or transform
-   once the route has drawn, so the frost holds. */
-.a02-label.glass {
-  position: absolute;
-  /* a box, not a button: room all round and soft corners, never a pill */
-  padding: 0.75rem 1.125rem;
-  border-radius: var(--radius-tile);
-  text-shadow: none;
-}
 /* odd stops label to the left of the dot, even stops to the right */
 .a02-stop-1 .a02-label, .a02-stop-3 .a02-label { right: calc(100% + var(--a0-gap)); }
 .a02-stop-2 .a02-label, .a02-stop-4 .a02-label { left: calc(100% + var(--a0-gap)); }

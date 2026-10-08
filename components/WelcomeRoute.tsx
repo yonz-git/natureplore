@@ -140,7 +140,7 @@ export default function WelcomeRoute() {
       {STOPS.map((stop, i) => (
         <div key={stop} className={`a02-stop a02-stop-${i + 1}`}>
           <span className="a02-dot" />
-          <span className="a02-label glass glass-pill">{stop}</span>
+          <span className="a02-label">{stop}</span>
         </div>
       ))}
     </div>
