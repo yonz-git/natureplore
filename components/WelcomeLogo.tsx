@@ -26,7 +26,7 @@ const SYM = { x: 0, y: 64.87, w: 283.81, h: 265.34 };
 const LOGO = { w: 1729.5, h: 425.2 };
 const HOLD = 0.58; // seconds the whole logo is left standing once it is built
 const DISSOLVE = 0.38; // seconds the wordmark takes to go
-const TRAVEL = 2.0; // seconds, the symbol flying to its corner
+const TRAVEL = 1.0; // seconds, the symbol flying to its corner
 // The symbol does not slide to its corner, it flies there: up along a winding line, the bird on it
 // flapping, shrinking as it goes. The line is the user's sketch, as fractions of the way from the
 // corner (0) back to where the symbol starts (1), so it fits every screen; flown from 1 to 0.
