@@ -606,6 +606,99 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .seg-opt[aria-pressed="false"]:hover { background-color: rgb(255 255 255 / 0.08); }
 }
 .sg .seg { flex-shrink: 0; }
+/* the switch and, on Organisms, the group filters beside it; on a phone they wrap under it */
+.sg-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
+.sg-groups { display: none; gap: 0.25rem; /* about a third of 0.6875rem, a whole pixel */ transition: display 220ms allow-discrete; }
+/* on a line of their own, indented to start under the Organisms option (--org-x, measured) */
+.sg-groups.is-on { display: flex; flex-basis: 100%; padding-left: var(--org-x, 0); box-sizing: border-box; }
+/* each toggle fades and grows in on its own, a beat apart, never its row: the toggles are glass, and
+   animating anything above glass switches the frost off */
+.sg-group {
+  position: relative;
+  /* 3rem less 30%, rounded to 34 so every edge lands on a whole pixel */
+  width: 2.125rem;
+  height: 2.125rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  opacity: 0;
+  scale: 0.9;
+  transition: opacity 200ms var(--ease-out), scale 200ms var(--ease-out), transform 160ms var(--ease-out), background-color 200ms ease, box-shadow 200ms ease;
+}
+.sg-groups.is-on .sg-group { opacity: 1; scale: 1; }
+@starting-style { .sg-groups.is-on .sg-group { opacity: 0; scale: 0.9; } }
+.sg-groups.is-on .sg-group:nth-child(2) { transition-delay: 40ms; }
+.sg-groups.is-on .sg-group:nth-child(3) { transition-delay: 80ms; }
+.sg-groups.is-on .sg-group:nth-child(4) { transition-delay: 120ms; }
+.sg-groups.is-on .sg-group:nth-child(5) { transition-delay: 160ms; }
+.sg-group:active { transform: scale(0.94); }
+/* 44 tall to touch; across, the hit areas meet halfway into the gap so neighbours never overlap */
+.sg-group::before { content: ""; position: absolute; inset: calc((2.125rem - 2.75rem) / 2) -0.125rem; }
+/* One clean edge, for the switch and the group toggles alike: on these small pills the glass border,
+   its rim of light and the 1px top highlight stack into rings that never quite line up. They keep a
+   single 1px border; over the map (the phone) they keep their float shadow, inside the panel none. */
+.sg .seg.glass,
+.sg-group.glass {
+  border: 1px solid var(--color-inner-edge);
+  box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
+}
+@media (min-width: 64rem) {
+  /* on the desktop they sit inside the glass panel (app/glass.css, glass-desk): no float shadow */
+  .sg .glass-desk .seg.glass,
+  .sg .glass-desk .sg-group.glass { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 0 0 rgb(6 18 9 / 0); }
+}
+/* each group icon centred by its drawing, not its 24 box: most sit a touch low, the bird also right */
+/* The lopsided group icons are centred optically, not by their box (components/Icons.tsx): the herbs,
+   mushroom and bird move 70% of the way from their box centre to the centre of their ink, so a heavy
+   cap or a sparse stem does not pull them off the middle. The plant and the paw are even all round
+   and sit on their box centre, equal space above and below. The pivots below follow. */
+/* the pivots of the moving group icons: the herbs at the foot of the stem (2.02, 21.9 on the 24
+   grid), the mushroom at the foot of its stem (12, 22), the plant where its leaves meet (12, 23.4) */
+.herbs-sway { transform-box: view-box; transform-origin: 2.89px 22.12px; }
+.mushroom-hop { transform-box: view-box; transform-origin: 12.25px 22.99px; }
+.plant-rise { transform-box: view-box; transform-origin: 12px 23.44px; }
+/* the bird hops from its feet (12, 20.9 on the 24 grid); its wing sits inside the logo's own units,
+   so its shoulder is given in them (141, 104) */
+.bird-hop { transform-box: view-box; transform-origin: 12.1px 21.24px; }
+.bird-wing { transform-box: view-box; transform-origin: 141px 104px; }
+/* the paw steps from the foot of its pad (12, 21.6) */
+.paw-step { transform-box: view-box; transform-origin: 12px 22.94px; }
+/* their motion is played from components/SuggestionsScreen.tsx (GROUP_MOTION): once as the toggles
+   appear, dimmed or not, and again on hover and keyboard focus. A script, so a hover can restart a
+   motion the entrance already played. */
+.sg .seg.glass::after,
+.sg-group.glass::after { content: none; }
+/* a group with nothing in season here: dimmed, there to show what could be */
+.sg-groups.is-on .sg-group[aria-disabled="true"] { opacity: 0.4; cursor: default; }
+.sg-group[aria-disabled="true"]:active { transform: none; }
+/* each group in its own colour; picked, the toggle turns the dark forest green and the icon keeps
+   its colour, which reads on the dark at 6:1 and more (on the lime it fell to 1.3:1) */
+.sg-group.is-plants { color: var(--color-group-plants); }
+.sg-group.is-herbs { color: var(--color-group-herbs); }
+.sg-group.is-mushrooms { color: var(--color-group-mushrooms); }
+.sg-group.is-birds { color: var(--color-group-birds); }
+.sg-group.is-mammals { color: var(--color-group-mammals); }
+.sg-group.glass[aria-pressed="true"] {
+  /* frosted: the forest green at 55% over the toggle's own frost (glass in glass keeps one blur) */
+  /* shaded like the unselected glass: a touch lighter at the top, darker towards the bottom */
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 0.03) 0%, rgb(0 0 0 / 0.24) 100%),
+    rgb(from var(--color-ground) r g b / 0.55);
+  border-color: transparent;
+  /* the shading spans the whole circle, border included: sized to the inside only, it repeated into
+     the clear 1px border and drew its dark end along the top and its light end along the bottom */
+  background-origin: border-box;
+}
+@media (hover: hover) and (pointer: fine) {
+  .sg-group[aria-pressed="false"]:not([aria-disabled="true"]):hover { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 0 0 rgb(6 18 9 / 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sg-group { scale: 1; transition: opacity 120ms ease, background-color 200ms ease; }
+  .sg-groups.is-on .sg-group { transition-delay: 0ms; }
+}
 .sg-org-link { flex-grow: 1; min-width: 0; display: flex; align-items: center; gap: 0.875rem; color: var(--color-on-ground); text-decoration: none; }
 .sg-org-link > span:nth-child(2) { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1875rem; }
 .sg-org-link > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }

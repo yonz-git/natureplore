@@ -11,14 +11,14 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
-import { ChevronIcon, LeafIcon, ListIcon, MapIcon, PinIcon, RoutesIcon } from "@/components/Icons";
+import { ChevronIcon, GroupIcon, LeafIcon, ListIcon, MapIcon, PinIcon, RoutesIcon } from "@/components/Icons";
 import { useLocationPrompt } from "@/components/LocationDialog";
 import { MapTools, SearchField } from "@/components/MapParts";
 import { useSheet } from "@/components/SheetGrab";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { SuggestionCard } from "@/components/SuggestionCard";
-import { HERE } from "@/lib/routes";
+import { GROUPS, HERE, type Group } from "@/lib/routes";
 import { rememberList } from "@/lib/saved";
 import { organismPhoto } from "@/lib/photos";
 import { groupWord, HOME_REGION, MONTH, organismsIn, regionById, ROUTE_POINTS, ROUTE_TOTAL, routesIn } from "@/lib/suggestions";
@@ -28,6 +28,100 @@ const HERE_POINT: MapPoint = { id: "here", lat: HERE.lat, lon: HERE.lon, label: 
 function pointsFor(regionId: string, near: boolean): MapPoint[] {
   const own = ROUTE_POINTS.filter((p) => regionById(regionId).routes.includes(p.id));
   return near ? [HERE_POINT, ...own] : own;
+}
+
+// The group icons that move (app/flow-a.css has their pivots). The herbs: Lordicon's "hover-pinch"
+// for this drawing, rebuilt from its keyframes, the sprigs lifting and dipping back, swinging forward
+// and settling over 1.78s. The mushroom hops: squashes, springs up, lands with a squash and settles.
+type Motion = { part: string; frames: Keyframe[]; ms: number };
+const GROUP_MOTION: Partial<Record<Group, Motion[]>> = {
+  // the plant gathers on its stem, rises and opens, then sways and settles
+  plants: [{
+    part: ".plant-rise",
+    ms: 1300,
+    frames: [
+      { transform: "translateY(0) rotate(0) scale(1, 1)" },
+      { transform: "translateY(0) rotate(0) scale(1.05, 0.9)", offset: 0.16 },
+      { transform: "translateY(-0.6px) rotate(-3deg) scale(0.97, 1.07)", offset: 0.42 },
+      { transform: "translateY(0) rotate(2deg) scale(1.01, 0.98)", offset: 0.64 },
+      { transform: "translateY(0) rotate(-1deg) scale(1, 1)", offset: 0.82 },
+      { transform: "translateY(0) rotate(0) scale(1, 1)" },
+    ],
+  }],
+  herbs: [{
+    part: ".herbs-sway",
+    ms: 1780,
+    frames: [
+      { transform: "translateY(0) rotate(0)" },
+      { transform: "translateY(-0.56px) rotate(-9deg)", offset: 0.29 },
+      { transform: "translateY(-0.42px) rotate(5deg)", offset: 0.49 },
+      { transform: "translateY(-0.28px) rotate(-3deg)", offset: 0.69 },
+      { transform: "translateY(-0.12px) rotate(1deg)", offset: 0.86 },
+      { transform: "translateY(0) rotate(0)" },
+    ],
+  }],
+  mushrooms: [{
+    part: ".mushroom-hop",
+    ms: 1100,
+    frames: [
+      { transform: "translateY(0) scale(1, 1)" },
+      { transform: "translateY(0) scale(1.08, 0.88)", offset: 0.14 },
+      { transform: "translateY(-2.2px) scale(0.96, 1.06)", offset: 0.38 },
+      { transform: "translateY(0) scale(1.06, 0.92)", offset: 0.58 },
+      { transform: "translateY(-0.5px) scale(0.99, 1.02)", offset: 0.76 },
+      { transform: "translateY(0) scale(1, 1)" },
+    ],
+  }],
+  // the paw steps: it presses down, lifts with a turn, lands and settles
+  mammals: [{
+    part: ".paw-step",
+    ms: 900,
+    frames: [
+      { transform: "translateY(0) rotate(0) scale(1)" },
+      { transform: "translateY(1px) rotate(0) scale(0.92)", offset: 0.2 },
+      { transform: "translateY(-1.2px) rotate(-8deg) scale(1.04)", offset: 0.42 },
+      { transform: "translateY(0) rotate(4deg) scale(0.98)", offset: 0.64 },
+      { transform: "translateY(0) rotate(-2deg) scale(1)", offset: 0.82 },
+      { transform: "translateY(0) rotate(0) scale(1)" },
+    ],
+  }],
+  // the bird hops with its wing beating: the body rises and tilts while the wing flaps from its
+  // shoulder, quicker than the hop
+  birds: [
+    {
+      part: ".bird-hop",
+      ms: 1000,
+      frames: [
+        { transform: "translateY(0) rotate(0) scale(1, 1)" },
+        { transform: "translateY(0) rotate(0) scale(1.05, 0.92)", offset: 0.18 },
+        { transform: "translateY(-2px) rotate(-6deg) scale(0.98, 1.04)", offset: 0.45 },
+        { transform: "translateY(0) rotate(2deg) scale(1.04, 0.95)", offset: 0.7 },
+        { transform: "translateY(0) rotate(0) scale(1, 1)" },
+      ],
+    },
+    {
+      part: ".bird-wing",
+      ms: 1000,
+      frames: [
+        { transform: "rotate(0)" },
+        { transform: "rotate(-28deg)", offset: 0.15 },
+        { transform: "rotate(30deg)", offset: 0.3 },
+        { transform: "rotate(-22deg)", offset: 0.45 },
+        { transform: "rotate(20deg)", offset: 0.6 },
+        { transform: "rotate(-8deg)", offset: 0.78 },
+        { transform: "rotate(0)" },
+      ],
+    },
+  ],
+};
+function playGroup(button: HTMLElement, group: Group, delay = 0) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  for (const motion of GROUP_MOTION[group] ?? []) {
+    const part = button.querySelector<SVGGElement>(motion.part);
+    if (!part) continue;
+    part.getAnimations().forEach((a) => a.cancel());
+    part.animate(motion.frames, { duration: motion.ms, delay, easing: "cubic-bezier(0.33, 0, 0.67, 1)", fill: "backwards" });
+  }
 }
 
 export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { near: boolean; regionId?: string }) {
@@ -45,6 +139,32 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   const home = region.id === HOME_REGION;
   const routes = routesIn(region);
   const organisms = organismsIn(region);
+  // On Organisms, all five groups sit beside the switch as filters, the ones with nothing in season
+  // here dimmed and unpickable. None picked shows all; each one picked narrows the list to those.
+  const [picked, setPicked] = useState<Group[]>([]);
+  const has = (g: Group) => organisms.some(({ organism }) => organism.group === g);
+  const shown = picked.length ? organisms.filter(({ organism }) => picked.includes(organism.group)) : organisms;
+  const pick = (g: Group) => setPicked((now) => (now.includes(g) ? now.filter((x) => x !== g) : [...now, g]));
+  // the toggles line up under the Organisms option they filter: its left edge, measured, is their indent
+  const switchRow = useRef<HTMLDivElement>(null);
+  const groupRow = useRef<HTMLDivElement>(null);
+  // as the toggles appear the moving icons play once, a beat after they grow in, dimmed or not
+  useEffect(() => {
+    if (show !== "organisms") return;
+    groupRow.current?.querySelectorAll<HTMLElement>("[data-group]").forEach((b, i) => playGroup(b, b.dataset.group as Group, 120 + i * 40));
+  }, [show]);
+  const orgOpt = useRef<HTMLButtonElement>(null);
+  useLayoutEffect(() => {
+    const row = switchRow.current;
+    const opt = orgOpt.current;
+    if (!row || !opt) return;
+    const place = () => row.style.setProperty("--org-x", `${opt.getBoundingClientRect().left - row.getBoundingClientRect().left}px`);
+    const watch = new ResizeObserver(place);
+    watch.observe(row);
+    watch.observe(opt);
+    place();
+    return () => watch.disconnect();
+  }, []);
   // the region's routes on the map, a memo so the map is built once per region
   const points = useMemo(() => pointsFor(regionId, near), [regionId, near]);
   const { ask, prompt } = useLocationPrompt();
@@ -93,15 +213,38 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
       <div className="ms-panel glass-desk">
         <div className="ms-bar">
           {!desk && <SearchField />}
+          <div className="sg-switch" ref={switchRow}>
           <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill">
             <button type="button" className="seg-opt" aria-pressed={show === "routes"} onClick={() => setShow("routes")}>
               <RoutesIcon size={18} />
               Routes
             </button>
-            <button type="button" className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
+            <button type="button" ref={orgOpt} className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
               <LeafIcon size={18} />
               Organisms
             </button>
+          </div>
+          {/* inert, not removed, while on Routes, so the toggles can fade out as well as in */}
+          <div role="group" aria-label="Filter by group" ref={groupRow} className={`sg-groups${show === "organisms" ? " is-on" : ""}`} inert={show !== "organisms"}>
+            {GROUPS.map((g) => (
+              <button
+                key={g.id}
+                type="button"
+                className={`sg-group glass glass-pill is-${g.id}`}
+                aria-pressed={picked.includes(g.id)}
+                aria-disabled={!has(g.id) || undefined}
+                aria-label={has(g.id) ? g.label : `${g.label}, none in season here`}
+                title={has(g.id) ? g.label : `${g.label}: none in season here`}
+                data-group={g.id}
+                onClick={() => has(g.id) && pick(g.id)}
+                // again under a mouse or on keyboard focus, when the group can be picked
+                onPointerEnter={(e) => e.pointerType === "mouse" && has(g.id) && playGroup(e.currentTarget, g.id)}
+                onFocus={(e) => e.currentTarget.matches(":focus-visible") && has(g.id) && playGroup(e.currentTarget, g.id)}
+              >
+                <GroupIcon group={g.id} size={18.2} />
+              </button>
+            ))}
+          </div>
           </div>
         </div>
 
@@ -120,7 +263,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
               <p className="sg-scope">{near ? `Near you, in ${region.name}` : region.name}</p>
               <p className="ms-lead">
                 {show === "organisms"
-                  ? `${organisms.length} in season along ${routes.length} route${routes.length > 1 ? "s" : ""}`
+                  ? `${shown.length} in season along ${routes.length} route${routes.length > 1 ? "s" : ""}`
                   : near
                     ? "Sorted by how many spots are in season, then by distance"
                     : "Sorted by how many spots are in season"}
@@ -169,7 +312,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             <div className="sg-list" key="organisms">
               <div className="saved-card a8-group">
                 <ul className="a8-rows">
-                  {organisms.map(({ organism: o, routes: on, href }) => {
+                  {shown.map(({ organism: o, routes: on, href }) => {
                     const photo = organismPhoto(o.name);
                     const body = (
                       <>

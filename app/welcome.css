@@ -202,8 +202,15 @@
 .a0-hero { display: none; }
 
 /* the opening, once on load: the line writes itself letter by letter
-   (components/WelcomeHero.tsx), then the cue arrives under it */
-.a0s .a0-cue span { animation: a0-arrive 800ms var(--a0-ease) 2300ms both; }
+   (components/WelcomeHero.tsx), and the cue arrives under it as "all" starts to appear: the 12th
+   letter, 11 staggers of 60ms in. FIRST in components/WelcomeCue.tsx follows this delay. */
+.a0s .a0-cue span { animation: a0-arrive 800ms var(--a0-ease) 660ms both; }
+/* The letters start when the page's script does, which can be a few hundred ms after this stylesheet,
+   so with scripting the cue holds until WelcomeCue, mounting on the same frame as the line, sets
+   data-go: the 660ms then count from the same moment as the letters. */
+@media (scripting: enabled) {
+  .a0s .a0-cue:not([data-go]) span { animation-play-state: paused; }
+}
 
 /* The scroll choreography. components/WelcomeScroll.tsx writes --a0-p on each of these elements: the
    scroll progress from 0 to 1, eased so the page glides after the scroll instead of stepping with it.
@@ -217,6 +224,12 @@
      there on its own clock (components/WelcomeLogo.tsx). The page is this tall so that the circle
      opens over a long scroll rather than a flick of the wheel. */
   .a0s { height: 350vh; }
+  /* No scrollbar while the opening plays. Where the system draws one beside the page (a Mac with a
+     mouse, Windows) it took 15px off the width, and at a0-done, with nothing left to scroll, it went
+     and gave them back: everything placed from the middle moved 7.5px right on the frame the symbol
+     landed, so the symbol jumped beside the lit one fading in over it. */
+  html:has(.a0s) { scrollbar-width: none; }
+  html:has(.a0s)::-webkit-scrollbar { display: none; }
   /* Once it has all played, the page is A0 and nothing else: no scroller, nothing above it to go
      back to (components/WelcomeLogo.tsx sets a0-done on the frame the logo lands). Everything the
      scroll was driving is put in its finished state here, because the scroll position itself is gone:
@@ -313,7 +326,8 @@
   /* The opening line and the cue go first, as the photograph starts to open behind them. What is
      left of the scroll opens the photograph, and nothing else waits on it. */
   .a0s .a0-cue { animation-name: a0s-leave; --a0-s: 0; --a0-e: 0.08; }
-  .a0s .a0-hero { animation-name: a0s-leave; --a0-s: 0.04; --a0-e: 0.25; }
+  /* the line is gone before the logo starts building over it (WELCOME_START, 0.17) */
+  .a0s .a0-hero { animation-name: a0s-leave; --a0-s: 0.02; --a0-e: 0.16; }
 
   /* A0 arrives on the frame the logo lands in its corner, one layer after another, and the route
      draws itself over the photograph (components/WelcomeLogo.tsx sets a0-open, and
