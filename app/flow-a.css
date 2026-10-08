@@ -606,6 +606,50 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .seg-opt[aria-pressed="false"]:hover { background-color: rgb(255 255 255 / 0.08); }
 }
 .sg .seg { flex-shrink: 0; }
+/* the switch and, on Organisms, the group filters beside it; on a phone they wrap under it */
+.sg-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.sg-groups { display: none; gap: 0.375rem; transition: display 220ms allow-discrete; }
+.sg-groups.is-on { display: flex; }
+/* each toggle fades and grows in on its own, a beat apart, never its row: the toggles are glass, and
+   animating anything above glass switches the frost off */
+.sg-group {
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  opacity: 0;
+  scale: 0.9;
+  transition: opacity 200ms var(--ease-out), scale 200ms var(--ease-out), transform 160ms var(--ease-out), background-color 200ms ease, box-shadow 200ms ease;
+}
+.sg-groups.is-on .sg-group { opacity: 1; scale: 1; }
+@starting-style { .sg-groups.is-on .sg-group { opacity: 0; scale: 0.9; } }
+.sg-groups.is-on .sg-group:nth-child(2) { transition-delay: 40ms; }
+.sg-groups.is-on .sg-group:nth-child(3) { transition-delay: 80ms; }
+.sg-groups.is-on .sg-group:nth-child(4) { transition-delay: 120ms; }
+.sg-groups.is-on .sg-group:nth-child(5) { transition-delay: 160ms; }
+.sg-group:active { transform: scale(0.94); }
+/* each group in its own colour; picked, the toggle takes the lime and the forest ink */
+.sg-group.is-plants { color: var(--color-group-plants); }
+.sg-group.is-herbs { color: var(--color-group-herbs); }
+.sg-group.is-mushrooms { color: var(--color-group-mushrooms); }
+.sg-group.is-birds { color: var(--color-group-birds); }
+.sg-group.is-mammals { color: var(--color-group-mammals); }
+.sg-group[aria-pressed="true"] {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  color: var(--color-on-primary);
+}
+@media (hover: hover) and (pointer: fine) {
+  .sg-group[aria-pressed="false"]:hover { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.11), inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sg-group { scale: 1; transition: opacity 120ms ease, background-color 200ms ease; }
+  .sg-groups.is-on .sg-group { transition-delay: 0ms; }
+}
 .sg-org-link { flex-grow: 1; min-width: 0; display: flex; align-items: center; gap: 0.875rem; color: var(--color-on-ground); text-decoration: none; }
 .sg-org-link > span:nth-child(2) { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1875rem; }
 .sg-org-link > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }

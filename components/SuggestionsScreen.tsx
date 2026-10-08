@@ -11,14 +11,14 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
-import { ChevronIcon, LeafIcon, ListIcon, MapIcon, PinIcon, RoutesIcon } from "@/components/Icons";
+import { ChevronIcon, GroupIcon, LeafIcon, ListIcon, MapIcon, PinIcon, RoutesIcon } from "@/components/Icons";
 import { useLocationPrompt } from "@/components/LocationDialog";
 import { MapTools, SearchField } from "@/components/MapParts";
 import { useSheet } from "@/components/SheetGrab";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { SuggestionCard } from "@/components/SuggestionCard";
-import { HERE } from "@/lib/routes";
+import { GROUPS, HERE, type Group } from "@/lib/routes";
 import { rememberList } from "@/lib/saved";
 import { organismPhoto } from "@/lib/photos";
 import { groupWord, HOME_REGION, MONTH, organismsIn, regionById, ROUTE_POINTS, ROUTE_TOTAL, routesIn } from "@/lib/suggestions";
@@ -45,6 +45,12 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   const home = region.id === HOME_REGION;
   const routes = routesIn(region);
   const organisms = organismsIn(region);
+  // On Organisms, the groups in season here sit beside the switch as filters. None picked shows all;
+  // each one picked narrows the list to those groups.
+  const [picked, setPicked] = useState<Group[]>([]);
+  const groups = GROUPS.filter((g) => organisms.some(({ organism }) => organism.group === g.id));
+  const shown = picked.length ? organisms.filter(({ organism }) => picked.includes(organism.group)) : organisms;
+  const pick = (g: Group) => setPicked((now) => (now.includes(g) ? now.filter((x) => x !== g) : [...now, g]));
   // the region's routes on the map, a memo so the map is built once per region
   const points = useMemo(() => pointsFor(regionId, near), [regionId, near]);
   const { ask, prompt } = useLocationPrompt();
@@ -93,6 +99,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
       <div className="ms-panel glass-desk">
         <div className="ms-bar">
           {!desk && <SearchField />}
+          <div className="sg-switch">
           <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill">
             <button type="button" className="seg-opt" aria-pressed={show === "routes"} onClick={() => setShow("routes")}>
               <RoutesIcon size={18} />
@@ -102,6 +109,23 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
               <LeafIcon size={18} />
               Organisms
             </button>
+          </div>
+          {/* inert, not removed, while on Routes, so the toggles can fade out as well as in */}
+          <div role="group" aria-label="Filter by group" className={`sg-groups${show === "organisms" ? " is-on" : ""}`} inert={show !== "organisms"}>
+            {groups.map((g) => (
+              <button
+                key={g.id}
+                type="button"
+                className={`sg-group glass glass-pill is-${g.id}`}
+                aria-pressed={picked.includes(g.id)}
+                aria-label={g.label}
+                title={g.label}
+                onClick={() => pick(g.id)}
+              >
+                <GroupIcon group={g.id} size={20} />
+              </button>
+            ))}
+          </div>
           </div>
         </div>
 
@@ -120,7 +144,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
               <p className="sg-scope">{near ? `Near you, in ${region.name}` : region.name}</p>
               <p className="ms-lead">
                 {show === "organisms"
-                  ? `${organisms.length} in season along ${routes.length} route${routes.length > 1 ? "s" : ""}`
+                  ? `${shown.length} in season along ${routes.length} route${routes.length > 1 ? "s" : ""}`
                   : near
                     ? "Sorted by how many spots are in season, then by distance"
                     : "Sorted by how many spots are in season"}
@@ -169,7 +193,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             <div className="sg-list" key="organisms">
               <div className="saved-card a8-group">
                 <ul className="a8-rows">
-                  {organisms.map(({ organism: o, routes: on, href }) => {
+                  {shown.map(({ organism: o, routes: on, href }) => {
                     const photo = organismPhoto(o.name);
                     const body = (
                       <>
