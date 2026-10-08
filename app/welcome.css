@@ -143,14 +143,9 @@
 /* the corner holds the symbol alone, the wordmark dissolves before the flight
    (components/WelcomeLogo.tsx) */
 .a0-mark-corner { aspect-ratio: 283.81 / 265.34; }
-/* In its corner the symbol is a brighter lime than the logo it was built in, primary-glow into the
-   brand lime, fading in as it lands. The still page draws it in that lime from the start. */
+/* The logo is drawn in the bright lime, primary-glow into the brand lime, as it builds and in its
+   corner alike. The still page draws its corner symbol in the same lime. */
 .a0-mark {
-  --logo-lime: var(--color-primary);
-  --logo-lime-deep: var(--color-primary-deep);
-  transition: --logo-lime 600ms ease, --logo-lime-deep 600ms ease;
-}
-.a0-open .a0-mark {
   --logo-lime: var(--color-primary-glow);
   --logo-lime-deep: color-mix(in srgb, var(--color-primary-glow) 65%, var(--color-primary));
 }
@@ -299,11 +294,9 @@
     width: 100%;
     aspect-ratio: 1729.5 / 425.2;
     overflow: visible;
-    filter: brightness(1.265) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35));
-    transition: filter 600ms ease;
+    /* no brightness lift: the bright lime carries itself, a lift would wash it out to white */
+    filter: drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35));
   }
-  /* landed, the brighter lime carries itself: the lift that the brand lime needed would wash it out */
-  .a0s.a0-open .a0-mark .intro-logo { filter: brightness(1) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35)); }
 
   /* The opening line and the cue go first, as the photograph starts to open behind them. What is
      left of the scroll opens the photograph, and nothing else waits on it. */
