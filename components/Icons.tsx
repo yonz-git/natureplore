@@ -103,12 +103,16 @@ export const OfflineIcon = (p: P) => (
 );
 
 const GROUP_PATHS: Record<Group, React.ReactNode> = {
+  // a leafy houseplant, drawn on a 48 grid and taken out of its pot: the rosette of leaves over the
+  // knot of its stem. Centred on the 24 grid by its drawing; the stroke is set in the 48 grid's units
+  // so it lands at the 1.4 the other groups use.
   plants: (
-    <>
-      <path d="M12 21v-8" />
-      <path d="M12 13c-4 0-6.5-2.5-6.5-7 4.2 0 6.5 2.6 6.5 7z" />
-      <path d="M12 11c0-3.8 2.2-6 6-6 0 3.8-2.2 6-6 6z" />
-    </>
+    <g transform="translate(12 12) scale(0.75) translate(-24 -16.4)" strokeWidth={1.87}>
+      <path d="M26.214 27.297c-.138-2.389-1.175-3.345-1.826-3.653a1.504 1.504 0 0 0 .191-2.12a1.51 1.51 0 0 0-2.123-.191a1.504 1.504 0 0 0 0 2.311c-.653.309-1.862 1.689-1.599 3.653" />
+      <path d="M24.253 20.338c1.849.254 7.895 1.388 9.7 1.861a4.97 4.97 0 0 0-4.09-3.548c-3.39-.537-6.425 2.344-6.425 2.344m.035-.16s-.171-8.348-6.476-11.297a8.41 8.41 0 0 0-7.167.491c3.018 1.772 10.794 7.955 13.608 10.034" />
+      <path d="M23.426 20.992s-4.491-4.505-9.675-2.428c0 0-2.729 1.222-2.766 4.097c2.653-.703 9.71-2.26 12.431-2.614m.022.016c2.612-4.833 14.732-5.950 14.732-5.950s-1.664-4.997-11.260-1.447" />
+      <path d="M23.594 19.649C23.365 13.52 34.23 6.278 34.23 6.278a6.625 6.625 0 0 0-8.287 1.707c-.917 1.059-3.348 4.967-2.085 9.73" />
+    </g>
   ),
   // three sprigs on one stem, from Lordicon's "herbs" (wired 585): drawn as a filled outline on a 430
   // grid, so filled in the icon's colour rather than stroked, centred on the 24 grid by its drawing
