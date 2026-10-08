@@ -502,6 +502,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .a8-group > .saved-empty { margin: 0.875rem 0; padding: 0; background: none; border: 0; }
 .a8-more { padding: 0.25rem 0 1rem; display: flex; justify-content: center; }
 .a8-more .btn { align-self: auto; width: 80%; min-width: 0; }
+@media (min-width: 30rem) { .a8-more .btn { width: auto; } }
 /* with large text the card is narrow for its button: tighter padding so the label wraps inside it */
 .a8-group { container-type: inline-size; }
 @container (max-width: 12rem) {
