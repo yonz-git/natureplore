@@ -26,6 +26,8 @@ export const MUSH_IN = 1.9; // the mushroom the cue sent over is taken up here, 
 // logo units from its place: it pops in below and right of the logo
 export const MUSH_POP = { x: 463, y: 578 }; // components/WelcomeCue.tsx sends its mushroom here
 const MUSH_JUMPS = [2.3, 2.95]; // and jumps straight up into its place on the plant, which lands at 2.2s
+const BREEZE_FROM = 3.0; // the plant's fronds sway in a breeze from here, once it has settled
+const BREEZE_TO = 9.5; // and are still again by here, just before the symbol takes off (the welcome flies it about 1.7s after FLY)
 const SHAKE = 0.15; // seconds, one swing of the swan's head shake, side to side
 const PLANT_HOPS = 0.5; // the plant's first hop to its place, while its top fronds still unfurl
 const PLANT_HOP = 0.78; // seconds in the air, each hop: the second lands at 2.2s, just before the mushroom jumps
@@ -175,6 +177,24 @@ export function playIntro(root: HTMLElement, beats: IntroBeats, paused = false) 
       });
       t0 = land + 0.14;
     }
+    // the breeze: once the plant has settled, and until the symbol flies off, its fronds sway from
+    // side to side as if a light wind passed through them. Each frond turns about its own foot, a
+    // degree or two, the lower ones a beat ahead of the upper ones, each at its own slow pace so they
+    // drift in and out of step; they come to rest just before the symbol takes off for its corner.
+    const BREEZE = [
+      { f: [pBl, pBr], foot: "141 330", lean: 3, swing: 1.3, lag: 0 },
+      { f: pMid, foot: "141 268", lean: 2.5, swing: 1.5, lag: 0.2 },
+      { f: pTop, foot: "141 228", lean: 2, swing: 1.7, lag: 0.4 },
+    ];
+    BREEZE.forEach(({ f, foot, lean, swing, lag }) => {
+      const from = BREEZE_FROM + lag;
+      const sways = Math.max(1, Math.floor((BREEZE_TO - from - swing) / swing));
+      tl.set(f, { svgOrigin: foot }, from);
+      tl.to(f, { rotation: lean, duration: swing / 2, ease: "sine.out" }, from);
+      tl.to(f, { rotation: -lean, duration: swing, ease: "sine.inOut", repeat: sways - 1, yoyo: true }, ">");
+      tl.to(f, { rotation: 0, duration: swing / 2, ease: "sine.inOut" }, ">");
+    });
+
     // the three join: a soft pulse of the whole symbol
     tl.to(symbol, { scale: 1.05, duration: 0.25, ease: "sine.out" }, 5.65);
     tl.to(symbol, { scale: 1, duration: 0.6, ease: "elastic.out(1, 0.5)" }, ">");
