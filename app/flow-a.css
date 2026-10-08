@@ -651,20 +651,21 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg .glass-desk .sg-group.glass { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 0 0 rgb(6 18 9 / 0); }
 }
 /* each group icon centred by its drawing, not its 24 box: most sit a touch low, the bird also right */
-/* Each group icon is centred optically, not by its box (components/Icons.tsx): moved 70% of the way
-   from its box centre to the centre of its ink, so a heavy cap or a sparse stem does not pull it off
-   the middle. The pivots below follow those positions. */
+/* The lopsided group icons are centred optically, not by their box (components/Icons.tsx): the herbs,
+   mushroom and bird move 70% of the way from their box centre to the centre of their ink, so a heavy
+   cap or a sparse stem does not pull them off the middle. The plant and the paw are even all round
+   and sit on their box centre, equal space above and below. The pivots below follow. */
 /* the pivots of the moving group icons: the herbs at the foot of the stem (2.02, 21.9 on the 24
    grid), the mushroom at the foot of its stem (12, 22), the plant where its leaves meet (12, 23.4) */
 .herbs-sway { transform-box: view-box; transform-origin: 2.89px 22.12px; }
 .mushroom-hop { transform-box: view-box; transform-origin: 12.25px 22.99px; }
-.plant-rise { transform-box: view-box; transform-origin: 12px 22.75px; }
+.plant-rise { transform-box: view-box; transform-origin: 12px 23.44px; }
 /* the bird hops from its feet (12, 20.9 on the 24 grid); its wing sits inside the logo's own units,
    so its shoulder is given in them (141, 104) */
 .bird-hop { transform-box: view-box; transform-origin: 12.1px 21.24px; }
 .bird-wing { transform-box: view-box; transform-origin: 141px 104px; }
 /* the paw steps from the foot of its pad (12, 21.6) */
-.paw-step { transform-box: view-box; transform-origin: 12px 22.97px; }
+.paw-step { transform-box: view-box; transform-origin: 12px 23.52px; }
 /* their motion is played from components/SuggestionsScreen.tsx (GROUP_MOTION): once as the toggles
    appear, dimmed or not, and again on hover and keyboard focus. A script, so a hover can restart a
    motion the entrance already played. */
