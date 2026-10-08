@@ -314,8 +314,9 @@
     filter: brightness(1.265) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35));
     transition: filter 700ms ease;
   }
-  /* landed, the brighter lime carries itself: the lift that the brand lime needed would wash it out */
-  .a0s.a0-open .a0-mark .intro-logo { filter: brightness(1) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35)); }
+  /* landed, it brightens further: the fill's dark shading sits over the symbol's corner of the
+     drawing, and a filter on the visible logo is what reliably reaches it */
+  .a0s.a0-open .a0-mark .intro-logo { filter: brightness(1.7) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35)); }
 
   /* The opening line and the cue go first, as the photograph starts to open behind them. What is
      left of the scroll opens the photograph, and nothing else waits on it. */
