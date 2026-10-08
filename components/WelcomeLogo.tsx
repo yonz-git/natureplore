@@ -36,8 +36,31 @@ const ROUTE = [
   { x: 0.627, y: 0.241 }, { x: 0.505, y: 0.468 }, { x: 0.52, y: 0.582 }, { x: 0.673, y: 0.684 },
   { x: 0.916, y: 0.709 }, { x: 1.038, y: 0.797 }, { x: 1, y: 1 },
 ];
+// The sketch has corners where the hand turned; flown as drawn, the symbol jerked through them.
+// Rounded twice (Chaikin: every corner cut at a quarter and three quarters of its sides), it keeps
+// the sketch's shape and its two ends, and the flight through it runs on one smooth line.
+const rounded = (points: { x: number; y: number }[]) => [
+  points[0],
+  ...points.slice(0, -1).flatMap((a, i) => {
+    const b = points[i + 1];
+    return [
+      { x: a.x * 0.75 + b.x * 0.25, y: a.y * 0.75 + b.y * 0.25 },
+      { x: a.x * 0.25 + b.x * 0.75, y: a.y * 0.25 + b.y * 0.75 },
+    ];
+  }),
+  points[points.length - 1],
+];
+const FLIGHT = rounded(rounded(ROUTE));
+// The symbol shrinks to a tenth of its size or less on the way, and shrunk evenly it lost most of
+// its size in the last moments, snapping small just as it landed. This eases the shrink by ratio
+// instead, the same share smaller in every moment of the flight, on the same curve as the flight.
+const evenShrink = (to: number) => {
+  const curve = gsap.parseEase("sine.inOut");
+  if (Math.abs(to - 1) < 0.001) return curve;
+  return (p: number) => (Math.pow(to, curve(p)) - 1) / (to - 1);
+};
 const FLAP = 0.36; // seconds, one wingbeat
-// The plant's growth and hops play 30% shorter again, then the timeline eases back to PACE over
+// The opening can play OPENING times faster again (lib/intro-timeline.ts, 1 for now), then eases back to PACE over
 // EASE_BACK seconds, so the change of speed is never felt as a jolt, before the mushroom jumps.
 const OPENING = WELCOME_OPENING;
 const SWAN = 2.0; // timeline seconds: the ease back starts here, after the mushroom is taken over (1.9s) and before it jumps (2.3s)
@@ -92,7 +115,7 @@ export default function WelcomeLogo() {
       };
       if (!landing) return open();
       // the translation at each point of the line: none where the symbol starts, all of it in the corner
-      const path = [...ROUTE].reverse().map((f) => ({ x: landing.x * (1 - f.x), y: landing.y * (1 - f.y) }));
+      const path = [...FLIGHT].reverse().map((f) => ({ x: landing.x * (1 - f.x), y: landing.y * (1 - f.y) }));
       const wing = el.querySelector(".wing");
       const flyAt = HOLD + DISSOLVE * 0.6;
       travel = gsap
@@ -111,8 +134,8 @@ export default function WelcomeLogo() {
           },
           HOLD,
         )
-        .to(el, { duration: TRAVEL, ease: "sine.inOut", motionPath: { path, curviness: 1.25 } }, flyAt)
-        .to(el, { scale: landing.scale, duration: TRAVEL, ease: "power2.inOut" }, flyAt)
+        .to(el, { duration: TRAVEL, ease: "sine.inOut", motionPath: { path, curviness: 1 } }, flyAt)
+        .to(el, { scale: landing.scale, duration: TRAVEL, ease: evenShrink(landing.scale) }, flyAt)
         // the bird beats its wing the whole way up, and has it folded as the symbol lands
         .to(wing, {
           keyframes: [{ rotation: -24, duration: 0.1 }, { rotation: 44, duration: 0.15 }, { rotation: 0, duration: 0.11 }],
