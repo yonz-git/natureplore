@@ -34,6 +34,8 @@ const HOPS = [
 ];
 const LEAP = 0.6; // seconds, the flight away
 const OPEN_AFTER = 0.4; // seconds into the flight, a click opens the map
+// everything above is written at the pace it was drawn; the squirrel plays it this much faster
+const SPEED = 2;
 
 export default function CtaSquirrel() {
   const ref = useRef<HTMLSpanElement>(null);
@@ -66,6 +68,7 @@ export default function CtaSquirrel() {
         gsap.set(el, { x: ground.x, y: ground.y, rotation: TILT_SIT, scale: 0.9, opacity: 0, transformOrigin: "50% 100%" });
         tl = gsap
           .timeline()
+          .timeScale(SPEED)
           // appears where it stands
           .to(el, { opacity: 1, scale: 1, duration: 0.18, ease: "power3.out" })
           // hops up onto the button in one arc
@@ -113,6 +116,7 @@ export default function CtaSquirrel() {
         const away = { x: x + 6 * r, y: y - 7 * r };
         tl = gsap
           .timeline({ onComplete: () => void (state = "idle") })
+          .timeScale(SPEED)
           .to(el, { scaleY: 0.88, scaleX: 1.06, duration: 0.08, ease: "power2.out" })
           .addLabel("leap")
           .to(el, { scaleY: 1.08, scaleX: 0.94, rotation: TILT_LEAP, duration: 0.16, ease: "power2.out" }, "leap")
@@ -135,7 +139,7 @@ export default function CtaSquirrel() {
         e.preventDefault();
         leave();
         const href = button.getAttribute("href");
-        if (href) gsap.delayedCall(0.08 + OPEN_AFTER, () => router.push(href));
+        if (href) gsap.delayedCall((0.08 + OPEN_AFTER) / SPEED, () => router.push(href));
       });
 
       button.addEventListener("pointerenter", enter);
