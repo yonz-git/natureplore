@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { INTRO_LOGO_SVG } from "@/components/intro-logo";
-import { playIntro } from "@/lib/intro-timeline";
+import { playIntro, WELCOME_OPENING, WELCOME_PACE } from "@/lib/intro-timeline";
 import { followProgress } from "@/lib/welcome-progress";
 
 // The logo on A0 · Welcome. The page opens with no logo at all: the timeline (lib/intro-timeline.ts)
@@ -19,7 +19,7 @@ import { followProgress } from "@/lib/welcome-progress";
 // empty corner slot, so both sizes and every window width follow the CSS.
 
 const START = 0.45; // of the scroll: the circle is about half open by here, and the logo starts
-const PACE = 2.109; // the timeline runs this much faster than it was written (1.35, then 20% shorter twice)
+const PACE = WELCOME_PACE; // the timeline runs this much faster than it was written
 // the symbol's own corner of the logo, in the logo's viewBox units: the pieces are drawn as clipped
 // copies of one fill, so their boxes are the fill's and cannot be measured. These are the drawing.
 const SYM = { x: 0, y: 64.87, w: 283.81, h: 265.34 };
@@ -38,7 +38,7 @@ const ROUTE = [
 const FLAP = 0.36; // seconds, one wingbeat
 // Everything before the swan rises (3.2s in the timeline) plays 30% shorter again, then eases back
 // to PACE over EASE_BACK seconds so the change of speed is never felt as a jolt.
-const OPENING = 1 / 0.7;
+const OPENING = WELCOME_OPENING;
 const SWAN = 3.0; // timeline seconds: the ease back starts just before the swan, so it rises at PACE
 const EASE_BACK = 0.25;
 

@@ -23,7 +23,7 @@ gsap.registerPlugin(MotionPathPlugin);
 // letters are still rising, so the liquid layer is loaded and ready; as "plore" comes up the
 // photograph fades off it and the green field takes over; once the squirrel has landed the logo is
 // free to leave for the welcome's own corner.
-const MUSH_IN = 1.2; // the mushroom the cue sent over is taken up here, first of the three
+export const MUSH_IN = 1.2; // the mushroom the cue sent over is taken up here, first of the three
 const MUSH_HELLO = 1.65; // it jumps once, to where it waits for the plant
 // logo units from its place: it pops in below and right of the logo, and waits below the symbol
 export const MUSH_POP = { x: 463, y: 578 }; // components/WelcomeCue.tsx sends its mushroom here
@@ -33,6 +33,12 @@ const PLANT_HOPS = 1.5; // the plant's first hop, so its second lands (2.7s) bet
 const WARM = 5.1;
 const OPEN = 6.0;
 const FLY = 8.0;
+
+// How fast the welcome plays this timeline (components/WelcomeLogo.tsx): PACE throughout, and the
+// opening, up to the swan, OPENING times faster again. Here so the cue (components/WelcomeCue.tsx)
+// can hand its mushroom over on the frame the logo's own pops in, whatever the speed.
+export const WELCOME_PACE = 2.109; // 1.35, then 20% shorter twice
+export const WELCOME_OPENING = 1 / 0.7;
 
 export type IntroBeats = { onWarm: () => void; onOpen: () => void; onFly: () => void };
 

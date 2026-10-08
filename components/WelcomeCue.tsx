@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 
-import { MUSH_POP } from "@/lib/intro-timeline";
+import { MUSH_IN, MUSH_POP, WELCOME_OPENING, WELCOME_PACE } from "@/lib/intro-timeline";
 import { followProgress } from "@/lib/welcome-progress";
 
 gsap.registerPlugin(SplitText);
@@ -24,7 +24,11 @@ const LEAVES = 0.02; // of the scroll: the mushroom is on its way by here
 const ARRIVES = 0.45; // and in the logo by here, which is when the logo starts (WelcomeLogo)
 const HOPS = 3; // arcs it makes on the way over
 const RISE = 90; // px, how high the first arc takes it
-const HANDOVER = 0.9; // seconds after the logo starts, when its own mushroom pops into the same place
+// seconds after the logo starts, when its own mushroom pops into the same place. Worked out from the
+// logo's own beat and speed: a fixed number here went stale when the logo was sped up, and the two
+// mushrooms stood side by side while this one waited to leave.
+const HANDOVER = MUSH_IN / (WELCOME_PACE * WELCOME_OPENING);
+const HAND_FADE = 0.08; // seconds: gone before the logo's mushroom makes its first jump
 const GROUND = "#FAFBF5"; // --color-on-field, the cue's own colour
 const LOGO_INK = "#AEB779"; // --color-primary, what the logo is drawn in
 
@@ -113,7 +117,7 @@ export default function WelcomeCue({ text }: { text: string }) {
         });
         // in place, waiting for the logo's own mushroom to pop in under it
         if (run >= 1 && !handing) {
-          handing = gsap.to(sprout, { opacity: 0, duration: 0.25, delay: HANDOVER, ease: "none" });
+          handing = gsap.to(sprout, { opacity: 0, duration: HAND_FADE, delay: HANDOVER, ease: "none" });
         }
       };
 
