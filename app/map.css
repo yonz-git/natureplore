@@ -28,8 +28,10 @@
   transition: transform 160ms var(--ease-out);
 }
 .btn:active { transform: scale(0.97); }
-/* two buttons sharing a bar split it between them instead */
-.b1-pin .btn { width: auto; }
+/* a button inside a section, a bar or a card, hugs its label on the phone too, as on the desktop:
+   80% is for the buttons that close a page */
+.b1-pin .btn,
+.saved-card .btn { width: auto; }
 /* 80% is for a phone's width only: anything wider than a phone hugs the label, as on the desktop,
    so no window between phone and tablet gets a stretched button */
 @media (min-width: 30rem) { /* phone-max */
