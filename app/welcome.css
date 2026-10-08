@@ -143,6 +143,24 @@
 /* the corner holds the symbol alone, the wordmark dissolves before the flight
    (components/WelcomeLogo.tsx) */
 .a0-mark-corner { aspect-ratio: 283.81 / 265.34; }
+/* the built logo's lime (components/intro-logo.ts): the brand lime into its deeper step */
+.a0-mark {
+  --logo-lime: var(--color-primary);
+  --logo-lime-deep: var(--color-primary-deep);
+}
+/* The built logo carries the fill's dark shading, which sits right over the symbol's corner and made
+   it dull up there. As it lands it crossfades into a clean symbol in the button's lime, in the same
+   box, so the corner symbol matches Start Natureploring. */
+.a0-mark { transition: opacity 700ms ease; }
+.a0-mark-lit { opacity: 0; transition: opacity 700ms ease; }
+.a0-open .a0-mark { opacity: 0; }
+.a0-open .a0-mark-lit { opacity: 1; }
+.a0-mark-corner { color: var(--color-primary); }
+/* the tablet keeps the desktop's corner symbol size, 2.125rem tall */
+@media (min-width: 48rem) {
+  .a0-mark,
+  .a0-mark-corner { height: 2.125rem; }
+}
 .a0-mark-corner svg { display: block; height: 100%; width: auto; }
 .a0-mark .intro-logo { height: 100%; width: auto; filter: none; }
 .a0-mark-slot { visibility: hidden; }
@@ -288,7 +306,9 @@
     aspect-ratio: 1729.5 / 425.2;
     overflow: visible;
     filter: brightness(1.265) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35));
+    transition: filter 700ms ease;
   }
+
 
   /* The opening line and the cue go first, as the photograph starts to open behind them. What is
      left of the scroll opens the photograph, and nothing else waits on it. */
@@ -369,7 +389,7 @@
   .a0-mark,
   .a0-mark-corner {
     top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 2.125rem) / 2);
-    left: 2.5rem;
+    left: var(--spacing-inset-screen); /* the same inset as the tablet, 2rem from 64rem */
     height: 2.125rem;
   }
   .a0-blob-1 { left: -18%; top: -20%; width: 68%; }
