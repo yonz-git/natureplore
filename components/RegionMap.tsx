@@ -102,6 +102,8 @@ const REGION_POINTS: MapPoint[] = CLUSTERS.map(([count, lat, lon, where]) => ({
   label: `${count} routes ${where}, zoom in`,
 }));
 
+// two route discs closer than this, centre to centre, overlap: a 32 disc and its double ring
+const SPOT_GAP = 40;
 type Pin = MapPoint & { x: number; y: number; free: boolean };
 
 type Centre = ((lat: number, lon: number, zoom: number, animate: boolean) => void) | null;
@@ -393,19 +395,23 @@ export default function RegionMap({
       const placePins = () => {
         if (still) return;
         const box = freeBox(host, sheetEl(), bandEl(), side());
-        setPins(
-          pts.map((pt) => {
-            const p = map.latLngToContainerPoint([pt.lat, pt.lon]);
-            // inside the free box on both axes, with half a pin of margin on the side the
-            // sheet is on, so a pin is never clipped by the screen edge or covered by the glass
-            const free =
-              p.x >= box.x + (side() ? PIN_EDGE : 0) &&
-              p.x <= box.x + box.w &&
-              p.y >= box.y &&
-              p.y <= box.y + box.h - (side() ? 0 : PIN_EDGE);
-            return { ...pt, x: p.x, y: p.y, free };
-          }),
-        );
+        const placed = pts.map((pt) => {
+          const p = map.latLngToContainerPoint([pt.lat, pt.lon]);
+          // inside the free box on both axes, with half a pin of margin on the side the
+          // sheet is on, so a pin is never clipped by the screen edge or covered by the glass
+          const free =
+            p.x >= box.x + (side() ? PIN_EDGE : 0) &&
+            p.x <= box.x + box.w &&
+            p.y >= box.y &&
+            p.y <= box.y + box.h - (side() ? 0 : PIN_EDGE);
+          return { ...pt, x: p.x, y: p.y, free };
+        });
+        // When the map is too small for the route, its numbered discs pile up on each other and
+        // on the start flag. Then none of them shows: the line alone reads better than a heap of
+        // numbers, and the spots are listed in the sheet anyway.
+        const discs = placed.filter((q) => q.n !== undefined || q.start);
+        const cramped = discs.some((q, i) => discs.some((r, j) => j > i && Math.hypot(q.x - r.x, q.y - r.y) < SPOT_GAP));
+        setPins(cramped ? placed.map((q) => (q.n !== undefined ? { ...q, free: false } : q)) : placed);
       };
 
       // Put a point in the middle of the space the sheet leaves free, not the middle of the

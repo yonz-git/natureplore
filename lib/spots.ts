@@ -1,16 +1,16 @@
-// The spots of a route and what B1 says about it beyond its card: the six spots of Linum wet meadows
-// loop, the spots in season per month, getting there, and which claims are along it. Content is the
+// The spots of a route and what B1 says about it beyond its card: the five spots of Grumsin beech
+// forest loop, the spots in season per month, getting there, and which claims are along it. Content is the
 // sample content of the flow and IA redesign (§3), as on the boards B1, L3-1 to L3-6, L4 and B4.
-// Only Linum has it; the other routes are sample cards and open nothing.
+// Only Grumsin has it; the other routes are sample cards and open nothing.
 
 import { CLAIMS, type Claim } from "@/lib/claims";
-import { MONTH } from "@/lib/suggestions";
+import { CAPTURE, MONTH, NOW } from "@/lib/now";
 
 // the claims live in lib/claims.ts; they are re-exported here for the screens that read spots
 export { CLAIMS, type Claim };
 
-/** The prototype's month, September, as an index from 0 for January. */
-export const NOW = 8;
+/** The prototype's month, September, as an index from 0 for January (see lib/now.ts). */
+export { NOW };
 export const MONTH_LETTERS = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
 export const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -23,6 +23,10 @@ export type Spot = {
   /** what to look for this month, or `out` when the spot is not in season */
   look: { name: string; what?: string; last: string; organism?: string }[];
   out?: string;
+  /** what `out` says after "Not in season in <month>." */
+  outText?: string;
+  /** sample entries for months other than September, used only when capturing for the film */
+  captureLook?: Record<number, { name: string; what?: string; last: string; organism?: string }[]>;
   /** a restraint starts with "Don’t"; a spot without one says what to do instead */
   kind: "dont" | "do";
   line: string;
@@ -44,92 +48,105 @@ export type RouteDetail = {
   foot: string;
 };
 
-const LINUM_SPOTS: Spot[] = [
+const GRUMSIN_SPOTS: Spot[] = [
   {
     n: 1,
-    name: "The flooded ditch",
-    months: [8, 9],
-    when: "Sep to Oct",
-    look: [{ name: "Common crane", what: "feeding at dusk", last: "11 Sep", organism: "common-crane" }],
-    kind: "dont",
-    line: "Don’t leave the track at dusk.",
-    why: "Cranes feeding in the ditch take off when people come close.",
+    name: "The forest gate",
+    months: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    when: "All year",
+    look: [{ name: "Black woodpecker", what: "calling from the old beeches", last: "9 Sep" }],
+    captureLook: {
+      3: [{ name: "Black woodpecker", what: "drumming on the old beeches", last: "4 Apr" }],
+      4: [{ name: "Black woodpecker", what: "feeding young in a nest hole", last: "12 May" }],
+      5: [{ name: "Black woodpecker", what: "calling from the old beeches", last: "6 Jun" }],
+    },
+    kind: "do",
+    line: "Look up from the path, not into the holes.",
+    why: "Black woodpeckers nest high in old beech trunks, and the holes are used again by owls and bats.",
   },
   {
     n: 2,
-    name: "The dam between the ponds",
-    months: [8, 9, 10],
-    when: "Sep to Nov",
-    look: [{ name: "Common crane", what: "roosting on the ponds at dusk", last: "11 Sep", organism: "common-crane" }],
-    kind: "dont",
-    line: "Don’t walk into view of roosting flocks at dusk.",
-    why: "Disturbance makes cranes leave the roost.",
-  },
-  {
-    n: 3,
-    name: "Far corner of the ponds",
-    months: [2, 3, 4, 5, 6, 7, 8, 9],
-    when: "Mar to Oct",
-    look: [
-      { name: "Greylag goose", last: "10 Sep" },
-      { name: "Northern lapwing", last: "5 Sep" },
-    ],
-    kind: "dont",
-    line: "Don’t let dogs off the lead here.",
-    why: "Geese and lapwings feeding on open ground take flight from dogs.",
-  },
-  {
-    n: 4,
-    name: "Reed edge of the fish ponds",
-    months: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    when: "All year",
-    look: [{ name: "Bearded reedling", last: "27 Aug" }],
-    kind: "dont",
-    line: "Don’t go into the reeds.",
-    why: "Bearded reedlings feed and roost in the reed bed.",
-  },
-  {
-    n: 5,
-    name: "Wet meadow track",
-    months: [3, 4],
-    when: "Apr to May",
-    look: [],
-    out: `Not in season in ${MONTH}. Marsh marigold recorded here April to May.`,
-    kind: "dont",
-    line: "Don’t leave the track.",
-    why: "Wet meadow ground is soft and tramples easily.",
-  },
-  {
-    n: 6,
-    name: "Stork nests at the village edge",
+    name: "Buckow-See",
     months: [3, 4, 5, 6, 7],
     when: "Apr to Aug",
     look: [],
-    out: `Not in season in ${MONTH}. White storks recorded here April to August, last 16 Aug.`,
-    kind: "do",
-    line: "Look at the nests from the road.",
-    why: "They sit on private houses.",
+    outText: "Great crested grebes recorded here April to August.",
+    captureLook: {
+      3: [{ name: "Great crested grebe", what: "displaying on the water", last: "11 Apr" }],
+      4: [{ name: "Great crested grebe", what: "nesting at the reed edge", last: "9 May" }],
+      5: [{ name: "Great crested grebe", what: "carrying chicks on its back", last: "7 Jun" }],
+    },
+    kind: "dont",
+    line: "Don’t go down to the reed edge.",
+    why: "Grebes nest on floating platforms in the reeds and leave them when people come close.",
+  },
+  {
+    n: 3,
+    name: "Schwarzer See",
+    months: [5, 6, 7, 8],
+    when: "Jun to Sep",
+    look: [{ name: "Round-leaved sundew", what: "on the bog moss at the edge", last: "6 Sep" }],
+    outText: "Round-leaved sundew recorded here June to September.",
+    captureLook: {
+      5: [{ name: "Round-leaved sundew", what: "on the bog moss at the edge", last: "10 Jun" }],
+    },
+    kind: "dont",
+    line: "Don’t step onto the bog.",
+    why: "Bog moss takes years to grow back where it is trodden.",
+  },
+  {
+    n: 4,
+    name: "Fungi on the fallen beech",
+    months: [8, 9, 10],
+    when: "Sep to Nov",
+    look: [{ name: "Porcelain fungus", what: "on the fallen beech trunks", last: "8 Sep" }],
+    outText: "Porcelain fungus recorded here September to November.",
+    kind: "dont",
+    line: "Don’t pick or kick the fungi.",
+    why: "They break down the fallen trunk, and everyone after you comes to see them.",
+  },
+  {
+    n: 5,
+    name: "Wolletzsee",
+    months: [8, 9, 10],
+    when: "Sep to Nov",
+    look: [{ name: "Common crane", what: "on the lake at dusk", last: "10 Sep" }],
+    outText: "Common cranes recorded here September to November.",
+    kind: "dont",
+    line: "Don’t walk down to the shore at dusk.",
+    why: "Cranes resting on the lake take off when people come close.",
   },
 ];
 
+/** A spot as it reads in the prototype's month: what to look for when it is in season, or that it is not. */
+const asOfNow = (s: Spot): Spot =>
+  s.months.includes(NOW)
+    ? { ...s, look: (CAPTURE && s.captureLook?.[NOW]) || s.look, out: undefined }
+    : { ...s, look: [], out: `Not in season in ${MONTH}. ${s.outText}` };
+
+const GRUMSIN_SEASON = [1, 1, 1, 2, 2, 3, 3, 3, 4, 3, 3, 1];
+const COUNT_WORDS = ["None", "One", "Two", "Three", "Four", "Five", "Six"];
+
 const DETAILS: Record<string, RouteDetail> = {
-  linum: {
-    spots: LINUM_SPOTS,
-    season: [1, 1, 2, 4, 4, 3, 3, 3, 4, 4, 2, 1],
-    seasonNote: "Four of the six spots are in season in September. Nothing here promises a sighting.",
-    axis: [0.1, 0.25, 0.4, 0.55, 0.72, 0.88],
-    ticks: ["0 km", "1.5", "3.0", "4.5", "6.0 km"],
+  grumsin: {
+    spots: GRUMSIN_SPOTS.map(asOfNow),
+    season: GRUMSIN_SEASON,
+    seasonNote: `${COUNT_WORDS[GRUMSIN_SEASON[NOW]]} of the five spots ${GRUMSIN_SEASON[NOW] === 1 ? "is" : "are"} in season in ${MONTH}. Nothing here promises a sighting.`,
+    axis: [0.135, 0.272, 0.374, 0.637, 0.894],
+    ticks: ["0 km", "2.5", "5.0", "7.5", "10.2 km"],
     getting: [
-      ["Length", "6.0 km, loop"],
-      ["Time", "1 h 45 at a looking pace"],
-      ["Surface", "Unpaved track and grass path"],
-      ["Getting round", "Pushchair yes, wheelchair in dry weather"],
-      ["Ascent", "Flat, 12 m total"],
-      ["Start", "Linum village, bus 819 from Kremmen"],
+      ["Length", "10.2 km, loop"],
+      ["Time", "3 h at a looking pace"],
+      ["Surface", "Forest path, gravel track and a short stretch of village road"],
+      ["Getting round", "Not for pushchairs or wheelchairs: about 4 km is narrow earth path"],
+      ["Ascent", "Rolling, about 150 m total"],
+      ["Start", "Altkünkendorf car park"],
     ],
     gettingNote: "No difficulty grade and no estimated speed. The figures say whether the route is reachable, not how fit the walker is.",
-    claims: [CLAIMS.c1a, CLAIMS.c1b],
-    foot: "Route last checked 23 September 2026. 138 records within 250 m of the line, last recorded 11 Sep.",
+    claims: [],
+    foot: CAPTURE
+      ? "Route last checked 23 September 2026. 120 records within 250 m of the line."
+      : "Route last checked 23 September 2026. 120 records within 250 m of the line, last recorded 10 Sep.",
   },
 };
 

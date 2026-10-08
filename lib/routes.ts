@@ -1,4 +1,4 @@
-import { LINUM_LINE } from "@/lib/route-lines";
+import { GRUMSIN_LINE } from "@/lib/route-lines";
 
 // The routes and their spots, for B1, the route page. The suggestion cards on A5 and A4 and search
 // read lib/suggestions.ts, which follows the flow and IA redesign.
@@ -49,6 +49,8 @@ export type Route = {
   description: string;
   /** `left` puts the name on the left of its marker, where the right would cover the line */
   stops: { name: string; note: string; left?: boolean }[];
+  /** where each spot sits along the line, 0 at the start and 1 at the finish, when it is not evenly spaced */
+  marks?: number[];
   /** the real line, when it is mapped (lib/route-lines.ts), and the detail map drawn under it */
   path?: [number, number][];
   detail?: string;
@@ -135,34 +137,35 @@ export const ROUTES: Route[] = [
       { left: true, name: "Wet meadow track", note: "Marsh marigold in April and May" },
       { left: true, name: "Stork nests at the village edge", note: "White storks, April to August" },
     ],
-    path: LINUM_LINE,
-    detail: "/geo/linum.json",
   },
   {
     id: "grumsin",
     name: "Grumsin beech forest loop",
     where: "Loop in Grumsin, Brandenburg",
-    line: "7.1 km loop, 2 h 10",
-    km: "7.1",
-    time: "2:10",
+    line: "10.2 km loop, 3 h at a looking pace",
+    km: "10.2",
+    time: "3:00",
     spots: 5,
     counts: { plants: 31, herbs: 18, mushrooms: 26, birds: 38, mammals: 7 },
     season: ["fungi"],
-    lat: 52.985,
-    lon: 13.9,
+    lat: 53.01237,
+    lon: 13.87510,
     image: "/img/routes/grumsin.jpg",
     summary: "Beech forest, 5 spots, 120 records within 250 m of the line, last recorded 4 days ago",
     notable: { text: "Notable now: beech fungi after the first rain" },
     from: "Loop from the Altkünkendorf car park, Uckermark, Brandenburg",
     description:
-      "A loop through the Grumsin beech forest, part of a world heritage site. Old beeches, kettle-hole bogs and quiet lakes, with fungi on the fallen trunks after the first autumn rain.",
+      "The Orange Beech Leaf, a waymarked loop along the edge of the Grumsin beech forest, part of a world heritage site. Old beeches, two quiet forest lakes and the shore of Wolletzsee, with fungi on the fallen trunks after the first autumn rain. Mostly forest path and gravel track, with gentle climbs.",
     stops: [
-      { name: "The forest gate", note: "Old beeches over 200 years" },
-      { name: "Kettle-hole bog", note: "Sundew and bog moss" },
-      { name: "Fungi on the fallen beech", note: "Tinder fungus and oyster mushrooms" },
-      { name: "The quiet lake", note: "Cranes and ospreys in summer" },
-      { name: "Woodpecker stand", note: "Black woodpecker holes" },
+      { name: "The forest gate", note: "Black woodpeckers in the old beeches" },
+      { name: "Buckow-See", note: "Great crested grebes, April to August" },
+      { name: "Schwarzer See", note: "Sundew on the bog moss at the edge" },
+      { left: true, name: "Fungi on the fallen beech", note: "Porcelain fungus on the fallen trunks" },
+      { left: true, name: "Wolletzsee", note: "Cranes on the lake at dusk, September to November" },
     ],
+    path: GRUMSIN_LINE,
+    detail: "/geo/grumsin.json",
+    marks: [0.135, 0.272, 0.374, 0.637, 0.894],
   },
 ];
 
@@ -174,7 +177,7 @@ export const routeById = (id: string) => ROUTES.find((r) => r.id === id);
  * prototype has no route geometry yet, so they sit on a loop about three kilometres across.
  */
 export function spotsOf(route: Route) {
-  if (route.path) return spotsOnPath(route.path, route.spots);
+  if (route.path) return spotsOnPath(route.path, route.spots, route.marks);
   return Array.from({ length: route.spots }, (_, i) => {
     const a = (i / route.spots) * Math.PI * 2 + 0.6;
     return { n: i + 1, lat: route.lat + Math.sin(a) * 0.012, lon: route.lon + Math.cos(a) * 0.02 };
@@ -182,7 +185,7 @@ export function spotsOf(route: Route) {
 }
 
 // spots spread along the real line at even distances, clear of the start
-function spotsOnPath(path: [number, number][], count: number) {
+function spotsOnPath(path: [number, number][], count: number, given?: number[]) {
   const len = (a: [number, number], b: [number, number]) =>
     Math.hypot(a[0] - b[0], (a[1] - b[1]) * Math.cos((a[0] * Math.PI) / 180));
   const cum = [0];
@@ -196,7 +199,7 @@ function spotsOnPath(path: [number, number][], count: number) {
     return { lat: path[i - 1][0] + k * (path[i][0] - path[i - 1][0]), lon: path[i - 1][1] + k * (path[i][1] - path[i - 1][1]) };
   };
   // the same places the B1 boards put them
-  const marks = count === 6 ? [0.1, 0.25, 0.4, 0.55, 0.72, 0.88] : Array.from({ length: count }, (_, i) => (i + 1) / (count + 1));
+  const marks = given ?? (count === 6 ? [0.1, 0.25, 0.4, 0.55, 0.72, 0.88] : Array.from({ length: count }, (_, i) => (i + 1) / (count + 1)));
   return marks.map((f, i) => ({ n: i + 1, ...at(f) }));
 }
 

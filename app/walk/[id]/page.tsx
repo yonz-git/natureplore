@@ -5,7 +5,7 @@ import WalkScreen from "@/components/WalkScreen";
 import { routeById } from "@/lib/routes";
 import { routeDetail } from "@/lib/spots";
 
-// L4 · Walk, opened from Walk it on Saved (E1) or on a saved route (B1). It sits outside the app
+// L4 · Walk, opened from Walk the route on Saved (E1) or on a saved route (B1). It sits outside the app
 // group because the walk hides the tab bar: End walk is the way out. `?spot=` is the spot the
 // sheet shows, so the previous and next buttons, the map's markers and the way back from an
 // organism all land on the same spot. Without it the walk opens on spot 2, the one nearest the

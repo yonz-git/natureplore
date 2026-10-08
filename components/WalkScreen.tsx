@@ -120,8 +120,12 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
               <div className="walk-more" id="walk-more">
                 <h2>When</h2>
                 <MonthGrid months={spot.months} />
-                <h2>What is happening here</h2>
-                <ClaimCard claim={detail.claims[0]} />
+                {detail.claims[0] && (
+                  <>
+                    <h2>What is happening here</h2>
+                    <ClaimCard claim={detail.claims[0]} />
+                  </>
+                )}
                 <h2>Recorded here too</h2>
                 <RecordedToo />
               </div>

@@ -211,7 +211,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             </div>
           )}
           <p className="sg-map-note">
-            Every route on the map has spots in season in {MONTH}.{region.routes.includes("linum") && " Linum wet meadows loop opens from its label."}
+            Every route on the map has spots in season in {MONTH}.{region.routes.includes("grumsin") && " Grumsin beech forest loop opens from its label."}
           </p>
         </div>
       </div>
