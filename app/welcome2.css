@@ -140,8 +140,10 @@
   align-self: center;
   width: var(--spacing-button-phone);
   margin-top: 2.25rem;
-  height: var(--spacing-button-height);
-  padding: 0 2.125rem;
+  /* the front door's button only: 10% more padding all round than a standard button, the space
+     above and below the label (height less one line) and the sides */
+  height: calc(var(--spacing-button-height) + (var(--spacing-button-height) - 1lh) * 0.1);
+  padding: 0 2.3375rem;
   display: flex;
   align-items: center;
   justify-content: center;
