@@ -216,7 +216,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-look-last { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-look-link { transition: transform 160ms var(--ease-out), box-shadow 240ms var(--ease-out), border-color 240ms var(--ease-out); }
 @media (hover: hover) {
-  .fb-look-link:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 0 0 10rem rgb(255 255 255 / 0.06), inset 0 1px 0 rgb(255 255 255 / 0.08); }
+  .fb-look-link:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), inset 0 0 0 10rem rgb(255 255 255 / 0.06); }
 }
 .fb-look-link:active { transform: scale(0.985); }
 .fb-look-link > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
@@ -257,7 +257,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-nav-name { font-size: var(--text-body-sm); line-height: 1.375rem; font-weight: 500; overflow-wrap: break-word; }
 @media (hover: hover) {
   .fb-nav-prev:hover,
-  .fb-nav-next:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 0 0 10rem rgb(255 255 255 / 0.06), inset 0 1px 0 rgb(255 255 255 / 0.09); }
+  .fb-nav-next:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 10rem rgb(255 255 255 / 0.06); }
 }
 .fb-nav-prev:active,
 .fb-nav-next:active { transform: scale(0.97); }
