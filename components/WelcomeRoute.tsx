@@ -11,7 +11,7 @@ import { useGSAP } from "@gsap/react";
 // the next time. Layout: app/welcome2.css.
 
 // the four stops, in the order the line reaches them
-const STOPS = ["Routes near you", "Spots to stop at", "Organisms", "Notable this season"];
+const STOPS = ["Guided routes", "Spots to stop at", "Organisms", "Notable this season"];
 
 // one path per size, in that size's board coordinates
 const ROUTE = {
