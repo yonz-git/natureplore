@@ -78,11 +78,13 @@ export default function WelcomeRoute() {
         const lengths = paths.map((path) => path.getTotalLength());
         const shown = paths.findIndex((path) => getComputedStyle(path.parentElement!).display !== "none");
         const at = stopsAlong(paths[Math.max(shown, 0)]);
-        const stops = Array.from(el.querySelectorAll<HTMLElement>(".a02-stop"));
+        // each stop's dot and label fade in, never the stop itself: the label is frosted glass, and
+        // opacity on anything above glass switches the frost off (CLAUDE.md, the backdrop root trap)
+        const stops = Array.from(el.querySelectorAll<HTMLElement>(".a02-stop")).map((stop) => Array.from(stop.children));
         const dots = Array.from(el.querySelectorAll<HTMLElement>(".a02-dot"));
         const lit = stops.map(() => false);
         paths.forEach((path, i) => gsap.set(path, { strokeDasharray: lengths[i], strokeDashoffset: lengths[i] }));
-        gsap.set(stops, { autoAlpha: 0 });
+        gsap.set(stops.flat(), { autoAlpha: 0 });
         gsap.set(dots, { scale: 0.6 });
         const draw = { p: 0 };
         tl = gsap
@@ -109,7 +111,7 @@ export default function WelcomeRoute() {
       const hide = () => {
         tl?.kill();
         tl = null;
-        gsap.killTweensOf(el.querySelectorAll(".a02-stop, .a02-dot"));
+        gsap.killTweensOf(el.querySelectorAll(".a02-stop > *"));
         gsap.set(el, { autoAlpha: 0 });
       };
 
@@ -138,7 +140,7 @@ export default function WelcomeRoute() {
       {STOPS.map((stop, i) => (
         <div key={stop} className={`a02-stop a02-stop-${i + 1}`}>
           <span className="a02-dot" />
-          <span className="a02-label">{stop}</span>
+          <span className="a02-label glass glass-pill">{stop}</span>
         </div>
       ))}
     </div>
