@@ -608,7 +608,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg .seg { flex-shrink: 0; }
 /* the switch and, on Organisms, the group filters beside it; on a phone they wrap under it */
 .sg-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
-.sg-groups { display: none; gap: 0.6875rem; transition: display 220ms allow-discrete; }
+.sg-groups { display: none; gap: 0.23rem; /* a third of 0.6875rem */ transition: display 220ms allow-discrete; }
 .sg-groups.is-on { display: flex; }
 /* each toggle fades and grows in on its own, a beat apart, never its row: the toggles are glass, and
    animating anything above glass switches the frost off */
@@ -633,8 +633,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-groups.is-on .sg-group:nth-child(4) { transition-delay: 120ms; }
 .sg-groups.is-on .sg-group:nth-child(5) { transition-delay: 160ms; }
 .sg-group:active { transform: scale(0.94); }
-/* 44 to touch around the smaller toggle */
-.sg-group::before { content: ""; position: absolute; inset: calc((2.1rem - 2.75rem) / 2); border-radius: inherit; }
+/* 44 tall to touch; across, the hit areas meet halfway into the gap so neighbours never overlap */
+.sg-group::before { content: ""; position: absolute; inset: calc((2.1rem - 2.75rem) / 2) -0.115rem; }
 /* a group with nothing in season here: dimmed, there to show what could be */
 .sg-groups.is-on .sg-group[aria-disabled="true"] { opacity: 0.4; cursor: default; }
 .sg-group[aria-disabled="true"]:active { transform: none; }

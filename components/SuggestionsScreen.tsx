@@ -123,7 +123,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                 title={has(g.id) ? g.label : `${g.label}: none in season here`}
                 onClick={() => has(g.id) && pick(g.id)}
               >
-                <GroupIcon group={g.id} size={14} />
+                <GroupIcon group={g.id} size={18.2} />
               </button>
             ))}
           </div>
