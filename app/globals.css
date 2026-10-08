@@ -88,3 +88,7 @@ button:disabled:active {
   text-box: trim-both cap alphabetic;
   line-height: 1;
 }
+
+/* the organism group icons (components/Icons.tsx, GroupIcon) draw past their 24 box: the plant's
+   leaves are wider, and the herbs, mushroom and plant overshoot it as they move */
+.group-icon { overflow: visible; }
