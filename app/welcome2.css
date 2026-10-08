@@ -157,6 +157,45 @@
   text-decoration: none;
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 0.875rem 2rem color-mix(in srgb, var(--color-scrim) 35%, transparent);
   transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), filter 200ms ease;
+  position: relative;
+  isolation: isolate;
+  --glow: var(--color-primary-glow);
+  animation: a02-cta-glow 4.8s ease-in-out infinite;
+}
+/* the button breathes slowly, at half the stops' pace and half their brightness: its fill brightens toward primary-glow under the
+   label while a lime halo swells around it, then both sink back. The brighter fill is a layer under
+   the label, since a gradient cannot animate; the halo is a third shadow both ends carry. */
+.a02-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--glow);
+  opacity: 0;
+  animation: a02-cta-fill 4.8s ease-in-out infinite;
+}
+@keyframes a02-cta-fill {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.275; }
+}
+@keyframes a02-cta-glow {
+  0%, 100% {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.35),
+      0 0.875rem 2rem color-mix(in srgb, var(--color-scrim) 35%, transparent),
+      0 0 0 rgb(from var(--glow) r g b / 0);
+  }
+  50% {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.425),
+      0 0.875rem 2rem color-mix(in srgb, var(--color-scrim) 35%, transparent),
+      0 0 1.5rem rgb(from var(--glow) r g b / 0.275);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .a02-cta,
+  .a02-cta::before { animation: none; }
 }
 .a02-cta:active { transform: scale(0.97); }
 /* the lime lightens under the pointer, as every primary button does (app/map.css) */

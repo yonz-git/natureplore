@@ -308,7 +308,13 @@
   }
   .a0s.a0-open .a02-lead { animation-delay: 120ms; }
   .a0s.a0-open .a02-nav { animation-delay: 180ms; }
-  .a0s.a0-open .a02-cta { animation-delay: 240ms; }
+  /* the button arrives, then starts to breathe (app/welcome2.css) */
+  .a0s.a0-open .a02-cta {
+    animation: a0-arrive 800ms var(--a0-ease) 240ms backwards, a02-cta-glow 4.8s ease-in-out 1040ms infinite;
+  }
+  /* its fill waits for the open too, so fill and halo breathe together */
+  .a0s .a02-cta::before { animation: none; }
+  .a0s.a0-open .a02-cta::before { animation: a02-cta-fill 4.8s ease-in-out 1040ms infinite; }
 
   /* the opening line, centred on the screen, in the display face */
   .a0s .a0-hero {
