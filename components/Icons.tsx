@@ -150,8 +150,9 @@ const GROUP_PATHS: Record<Group, React.ReactNode> = {
   ),
 };
 
-export const GroupIcon = ({ group, ...p }: P & { group: Group }) => (
-  <Svg size={16} stroke={1.4} {...p}>
+// overflow visible: the plant's leaves reach past the 24 box, and the moving icons overshoot it
+export const GroupIcon = ({ group, className, ...p }: P & { group: Group }) => (
+  <Svg size={16} stroke={1.4} {...p} className={className ? `group-icon ${className}` : "group-icon"}>
     {GROUP_PATHS[group]}
   </Svg>
 );
