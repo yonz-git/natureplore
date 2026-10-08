@@ -160,6 +160,11 @@
 .a02-br { display: none; }
 .a02 :focus-visible { outline: 0.125rem solid var(--color-mist); outline-offset: 0.1875rem; }
 
+/* tablet: the button hugs its label as on the desktop, centred; no screen has a full-width button */
+@media (min-width: 48rem) and (min-height: 36rem) {
+  .a02-cta { width: auto; font-size: 1.125rem; }
+}
+
 @media (min-width: 64rem) {
   .a02-photo::after {
     background:
