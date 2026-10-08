@@ -2,7 +2,7 @@
 // board's standalone page. Every number is in the logo's own units (its viewBox is 1729.5 by 425.2),
 // so the motion scales with the logo.
 //
-// Beats: the plant grows first, from 0s, and drifts up into its place along one arc, there by 2.25s.
+// Beats: the plant grows first, from 0s, and hops into its place in two soft hops, landing at 2.22s.
 // The mushroom is taken over from the welcome's cue at 1.9s, on the frame the cue's own mushroom
 // gets there (components/WelcomeCue.tsx): it pops in below the logo and jumps straight up onto the
 // plant, twice, at 2.3s and 2.95s. The bird circles in from 0.6s and lands at 5.6s over the two of
@@ -25,10 +25,10 @@ gsap.registerPlugin(MotionPathPlugin);
 export const MUSH_IN = 1.9; // the mushroom the cue sent over is taken up here, as the plant comes to rest
 // logo units from its place: it pops in below and right of the logo
 export const MUSH_POP = { x: 463, y: 578 }; // components/WelcomeCue.tsx sends its mushroom here
-const MUSH_JUMPS = [2.3, 2.95]; // and jumps straight up into its place on the plant, which has settled by 2.25s
+const MUSH_JUMPS = [2.3, 2.95]; // and jumps straight up into its place on the plant, which lands at 2.22s
 const SHAKE = 0.14; // seconds, one swing of the swan's head shake
-const PLANT_FROM = 0.3; // the plant starts drifting to its place as its fronds unfurl
-const PLANT_GLIDE = 1.95; // and is there, settled, by 2.25s
+const PLANT_HOPS = 0.5; // the plant's first hop to its place, while its top fronds still unfurl
+const PLANT_HOP = 0.8; // seconds in the air, each hop: the second lands at 2.22s, just before the mushroom jumps
 const WARM = 5.1;
 const OPEN = 6.0;
 const FLY = 8.0;
@@ -144,20 +144,31 @@ export function playIntro(root: HTMLElement, beats: IntroBeats, paused = false) 
     jump(MUSH_JUMPS[1], { x: 0, y: 0 }, 130, -10);
 
     // plant: the first thing in. Its fronds unfurl from the base one pair after another, softly and
-    // without overshoot, while the whole plant drifts up to its place along one long arc, growing and
-    // straightening as it comes, and eases to a stop there: no hops, no squash.
+    // without overshoot, then it hops twice to its place. Each hop is a slow arc that floats down
+    // and touches down softly: a little give as it lands and it straightens again, no hard squash and
+    // no wobble.
     const fronds = [[pBl, pBr], pMid, pTop];
     fronds.forEach((f, i) => {
       tl.to(f, { opacity: 1, duration: 0.4, ease: "sine.out" }, i * 0.22);
       tl.to(f, { scale: 1, duration: 1.1, ease: "power3.out" }, i * 0.22);
     });
-    gsap.set(plant, { rotation: -10 });
-    tl.to(plant, {
-      motionPath: { path: [{ x: -560, y: 380 }, { x: 0, y: 0 }], curviness: 1.1 },
-      duration: PLANT_GLIDE,
-      ease: "power2.inOut",
-    }, PLANT_FROM);
-    tl.to(plant, { scale: 1, rotation: 0, duration: PLANT_GLIDE, ease: "sine.inOut" }, PLANT_FROM);
+    const L = [[-975, 940, 0.35], [-490, 470, 0.66], [0, 0, 1]];
+    let t0 = PLANT_HOPS;
+    for (let h = 0; h < L.length - 1; h++) {
+      const a = L[h], b = L[h + 1], apex = Math.min(a[1], b[1]) - 220, s = b[2];
+      const air = PLANT_HOP;
+      // a small gather before the first hop; the second goes from the give of the first landing
+      if (h === 0) tl.to(plant, { scaleX: a[2] * 1.03, scaleY: a[2] * 0.96, duration: 0.14, ease: "sine.inOut" }, t0 - 0.14);
+      tl.to(plant, { x: b[0], duration: air, ease: "sine.inOut" }, t0);
+      tl.to(plant, { y: apex, duration: air * 0.45, ease: "sine.out" }, t0);
+      // the way down slows as it reaches the ground, so it settles onto it rather than dropping
+      tl.to(plant, { y: b[1], duration: air * 0.55, ease: "sine.inOut" }, t0 + air * 0.45);
+      tl.to(plant, { scaleX: s, scaleY: s, duration: air, ease: "sine.inOut" }, t0);
+      // touching down: a little give, then up again (on the last landing; before that, off again)
+      tl.to(plant, { scaleX: s * 1.03, scaleY: s * 0.96, duration: 0.12, ease: "sine.out" }, t0 + air);
+      if (h === L.length - 2) tl.to(plant, { scaleX: s, scaleY: s, duration: 0.3, ease: "sine.inOut" }, t0 + air + 0.12);
+      t0 += air + 0.12;
+    }
     // the three join: a soft pulse of the whole symbol
     tl.to(symbol, { scale: 1.05, duration: 0.25, ease: "sine.out" }, 5.65);
     tl.to(symbol, { scale: 1, duration: 0.6, ease: "elastic.out(1, 0.5)" }, ">");

@@ -37,7 +37,7 @@ const ROUTE = [
   { x: 0.916, y: 0.709 }, { x: 1.038, y: 0.797 }, { x: 1, y: 1 },
 ];
 const FLAP = 0.36; // seconds, one wingbeat
-// The plant's growth and drift play 30% shorter again, then the timeline eases back to PACE over
+// The plant's growth and hops play 30% shorter again, then the timeline eases back to PACE over
 // EASE_BACK seconds, so the change of speed is never felt as a jolt, before the mushroom jumps.
 const OPENING = WELCOME_OPENING;
 const SWAN = 2.0; // timeline seconds: the ease back starts here, after the mushroom is taken over (1.9s) and before it jumps (2.3s)
