@@ -22,32 +22,40 @@ gsap.registerPlugin(MotionPathPlugin, MorphSVGPlugin);
 
 // The squirrel is the wordmark's own (components/Logo.tsx, SQUIRREL) in two pieces, cut where the
 // tail's stalk meets the body: the tail, and the body with the head. At the right end it sits up
-// and waits: the body changes shape into a squirrel sitting upright facing right, ears up and paws
-// at its chest, while the tail, its shape untouched, swings down onto its rump and stands up behind
-// it. The eye is a hole in both, and travels from the old head to the new one.
+// and waits: the body changes shape into Lordicon's squirrel (wired-outline-1208), filled, sitting
+// upright facing right, while the tail, its shape untouched, swings down onto its back. The eye is
+// a hole that travels from the old head to the new one, and the icon's arm and haunch line is cut
+// through the sitting body the same way.
 const TAIL =
   "M725.93 57.79C716.69 53.81 705.07 53 695.79 57.82C682.77 64.62 678.1 79.46 688.49 91.18C700.64 104.95 715.25 97.2 730.37 106.19C742.45 113.41 718.84 112.58 727.89 122.52L735.97 118.61C747.18 109.24 749.82 68.33 725.93 57.79Z";
 const BODY =
   "M727.89 122.52C727.56 122.6 724.24 123.54 723.44 120.04C723.44 124.05 723.45 125.83 725.99 127.18C728.47 128.51 738.27 123.25 744.59 130.24C747.32 133.26 745.7 135.32 748.75 137.15C750.31 138.1 752.4 139.5 752.4 139.5C751.23 138.33 753.64 136.22 751.16 133.52C753.06 132.5 751.32 140.88 758.67 137.15C758.07 136.51 758.61 135.71 758.67 134.92C759.24 132.23 758.89 128.42 755.89 127.75C756.56 126.45 757.07 126.53 757.8 126.53C754.41 123.93 752.76 128.86 751.16 127.26C749.55 125.65 751.14 121.7 745.53 118.26C740.07 114.92 736.58 118.06 735.97 118.61Z";
+// The icon's body outline at rest and at the bottom of its nibble, scaled into this drawing with
+// its feet on y 140. While it sits it nibbles as that icon does: the head dips to the paws, chews
+// twice, and comes back up as the tail swishes, then a pause.
 const SITTING =
-  "M731 140C738 140 748 140 754 140C756 140 756.5 138 754.5 137.5C751 137 748 137 746.5 135.5C745 133 745.5 129 747.5 126.5C748.5 125.5 750.5 125 752 124C753.5 123 753 121 751 121.2C750 121.3 749.5 120.5 750 119C751.5 117.5 755 117.2 757 115.6C758.6 114.3 758 112 756.2 111C755 110.2 754.6 109 754.2 107.6C754 105.5 753.4 103.2 752.4 102C751.6 103.4 751 105.2 750 106.3C749.6 104.6 749 103 748 102.4C747.4 104.5 747.4 106.6 746.8 108.4C745.8 110.6 744 112.4 742.6 114.6C740.6 118 738.8 121.5 736.8 124.5C734 128.5 729.5 130.5 728.4 134.5C727.6 137.4 728.6 140 731 140Z";
-// While it sits it nibbles, as Lordicon's squirrel (wired-outline-1208) does: the head dips to the
-// paws, chews twice, and comes back up as the tail swishes, then a pause. These are the sitting
-// squirrel with its head bent 28 and 18 degrees down about the neck (744.5 118.5).
+  "M745.16 127.83C745.16 127.83 745.16 127.83 745.16 127.83C749.77 127.83 749.12 133.86 749.12 135.67C749.12 135.67 752.32 135.67 752.32 135.67C753.51 135.67 754.60 136.17 755.37 136.94C756.15 137.72 756.64 138.81 756.64 140.00C756.64 140.00 739.32 140.00 739.32 140.00C724.31 140.00 723.00 116.37 736.48 116.37C744.48 116.37 744.76 110.68 744.76 110.68C744.76 110.68 745.75 102.00 745.75 102.00C745.75 102.00 749.19 107.47 749.19 107.47C756.55 108.70 755.13 111.07 757.41 114.53C756.94 117.28 753.63 118.74 750.31 118.18C750.31 118.18 750.31 118.18 750.31 118.18C749.09 118.82 748.18 120.54 747.11 122.83Z";
 const NIBBLING =
-  "M731.00 140.00C738.00 140.00 748.00 140.00 754.00 140.00C756.00 140.00 756.50 138.00 754.50 137.50C751.00 137.00 748.00 137.00 746.50 135.50C745.00 133.00 745.50 129.00 747.50 126.50C748.50 125.50 750.50 125.00 752.00 124.00C753.50 123.00 753.00 121.00 751.00 121.20C750.00 121.30 749.43 120.67 749.88 119.76C751.53 119.22 754.97 120.00 757.19 120.41C758.98 121.11 759.47 119.10 758.35 117.37C757.67 116.10 757.88 114.85 758.18 113.43C758.99 111.48 759.54 109.17 759.22 107.64C757.86 108.50 756.48 109.81 755.08 110.31C755.53 108.62 755.75 106.93 755.15 105.93C753.63 107.50 752.65 109.35 751.27 110.66C749.36 112.14 746.92 112.88 744.47 114.16C740.79 117.20 738.80 121.50 736.80 124.50C734.00 128.50 729.50 130.50 728.40 134.50C727.60 137.40 728.60 140.00 731.00 140.00Z";
+  "M745.16 127.83C745.16 127.83 745.16 127.83 745.16 127.83C749.77 127.83 749.12 133.86 749.12 135.67C749.12 135.67 752.32 135.67 752.32 135.67C753.51 135.67 754.60 136.17 755.37 136.94C756.15 137.72 756.64 138.81 756.64 140.00C756.64 140.00 739.32 140.00 739.32 140.00C724.31 140.00 723.00 116.37 736.48 116.37C744.48 116.37 747.03 110.61 747.03 110.61C747.03 110.61 751.02 102.83 751.02 102.83C751.02 102.83 752.56 109.32 752.56 109.32C759.08 113.46 756.77 115.15 757.54 119.35C756.00 121.79 752.26 121.85 749.31 119.98C749.31 119.98 749.31 119.98 749.31 119.98C748.71 120.34 748.18 120.54 747.11 122.83Z";
 const CHEWING =
-  "M731.00 140.00C738.00 140.00 748.00 140.00 754.00 140.00C756.00 140.00 756.50 138.00 754.50 137.50C751.00 137.00 748.00 137.00 746.50 135.50C745.00 133.00 745.50 129.00 747.50 126.50C748.50 125.50 750.50 125.00 752.00 124.00C753.50 123.00 753.00 121.00 751.00 121.20C750.00 121.30 749.45 120.61 749.93 119.49C751.57 118.61 755.07 119.00 757.33 118.68C759.21 118.66 759.35 116.49 757.94 114.98C757.05 113.85 757.04 112.59 757.09 111.13C757.55 109.07 757.69 106.70 757.11 105.25C755.92 106.33 754.79 107.86 753.50 108.60C753.65 106.86 753.57 105.15 752.80 104.27C751.58 106.08 750.94 108.08 749.81 109.61C748.18 111.39 745.91 112.54 743.78 114.22C740.70 117.48 738.80 121.50 736.80 124.50C734.00 128.50 729.50 130.50 728.40 134.50C727.60 137.40 728.60 140.00 731.00 140.00Z";
+  "M745.16 127.83C745.16 127.83 745.16 127.83 745.16 127.83C749.77 127.83 749.12 133.86 749.12 135.67C749.12 135.67 752.32 135.67 752.32 135.67C753.51 135.67 754.60 136.17 755.37 136.94C756.15 137.72 756.64 138.81 756.64 140.00C756.64 140.00 739.32 140.00 739.32 140.00C724.31 140.00 723.00 116.37 736.48 116.37C744.48 116.37 746.12 110.64 746.12 110.64C746.12 110.64 748.91 102.50 748.91 102.50C748.91 102.50 751.21 108.58 751.21 108.58C758.07 111.56 756.11 113.52 757.49 117.42C756.38 119.99 752.81 120.61 749.71 119.26C749.71 119.26 749.71 119.26 749.71 119.26C748.86 119.73 748.18 120.54 747.11 122.83Z";
+const ARM = {
+  sit: "M747.11 122.83C747.11 122.83 755.19 120.99 755.19 120.99C755.35 120.93 755.52 120.90 755.69 120.89C756.68 120.81 757.63 121.43 757.94 122.43C758.30 123.57 757.66 124.81 756.50 125.17C756.50 125.17 745.16 127.83 745.16 127.83C745.16 127.83 745.16 127.83 745.16 127.83C745.16 127.83 745.16 127.83 745.16 127.83C745.16 127.83 738.67 129.51 735.85 124.69",
+  nibble: "M747.11 122.83C747.11 122.83 754.06 121.37 754.06 121.37C754.21 121.28 754.37 121.23 754.54 121.19C755.50 120.96 756.55 121.42 757.01 122.34C757.56 123.44 757.14 124.75 756.03 125.31C756.03 125.31 745.16 127.83 745.16 127.83C745.16 127.83 745.16 127.83 745.16 127.83C745.16 127.83 745.16 127.83 745.16 127.83C745.16 127.83 738.67 129.51 735.85 124.69",
+  chew: "M747.11 122.83C747.11 122.83 754.51 121.22 754.51 121.22C754.67 121.14 754.83 121.10 755.00 121.07C755.97 120.90 756.98 121.42 757.38 122.38C757.86 123.49 757.35 124.77 756.22 125.25C756.22 125.25 745.16 127.83 745.16 127.83C745.16 127.83 745.16 127.83 745.16 127.83C745.16 127.83 745.16 127.83 745.16 127.83C745.16 127.83 738.67 129.51 735.85 124.69",
+};
+const ARM_WIDTH = 1.36;
+const EYE_R = 1.06;
 const EYE = {
   run: { cx: 756.4, cy: 133.7 },
-  sit: { cx: 752.6, cy: 110.6 },
-  nibble: { cx: 755.36, cy: 115.33 },
-  chew: { cx: 754.64, cy: 113.49 },
+  sit: { cx: 751.93, cy: 112.19 },
+  nibble: { cx: 753.26, cy: 114.85 },
+  chew: { cx: 752.73, cy: 113.79 },
 };
 // where the tail goes on the sitting squirrel: turned about the foot of its stalk, onto the rump
-const TAIL_ON_RUMP = { svgOrigin: "732 121", x: 2, y: 12, rotation: -24 };
+const TAIL_ON_RUMP = { svgOrigin: "732 121", x: -1, y: 8, rotation: -16 };
 const FEET = 140; // sitting, its feet are on this line of the drawing
-const NOSE = 758.6; // and its nose at this x
+const NOSE = 757.4; // and its nose at this x
 const BOX = { x: 684, y: 51, h: 92 }; // the drawing's viewBox, which the span is sized to
 
 const TILT_SIT = -38; // degrees: the drawing dives down and right, this sits it up facing right
@@ -100,25 +108,28 @@ export default function CtaSquirrel() {
         const body = el.querySelector(".a02-squirrel-body");
         const tail = el.querySelector(".a02-squirrel-tail");
         const eye = el.querySelector(".a02-squirrel-eye");
+        const arm = el.querySelector(".a02-squirrel-arm");
         gsap.set(body, { morphSVG: BODY });
         gsap.set(tail, { svgOrigin: TAIL_ON_RUMP.svgOrigin, x: 0, y: 0, rotation: 0 });
         gsap.set(eye, { attr: EYE.run });
+        gsap.set(arm, { attr: { d: ARM.sit }, opacity: 0 });
 
         gsap.set(el, { x: ground.x, y: ground.y, rotation: TILT_SIT, scale: 0.9, opacity: 0, transformOrigin: "50% 100%" });
         // once it sits, it nibbles until the pointer leaves: in seconds as they are, not at SPEED
         const nibble = () => {
-          const shape = (d: string, eyeAt: { cx: number; cy: number }, duration: number, ease: string) => [
+          const shape = (d: string, armD: string, eyeAt: { cx: number; cy: number }, duration: number, ease: string) => [
             [body, { morphSVG: d, duration, ease }],
+            [arm, { morphSVG: armD, duration, ease }],
             [eye, { attr: eyeAt, duration, ease }],
           ] as const;
           idle = gsap.timeline({ repeat: -1, repeatDelay: 1.1, delay: 0.5 });
           const at = (t: number, parts: ReturnType<typeof shape>) => parts.forEach(([target, vars]) => idle!.to(target, vars, t));
-          at(0, shape(NIBBLING, EYE.nibble, 0.3, "power2.inOut"));
-          at(0.32, shape(CHEWING, EYE.chew, 0.12, "sine.inOut"));
-          at(0.44, shape(NIBBLING, EYE.nibble, 0.12, "sine.inOut"));
-          at(0.58, shape(CHEWING, EYE.chew, 0.12, "sine.inOut"));
-          at(0.7, shape(NIBBLING, EYE.nibble, 0.12, "sine.inOut"));
-          at(0.88, shape(SITTING, EYE.sit, 0.34, "power2.inOut"));
+          at(0, shape(NIBBLING, ARM.nibble, EYE.nibble, 0.3, "power2.inOut"));
+          at(0.32, shape(CHEWING, ARM.chew, EYE.chew, 0.12, "sine.inOut"));
+          at(0.44, shape(NIBBLING, ARM.nibble, EYE.nibble, 0.12, "sine.inOut"));
+          at(0.58, shape(CHEWING, ARM.chew, EYE.chew, 0.12, "sine.inOut"));
+          at(0.7, shape(NIBBLING, ARM.nibble, EYE.nibble, 0.12, "sine.inOut"));
+          at(0.88, shape(SITTING, ARM.sit, EYE.sit, 0.34, "power2.inOut"));
           // the tail swishes down and back as the head goes down and comes up
           idle.to(tail, { rotation: TAIL_ON_RUMP.rotation - 9, duration: 0.36, ease: "sine.inOut" }, 0.06);
           idle.to(tail, { rotation: TAIL_ON_RUMP.rotation, duration: 0.5, ease: "sine.inOut" }, 0.72);
@@ -170,6 +181,7 @@ export default function CtaSquirrel() {
           .to(el, { rotation: 0, y: -(FEET - BOX.y) * unit, duration: 0.36, ease: "power2.inOut" }, "sit")
           .to(body, { morphSVG: SITTING, duration: 0.6, ease: "power2.inOut" }, "sit+=0.04")
           .to(eye, { attr: EYE.sit, duration: 0.6, ease: "power2.inOut" }, "sit+=0.04")
+          .to(arm, { opacity: 1, duration: 0.3, ease: "sine.out" }, "sit+=0.36")
           .to(tail, { x: TAIL_ON_RUMP.x, y: TAIL_ON_RUMP.y, rotation: TAIL_ON_RUMP.rotation - 6, duration: 0.5, ease: "power2.inOut" }, "sit+=0.1")
           .to(tail, { rotation: TAIL_ON_RUMP.rotation, duration: 0.4, ease: "sine.inOut" }, "sit+=0.6")
           .to(el, { scaleY: 0.95, scaleX: 1.03, duration: 0.1, ease: "power2.out" }, "sit+=0.6")
@@ -195,6 +207,7 @@ export default function CtaSquirrel() {
           // a sitting squirrel stretches back out as it goes
           .to(el.querySelector(".a02-squirrel-body"), { morphSVG: BODY, duration: 0.22, ease: "power2.out" }, "leap")
           .to(el.querySelector(".a02-squirrel-eye"), { attr: EYE.run, duration: 0.22, ease: "power2.out" }, "leap")
+          .to(el.querySelector(".a02-squirrel-arm"), { opacity: 0, duration: 0.12, ease: "sine.out" }, "leap")
           .to(el.querySelector(".a02-squirrel-tail"), { x: 0, y: 0, rotation: 0, duration: 0.22, ease: "power2.out" }, "leap")
           .to(
             el,
@@ -244,7 +257,18 @@ export default function CtaSquirrel() {
           {/* the eye, a hole through the squirrel */}
           <mask id="a02-squirrel-eye" maskUnits="userSpaceOnUse" x="600" y="0" width="300" height="250">
             <rect x="600" y="0" width="300" height="250" fill="#fff" />
-            <circle className="a02-squirrel-eye" cx={EYE.run.cx} cy={EYE.run.cy} r="0.95" fill="#000" />
+            <circle className="a02-squirrel-eye" cx={EYE.run.cx} cy={EYE.run.cy} r={EYE_R} fill="#000" />
+            {/* the arm and haunch line of the sitting squirrel, shown only while it sits */}
+            <path
+              className="a02-squirrel-arm"
+              d={ARM.sit}
+              fill="none"
+              stroke="#000"
+              strokeWidth={ARM_WIDTH}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity="0"
+            />
           </mask>
         </defs>
         <g mask="url(#a02-squirrel-eye)" fill="url(#a02-squirrel-fill)">
