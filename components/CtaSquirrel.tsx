@@ -31,7 +31,19 @@ const BODY =
   "M727.89 122.52C727.56 122.6 724.24 123.54 723.44 120.04C723.44 124.05 723.45 125.83 725.99 127.18C728.47 128.51 738.27 123.25 744.59 130.24C747.32 133.26 745.7 135.32 748.75 137.15C750.31 138.1 752.4 139.5 752.4 139.5C751.23 138.33 753.64 136.22 751.16 133.52C753.06 132.5 751.32 140.88 758.67 137.15C758.07 136.51 758.61 135.71 758.67 134.92C759.24 132.23 758.89 128.42 755.89 127.75C756.56 126.45 757.07 126.53 757.8 126.53C754.41 123.93 752.76 128.86 751.16 127.26C749.55 125.65 751.14 121.7 745.53 118.26C740.07 114.92 736.58 118.06 735.97 118.61Z";
 const SITTING =
   "M731 140C738 140 748 140 754 140C756 140 756.5 138 754.5 137.5C751 137 748 137 746.5 135.5C745 133 745.5 129 747.5 126.5C748.5 125.5 750.5 125 752 124C753.5 123 753 121 751 121.2C750 121.3 749.5 120.5 750 119C751.5 117.5 755 117.2 757 115.6C758.6 114.3 758 112 756.2 111C755 110.2 754.6 109 754.2 107.6C754 105.5 753.4 103.2 752.4 102C751.6 103.4 751 105.2 750 106.3C749.6 104.6 749 103 748 102.4C747.4 104.5 747.4 106.6 746.8 108.4C745.8 110.6 744 112.4 742.6 114.6C740.6 118 738.8 121.5 736.8 124.5C734 128.5 729.5 130.5 728.4 134.5C727.6 137.4 728.6 140 731 140Z";
-const EYE = { run: { cx: 756.4, cy: 133.7 }, sit: { cx: 752.6, cy: 110.6 } };
+// While it sits it nibbles, as Lordicon's squirrel (wired-outline-1208) does: the head dips to the
+// paws, chews twice, and comes back up as the tail swishes, then a pause. These are the sitting
+// squirrel with its head bent 28 and 18 degrees down about the neck (744.5 118.5).
+const NIBBLING =
+  "M731.00 140.00C738.00 140.00 748.00 140.00 754.00 140.00C756.00 140.00 756.50 138.00 754.50 137.50C751.00 137.00 748.00 137.00 746.50 135.50C745.00 133.00 745.50 129.00 747.50 126.50C748.50 125.50 750.50 125.00 752.00 124.00C753.50 123.00 753.00 121.00 751.00 121.20C750.00 121.30 749.43 120.67 749.88 119.76C751.53 119.22 754.97 120.00 757.19 120.41C758.98 121.11 759.47 119.10 758.35 117.37C757.67 116.10 757.88 114.85 758.18 113.43C758.99 111.48 759.54 109.17 759.22 107.64C757.86 108.50 756.48 109.81 755.08 110.31C755.53 108.62 755.75 106.93 755.15 105.93C753.63 107.50 752.65 109.35 751.27 110.66C749.36 112.14 746.92 112.88 744.47 114.16C740.79 117.20 738.80 121.50 736.80 124.50C734.00 128.50 729.50 130.50 728.40 134.50C727.60 137.40 728.60 140.00 731.00 140.00Z";
+const CHEWING =
+  "M731.00 140.00C738.00 140.00 748.00 140.00 754.00 140.00C756.00 140.00 756.50 138.00 754.50 137.50C751.00 137.00 748.00 137.00 746.50 135.50C745.00 133.00 745.50 129.00 747.50 126.50C748.50 125.50 750.50 125.00 752.00 124.00C753.50 123.00 753.00 121.00 751.00 121.20C750.00 121.30 749.45 120.61 749.93 119.49C751.57 118.61 755.07 119.00 757.33 118.68C759.21 118.66 759.35 116.49 757.94 114.98C757.05 113.85 757.04 112.59 757.09 111.13C757.55 109.07 757.69 106.70 757.11 105.25C755.92 106.33 754.79 107.86 753.50 108.60C753.65 106.86 753.57 105.15 752.80 104.27C751.58 106.08 750.94 108.08 749.81 109.61C748.18 111.39 745.91 112.54 743.78 114.22C740.70 117.48 738.80 121.50 736.80 124.50C734.00 128.50 729.50 130.50 728.40 134.50C727.60 137.40 728.60 140.00 731.00 140.00Z";
+const EYE = {
+  run: { cx: 756.4, cy: 133.7 },
+  sit: { cx: 752.6, cy: 110.6 },
+  nibble: { cx: 755.36, cy: 115.33 },
+  chew: { cx: 754.64, cy: 113.49 },
+};
 // where the tail goes on the sitting squirrel: turned about the foot of its stalk, onto the rump
 const TAIL_ON_RUMP = { svgOrigin: "732 121", x: 2, y: 12, rotation: -24 };
 const FEET = 140; // sitting, its feet are on this line of the drawing
@@ -67,12 +79,14 @@ export default function CtaSquirrel() {
       const mq = window.matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
       let state: "idle" | "on" | "away" = "idle";
       let tl: gsap.core.Timeline | null = null;
+      let idle: gsap.core.Timeline | null = null; // the nibbling, while it sits
       const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
 
       const enter = contextSafe(() => {
         if (!mq.matches || state !== "idle") return;
         state = "on";
         tl?.kill();
+        idle?.kill();
         const r = rem();
         const w = button.offsetWidth;
         const h = button.offsetHeight;
@@ -91,8 +105,26 @@ export default function CtaSquirrel() {
         gsap.set(eye, { attr: EYE.run });
 
         gsap.set(el, { x: ground.x, y: ground.y, rotation: TILT_SIT, scale: 0.9, opacity: 0, transformOrigin: "50% 100%" });
+        // once it sits, it nibbles until the pointer leaves: in seconds as they are, not at SPEED
+        const nibble = () => {
+          const shape = (d: string, eyeAt: { cx: number; cy: number }, duration: number, ease: string) => [
+            [body, { morphSVG: d, duration, ease }],
+            [eye, { attr: eyeAt, duration, ease }],
+          ] as const;
+          idle = gsap.timeline({ repeat: -1, repeatDelay: 1.1, delay: 0.5 });
+          const at = (t: number, parts: ReturnType<typeof shape>) => parts.forEach(([target, vars]) => idle!.to(target, vars, t));
+          at(0, shape(NIBBLING, EYE.nibble, 0.3, "power2.inOut"));
+          at(0.32, shape(CHEWING, EYE.chew, 0.12, "sine.inOut"));
+          at(0.44, shape(NIBBLING, EYE.nibble, 0.12, "sine.inOut"));
+          at(0.58, shape(CHEWING, EYE.chew, 0.12, "sine.inOut"));
+          at(0.7, shape(NIBBLING, EYE.nibble, 0.12, "sine.inOut"));
+          at(0.88, shape(SITTING, EYE.sit, 0.34, "power2.inOut"));
+          // the tail swishes down and back as the head goes down and comes up
+          idle.to(tail, { rotation: TAIL_ON_RUMP.rotation - 9, duration: 0.36, ease: "sine.inOut" }, 0.06);
+          idle.to(tail, { rotation: TAIL_ON_RUMP.rotation, duration: 0.5, ease: "sine.inOut" }, 0.72);
+        };
         tl = gsap
-          .timeline()
+          .timeline({ onComplete: () => void (state === "on" && nibble()) })
           .timeScale(SPEED)
           // appears where it stands
           .to(el, { opacity: 1, scale: 1, duration: 0.18, ease: "power3.out" })
@@ -149,6 +181,7 @@ export default function CtaSquirrel() {
         if (state !== "on") return;
         state = "away";
         tl?.kill();
+        idle?.kill();
         const r = rem();
         const x = gsap.getProperty(el, "x") as number;
         const y = gsap.getProperty(el, "y") as number;
@@ -193,6 +226,7 @@ export default function CtaSquirrel() {
         button.removeEventListener("pointerleave", leave);
         button.removeEventListener("click", click);
         tl?.kill();
+        idle?.kill();
       };
     },
     { scope: ref },
