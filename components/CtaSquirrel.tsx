@@ -15,8 +15,9 @@ gsap.registerPlugin(MotionPathPlugin, MorphSVGPlugin);
 // leaps up and away to the right as if it could fly, shrinking and fading as it goes; a click waits
 // for most of that leap before it opens the map.
 // It takes the button's own fill, the primary to primary-deep gradient.
-// Decoration only: no squirrel on touch screens (no hover there) or under reduced motion, and a
-// click there opens the map at once.
+// On a touch screen there is no hover, so it comes on its own as the page lands, once the button
+// has arrived, and sits nibbling there; a tap sends it off before the map opens, as a click does.
+// Decoration only: no squirrel under reduced motion, and a click there opens the map at once.
 // Sits inside the button (.a02-cta), so its distances are the button's: x from its left edge,
 // y from its top. Styles: .a02-squirrel in app/welcome2.css.
 
@@ -74,6 +75,7 @@ const LEAP = 0.6; // seconds, the flight away
 const OPEN_AFTER = 0.4; // seconds into the flight, a click opens the map
 // everything above is written at the pace it was drawn; the squirrel plays it this much faster
 const SPEED = 2;
+const ARRIVED = 1.1; // seconds after the page lands, the button has arrived (.a02-cta in app/welcome.css)
 
 export default function CtaSquirrel() {
   const ref = useRef<HTMLSpanElement>(null);
@@ -84,14 +86,15 @@ export default function CtaSquirrel() {
       const el = ref.current;
       const button = el?.parentElement as HTMLAnchorElement | null | undefined;
       if (!el || !button || !contextSafe) return;
-      const mq = window.matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
+      const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+      const calm = window.matchMedia("(prefers-reduced-motion: no-preference)");
       let state: "idle" | "on" | "away" = "idle";
       let tl: gsap.core.Timeline | null = null;
       let idle: gsap.core.Timeline | null = null; // the nibbling, while it sits
       const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
 
       const enter = contextSafe(() => {
-        if (!mq.matches || state !== "idle") return;
+        if (!calm.matches || state !== "idle") return;
         state = "on";
         tl?.kill();
         idle?.kill();
@@ -231,12 +234,42 @@ export default function CtaSquirrel() {
         if (href) gsap.delayedCall((0.08 + OPEN_AFTER) / SPEED, () => router.push(href));
       });
 
-      button.addEventListener("pointerenter", enter);
-      button.addEventListener("pointerleave", leave);
+      // a mouse or pen brings it on and sends it off; a finger only taps, and the tap is the click
+      const over = (e: PointerEvent) => void (e.pointerType !== "touch" && fine.matches && enter());
+      const out = (e: PointerEvent) => void (e.pointerType !== "touch" && fine.matches && leave());
+
+      // A touch screen: it comes as the page lands (a0-open, set by components/WelcomeLogo.tsx),
+      // once the button has arrived. If the opening is scrolled back up before the end, it goes.
+      const stage = button.closest(".a0s");
+      let landing: gsap.core.Tween | null = null;
+      const watch = new MutationObserver(() => {
+        if (fine.matches) return;
+        const open = stage!.classList.contains("a0-open");
+        if (open && !landing && state === "idle") landing = gsap.delayedCall(ARRIVED, enter);
+        if (!open) {
+          landing?.kill();
+          landing = null;
+          if (state !== "idle") {
+            tl?.kill();
+            idle?.kill();
+            state = "idle";
+            gsap.set(el, { opacity: 0 });
+          }
+        }
+      });
+      if (stage) {
+        watch.observe(stage, { attributes: true, attributeFilter: ["class"] });
+        if (stage.classList.contains("a0-open") && !fine.matches) landing = gsap.delayedCall(ARRIVED, enter);
+      }
+
+      button.addEventListener("pointerenter", over);
+      button.addEventListener("pointerleave", out);
       button.addEventListener("click", click);
       return () => {
-        button.removeEventListener("pointerenter", enter);
-        button.removeEventListener("pointerleave", leave);
+        watch.disconnect();
+        landing?.kill();
+        button.removeEventListener("pointerenter", over);
+        button.removeEventListener("pointerleave", out);
         button.removeEventListener("click", click);
         tl?.kill();
         idle?.kill();
