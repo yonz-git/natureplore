@@ -654,40 +654,13 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-group.is-plants svg { translate: 0.012rem -0.0475rem; }
 .sg-group.is-birds svg { translate: -0.047rem -0.0355rem; }
 .sg-group.is-mammals svg { translate: 0 -0.0095rem; }
-/* the herbs sway when pointed at: Lordicon's "hover-pinch" for this drawing, rebuilt from its
-   keyframes. The sprigs pivot at the foot of the stem (2.02, 21.9 on the 24 grid), lift a little
-   and dip back, then swing forward and settle, over 1.78s (107 frames at 60). */
+/* the pivots of the two moving group icons: the herbs at the foot of the stem (2.02, 21.9 on the 24
+   grid), the mushroom at the foot of its stem (12, 22.4) */
 .herbs-sway { transform-box: view-box; transform-origin: 2.02px 21.9px; }
-@keyframes herbs-pinch {
-  0% { transform: translateY(0) rotate(0); }
-  29% { transform: translateY(-0.56px) rotate(-9deg); }
-  49% { transform: translateY(-0.42px) rotate(5deg); }
-  69% { transform: translateY(-0.28px) rotate(-3deg); }
-  86% { transform: translateY(-0.12px) rotate(1deg); }
-  100% { transform: translateY(0) rotate(0); }
-}
-/* the mushroom hops: it squashes on its base, springs up, lands with a little squash and settles,
-   over 1.1s, from the foot of the stem (12, 20 on the 24 grid) */
-.mushroom-hop { transform-box: view-box; transform-origin: 12px 20px; }
-@keyframes mushroom-hop {
-  0% { transform: translateY(0) scale(1, 1); }
-  14% { transform: translateY(0) scale(1.08, 0.88); }
-  38% { transform: translateY(-2.2px) scale(0.96, 1.06); }
-  58% { transform: translateY(0) scale(1.06, 0.92); }
-  76% { transform: translateY(-0.5px) scale(0.99, 1.02); }
-  100% { transform: translateY(0) scale(1, 1); }
-}
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .sg-group:not([aria-disabled="true"]):hover .mushroom-hop { animation: mushroom-hop 1.1s cubic-bezier(0.33, 0, 0.67, 1); }
-  .sg-group:not([aria-disabled="true"]):hover .herbs-sway { animation: herbs-pinch 1.78s cubic-bezier(0.33, 0, 0.67, 1); }
-}
-@media (prefers-reduced-motion: no-preference) {
-  /* and once as the toggles appear, dimmed or not, as they grow in */
-  .sg-groups.is-on .sg-group.is-herbs .herbs-sway { animation: herbs-pinch 1.78s cubic-bezier(0.33, 0, 0.67, 1) 0.12s both; }
-  .sg-groups.is-on .sg-group.is-mushrooms .mushroom-hop { animation: mushroom-hop 1.1s cubic-bezier(0.33, 0, 0.67, 1) 0.2s both; }
-  .sg-group:focus-visible .mushroom-hop { animation: mushroom-hop 1.1s cubic-bezier(0.33, 0, 0.67, 1); }
-  .sg-group:focus-visible .herbs-sway { animation: herbs-pinch 1.78s cubic-bezier(0.33, 0, 0.67, 1); }
-}
+.mushroom-hop { transform-box: view-box; transform-origin: 12px 22.4px; }
+/* their motion is played from components/SuggestionsScreen.tsx (GROUP_MOTION): once as the toggles
+   appear, dimmed or not, and again on hover and keyboard focus. A script, so a hover can restart a
+   motion the entrance already played. */
 .sg .seg.glass::after,
 .sg-group.glass::after { content: none; }
 /* a group with nothing in season here: dimmed, there to show what could be */

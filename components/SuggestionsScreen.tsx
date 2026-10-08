@@ -30,6 +30,43 @@ function pointsFor(regionId: string, near: boolean): MapPoint[] {
   return near ? [HERE_POINT, ...own] : own;
 }
 
+// The two group icons that move (app/flow-a.css has their pivots). The herbs: Lordicon's "hover-pinch"
+// for this drawing, rebuilt from its keyframes, the sprigs lifting and dipping back, swinging forward
+// and settling over 1.78s. The mushroom hops: squashes, springs up, lands with a squash and settles.
+const GROUP_MOTION: Partial<Record<Group, { part: string; frames: Keyframe[]; ms: number }>> = {
+  herbs: {
+    part: ".herbs-sway",
+    ms: 1780,
+    frames: [
+      { transform: "translateY(0) rotate(0)" },
+      { transform: "translateY(-0.56px) rotate(-9deg)", offset: 0.29 },
+      { transform: "translateY(-0.42px) rotate(5deg)", offset: 0.49 },
+      { transform: "translateY(-0.28px) rotate(-3deg)", offset: 0.69 },
+      { transform: "translateY(-0.12px) rotate(1deg)", offset: 0.86 },
+      { transform: "translateY(0) rotate(0)" },
+    ],
+  },
+  mushrooms: {
+    part: ".mushroom-hop",
+    ms: 1100,
+    frames: [
+      { transform: "translateY(0) scale(1, 1)" },
+      { transform: "translateY(0) scale(1.08, 0.88)", offset: 0.14 },
+      { transform: "translateY(-2.2px) scale(0.96, 1.06)", offset: 0.38 },
+      { transform: "translateY(0) scale(1.06, 0.92)", offset: 0.58 },
+      { transform: "translateY(-0.5px) scale(0.99, 1.02)", offset: 0.76 },
+      { transform: "translateY(0) scale(1, 1)" },
+    ],
+  },
+};
+function playGroup(button: HTMLElement, group: Group, delay = 0) {
+  const motion = GROUP_MOTION[group];
+  const part = motion && button.querySelector<SVGGElement>(motion.part);
+  if (!motion || !part || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  part.getAnimations().forEach((a) => a.cancel());
+  part.animate(motion.frames, { duration: motion.ms, delay, easing: "cubic-bezier(0.33, 0, 0.67, 1)", fill: "backwards" });
+}
+
 export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { near: boolean; regionId?: string }) {
   const map = useRef<MapHandle>(null);
   // from 64rem the search field leaves the panel for the top of the screen, centred on it
@@ -53,6 +90,12 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   const pick = (g: Group) => setPicked((now) => (now.includes(g) ? now.filter((x) => x !== g) : [...now, g]));
   // the toggles line up under the Organisms option they filter: its left edge, measured, is their indent
   const switchRow = useRef<HTMLDivElement>(null);
+  const groupRow = useRef<HTMLDivElement>(null);
+  // as the toggles appear the moving icons play once, a beat after they grow in, dimmed or not
+  useEffect(() => {
+    if (show !== "organisms") return;
+    groupRow.current?.querySelectorAll<HTMLElement>("[data-group]").forEach((b, i) => playGroup(b, b.dataset.group as Group, 120 + i * 40));
+  }, [show]);
   const orgOpt = useRef<HTMLButtonElement>(null);
   useLayoutEffect(() => {
     const row = switchRow.current;
@@ -125,7 +168,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             </button>
           </div>
           {/* inert, not removed, while on Routes, so the toggles can fade out as well as in */}
-          <div role="group" aria-label="Filter by group" className={`sg-groups${show === "organisms" ? " is-on" : ""}`} inert={show !== "organisms"}>
+          <div role="group" aria-label="Filter by group" ref={groupRow} className={`sg-groups${show === "organisms" ? " is-on" : ""}`} inert={show !== "organisms"}>
             {GROUPS.map((g) => (
               <button
                 key={g.id}
@@ -135,7 +178,11 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                 aria-disabled={!has(g.id) || undefined}
                 aria-label={has(g.id) ? g.label : `${g.label}, none in season here`}
                 title={has(g.id) ? g.label : `${g.label}: none in season here`}
+                data-group={g.id}
                 onClick={() => has(g.id) && pick(g.id)}
+                // again under a mouse or on keyboard focus, when the group can be picked
+                onPointerEnter={(e) => e.pointerType === "mouse" && has(g.id) && playGroup(e.currentTarget, g.id)}
+                onFocus={(e) => e.currentTarget.matches(":focus-visible") && has(g.id) && playGroup(e.currentTarget, g.id)}
               >
                 <GroupIcon group={g.id} size={18.2} />
               </button>
