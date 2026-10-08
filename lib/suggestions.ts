@@ -1,12 +1,14 @@
 // The routes in season this month, the suggestion cards on A5 and A4, and what search finds.
 // Content comes from the flow and IA redesign (.forge/briefs/flow-ia-redesign-final.md, section 3)
 // and the Flow A boards on the redesign canvas. Prototype date: Thursday 24 September 2026, so
-// "this month" is September. Only Linum wet meadows loop has its route page built.
+// "this month" is September. Only Grumsin beech forest loop has its route page built.
 
 import type { MapPoint } from "@/components/RegionMap";
 import type { Group } from "@/lib/routes";
 
-export const MONTH = "September";
+import { MONTH } from "@/lib/now";
+
+export { MONTH };
 
 export type InSeason = {
   name: string;
@@ -38,8 +40,25 @@ export type Suggestion = {
 };
 
 // Sorted by the share of spots in season this month, then by name: a sort, not a recommendation.
-// Linum 4 of 6, Tegeler Fließ 3 of 7, Grumsin 2 of 5, Tempelhofer Feld 2 of 5.
+// Grumsin 4 of 5, Linum 4 of 6, Tegeler Fließ 3 of 7, Tempelhofer Feld 2 of 5.
 export const SUGGESTIONS: Suggestion[] = [
+  {
+    id: "grumsin",
+    name: "Grumsin beech forest loop",
+    meta: "10.2 km loop, 3 h at a looking pace, 5 spots",
+    place: "10.2 km loop in Grumsin, Brandenburg",
+    spots: 5,
+    lit: [1, 3, 4, 5],
+    image: "/img/routes/grumsin.jpg",
+    href: "/map/route/grumsin",
+    lat: 53.01237,
+    lon: 13.8751,
+    inSeason: [
+      { name: "Porcelain fungus", latin: "Oudemansiella mucida", group: "mushrooms", note: "on the fallen beech", last: "8 Sep" },
+      { name: "Black woodpecker", latin: "Dryocopus martius", group: "birds", last: "9 Sep" },
+      { name: "Common crane", latin: "Grus grus", group: "birds", note: "on Wolletzsee at dusk", last: "10 Sep" },
+    ],
+  },
   {
     id: "linum",
     name: "Linum wet meadows loop",
@@ -48,7 +67,6 @@ export const SUGGESTIONS: Suggestion[] = [
     spots: 6,
     lit: [1, 2, 3, 4],
     image: "/img/routes/linum.jpg",
-    href: "/map/route/linum",
     lat: 52.75963,
     lon: 12.87651,
     inSeason: [
@@ -72,21 +90,7 @@ export const SUGGESTIONS: Suggestion[] = [
       { name: "Grey heron", latin: "Ardea cinerea", group: "birds", last: "18 Sep" },
     ],
   },
-  {
-    id: "grumsin",
-    name: "Grumsin beech forest loop",
-    meta: "7.1 km loop, 2 h 10 at a looking pace, 5 spots",
-    place: "7.1 km loop in Grumsin, Brandenburg",
-    spots: 5,
-    lit: [1, 2],
-    image: "/img/routes/grumsin.jpg",
-    lat: 52.985,
-    lon: 13.9,
-    inSeason: [
-      { name: "Porcelain fungus", latin: "Oudemansiella mucida", group: "mushrooms", note: "on beech deadwood", last: "19 Sep" },
-      { name: "Black woodpecker", latin: "Dryocopus martius", group: "birds", last: "12 Sep" },
-    ],
-  },
+
   {
     id: "tempelhof",
     name: "Tempelhofer Feld loop",

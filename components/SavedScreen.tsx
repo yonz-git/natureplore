@@ -1,9 +1,9 @@
 "use client";
 
-// E1 · Saved, the Saved tab: what is kept on this device. Routes, each downloaded, with Walk it;
+// E1 · Saved, the Saved tab: what is kept on this device. Routes, each downloaded, with Walk the route;
 // the organisms saved on B4; the clean-up registered for (C4), the practices saved (C7) and the
 // documentaries saved to watch later (D3). It reads the same store as every Save control, so a
-// route saved on A5 is here. Walk it opens the walk (L4). Each section shows its first five and
+// route saved on A5 is here. Walk the route opens the walk (L4). Each section shows its first five and
 // its heading opens the whole list (E4, E6, E5); "On this device" opens recent searches (E7),
 // downloaded routes (E8) and notifications (E3). Boards: E1 · Saved, and E1 · Saved, all sections.
 
@@ -76,20 +76,20 @@ export default function SavedScreen() {
                   ) : (
                     <div className="saved-row">{row}</div>
                   )}
-                  {/* L4, the walk, is built for Linum wet meadows loop only */}
+                  {/* L4, the walk, is built for Grumsin beech forest loop only */}
                   {routeDetail(r.id) ? (
                     <Link href={`/walk/${r.id}`} className="btn btn-primary">
                       <WalkIcon size={18} />
-                      Walk it
+                      Walk the route
                     </Link>
                   ) : (
                     <button type="button" className="btn btn-primary" aria-disabled="true">
                       <WalkIcon size={18} />
-                      Walk it
+                      Walk the route
                       <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
                     </button>
                   )}
-                  {!routeDetail(r.id) && <p className="org-small">The walk is built for Linum wet meadows loop only.</p>}
+                  {!routeDetail(r.id) && <p className="org-small">The walk is built for Grumsin beech forest loop only.</p>}
                 </article>
               );
             })}

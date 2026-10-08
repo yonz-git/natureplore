@@ -11,7 +11,7 @@ import { useState } from "react";
 
 import { BackIcon, ChevronIcon } from "@/components/Icons";
 import { organismPhoto } from "@/lib/photos";
-import { LINUM_RECORDED } from "@/lib/recorded";
+import { GRUMSIN_RECORDED } from "@/lib/recorded";
 import { GROUPS, type Group } from "@/lib/routes";
 
 const FIRST = 5;
@@ -29,8 +29,8 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
   // the groups picked in the legend; none picked shows every group
   const [picked, setPicked] = useState<Group[]>([]);
   const pick = (g: Group) => setPicked((p) => (p.includes(g) ? p.filter((x) => x !== g) : [...p, g]));
-  const shownGroups = picked.length ? LINUM_RECORDED.filter((g) => picked.includes(g.group)) : LINUM_RECORDED;
-  const total = LINUM_RECORDED.reduce((a, g) => a + g.total, 0);
+  const shownGroups = picked.length ? GRUMSIN_RECORDED.filter((g) => picked.includes(g.group)) : GRUMSIN_RECORDED;
+  const total = GRUMSIN_RECORDED.reduce((a, g) => a + g.total, 0);
 
   return (
     <section className="saved a8" aria-labelledby="a8-title">
@@ -47,9 +47,9 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
           <div
             className="b1-bar"
             role="img"
-            aria-label={`${total} records: ${LINUM_RECORDED.map((g) => `${g.total} ${label(g.group).toLowerCase()}`).join(", ")}`}
+            aria-label={`${total} records: ${GRUMSIN_RECORDED.map((g) => `${g.total} ${label(g.group).toLowerCase()}`).join(", ")}`}
           >
-            {LINUM_RECORDED.filter((g) => g.total).map((g) => (
+            {GRUMSIN_RECORDED.filter((g) => g.total).map((g) => (
               <span
                 key={g.group}
                 className={`is-${g.group}${picked.length && !picked.includes(g.group) ? " is-dim" : ""}`}
@@ -58,7 +58,7 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
             ))}
           </div>
           <div className="a8-legend" role="group" aria-label="Show only these groups">
-            {LINUM_RECORDED.map((g) => (
+            {GRUMSIN_RECORDED.map((g) => (
               <button
                 key={g.group}
                 type="button"

@@ -107,8 +107,7 @@
   width: var(--dot);
   height: var(--dot);
   box-sizing: border-box;
-  /* the spot marker's face and centring (app/map.css): Alpino's figures are old style, so 3, 4 and 5
-     hang below the line and no box can centre them all; Comfortaa's sit on one height. The line box
+  /* the spot marker's face and centring (app/map.css, and .num-disc in app/globals.css): the line box
      is trimmed to the cap height and the rest of the dot, inside its 1px ring, split evenly */
   display: block;
   padding-block: calc((var(--dot) - 1cap) / 2 - 1px);

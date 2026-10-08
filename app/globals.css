@@ -72,3 +72,19 @@ button:disabled {
 button:disabled:active {
   transform: none;
 }
+
+/* A number alone in a circle: centred on the figures' own height, never on the font's line box, which has more
+   room under the baseline than above (docs/design.md, Components). Set --disc to the circle's size; a block,
+   because the trim does not apply to flex or grid items. Alpino's files carry lining figures by default, so every
+   digit spans the same baseline to cap height (.design/fonts-original/lining-figures.py). */
+.num-disc {
+  --disc: 2rem;
+  display: block;
+  width: var(--disc);
+  height: var(--disc);
+  box-sizing: border-box;
+  padding-block: calc((var(--disc) - 1cap) / 2);
+  text-align: center;
+  text-box: trim-both cap alphabetic;
+  line-height: 1;
+}

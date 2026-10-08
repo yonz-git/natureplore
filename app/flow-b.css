@@ -336,7 +336,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-facts dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.25rem; }
 .b1-foot { margin-top: 0.5rem; }
 
-/* pinned over the tab bar on the phone, once saved: Walk it; after a removal, Undo */
+/* pinned over the tab bar on the phone, once saved: Walk the route; after a removal, Undo */
 .b1-pin {
   position: absolute;
   left: 0.75rem;

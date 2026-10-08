@@ -3,9 +3,9 @@
 // B1 · Route, and B1-saved: what is on this route, and when. The map shows the route's real line,
 // its start and its spots in walking order; under it (phone) or beside it (desktop) the page, in
 // the order of the flow and IA redesign: Spots along this route (each opens its spot, L3), the
-// route and where its spots are, what is recorded along it (to A8), when to walk it, what is
+// route and where its spots are, what is recorded along it (to A8), when to walk the route, what is
 // happening along it (claim cards), and getting there. Save is the bookmark on the photographs; once
-// the route is saved a pinned bar holds Walk it, which opens the walk (L4). The store is real in the prototype, so B1
+// the route is saved a pinned bar holds Walk the route, which opens the walk (L4). The store is real in the prototype, so B1
 // and B1-saved are one page. Boards: B1 phone, tablet and desktop, and B1-saved phone.
 
 import Link from "next/link";
@@ -28,7 +28,7 @@ const SECTIONS = [
   ["spots", "Spots"],
   ["drawn", "The route"],
   ["recorded", "What is recorded"],
-  ["season", "When to walk it"],
+  ["season", "When to walk the route"],
   ["happening", "What is happening"],
   ["getting", "Getting there"],
 ] as const;
@@ -47,7 +47,7 @@ function SectionHead({ id, lead, close, note }: { id: string; lead: string; clos
 
 /**
  * Saving lives in one place, the bookmark on the photograph's top right (SaveToggle). The pinned bar
- * only appears once there is something to do next: Walk it when the route is saved, and Undo for
+ * only appears once there is something to do next: Walk the route when the route is saved, and Undo for
  * the rest of the visit after it is removed. Saved on this visit, the bar also says the route was
  * downloaded and where to find it.
  */
@@ -87,7 +87,7 @@ function SaveToggle({ route, save }: { route: Route; save: RouteSave }) {
 
 function Pin({ route, walkable, save }: { route: Route; walkable: boolean; save: RouteSave }) {
   const { saved, removed, justSaved } = save;
-  // Undo puts Walk it back where Undo was, so focus follows it there
+  // Undo puts Walk the route back where Undo was, so focus follows it there
   const moved = useRef(false);
   const focusIfMoved = (el: HTMLElement | null) => {
     if (el && moved.current) {
@@ -116,12 +116,12 @@ function Pin({ route, walkable, save }: { route: Route; walkable: boolean; save:
         walkable ? (
           <Link ref={focusIfMoved} href={`/walk/${route.id}`} className="btn btn-primary b1-walk">
             <WalkIcon size={19} />
-            Walk it
+            Walk the route
           </Link>
         ) : (
           <button ref={focusIfMoved} type="button" className="btn btn-primary b1-walk" aria-disabled="true">
             <WalkIcon size={19} />
-            Walk it
+            Walk the route
             <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
           </button>
         )
@@ -339,10 +339,12 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                               <MonthGrid months={s.months} />
                               <p className="fb-small">In season {s.when === "All year" ? "all year" : s.when}</p>
                             </div>
-                            <div className="fb-spot-part">
-                              <h3 className="fb-label">What is happening here</h3>
-                              <ClaimCard claim={detail.claims[0]} />
-                            </div>
+                            {detail.claims[0] && (
+                              <div className="fb-spot-part">
+                                <h3 className="fb-label">What is happening here</h3>
+                                <ClaimCard claim={detail.claims[0]} />
+                              </div>
+                            )}
                             <div className="fb-spot-part">
                               <h3 className="fb-label">Recorded here too</h3>
                               <RecordedToo />
@@ -410,8 +412,8 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                   </li>
                 ))}
               </ul>
-              {/* A8 has the records of Linum wet meadows loop only */}
-              {route.id === "linum" ? (
+              {/* A8 has the records of Grumsin beech forest loop only */}
+              {route.id === "grumsin" ? (
                 <Link href={`/map/route/${route.id}/recorded`} className="btn btn-secondary btn-chev">
                   See everything recorded
                   <ChevronIcon size={18} />
@@ -429,7 +431,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           {detail && (
             <>
               <section aria-labelledby="sec-season-title">
-                <SectionHead id="season" lead="When to " close="walk it" note="Spots in season" />
+                <SectionHead id="season" lead="When to " close="walk the route" note="Spots in season" />
                 <div className="fb-card">
                   <div
                     className="fb-season"
@@ -448,14 +450,16 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                 </div>
               </section>
 
-              <section aria-labelledby="sec-happening-title">
-                <SectionHead id="happening" lead="What is happening " close="along this route" />
-                <div className="fb-stack">
-                  {detail.claims.map((c) => (
-                    <ClaimCard key={c.id} claim={c} />
-                  ))}
-                </div>
-              </section>
+              {detail.claims.length > 0 && (
+                <section aria-labelledby="sec-happening-title">
+                  <SectionHead id="happening" lead="What is happening " close="along this route" />
+                  <div className="fb-stack">
+                    {detail.claims.map((c) => (
+                      <ClaimCard key={c.id} claim={c} />
+                    ))}
+                  </div>
+                </section>
+              )}
 
               <section aria-labelledby="sec-getting-title">
                 <SectionHead id="getting" lead="Getting there, and " close="getting along it" />
