@@ -326,7 +326,8 @@
   /* The opening line and the cue go first, as the photograph starts to open behind them. What is
      left of the scroll opens the photograph, and nothing else waits on it. */
   .a0s .a0-cue { animation-name: a0s-leave; --a0-s: 0; --a0-e: 0.08; }
-  .a0s .a0-hero { animation-name: a0s-leave; --a0-s: 0.04; --a0-e: 0.25; }
+  /* the line is gone before the logo starts building over it (WELCOME_START, 0.17) */
+  .a0s .a0-hero { animation-name: a0s-leave; --a0-s: 0.02; --a0-e: 0.16; }
 
   /* A0 arrives on the frame the logo lands in its corner, one layer after another, and the route
      draws itself over the photograph (components/WelcomeLogo.tsx sets a0-open, and

@@ -2,12 +2,11 @@
 // board's standalone page. Every number is in the logo's own units (its viewBox is 1729.5 by 425.2),
 // so the motion scales with the logo.
 //
-// Beats: the mushroom is taken over from the welcome's cue at 1.2s, where it already stands
-// (components/WelcomeCue.tsx) pops in below the logo and jumps once, to wait under the symbol, at 1.65s, the plant grows from 0.4s and hops down
-// beside it, in two hops, by 2.7s, the mushroom then jumps twice back, at 3.0s and 3.7s, and lands in its
-// place on the plant, the bird circles in from 0.6s and lands at 5.6s
-// over the two of them, and the symbol pulses
-// at 5.65s. "nature" starts as the plant lands: the swan rises at 3.2s, "a" and "t" wipe on from
+// Beats: the plant grows first, from 0s, and hops into its place in two hops, the second at 1.7s.
+// The mushroom is taken over from the welcome's cue at 1.9s, on the frame the cue's own mushroom
+// gets there (components/WelcomeCue.tsx): it pops in below the logo and jumps straight up onto the
+// plant, twice, at 2.3s and 2.95s. The bird circles in from 0.6s and lands at 5.6s over the two of
+// them, and the symbol pulses at 5.65s. "nature" starts as the plant lands: the swan rises at 3.2s, "a" and "t" wipe on from
 // 4.1s, the snake slithers in at 4.5s, the squirrel runs in at 4.45s. "plore" rises at 5.9s.
 // The handoff to A0 - Welcome is three more beats, below; the snake keeps swaying until 13.8s.
 //
@@ -23,13 +22,12 @@ gsap.registerPlugin(MotionPathPlugin);
 // letters are still rising, so the liquid layer is loaded and ready; as "plore" comes up the
 // photograph fades off it and the green field takes over; once the squirrel has landed the logo is
 // free to leave for the welcome's own corner.
-export const MUSH_IN = 1.2; // the mushroom the cue sent over is taken up here, first of the three
-const MUSH_HELLO = 1.65; // it jumps once, to where it waits for the plant
-// logo units from its place: it pops in below and right of the logo, and waits below the symbol
+export const MUSH_IN = 1.9; // the mushroom the cue sent over is taken up here, as the plant makes its last hop
+// logo units from its place: it pops in below and right of the logo
 export const MUSH_POP = { x: 463, y: 578 }; // components/WelcomeCue.tsx sends its mushroom here
-const MUSH_WAIT = { x: 165, y: 440 };
-const MUSH_JUMPS = [3.0, 3.7]; // and once the plant has landed, twice more into its place on it
-const PLANT_HOPS = 1.5; // the plant's first hop, so its second lands (2.7s) between the two
+const MUSH_JUMPS = [2.3, 2.95]; // and jumps straight up into its place on the plant, which is there by 2.3s
+const SHAKE = 0.14; // seconds, one swing of the swan's head shake
+const PLANT_HOPS = 1.0; // the plant's first hop; the second lands it at 2.2s
 const WARM = 5.1;
 const OPEN = 6.0;
 const FLY = 8.0;
@@ -39,6 +37,9 @@ const FLY = 8.0;
 // can hand its mushroom over on the frame the logo's own pops in, whatever the speed.
 export const WELCOME_PACE = 2.109; // 1.35, then 20% shorter twice
 export const WELCOME_OPENING = 1 / 0.7;
+// Where on the welcome's scroll the logo starts (components/WelcomeLogo.tsx): the circle has barely
+// opened and the plant starts growing while the cue's mushroom is still on its way over.
+export const WELCOME_START = 0.17;
 
 export type IntroBeats = { onWarm: () => void; onOpen: () => void; onFly: () => void };
 
@@ -117,9 +118,9 @@ export function playIntro(root: HTMLElement, beats: IntroBeats, paused = false) 
     tl.to(wing, { keyframes: [{ rotation: -24, duration: 0.1 }, { rotation: 44, duration: 0.15 }, { rotation: 0, duration: 0.11 }], ease: "sine.inOut", repeat: 13 }, 0.6);
 
     // mushroom: the welcome's own mushroom has walked here under the scroll
-    // (components/WelcomeCue.tsx) and is standing in this spot. This one takes over from it first of
-    // the three, below the logo, jumps once to wait under the symbol while the plant hops down, jumps twice back
-    // and lands on the plant, and only then does the bird come in over them.
+    // (components/WelcomeCue.tsx) and gets to this spot as the plant makes its last hop. This one
+    // takes over from it there, below the logo, and jumps twice up onto the plant; only then does the
+    // bird come in over them.
     tl.to(mush, { opacity: 1, duration: 0.12, ease: "sine.out" }, MUSH_IN);
     tl.to(mush, { scale: 1, duration: 0.45, ease: "back.out(2.4)" }, MUSH_IN);
     // one jump to (x, y): crouch, up and across, land, and a wobble to settle
@@ -137,19 +138,17 @@ export function playIntro(root: HTMLElement, beats: IntroBeats, paused = false) 
       tl.to(mush, { scaleX: 1, scaleY: 1, duration: 0.5, ease: "elastic.out(1, 0.45)" }, at + 0.66);
       tl.to(mush, { rotation: 0, duration: 0.5, ease: "elastic.out(1, 0.4)" }, at + 0.66);
     };
-    // pops in below the logo, jumps once to wait under the symbol while the plant hops down, then
-    // twice up onto the plant
-    jump(MUSH_HELLO, MUSH_WAIT, 90, -8);
-    jump(MUSH_JUMPS[0], { x: MUSH_WAIT.x / 2, y: MUSH_WAIT.y / 2 }, 100, -8);
+    // pops in below the logo, then twice up onto the plant
+    jump(MUSH_JUMPS[0], { x: MUSH_POP.x / 2, y: MUSH_POP.y / 2 }, 100, -8);
     jump(MUSH_JUMPS[1], { x: 0, y: 0 }, 130, -10);
 
-    // plant: bottom pair first, then middle, then top, small, then two hops to its place
-    tl.to([pBl, pBr], { opacity: 1, duration: 0.15 }, 0.4);
-    tl.to([pBl, pBr], { scale: 1, duration: 0.8, ease: "back.out(2.2)" }, 0.4);
-    tl.to(pMid, { opacity: 1, duration: 0.15 }, 0.75);
-    tl.to(pMid, { scale: 1, duration: 0.9, ease: "back.out(1.6)" }, 0.75);
-    tl.to(pTop, { opacity: 1, duration: 0.15 }, 1.05);
-    tl.to(pTop, { scale: 1, duration: 0.9, ease: "back.out(1.6)" }, 1.05);
+    // plant: the first thing in, bottom pair first, then middle, then top, small, then two hops to its place
+    tl.to([pBl, pBr], { opacity: 1, duration: 0.15 }, 0);
+    tl.to([pBl, pBr], { scale: 1, duration: 0.8, ease: "back.out(2.2)" }, 0);
+    tl.to(pMid, { opacity: 1, duration: 0.15 }, 0.3);
+    tl.to(pMid, { scale: 1, duration: 0.9, ease: "back.out(1.6)" }, 0.3);
+    tl.to(pTop, { opacity: 1, duration: 0.15 }, 0.55);
+    tl.to(pTop, { scale: 1, duration: 0.9, ease: "back.out(1.6)" }, 0.55);
     const L = [[-975, 940, 0.35], [-490, 470, 0.66], [0, 0, 1]];
     let t0 = PLANT_HOPS;
     for (let h = 0; h < L.length - 1; h++) {
@@ -173,15 +172,16 @@ export function playIntro(root: HTMLElement, beats: IntroBeats, paused = false) 
     const shead = q(".swanhead");
     gsap.set(shead, { svgOrigin: "568 84", rotation: 28 });
     tl.to(shead, { rotation: -6, duration: 0.45, ease: "back.out(2)" }, 3.65);
+    // the shake: one even beat, each swing a little smaller than the last, every swing eased on its
+    // own (easeEach) so the head slows at each end and swings through the middle, then it settles
     tl.to(shead, {
-      keyframes: [
-        { rotation: 16, duration: 0.09 }, { rotation: -14, duration: 0.09 }, { rotation: 13, duration: 0.09 },
-        { rotation: -10, duration: 0.09 }, { rotation: 7, duration: 0.09 }, { rotation: -4, duration: 0.09 },
-        { rotation: 0, duration: 0.3, ease: "elastic.out(1, 0.4)" },
-      ],
-      ease: "sine.inOut",
+      keyframes: [16, -14, 11, -8, 5, -3].map((rotation) => ({ rotation, duration: SHAKE })),
+      ease: "none",
+      easeEach: "sine.inOut",
     }, 4.1);
-    tl.to(shead, { y: -4, duration: 0.18, ease: "sine.inOut", yoyo: true, repeat: 1 }, 4.15);
+    tl.to(shead, { rotation: 0, duration: 0.45, ease: "elastic.out(1, 0.4)" }, 4.1 + 6 * SHAKE);
+    // the head bobs with the shake, up on every other swing
+    tl.to(shead, { y: -4, duration: SHAKE, ease: "sine.inOut", yoyo: true, repeat: 5 }, 4.1);
     // water: ripples and a burst of drops at the surface as the swan comes up
     let seed = 7;
     const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
@@ -199,9 +199,9 @@ export function playIntro(root: HTMLElement, beats: IntroBeats, paused = false) 
       tl.to(d, { y: 12, duration: dur * 0.5, ease: "power2.in" }, t + dur * 0.5);
       tl.to(d, { opacity: 0, scale: 0.2, duration: 0.18 }, t + dur - 0.14);
     });
-    // head shake: drops fly off left and right with each swing
+    // head shake: drops fly off left and right with each swing, as it passes the middle
     qa(".d2").forEach((d, i) => {
-      const dir = i % 2 ? -1 : 1, dx = dir * (60 + rnd() * 90), up = -(20 + rnd() * 50), t = 4.12 + Math.floor(i / 2) * 0.09, dur = 0.45 + rnd() * 0.15;
+      const dir = i % 2 ? -1 : 1, dx = dir * (60 + rnd() * 90), up = -(20 + rnd() * 50), t = 4.1 + SHAKE * 0.6 + Math.floor(i / 2) * SHAKE, dur = 0.45 + rnd() * 0.15;
       gsap.set(d, { x: dir * 10, y: (rnd() - 0.5) * 24, scale: 0.6 + rnd() * 0.6 });
       tl.to(d, { opacity: 0.95, duration: 0.05 }, t);
       tl.to(d, { x: "+=" + dx, duration: dur, ease: "power1.out" }, t);

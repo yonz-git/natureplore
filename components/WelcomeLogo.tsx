@@ -5,13 +5,13 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { INTRO_LOGO_SVG } from "@/components/intro-logo";
 import Logo from "@/components/Logo";
-import { playIntro, WELCOME_OPENING, WELCOME_PACE } from "@/lib/intro-timeline";
+import { playIntro, WELCOME_OPENING, WELCOME_PACE, WELCOME_START } from "@/lib/intro-timeline";
 import { followProgress } from "@/lib/welcome-progress";
 
 // The logo on A0 · Welcome. The page opens with no logo at all: the timeline (lib/intro-timeline.ts)
 // is built and held at its first frame, where every piece is still off the screen and the drawing is
-// transparent. The scroll is the background's, not the logo's: it opens the photograph, and once that
-// circle is about half way out the logo starts and then plays at its own speed, whatever the scroll
+// transparent. The scroll is the background's, not the logo's: it opens the photograph, and as that
+// circle starts to open the logo starts and then plays at its own speed, whatever the scroll
 // does from there. When it has built itself it stands a moment, the wordmark lifts off letter by
 // letter, and the symbol alone shrinks into the top left corner; only when it lands does the rest of
 // A0 come in, which is what the a0-open class below starts (app/welcome.css).
@@ -19,7 +19,7 @@ import { followProgress } from "@/lib/welcome-progress";
 // The travel is worked out from two boxes rather than written down: the logo where it stands, and the
 // empty corner slot, so both sizes and every window width follow the CSS.
 
-const START = 0.45; // of the scroll: the circle is about half open by here, and the logo starts
+const START = WELCOME_START; // of the scroll: the circle has just started to open, and the logo starts
 const PACE = WELCOME_PACE; // the timeline runs this much faster than it was written
 // the symbol's own corner of the logo, in the logo's viewBox units: the pieces are drawn as clipped
 // copies of one fill, so their boxes are the fill's and cannot be measured. These are the drawing.
@@ -37,10 +37,10 @@ const ROUTE = [
   { x: 0.916, y: 0.709 }, { x: 1.038, y: 0.797 }, { x: 1, y: 1 },
 ];
 const FLAP = 0.36; // seconds, one wingbeat
-// Everything before the swan rises (3.2s in the timeline) plays 30% shorter again, then eases back
-// to PACE over EASE_BACK seconds so the change of speed is never felt as a jolt.
+// The plant's growth and hops play 30% shorter again, then the timeline eases back to PACE over
+// EASE_BACK seconds, so the change of speed is never felt as a jolt, before the mushroom jumps.
 const OPENING = WELCOME_OPENING;
-const SWAN = 3.0; // timeline seconds: the ease back starts just before the swan, so it rises at PACE
+const SWAN = 2.0; // timeline seconds: the ease back starts here, after the mushroom is taken over (1.9s) and before it jumps (2.3s)
 const EASE_BACK = 0.25;
 
 export default function WelcomeLogo() {
