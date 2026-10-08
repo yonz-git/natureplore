@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 
-import { MUSH_IN, MUSH_POP, WELCOME_OPENING, WELCOME_PACE } from "@/lib/intro-timeline";
+import { MUSH_IN, MUSH_POP, WELCOME_OPENING, WELCOME_PACE, WELCOME_START } from "@/lib/intro-timeline";
 import { followProgress } from "@/lib/welcome-progress";
 
 gsap.registerPlugin(SplitText);
@@ -14,19 +14,22 @@ gsap.registerPlugin(SplitText);
 // seconds, and the mushroom pushes up out of the ground between them and thinks better of it, which
 // is the page asking to be scrolled without another word.
 // Then the scroll takes the offer up: the mushroom leaves its spot, grows and travels to where it
-// belongs in the logo, arriving as the logo starts to build itself (components/WelcomeLogo.tsx), and
-// hands over to the logo's own mushroom there. Scrolling back to the top puts it in the ground again.
+// belongs in the logo. The scroll carries it part of the way; once the logo has started building
+// itself (components/WelcomeLogo.tsx) it goes the rest on the logo's clock, so it gets there on the
+// frame the logo's own mushroom pops in, however fast or slow the scroll, and hands over to it.
+// Scrolling back to the top puts it in the ground again.
 // Not run for a reader who asked for less motion: then it is the word on its own, still.
 
-const FIRST = 3.1; // seconds, the cue's own arrival is over by here
+const FIRST = 1.46; // seconds, the cue's own arrival is over by here (its 660ms delay in app/welcome.css, plus 800ms)
 const EVERY = 2; // seconds between one hop and the next
 const LEAVES = 0.02; // of the scroll: the mushroom is on its way by here
-const ARRIVES = 0.45; // and in the logo by here, which is when the logo starts (WelcomeLogo)
+const START = WELCOME_START; // the logo starts here, and the scroll stops carrying the mushroom
+const CARRIED = 0.55; // of the way over, how far the scroll takes it; the logo's clock does the rest
 const HOPS = 3; // arcs it makes on the way over
 const RISE = 90; // px, how high the first arc takes it
 // seconds after the logo starts, when its own mushroom pops into the same place. Worked out from the
 // logo's own beat and speed: a fixed number here went stale when the logo was sped up, and the two
-// mushrooms stood side by side while this one waited to leave.
+// mushrooms stood side by side.
 const HANDOVER = MUSH_IN / (WELCOME_PACE * WELCOME_OPENING);
 const HAND_FADE = 0.08; // seconds: gone before the logo's mushroom makes its first jump
 const GROUND = "#FAFBF5"; // --color-on-field, the cue's own colour
@@ -45,6 +48,8 @@ export default function WelcomeCue({ text }: { text: string }) {
 
   useGSAP(
     () => {
+      // the cue's arrival starts now, on the frame the opening line starts writing (app/welcome.css)
+      cue.current?.setAttribute("data-go", "");
       const word = cue.current?.querySelector("span");
       const sprout = mush.current;
       if (!word || !sprout || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -81,16 +86,37 @@ export default function WelcomeCue({ text }: { text: string }) {
       };
 
       let going: ReturnType<typeof journey> = null;
+      let finishing: gsap.core.Tween | null = null; // the rest of the way, on the logo's clock
       let handing: gsap.core.Tween | null = null;
       let placed = -1;
+      // where it is at a point of the way over, 0 to 1: it hops its way, the arcs flattening as it
+      // gets there, and takes the logo's colour
+      const place = (run: number) => {
+        if (!going) return;
+        const t = glide(run);
+        const hop = Math.abs(Math.sin(run * Math.PI * HOPS)) * RISE * (1 - run * 0.7);
+        gsap.set(sprout, {
+          x: going.x * t,
+          y: going.y * t - hop,
+          scale: 1 + (going.scale - 1) * t,
+          rotation: Math.sin(run * Math.PI * HOPS * 2) * 8,
+          color: gsap.utils.interpolate(GROUND, LOGO_INK, Math.min(1, run * 1.4)),
+        });
+      };
+      const back = () => {
+        finishing?.kill();
+        finishing = null;
+        handing?.kill();
+        handing = null;
+        gsap.set(sprout, { opacity: 1 });
+      };
       const follow = (p: number) => {
         if (p === placed) return;
         placed = p;
         if (p < LEAVES) {
           if (!going) return;
           going = null;
-          handing?.kill();
-          handing = null;
+          back();
           delete sprout.dataset.out;
           gsap.set(sprout, { clearProps: "transform,opacity,color" });
           gsap.set(cap, { yPercent: 118 });
@@ -104,20 +130,27 @@ export default function WelcomeCue({ text }: { text: string }) {
           going = journey();
           if (!going) return;
         }
-        const run = at(p, LEAVES, ARRIVES);
-        const t = glide(run);
-        // it hops its way over, the arcs flattening as it gets there, and takes the logo's colour
-        const hop = Math.abs(Math.sin(run * Math.PI * HOPS)) * RISE * (1 - run * 0.7);
-        gsap.set(sprout, {
-          x: going.x * t,
-          y: going.y * t - hop,
-          scale: 1 + (going.scale - 1) * t,
-          rotation: Math.sin(run * Math.PI * HOPS * 2) * 8,
-          color: gsap.utils.interpolate(GROUND, LOGO_INK, Math.min(1, run * 1.4)),
-        });
-        // in place, waiting for the logo's own mushroom to pop in under it
-        if (run >= 1 && !handing) {
-          handing = gsap.to(sprout, { opacity: 0, duration: HAND_FADE, delay: HANDOVER, ease: "none" });
+        // before the logo starts, the scroll carries it; scrolling back above the start, while the
+        // logo is put back too, hands it to the scroll again
+        if (p < START) {
+          if (finishing || handing) back();
+          place(at(p, LEAVES, START) * CARRIED);
+          return;
+        }
+        // the logo has started: the rest of the way takes exactly as long as the logo takes to reach
+        // its own mushroom, then it is gone as that one pops in under it
+        if (!finishing) {
+          const way = { run: CARRIED };
+          place(CARRIED);
+          finishing = gsap.to(way, {
+            run: 1,
+            duration: HANDOVER,
+            ease: "none",
+            onUpdate: () => place(way.run),
+            onComplete: () => {
+              handing = gsap.to(sprout, { opacity: 0, duration: HAND_FADE, ease: "none" });
+            },
+          });
         }
       };
 
