@@ -217,6 +217,12 @@
      there on its own clock (components/WelcomeLogo.tsx). The page is this tall so that the circle
      opens over a long scroll rather than a flick of the wheel. */
   .a0s { height: 350vh; }
+  /* No scrollbar while the opening plays. Where the system draws one beside the page (a Mac with a
+     mouse, Windows) it took 15px off the width, and at a0-done, with nothing left to scroll, it went
+     and gave them back: everything placed from the middle moved 7.5px right on the frame the symbol
+     landed, so the symbol jumped beside the lit one fading in over it. */
+  html:has(.a0s) { scrollbar-width: none; }
+  html:has(.a0s)::-webkit-scrollbar { display: none; }
   /* Once it has all played, the page is A0 and nothing else: no scroller, nothing above it to go
      back to (components/WelcomeLogo.tsx sets a0-done on the frame the logo lands). Everything the
      scroll was driving is put in its finished state here, because the scroll position itself is gone:
