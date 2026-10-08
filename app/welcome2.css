@@ -46,17 +46,29 @@
   position: absolute;
   inset: 0;
   border-radius: var(--radius-pill);
-  background: var(--color-on-ground);
-  box-shadow: 0 0 0 0.3125rem rgb(255 255 255 / 0.16), 0 0 0.875rem rgb(255 255 255 / 0.6);
+  background: var(--color-primary);
+  box-shadow: 0 0 0 0.3125rem rgb(from var(--color-primary) r g b / 0.2), 0 0 0.875rem rgb(from var(--color-primary) r g b / 0.6);
+  animation: a02-blink 2.4s ease-in-out infinite;
+}
+/* the four dots breathe out of step, so the route reads as alive rather than flashing */
+.a02-stop-2 .a02-dot { animation-delay: -0.6s; }
+.a02-stop-3 .a02-dot { animation-delay: -1.2s; }
+.a02-stop-4 .a02-dot { animation-delay: -1.8s; }
+@keyframes a02-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .a02-dot { animation: none; }
 }
 .a02-label {
   position: absolute;
   top: 50%;
   translate: 0 -50%;
   white-space: nowrap;
-  font-size: var(--text-secondary);
-  line-height: var(--text-secondary--line-height);
-  font-weight: 300;
+  font-size: calc(var(--text-secondary) * 1.3);
+  line-height: calc(var(--text-secondary--line-height) * 1.3);
+  font-weight: 400;
   text-shadow: 0 1px 0.5rem rgb(0 0 0 / 0.45);
 }
 /* odd stops label to the left of the dot, even stops to the right */
@@ -179,8 +191,8 @@
   .a02-line-phone { display: none; }
   .a02-line-desk { display: block; }
   .a02-stop { width: 0.625rem; height: 0.625rem; --a0-gap: 0.9375rem; }
-  .a02-dot { box-shadow: 0 0 0 0.375rem rgb(255 255 255 / 0.16), 0 0 1rem rgb(255 255 255 / 0.6); }
-  .a02-label { font-size: var(--text-body); line-height: var(--text-body--line-height); }
+  .a02-dot { box-shadow: 0 0 0 0.375rem rgb(from var(--color-primary) r g b / 0.2), 0 0 1rem rgb(from var(--color-primary) r g b / 0.6); }
+  .a02-label { font-size: calc(var(--text-body) * 1.3); line-height: calc(var(--text-body--line-height) * 1.3); }
   .a02-stop-1 { left: 86.11%; top: 20%; }
   .a02-stop-2 { left: 56.94%; top: 35.56%; }
   .a02-stop-3 { left: 81.94%; top: 52.22%; }
