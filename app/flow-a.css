@@ -608,14 +608,15 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg .seg { flex-shrink: 0; }
 /* the switch and, on Organisms, the group filters beside it; on a phone they wrap under it */
 .sg-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
-.sg-groups { display: none; gap: 0.23rem; /* a third of 0.6875rem */ transition: display 220ms allow-discrete; }
+.sg-groups { display: none; gap: 0.25rem; /* about a third of 0.6875rem, a whole pixel */ transition: display 220ms allow-discrete; }
 .sg-groups.is-on { display: flex; }
 /* each toggle fades and grows in on its own, a beat apart, never its row: the toggles are glass, and
    animating anything above glass switches the frost off */
 .sg-group {
   position: relative;
-  width: 2.1rem; /* 3rem less 30% */
-  height: 2.1rem;
+  /* 3rem less 30%, rounded to 34 so every edge lands on a whole pixel */
+  width: 2.125rem;
+  height: 2.125rem;
   padding: 0;
   display: flex;
   align-items: center;
@@ -634,7 +635,28 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-groups.is-on .sg-group:nth-child(5) { transition-delay: 160ms; }
 .sg-group:active { transform: scale(0.94); }
 /* 44 tall to touch; across, the hit areas meet halfway into the gap so neighbours never overlap */
-.sg-group::before { content: ""; position: absolute; inset: calc((2.1rem - 2.75rem) / 2) -0.115rem; }
+.sg-group::before { content: ""; position: absolute; inset: calc((2.125rem - 2.75rem) / 2) -0.125rem; }
+/* One clean edge, for the switch and the group toggles alike: on these small pills the glass border,
+   its rim of light and the 1px top highlight stack into rings that never quite line up. They keep a
+   single 1px border; over the map (the phone) they keep their float shadow, inside the panel none. */
+.sg .seg.glass,
+.sg-group.glass {
+  border: 1px solid var(--color-inner-edge);
+  box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
+}
+@media (min-width: 64rem) {
+  /* on the desktop they sit inside the glass panel (app/glass.css, glass-desk): no float shadow */
+  .sg .glass-desk .seg.glass,
+  .sg .glass-desk .sg-group.glass { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 0 0 rgb(6 18 9 / 0); }
+}
+/* each group icon centred by its drawing, not its 24 box: most sit a touch low, the bird also right */
+.sg-group.is-plants svg { translate: 0.012rem -0.0475rem; }
+.sg-group.is-herbs svg { translate: 0 -0.045rem; }
+.sg-group.is-mushrooms svg { translate: 0 -0.012rem; }
+.sg-group.is-birds svg { translate: -0.047rem -0.0355rem; }
+.sg-group.is-mammals svg { translate: 0 -0.0095rem; }
+.sg .seg.glass::after,
+.sg-group.glass::after { content: none; }
 /* a group with nothing in season here: dimmed, there to show what could be */
 .sg-groups.is-on .sg-group[aria-disabled="true"] { opacity: 0.4; cursor: default; }
 .sg-group[aria-disabled="true"]:active { transform: none; }
@@ -646,10 +668,11 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-group.is-mammals { color: var(--color-group-mammals); }
 .sg-group[aria-pressed="true"] {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  border-color: transparent;
   color: var(--color-on-primary);
 }
 @media (hover: hover) and (pointer: fine) {
-  .sg-group[aria-pressed="false"]:not([aria-disabled="true"]):hover { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.11), inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35); }
+  .sg-group[aria-pressed="false"]:not([aria-disabled="true"]):hover { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 0 0 rgb(6 18 9 / 0); }
 }
 @media (prefers-reduced-motion: reduce) {
   .sg-group { scale: 1; transition: opacity 120ms ease, background-color 200ms ease; }
