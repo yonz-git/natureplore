@@ -19,14 +19,14 @@ import { followProgress } from "@/lib/welcome-progress";
 // empty corner slot, so both sizes and every window width follow the CSS.
 
 const START = 0.45; // of the scroll: the circle is about half open by here, and the logo starts
-const PACE = 1.35; // the timeline runs this much faster than it was written
+const PACE = 1.6875; // the timeline runs this much faster than it was written (1.35, then 20% shorter)
 // the symbol's own corner of the logo, in the logo's viewBox units: the pieces are drawn as clipped
 // copies of one fill, so their boxes are the fill's and cannot be measured. These are the drawing.
 const SYM = { x: 0, y: 64.87, w: 283.81, h: 265.34 };
 const LOGO = { w: 1729.5, h: 425.2 };
-const HOLD = 0.9; // seconds the whole logo is left standing once it is built
-const DISSOLVE = 0.6; // seconds the wordmark takes to go
-const TRAVEL = 1.15; // seconds, the symbol travelling to its corner
+const HOLD = 0.72; // seconds the whole logo is left standing once it is built
+const DISSOLVE = 0.48; // seconds the wordmark takes to go
+const TRAVEL = 0.92; // seconds, the symbol travelling to its corner
 
 export default function WelcomeLogo() {
   const mark = useRef<HTMLDivElement>(null);
@@ -86,7 +86,7 @@ export default function WelcomeLogo() {
             scale: 0.86,
             rotation: () => gsap.utils.random(-14, 14),
             transformOrigin: "50% 100%",
-            stagger: { each: 0.035, from: "start" },
+            stagger: { each: 0.028, from: "start" },
             duration: DISSOLVE,
             ease: "power2.in",
           },
