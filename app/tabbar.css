@@ -68,7 +68,7 @@
 
 @media (min-width: 64rem) {
   /* at the top right, with the search field centred on the same line (app/map.css) */
-  .tabbar { inset: 2rem 0 auto; justify-content: flex-end; padding: 0 2.5rem; }
+  .tabbar { inset: var(--spacing-nav-top-desktop) 0 auto; justify-content: flex-end; padding: 0 2.5rem; }
   .tabbar-pill { height: 3.625rem; gap: 0.125rem; }
   .tabbar-tab {
     width: auto;

@@ -565,7 +565,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   }
   .saved-card .btn { align-self: flex-start; }
   /* the back control sits on the nav pill's line, centred on its 3.625rem height (app/tabbar.css) */
-  .a8-top { top: calc(2rem + (3.625rem - 3.25rem) / 2); left: 2.5rem; }
+  .a8-top { top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2); left: 2.5rem; }
   .a8 .saved-sheet { margin-top: 7.5rem; min-height: 0; }
   .a8-more { justify-content: flex-start; }
   .a8-more .btn { flex-grow: 0; }

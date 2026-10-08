@@ -447,12 +447,12 @@ button.float-pill,
 .a1-map.leaflet-container { font: inherit; background: var(--color-basemap-land); }
 
 /* From 64rem the search field leaves the panel for the top of the screen: centred on the window, on
-   the nav pill's line (3.625rem tall at 2rem, app/tabbar.css), with the nav at the right. On search
+   the nav pill's line (3.625rem tall at nav-top-desktop, app/tabbar.css), with the nav at the right. On search
    its back control comes with it. Rendered there by SuggestionsScreen and SearchScreen. */
 .ms-search-top {
   position: absolute;
   z-index: 3;
-  top: calc(2rem + (3.625rem - 3.25rem) / 2);
+  top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2);
   left: 50%;
   translate: -50% 0;
   /* as wide as it can be while clearing the panel (its right edge at 30rem) by 1rem on both sides of
@@ -1089,11 +1089,11 @@ button.float-pill,
   .b1 .ms-sheet::-webkit-scrollbar { display: none; }
   .b1-photos { height: 12.5rem; }
 
-  /* the map's own controls, top right under the nav pill (3.625rem tall at 2rem, app/tabbar.css),
+  /* the map's own controls, top right under the nav pill (3.625rem tall at nav-top-desktop, app/tabbar.css),
      lined up with its right edge; absolute to the screen, not to the map */
   .ms-tools {
     position: absolute;
-    top: calc(2rem + 3.625rem + 0.75rem);
+    top: calc(var(--spacing-nav-top-desktop) + 3.625rem + 0.75rem);
     right: 2.5rem;
     z-index: 2;
     display: flex;

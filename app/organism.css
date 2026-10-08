@@ -221,7 +221,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
   .org > .org-top > a {
     position: fixed;
     z-index: 2;
-    top: calc(2rem + (3.625rem - 3.25rem) / 2);
+    top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2);
     left: 2.5rem;
   }
   .org > .org-top > .org-actions {
@@ -231,5 +231,5 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
     right: max(6rem, calc((100% - 71.25rem) / 2));
   }
   .org.ln > .org-top > .org-actions { right: max(6rem, calc((100% - 78rem) / 2)); }
-  .org:has(> .org-top > .org-actions) > .org-sheet { padding-top: calc(2rem + 3.25rem + 1.5rem); }
+  .org:has(> .org-top > .org-actions) > .org-sheet { padding-top: calc(var(--spacing-nav-top-desktop) + 3.25rem + 1.5rem); }
 }

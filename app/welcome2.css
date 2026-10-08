@@ -186,7 +186,7 @@
   .a02-nav {
     position: absolute;
     z-index: 2;
-    top: 2rem;
+    top: var(--spacing-nav-top-desktop);
     left: 0;
     right: 0;
     width: max-content;

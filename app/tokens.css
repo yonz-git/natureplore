@@ -212,5 +212,6 @@
   --spacing-inset-screen: clamp(1rem, 0.1216rem + 3.6036vw, 2rem);
   --spacing-screen-desktop: 7.5rem;
   --spacing-chrome-desktop: 2.5rem;
+  --spacing-nav-top-desktop: 0.8rem;
   --spacing-content-max: 75rem;
 }

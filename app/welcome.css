@@ -362,7 +362,7 @@
   /* the corner lines up with the nav: the symbol centred on the nav pill's height, as on the board */
   .a0-mark,
   .a0-mark-corner {
-    top: calc(2rem + (3.625rem - 2.125rem) / 2);
+    top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 2.125rem) / 2);
     left: 2.5rem;
     height: 2.125rem;
   }
