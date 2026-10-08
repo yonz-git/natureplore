@@ -26,18 +26,16 @@ const SYM = { x: 0, y: 64.87, w: 283.81, h: 265.34 };
 const LOGO = { w: 1729.5, h: 425.2 };
 const HOLD = 0.58; // seconds the whole logo is left standing once it is built
 const DISSOLVE = 0.38; // seconds the wordmark takes to go
-const TRAVEL = 0.74; // seconds, the symbol travelling to its corner
-// Once the symbol is in its corner the bird leaves it, flapping, along a winding line down to the
-// heading, and perches beside it. The line is the user's sketch, as fractions of the way from where
-// the bird sits on the symbol to where it perches, so it fits every screen.
-const FLIGHT = [
+const TRAVEL = 2.0; // seconds, the symbol flying to its corner
+// The symbol does not slide to its corner, it flies there: up along a winding line, the bird on it
+// flapping, shrinking as it goes. The line is the user's sketch, as fractions of the way from the
+// corner (0) back to where the symbol starts (1), so it fits every screen; flown from 1 to 0.
+const ROUTE = [
   { x: 0, y: 0 }, { x: 0.003, y: 0.063 }, { x: 0.079, y: 0.159 }, { x: 0.368, y: 0.127 },
   { x: 0.627, y: 0.241 }, { x: 0.505, y: 0.468 }, { x: 0.52, y: 0.582 }, { x: 0.673, y: 0.684 },
   { x: 0.916, y: 0.709 }, { x: 1.038, y: 0.797 }, { x: 1, y: 1 },
 ];
-const FLY_AFTER = 0.35; // seconds after A0 opens, so the page has arrived around it first
-const FLY_TIME = 3.6; // seconds, the whole flight
-const PERCH_SCALE = 2.2; // the bird grows on the way, to read at the heading's size
+const FLAP = 0.36; // seconds, one wingbeat
 // Everything before the swan rises (3.2s in the timeline) plays 30% shorter again, then eases back
 // to PACE over EASE_BACK seconds so the change of speed is never felt as a jolt.
 const OPENING = 1 / 0.7;
@@ -58,85 +56,6 @@ export default function WelcomeLogo() {
     gsap.set(el, { xPercent: -50, yPercent: -50 }); // centred on the point app/welcome.css puts it at
     const stage = el.closest(".a0s");
     let travel: gsap.core.Timeline | undefined;
-    let flight: gsap.core.Timeline | undefined;
-    const bird = el.querySelector<SVGGElement>(".bird");
-    const wing = el.querySelector<SVGGElement>(".wing");
-    // the eye stands for the bird on the screen: the bird's own box takes in the whole clipped fill
-    // its shapes are cut from, so it is far bigger than the bird
-    const eye = el.querySelector<SVGCircleElement>(".bird .eye");
-    const birdAt = () => {
-      const r = eye!.getBoundingClientRect();
-      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-    };
-    // a point on the screen, in the drawing's own units, wherever the drawing is and however scaled
-    const toDrawing = (x: number, y: number) => {
-      const m = bird?.ownerSVGElement?.getScreenCTM();
-      if (!m) return null;
-      const p = new DOMPoint(x, y).matrixTransform(m.inverse());
-      return { x: p.x, y: p.y };
-    };
-    // where the bird perches, on the screen: just past the end of the heading's longest line, or,
-    // where that line already runs to the edge (the phone), above the heading's first line
-    const perch = () => {
-      const h1 = stage?.querySelector(".a02-h1");
-      if (!h1) return null;
-      const range = document.createRange();
-      range.selectNodeContents(h1);
-      const lines = Array.from(range.getClientRects());
-      if (!lines.length) return null;
-      const longest = lines.reduce((a, b) => (b.right > a.right ? b : a));
-      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-      const x = longest.right + 1.75 * rem;
-      if (x < innerWidth - 2.5 * rem) return { x, y: longest.top + longest.height * 0.55 };
-      return { x: Math.min(lines[0].right, innerWidth - 2.5 * rem), y: lines[0].top - 1.5 * rem };
-    };
-    // the bird's offset, in drawing units, that puts it on a screen point, from where it rests
-    const birdOffset = () => {
-      if (!bird) return null;
-      const was = gsap.getProperty(bird, "x") as number;
-      const wasY = gsap.getProperty(bird, "y") as number;
-      const at = birdAt();
-      // its resting point on the screen, worked back from where it is now
-      const now = toDrawing(at.x, at.y);
-      return now ? { rest: { x: now.x - was, y: now.y - wasY } } : null;
-    };
-    const takeOff = () => {
-      if (!bird || !wing || !eye) return;
-      const from = birdOffset();
-      const to = perch();
-      if (!from || !to) return;
-      const start = birdAt();
-      const path = FLIGHT.map((f) => {
-        const p = toDrawing(start.x + (to.x - start.x) * f.x, start.y + (to.y - start.y) * f.y)!;
-        return { x: p.x - from.rest.x, y: p.y - from.rest.y };
-      });
-      flight = gsap
-        .timeline({ delay: FLY_AFTER })
-        .to(bird, { duration: FLY_TIME, ease: "sine.inOut", motionPath: { path, curviness: 1.25 } }, 0)
-        .to(bird, { scale: PERCH_SCALE, duration: FLY_TIME * 0.6, ease: "sine.out" }, 0)
-        .to(bird, {
-          keyframes: [{ rotation: -10, duration: 0.7 }, { rotation: 8, duration: 0.9 }, { rotation: -6, duration: 0.8 }, { rotation: 4, duration: 0.7 }, { rotation: 0, duration: 0.5 }],
-          ease: "sine.inOut",
-        }, 0)
-        // it flaps the whole way, then folds its wing as it settles
-        .to(wing, {
-          keyframes: [{ rotation: -24, duration: 0.1 }, { rotation: 44, duration: 0.15 }, { rotation: 0, duration: 0.11 }],
-          ease: "sine.inOut",
-          repeat: Math.round(FLY_TIME / 0.36) - 1,
-        }, 0)
-        .to(bird, { scaleY: PERCH_SCALE * 0.9, duration: 0.12, ease: "power1.in", yoyo: true, repeat: 1 }, FLY_TIME - 0.05);
-    };
-    // the perched bird follows the heading when the window changes size
-    const rePerch = () => {
-      if (!flight || flight.isActive() || !bird || !eye) return;
-      const to = perch();
-      if (!to) return;
-      const at = birdAt();
-      const here = toDrawing(at.x, at.y);
-      const there = toDrawing(to.x, to.y);
-      if (!here || !there) return;
-      gsap.set(bird, { x: `+=${there.x - here.x}`, y: `+=${there.y - here.y}` });
-    };
     // once it has all played out the page keeps it: scrolling back up then changes nothing
     let done = false;
     // The way out, once the logo is whole: it stands there a moment, the wordmark lifts off letter by
@@ -168,10 +87,13 @@ export default function WelcomeLogo() {
         // the scroll has done its work: the page stops being a scroller and is A0 alone, so there
         // is nothing left to scroll back up into (app/welcome.css)
         stage?.classList.add("a0-open", "a0-done");
-        takeOff();
         scrollTo(0, 0);
       };
       if (!landing) return open();
+      // the translation at each point of the line: none where the symbol starts, all of it in the corner
+      const path = [...ROUTE].reverse().map((f) => ({ x: landing.x * (1 - f.x), y: landing.y * (1 - f.y) }));
+      const wing = el.querySelector(".wing");
+      const flyAt = HOLD + DISSOLVE * 0.6;
       travel = gsap
         .timeline({ onComplete: open })
         .to(
@@ -188,15 +110,14 @@ export default function WelcomeLogo() {
           },
           HOLD,
         )
-        .to(
-          el,
-          {
-            ...landing,
-            duration: TRAVEL,
-            ease: "power3.inOut",
-          },
-          HOLD + DISSOLVE * 0.6,
-        );
+        .to(el, { duration: TRAVEL, ease: "sine.inOut", motionPath: { path, curviness: 1.25 } }, flyAt)
+        .to(el, { scale: landing.scale, duration: TRAVEL, ease: "power2.inOut" }, flyAt)
+        // the bird beats its wing the whole way up, and has it folded as the symbol lands
+        .to(wing, {
+          keyframes: [{ rotation: -24, duration: 0.1 }, { rotation: 44, duration: 0.15 }, { rotation: 0, duration: 0.11 }],
+          ease: "sine.inOut",
+          repeat: Math.max(0, Math.round(TRAVEL / FLAP) - 1),
+        }, flyAt);
     };
 
     const intro = playIntro(el, { onWarm() {}, onOpen() {}, onFly: fly }, true);
@@ -247,7 +168,6 @@ export default function WelcomeLogo() {
       gsap.set(el, { x: 0, y: 0, scale: 1 });
       const landing = corner();
       if (landing) gsap.set(el, landing);
-      rePerch();
     };
     addEventListener("resize", resize);
 
@@ -255,7 +175,6 @@ export default function WelcomeLogo() {
       removeEventListener("resize", resize);
       unfollow();
       travel?.kill();
-      flight?.kill();
       settle?.kill();
       intro.revert();
       stage?.classList.remove("a0-open", "a0-done");
