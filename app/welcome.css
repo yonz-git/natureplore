@@ -202,8 +202,15 @@
 .a0-hero { display: none; }
 
 /* the opening, once on load: the line writes itself letter by letter
-   (components/WelcomeHero.tsx), then the cue arrives under it */
-.a0s .a0-cue span { animation: a0-arrive 800ms var(--a0-ease) 2300ms both; }
+   (components/WelcomeHero.tsx), and the cue arrives under it as "all" starts to appear: the 12th
+   letter, 11 staggers of 60ms in. FIRST in components/WelcomeCue.tsx follows this delay. */
+.a0s .a0-cue span { animation: a0-arrive 800ms var(--a0-ease) 660ms both; }
+/* The letters start when the page's script does, which can be a few hundred ms after this stylesheet,
+   so with scripting the cue holds until WelcomeCue, mounting on the same frame as the line, sets
+   data-go: the 660ms then count from the same moment as the letters. */
+@media (scripting: enabled) {
+  .a0s .a0-cue:not([data-go]) span { animation-play-state: paused; }
+}
 
 /* The scroll choreography. components/WelcomeScroll.tsx writes --a0-p on each of these elements: the
    scroll progress from 0 to 1, eased so the page glides after the scroll instead of stepping with it.

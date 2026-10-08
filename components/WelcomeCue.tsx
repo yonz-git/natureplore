@@ -18,7 +18,7 @@ gsap.registerPlugin(SplitText);
 // hands over to the logo's own mushroom there. Scrolling back to the top puts it in the ground again.
 // Not run for a reader who asked for less motion: then it is the word on its own, still.
 
-const FIRST = 3.1; // seconds, the cue's own arrival is over by here
+const FIRST = 1.46; // seconds, the cue's own arrival is over by here (its 660ms delay in app/welcome.css, plus 800ms)
 const EVERY = 2; // seconds between one hop and the next
 const LEAVES = 0.02; // of the scroll: the mushroom is on its way by here
 const ARRIVES = 0.45; // and in the logo by here, which is when the logo starts (WelcomeLogo)
@@ -45,6 +45,8 @@ export default function WelcomeCue({ text }: { text: string }) {
 
   useGSAP(
     () => {
+      // the cue's arrival starts now, on the frame the opening line starts writing (app/welcome.css)
+      cue.current?.setAttribute("data-go", "");
       const word = cue.current?.querySelector("span");
       const sprout = mush.current;
       if (!word || !sprout || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
