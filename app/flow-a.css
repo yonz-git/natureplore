@@ -682,7 +682,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-group.is-birds { color: var(--color-group-birds); }
 .sg-group.is-mammals { color: var(--color-group-mammals); }
 .sg-group.glass[aria-pressed="true"] {
-  background: var(--color-ground);
+  /* frosted: the forest green at 55% over the toggle's own frost (glass in glass keeps one blur) */
+  background: rgb(from var(--color-ground) r g b / 0.55);
   border-color: transparent;
 }
 @media (hover: hover) and (pointer: fine) {
