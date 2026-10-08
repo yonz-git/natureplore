@@ -656,9 +656,9 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-group.is-birds svg { translate: -0.047rem -0.0355rem; }
 .sg-group.is-mammals svg { translate: 0 -0.0095rem; }
 /* the herbs sway when pointed at: Lordicon's "hover-pinch" for this drawing, rebuilt from its
-   keyframes. The sprigs pivot at the foot of the stem (4.44, 19.5 on the 24 grid), lift a little
+   keyframes. The sprigs pivot at the foot of the stem (2.93, 21 on the 24 grid), lift a little
    and dip back, then swing forward and settle, over 1.78s (107 frames at 60). */
-.herbs-sway { transform-box: view-box; transform-origin: 4.44px 19.5px; }
+.herbs-sway { transform-box: view-box; transform-origin: 2.93px 21px; }
 @keyframes herbs-pinch {
   0% { transform: translateY(0) rotate(0); }
   29% { transform: translateY(-0.56px) rotate(-9deg); }
@@ -671,6 +671,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg-group:not([aria-disabled="true"]):hover .herbs-sway { animation: herbs-pinch 1.78s cubic-bezier(0.33, 0, 0.67, 1); }
 }
 @media (prefers-reduced-motion: no-preference) {
+  /* and once as the toggles appear, dimmed or not, as they grow in */
+  .sg-groups.is-on .sg-group.is-herbs .herbs-sway { animation: herbs-pinch 1.78s cubic-bezier(0.33, 0, 0.67, 1) 0.12s both; }
   .sg-group:focus-visible .herbs-sway { animation: herbs-pinch 1.78s cubic-bezier(0.33, 0, 0.67, 1); }
 }
 .sg .seg.glass::after,
