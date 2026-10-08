@@ -3,8 +3,9 @@
    the logo sits, how big it is and how it travels to its corner are in app/welcome.css.
    Colours are tokens only. */
 
-/* The logo's lime, as two colours (set in app/welcome.css). Registered so a change of lime can fade
-   rather than snap; a registered colour needs a literal start, which is primary and primary-deep. */
+/* The logo's lime, as two colours the page can move: the brand lime while it builds, a brighter lime
+   once the symbol sits in its corner (app/welcome.css). Registered so the change fades rather than
+   snaps; a registered colour needs a literal start, which is primary and primary-deep. */
 @property --logo-lime { syntax: "<color>"; inherits: true; initial-value: #AEB779; }
 @property --logo-lime-deep { syntax: "<color>"; inherits: true; initial-value: #9DA56D; }
 
