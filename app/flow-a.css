@@ -673,8 +673,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 /* a group with nothing in season here: dimmed, there to show what could be */
 .sg-groups.is-on .sg-group[aria-disabled="true"] { opacity: 0.4; cursor: default; }
 .sg-group[aria-disabled="true"]:active { transform: none; }
-/* each group in its own colour; picked, the toggle turns the dark forest green with a lime ring and
-   the icon keeps its colour, which reads on the dark at 6:1 and more (on the lime it fell to 1.3:1) */
+/* each group in its own colour; picked, the toggle turns the dark forest green and the icon keeps
+   its colour, which reads on the dark at 6:1 and more (on the lime it fell to 1.3:1) */
 .sg-group.is-plants { color: var(--color-group-plants); }
 .sg-group.is-herbs { color: var(--color-group-herbs); }
 .sg-group.is-mushrooms { color: var(--color-group-mushrooms); }
@@ -682,8 +682,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-group.is-mammals { color: var(--color-group-mammals); }
 .sg-group.glass[aria-pressed="true"] {
   background: var(--color-ground);
-  border-color: var(--color-primary);
-  box-shadow: inset 0 0 0 1px var(--color-primary), 0 0 0 rgb(6 18 9 / 0);
+  border-color: transparent;
 }
 @media (hover: hover) and (pointer: fine) {
   .sg-group[aria-pressed="false"]:not([aria-disabled="true"]):hover { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 0 0 rgb(6 18 9 / 0); }
