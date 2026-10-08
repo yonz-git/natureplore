@@ -30,10 +30,23 @@ function pointsFor(regionId: string, near: boolean): MapPoint[] {
   return near ? [HERE_POINT, ...own] : own;
 }
 
-// The two group icons that move (app/flow-a.css has their pivots). The herbs: Lordicon's "hover-pinch"
+// The group icons that move (app/flow-a.css has their pivots). The herbs: Lordicon's "hover-pinch"
 // for this drawing, rebuilt from its keyframes, the sprigs lifting and dipping back, swinging forward
 // and settling over 1.78s. The mushroom hops: squashes, springs up, lands with a squash and settles.
 const GROUP_MOTION: Partial<Record<Group, { part: string; frames: Keyframe[]; ms: number }>> = {
+  // the plant gathers on its stem, rises and opens, then sways and settles
+  plants: {
+    part: ".plant-rise",
+    ms: 1300,
+    frames: [
+      { transform: "translateY(0) rotate(0) scale(1, 1)" },
+      { transform: "translateY(0) rotate(0) scale(1.05, 0.9)", offset: 0.16 },
+      { transform: "translateY(-0.6px) rotate(-3deg) scale(0.97, 1.07)", offset: 0.42 },
+      { transform: "translateY(0) rotate(2deg) scale(1.01, 0.98)", offset: 0.64 },
+      { transform: "translateY(0) rotate(-1deg) scale(1, 1)", offset: 0.82 },
+      { transform: "translateY(0) rotate(0) scale(1, 1)" },
+    ],
+  },
   herbs: {
     part: ".herbs-sway",
     ms: 1780,
