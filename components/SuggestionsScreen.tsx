@@ -72,6 +72,19 @@ const GROUP_MOTION: Partial<Record<Group, Motion[]>> = {
       { transform: "translateY(0) scale(1, 1)" },
     ],
   }],
+  // the paw steps: it presses down, lifts with a turn, lands and settles
+  mammals: [{
+    part: ".paw-step",
+    ms: 900,
+    frames: [
+      { transform: "translateY(0) rotate(0) scale(1)" },
+      { transform: "translateY(1px) rotate(0) scale(0.92)", offset: 0.2 },
+      { transform: "translateY(-1.2px) rotate(-8deg) scale(1.04)", offset: 0.42 },
+      { transform: "translateY(0) rotate(4deg) scale(0.98)", offset: 0.64 },
+      { transform: "translateY(0) rotate(-2deg) scale(1)", offset: 0.82 },
+      { transform: "translateY(0) rotate(0) scale(1)" },
+    ],
+  }],
   // the bird hops with its wing beating: the body rises and tilts while the wing flaps from its
   // shoulder, quicker than the hop
   birds: [
