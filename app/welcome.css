@@ -148,12 +148,19 @@
 .a0-mark {
   --logo-lime: var(--color-primary);
   --logo-lime-deep: var(--color-primary-deep);
-  transition: --logo-lime 600ms ease, --logo-lime-deep 600ms ease;
+  transition: --logo-lime 700ms ease, --logo-lime-deep 700ms ease;
 }
 .a0-open .a0-mark {
   --logo-lime: var(--color-primary-glow);
   --logo-lime-deep: color-mix(in srgb, var(--color-primary-glow) 65%, var(--color-primary));
 }
+/* The symbol's corner of the drawing sits under the fill's darkest shading, a forest blob and the
+   shade photograph, which is what made it look dull up there. As it lands they fade away with the
+   lime, so the symbol brightens into its corner. */
+.a0-mark .intro-logo circle[fill="url(#blob-dark)"],
+.a0-mark .intro-logo #fieldfill image { transition: opacity 700ms ease; }
+.a0-open .a0-mark .intro-logo circle[fill="url(#blob-dark)"],
+.a0-open .a0-mark .intro-logo #fieldfill image { opacity: 0; }
 .a0-mark-corner { color: var(--color-primary-glow); }
 .a0-mark-corner svg { display: block; height: 100%; width: auto; }
 .a0-mark .intro-logo { height: 100%; width: auto; filter: none; }
@@ -300,7 +307,7 @@
     aspect-ratio: 1729.5 / 425.2;
     overflow: visible;
     filter: brightness(1.265) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35));
-    transition: filter 600ms ease;
+    transition: filter 700ms ease;
   }
   /* landed, the brighter lime carries itself: the lift that the brand lime needed would wash it out */
   .a0s.a0-open .a0-mark .intro-logo { filter: brightness(1) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35)); }
