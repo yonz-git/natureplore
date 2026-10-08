@@ -88,3 +88,38 @@ Run the `/impeccable` skill for design work, and keep these whatever the task is
 - **Accessibility ships with the screen.** Real `button`, `a href`, `input` with
   a label, 44px targets, 4.5:1 on body text, visible focus, and the
   `prefers-reduced-transparency` fallback that turns glass solid.
+
+## Git workflow
+
+Three long-lived branches, never deleted, and one short branch per task:
+
+```
+main          production, Vercel deploys it to natureplore.vercel.app
+ └ staging    the test site, where everything is checked together
+    └ development   where finished tasks collect
+       ├ np-1-<short-name>   one task, deleted after merging
+       └ np-2-<short-name> …
+```
+
+Nothing is committed straight to `main`, `staging` or `development`. Work
+moves up through pull requests.
+
+1. **One task, one branch.** Start from the latest `development`
+   (`git switch development && git pull`), then
+   `git switch -c np-<n>-<short-name>`, for example `np-12-spot-card`. Take the
+   next free number from `git branch -a` and `gh pr list --state all`.
+2. **Keep it small.** One task per branch, aiming at under 400 changed lines
+   (generated files such as `app/tokens.css` aside). If a task grows past that,
+   stop, split it into steps and give each step its own branch and pull request.
+3. **Commit as you go.** Each commit is one working step with a short
+   imperative message that says what changed ("Shrink route axis spot marks").
+4. **Open the pull request when the task works.** Push the branch and open a
+   pull request into `development` that says what changed and how to check it.
+   Vercel builds a preview link for the branch, use it for a quick check of
+   that one task.
+5. **Merge into `development` only when the user says so.** Then delete the
+   task branch locally and on GitHub, switch back to `development` and pull.
+6. **Release in batches.** When the user asks, open a pull request from
+   `development` into `staging`. The staging site is where the batch is tested
+   in Chrome, Safari and on a phone. When it passes and the user says so, open
+   and merge a pull request from `staging` into `main`.
