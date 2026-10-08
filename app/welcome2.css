@@ -137,7 +137,8 @@
   color: var(--color-on-ground-soft);
 }
 .a02-cta {
-  align-self: stretch;
+  align-self: center;
+  width: 80%; /* of the column, so 80% of the full-width button it was */
   margin-top: 2.25rem;
   height: 2.835rem; /* the system button (3.375rem) less 16%, still over the 44px target */
   padding: 0 2.125rem;
@@ -245,5 +246,5 @@
     font-size: 1.5rem;
     line-height: var(--text-lead-desktop--line-height);
   }
-  .a02-cta { align-self: flex-start; margin-top: 2.5rem; font-size: 1.125rem; }
+  .a02-cta { align-self: flex-start; width: auto; margin-top: 2.5rem; font-size: 1.125rem; }
 }
