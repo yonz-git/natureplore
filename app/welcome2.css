@@ -37,7 +37,19 @@
 .a02-nav { display: none; }
 
 /* the drawn route, stretched over the screen; the stops sit at the same points in percent */
-.a02-route { position: absolute; inset: 0; pointer-events: none; }
+/* Phone and tablet: the route is a box centred in the space between the logo and the heading. Its
+   height is that space less a margin, capped, and --main-top (the heading block's top, set by
+   components/WelcomeRoute.tsx) is what ends the space. The desktop puts it back on the whole screen. */
+.a02-route {
+  --free-top: 4.5rem;
+  --box-h: min(var(--main-top, 40rem) - var(--free-top) - 2rem, 30rem);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--free-top) + (var(--main-top, 40rem) - var(--free-top) - var(--box-h)) / 2);
+  height: var(--box-h);
+  pointer-events: none;
+}
 .a02-line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .a02-line path { fill: none; stroke: rgb(255 255 255 / 0.55); stroke-width: 1; }
 .a02-line-desk { display: none; }
@@ -97,10 +109,11 @@
 /* odd stops label to the left of the dot, even stops to the right */
 .a02-stop-1 .a02-label, .a02-stop-3 .a02-label { right: calc(100% + var(--a0-gap)); }
 .a02-stop-2 .a02-label, .a02-stop-4 .a02-label { left: calc(100% + var(--a0-gap)); }
-.a02-stop-1 { left: 76.92%; top: 22.51%; }
-.a02-stop-2 { left: 29.74%; top: 35.55%; }
-.a02-stop-3 { left: 72.31%; top: 48.58%; }
-.a02-stop-4 { left: 24.62%; top: 61.61%; }
+/* in the route's own box (the phone path's viewBox, 170 to 540 of the board) */
+.a02-stop-1 { left: 76.92%; top: 5.41%; }
+.a02-stop-2 { left: 29.74%; top: 35.14%; }
+.a02-stop-3 { left: 72.31%; top: 64.86%; }
+.a02-stop-4 { left: 24.62%; top: 94.59%; }
 
 .a02-main {
   position: absolute;
@@ -120,6 +133,8 @@
   font-weight: var(--text-display--font-weight);
   letter-spacing: var(--text-display--letter-spacing);
 }
+/* the last word, Nature, 20% larger than the rest of the heading */
+.a02-nature { font-size: 1.2em; }
 /* the heading's closing phrase, one of the six places the primary may appear */
 .a02-close {
   background-image: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-primary) 100%);
@@ -130,17 +145,20 @@
 }
 .a02-lead {
   margin: 0.875rem 0 0;
-  max-width: 18.75rem;
-  font-size: var(--text-body);
-  line-height: var(--text-body--line-height);
+  max-width: 23.75rem;
+  font-size: 1.25rem;
+  line-height: 1.875rem;
   font-weight: 300;
   color: var(--color-on-ground-soft);
 }
 .a02-cta {
-  align-self: stretch;
+  align-self: center;
+  width: var(--spacing-button-phone);
   margin-top: 2.25rem;
-  height: 3.375rem;
-  padding: 0 2.125rem;
+  /* the front door's button only: 10% more padding all round than a standard button, the space
+     above and below the label (height less one line) and the sides */
+  height: calc(var(--spacing-button-height) + (var(--spacing-button-height) - 1lh) * 0.1);
+  padding: 0 2.3375rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,11 +171,65 @@
   letter-spacing: var(--text-button--letter-spacing);
   text-decoration: none;
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 0.875rem 2rem color-mix(in srgb, var(--color-scrim) 35%, transparent);
-  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), filter 200ms ease;
+  position: relative;
+  isolation: isolate;
+  --glow: var(--color-primary-glow);
+  animation: a02-cta-glow 4.8s ease-in-out infinite;
+}
+/* the button breathes slowly, at half the stops' pace and half their brightness: its fill brightens toward primary-glow under the
+   label while a lime halo swells around it, then both sink back. The brighter fill is a layer under
+   the label, since a gradient cannot animate; the halo is a third shadow both ends carry. */
+.a02-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--glow);
+  opacity: 0;
+  animation: a02-cta-fill 4.8s ease-in-out infinite;
+}
+@keyframes a02-cta-fill {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.275; }
+}
+@keyframes a02-cta-glow {
+  0%, 100% {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.35),
+      0 0.875rem 2rem color-mix(in srgb, var(--color-scrim) 35%, transparent),
+      0 0 0 rgb(from var(--glow) r g b / 0);
+  }
+  50% {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.425),
+      0 0.875rem 2rem color-mix(in srgb, var(--color-scrim) 35%, transparent),
+      0 0 1.5rem rgb(from var(--glow) r g b / 0.275);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .a02-cta,
+  .a02-cta::before { animation: none; }
 }
 .a02-cta:active { transform: scale(0.97); }
+/* the lime lightens under the pointer, as every primary button does (app/map.css) */
+@media (hover: hover) and (pointer: fine) {
+  .a02-cta:hover { filter: brightness(1.1); }
+}
 .a02-br { display: none; }
 .a02 :focus-visible { outline: 0.125rem solid var(--color-mist); outline-offset: 0.1875rem; }
+
+/* wider than a phone: the button hugs its label as on the desktop, centred; no screen has a
+   full-width button */
+/* tablet: the lead a step larger, between the phone and the desktop */
+@media (min-width: 48rem) {
+  .a02-lead { max-width: 30rem; font-size: 1.5rem; line-height: 2.25rem; }
+}
+
+@media (min-width: 30rem) { /* phone-max */
+  .a02-cta { width: auto; font-size: 1.125rem; }
+}
 
 @media (min-width: 64rem) {
   .a02-photo::after {
@@ -175,7 +247,7 @@
   .a02-nav {
     position: absolute;
     z-index: 2;
-    top: 2rem;
+    top: var(--spacing-nav-top-desktop);
     left: 0;
     right: 0;
     width: max-content;
@@ -214,26 +286,32 @@
   .a02-line-phone { display: none; }
   .a02-line-desk { display: block; }
   .a02-dot { --ring: 0.5rem; }
+  /* on a narrow desktop the route steps right so its second stop stays clear of the heading:
+     the stop sits at 56.94% of the route's box, and the box starts late enough that this is never
+     left of 41rem. From about 1150 wide the box is the whole screen again. */
+  .a02-route { inset: 0; height: auto; left: max(0rem, 95.2rem - 132.2vw); }
   .a02-stop { width: 0.84375rem; height: 0.84375rem; --a0-gap: 0.9375rem; }
   .a02-label { font-size: calc(var(--text-body) * 1.3); line-height: calc(var(--text-body--line-height) * 1.3); }
-  .a02-stop-1 { left: 86.11%; top: 20%; }
-  .a02-stop-2 { left: 56.94%; top: 35.56%; }
-  .a02-stop-3 { left: 81.94%; top: 52.22%; }
-  .a02-stop-4 { left: 59.72%; top: 71.11%; }
+  .a02-stop-1 { left: 86.11%; top: 19%; }
+  .a02-stop-2 { left: 56.94%; top: 34.56%; }
+  .a02-stop-3 { left: 81.94%; top: 51.22%; }
+  .a02-stop-4 { left: 59.72%; top: 81%; } /* below the one-line lead; 19 to 81 centres the route on the height */
 
   .a02-main {
     left: 7.5rem;
     right: auto;
-    top: 38.33dvh;
-    bottom: auto;
+    /* the heading, lead and button centred on the screen's height, with the route beside them */
+    top: 0;
+    bottom: 0;
     width: 38.75rem;
+    justify-content: center;
     align-items: flex-start;
     text-align: left;
   }
   .a02-h1 {
     font-family: var(--text-display-desktop--font-family);
     font-size: var(--text-display-desktop);
-    line-height: var(--text-display-desktop--line-height);
+    line-height: 4.5rem;
     font-weight: var(--text-display-desktop--font-weight);
     letter-spacing: var(--text-display-desktop--letter-spacing);
   }
@@ -241,9 +319,11 @@
   .a02-br { display: inline; }
   .a02-lead {
     margin-top: 1.125rem;
-    max-width: 34.5rem;
-    font-size: 1.5rem;
-    line-height: var(--text-lead-desktop--line-height);
+    /* one line on the desktop */
+    max-width: none;
+    white-space: nowrap;
+    font-size: 1.71rem;
+    line-height: 2.4rem;
   }
-  .a02-cta { align-self: flex-start; margin-top: 2.5rem; font-size: 1.125rem; }
+  .a02-cta { align-self: flex-start; width: auto; margin-top: 2.5rem; font-size: 1.125rem; }
 }

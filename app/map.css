@@ -6,19 +6,20 @@
 
 /* ── the controls every screen shares ───────────────────────────────────────────────────────── */
 
-/* Two buttons and no third: the lime primary, one per view, and the inner glass secondary. Full
-   width on the phone, hugging the label from 64rem (see the panel at the end). The label stays on
+/* Two buttons and no third: the lime primary, one per view, and the inner glass secondary. 80% of
+   the column and centred on the phone (two sharing a bar keep their own width), hugging the label from 64rem (see the panel at the end). The label stays on
    one line wherever it fits; with large text on a narrow screen it wraps inside the button rather
    than running out of it. */
 .btn {
-  min-height: 3.375rem;
+  min-height: var(--spacing-button-height);
   padding: 0.75rem 1.75rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.625rem;
-  align-self: stretch;
+  align-self: center;
+  width: var(--spacing-button-phone);
   flex-shrink: 0;
   border-radius: var(--radius-pill);
   text-decoration: none;
@@ -27,6 +28,15 @@
   transition: transform 160ms var(--ease-out);
 }
 .btn:active { transform: scale(0.97); }
+/* a button inside a section, a bar or a card, hugs its label on the phone too, as on the desktop:
+   80% is for the buttons that close a page */
+.b1-pin .btn,
+.saved-card .btn { width: auto; }
+/* 80% is for a phone's width only: anything wider than a phone hugs the label, as on the desktop,
+   so no window between phone and tablet gets a stretched button */
+@media (min-width: 30rem) { /* phone-max */
+  .btn { width: auto; }
+}
 .btn-primary {
   border: 0;
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
@@ -41,7 +51,7 @@
 .btn-secondary {
   background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
   border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
   color: var(--color-on-ground);
   font-family: var(--text-button-secondary--font-family);
   font-size: var(--text-button-secondary);
@@ -68,7 +78,7 @@
 .field.is-inner {
   background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
   border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
 }
 .field svg { flex-shrink: 0; }
 .field input {
@@ -153,7 +163,7 @@
   border-radius: var(--radius-pill);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
   border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
   color: var(--color-on-ground);
   font-family: var(--text-chip--font-family);
   font-size: var(--text-chip);
@@ -266,10 +276,29 @@ button.float-pill:active { transform: scale(0.97); }
   white-space: nowrap;
 }
 
-/* Hover, mouse and pen only: the primary dims a little, glass and inner glass controls take a white
-   8% wash, drawn as an inset layer so the fill, edge and float shadow underneath stay as they are. */
+/* Hover, mouse and pen only: the lime lightens, glass and inner glass controls take a white 8% wash,
+   drawn as an inset layer so the fill, edge and float shadow underneath stay as they are. Every
+   resting shadow carries that wash layer at 0% so the two lists match and the wash fades in and out
+   instead of snapping (app/glass.css). */
+.btn,
+.chip,
+.row,
+.org-row,
+.round,
+.tool-pill,
+button.float-pill,
+.seg-opt,
+.card,
+.card-save {
+  transition:
+    transform 160ms var(--ease-out),
+    box-shadow 200ms ease,
+    background-color 200ms ease,
+    border-color 200ms ease,
+    filter 200ms ease;
+}
 @media (hover: hover) and (pointer: fine) {
-  .btn-primary:not([aria-disabled="true"]):hover { filter: brightness(0.96); }
+  .btn-primary:not([aria-disabled="true"]):hover { filter: brightness(1.1); }
   .btn-secondary:not([aria-disabled="true"]):hover,
   .chip:not([aria-pressed="true"]):hover,
   .row:hover,
@@ -301,7 +330,7 @@ button.float-pill:active { transform: scale(0.97); }
   border-radius: var(--radius-inner);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
   border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), inset 0 0 0 100vmax rgb(255 255 255 / 0);
 }
 .card-photo {
   width: 100%;
@@ -344,7 +373,7 @@ button.float-pill:active { transform: scale(0.97); }
   border: 0.5px solid rgb(255 255 255 / 0.22);
   color: var(--color-on-ground);
   cursor: pointer;
-  transition: transform 160ms var(--ease-out);
+  transition: transform 160ms var(--ease-out), background-color 200ms ease;
 }
 .card-save:active { transform: scale(0.94); }
 
@@ -358,7 +387,7 @@ button.float-pill:active { transform: scale(0.97); }
   border-radius: var(--radius-tile);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
   border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
 }
 .card-stat dt { font-size: var(--text-stat-label); line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
 .card-stat dd { margin: 0; display: flex; align-items: baseline; gap: 0.25rem; }
@@ -418,12 +447,12 @@ button.float-pill:active { transform: scale(0.97); }
 .a1-map.leaflet-container { font: inherit; background: var(--color-basemap-land); }
 
 /* From 64rem the search field leaves the panel for the top of the screen: centred on the window, on
-   the nav pill's line (3.625rem tall at 2rem, app/tabbar.css), with the nav at the right. On search
+   the nav pill's line (3.625rem tall at nav-top-desktop, app/tabbar.css), with the nav at the right. On search
    its back control comes with it. Rendered there by SuggestionsScreen and SearchScreen. */
 .ms-search-top {
   position: absolute;
   z-index: 3;
-  top: calc(2rem + (3.625rem - 3.25rem) / 2);
+  top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2);
   left: 50%;
   translate: -50% 0;
   /* as wide as it can be while clearing the panel (its right edge at 30rem) by 1rem on both sides of
@@ -728,7 +757,7 @@ button.float-pill:active { transform: scale(0.97); }
   border-radius: var(--radius-inner);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
   border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
 }
 .b1-bar { height: 0.75rem; display: flex; gap: 0.25rem; border-radius: 0.375rem; overflow: hidden; }
 .b1-bar span { flex-basis: 0; }
@@ -1017,7 +1046,7 @@ button.float-pill:active { transform: scale(0.97); }
   .a7 .ms-sheet { margin-top: 0.75rem; }
 
   /* buttons hug their label: centred under a list, start-aligned after text or a field */
-  .btn { align-self: flex-start; }
+  .btn { align-self: flex-start; width: auto; }
   .btn.is-closing { align-self: center; margin-top: 1rem; }
 
   /* the compact card: a thumbnail beside the name, the pill row under both */
@@ -1060,11 +1089,11 @@ button.float-pill:active { transform: scale(0.97); }
   .b1 .ms-sheet::-webkit-scrollbar { display: none; }
   .b1-photos { height: 12.5rem; }
 
-  /* the map's own controls, top right under the nav pill (3.625rem tall at 2rem, app/tabbar.css),
+  /* the map's own controls, top right under the nav pill (3.625rem tall at nav-top-desktop, app/tabbar.css),
      lined up with its right edge; absolute to the screen, not to the map */
   .ms-tools {
     position: absolute;
-    top: calc(2rem + 3.625rem + 0.75rem);
+    top: calc(var(--spacing-nav-top-desktop) + 3.625rem + 0.75rem);
     right: 2.5rem;
     z-index: 2;
     display: flex;

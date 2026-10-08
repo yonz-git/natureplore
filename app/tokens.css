@@ -197,6 +197,9 @@
   --spacing-20: 5rem;
   --spacing-30: 7.5rem;
   --spacing-control-stack: 0.75rem;
+  --spacing-button-height: 3.1185rem;
+  --spacing-button-phone: 80%;
+  --spacing-phone-max: 30rem;
   --spacing-card-gap: 1.5rem;
   --spacing-bar-clearance: 2.5rem;
   --spacing-tabbar-clearance: 7.375rem;
@@ -204,11 +207,11 @@
   --spacing-screen-tablet: 2rem;
   --spacing-sheet-tablet: 3rem;
   --spacing-measure: 40rem;
-  --spacing-button-tablet: 21.375rem;
   --spacing-pin-tablet: 22.625rem;
   --spacing-panel-tablet: 26.25rem;
   --spacing-inset-screen: clamp(1rem, 0.1216rem + 3.6036vw, 2rem);
   --spacing-screen-desktop: 7.5rem;
   --spacing-chrome-desktop: 2.5rem;
+  --spacing-nav-top-desktop: 0.8rem;
   --spacing-content-max: 75rem;
 }
