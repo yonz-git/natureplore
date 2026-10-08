@@ -33,9 +33,10 @@ function pointsFor(regionId: string, near: boolean): MapPoint[] {
 // The group icons that move (app/flow-a.css has their pivots). The herbs: Lordicon's "hover-pinch"
 // for this drawing, rebuilt from its keyframes, the sprigs lifting and dipping back, swinging forward
 // and settling over 1.78s. The mushroom hops: squashes, springs up, lands with a squash and settles.
-const GROUP_MOTION: Partial<Record<Group, { part: string; frames: Keyframe[]; ms: number }>> = {
+type Motion = { part: string; frames: Keyframe[]; ms: number };
+const GROUP_MOTION: Partial<Record<Group, Motion[]>> = {
   // the plant gathers on its stem, rises and opens, then sways and settles
-  plants: {
+  plants: [{
     part: ".plant-rise",
     ms: 1300,
     frames: [
@@ -46,8 +47,8 @@ const GROUP_MOTION: Partial<Record<Group, { part: string; frames: Keyframe[]; ms
       { transform: "translateY(0) rotate(-1deg) scale(1, 1)", offset: 0.82 },
       { transform: "translateY(0) rotate(0) scale(1, 1)" },
     ],
-  },
-  herbs: {
+  }],
+  herbs: [{
     part: ".herbs-sway",
     ms: 1780,
     frames: [
@@ -58,8 +59,8 @@ const GROUP_MOTION: Partial<Record<Group, { part: string; frames: Keyframe[]; ms
       { transform: "translateY(-0.12px) rotate(1deg)", offset: 0.86 },
       { transform: "translateY(0) rotate(0)" },
     ],
-  },
-  mushrooms: {
+  }],
+  mushrooms: [{
     part: ".mushroom-hop",
     ms: 1100,
     frames: [
@@ -70,14 +71,44 @@ const GROUP_MOTION: Partial<Record<Group, { part: string; frames: Keyframe[]; ms
       { transform: "translateY(-0.5px) scale(0.99, 1.02)", offset: 0.76 },
       { transform: "translateY(0) scale(1, 1)" },
     ],
-  },
+  }],
+  // the bird hops with its wing beating: the body rises and tilts while the wing flaps from its
+  // shoulder, quicker than the hop
+  birds: [
+    {
+      part: ".bird-hop",
+      ms: 1000,
+      frames: [
+        { transform: "translateY(0) rotate(0) scale(1, 1)" },
+        { transform: "translateY(0) rotate(0) scale(1.05, 0.92)", offset: 0.18 },
+        { transform: "translateY(-2px) rotate(-6deg) scale(0.98, 1.04)", offset: 0.45 },
+        { transform: "translateY(0) rotate(2deg) scale(1.04, 0.95)", offset: 0.7 },
+        { transform: "translateY(0) rotate(0) scale(1, 1)" },
+      ],
+    },
+    {
+      part: ".bird-wing",
+      ms: 1000,
+      frames: [
+        { transform: "rotate(0)" },
+        { transform: "rotate(-28deg)", offset: 0.15 },
+        { transform: "rotate(30deg)", offset: 0.3 },
+        { transform: "rotate(-22deg)", offset: 0.45 },
+        { transform: "rotate(20deg)", offset: 0.6 },
+        { transform: "rotate(-8deg)", offset: 0.78 },
+        { transform: "rotate(0)" },
+      ],
+    },
+  ],
 };
 function playGroup(button: HTMLElement, group: Group, delay = 0) {
-  const motion = GROUP_MOTION[group];
-  const part = motion && button.querySelector<SVGGElement>(motion.part);
-  if (!motion || !part || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  part.getAnimations().forEach((a) => a.cancel());
-  part.animate(motion.frames, { duration: motion.ms, delay, easing: "cubic-bezier(0.33, 0, 0.67, 1)", fill: "backwards" });
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  for (const motion of GROUP_MOTION[group] ?? []) {
+    const part = button.querySelector<SVGGElement>(motion.part);
+    if (!part) continue;
+    part.getAnimations().forEach((a) => a.cancel());
+    part.animate(motion.frames, { duration: motion.ms, delay, easing: "cubic-bezier(0.33, 0, 0.67, 1)", fill: "backwards" });
+  }
 }
 
 export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { near: boolean; regionId?: string }) {

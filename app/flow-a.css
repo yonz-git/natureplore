@@ -657,6 +657,10 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .herbs-sway { transform-box: view-box; transform-origin: 2.02px 21.9px; }
 .mushroom-hop { transform-box: view-box; transform-origin: 12px 22px; }
 .plant-rise { transform-box: view-box; transform-origin: 12px 23.4px; }
+/* the bird hops from its feet (12, 20.9 on the 24 grid); its wing sits inside the logo's own units,
+   so its shoulder is given in them (141, 104) */
+.bird-hop { transform-box: view-box; transform-origin: 12px 20.9px; }
+.bird-wing { transform-box: view-box; transform-origin: 141px 104px; }
 /* their motion is played from components/SuggestionsScreen.tsx (GROUP_MOTION): once as the toggles
    appear, dimmed or not, and again on hover and keyboard focus. A script, so a hover can restart a
    motion the entrance already played. */
