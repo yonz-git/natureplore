@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { INTRO_LOGO_SVG } from "@/components/intro-logo";
-import { playIntro } from "@/lib/intro-timeline";
+import { playIntro, WELCOME_OPENING, WELCOME_PACE } from "@/lib/intro-timeline";
 import { followProgress } from "@/lib/welcome-progress";
 
 // The logo on A0 · Welcome. The page opens with no logo at all: the timeline (lib/intro-timeline.ts)
@@ -19,17 +19,26 @@ import { followProgress } from "@/lib/welcome-progress";
 // empty corner slot, so both sizes and every window width follow the CSS.
 
 const START = 0.45; // of the scroll: the circle is about half open by here, and the logo starts
-const PACE = 2.109; // the timeline runs this much faster than it was written (1.35, then 20% shorter twice)
+const PACE = WELCOME_PACE; // the timeline runs this much faster than it was written
 // the symbol's own corner of the logo, in the logo's viewBox units: the pieces are drawn as clipped
 // copies of one fill, so their boxes are the fill's and cannot be measured. These are the drawing.
 const SYM = { x: 0, y: 64.87, w: 283.81, h: 265.34 };
 const LOGO = { w: 1729.5, h: 425.2 };
 const HOLD = 0.58; // seconds the whole logo is left standing once it is built
 const DISSOLVE = 0.38; // seconds the wordmark takes to go
-const TRAVEL = 0.74; // seconds, the symbol travelling to its corner
+const TRAVEL = 1.0; // seconds, the symbol flying to its corner
+// The symbol does not slide to its corner, it flies there: up along a winding line, the bird on it
+// flapping, shrinking as it goes. The line is the user's sketch, as fractions of the way from the
+// corner (0) back to where the symbol starts (1), so it fits every screen; flown from 1 to 0.
+const ROUTE = [
+  { x: 0, y: 0 }, { x: 0.003, y: 0.063 }, { x: 0.079, y: 0.159 }, { x: 0.368, y: 0.127 },
+  { x: 0.627, y: 0.241 }, { x: 0.505, y: 0.468 }, { x: 0.52, y: 0.582 }, { x: 0.673, y: 0.684 },
+  { x: 0.916, y: 0.709 }, { x: 1.038, y: 0.797 }, { x: 1, y: 1 },
+];
+const FLAP = 0.36; // seconds, one wingbeat
 // Everything before the swan rises (3.2s in the timeline) plays 30% shorter again, then eases back
 // to PACE over EASE_BACK seconds so the change of speed is never felt as a jolt.
-const OPENING = 1 / 0.7;
+const OPENING = WELCOME_OPENING;
 const SWAN = 3.0; // timeline seconds: the ease back starts just before the swan, so it rises at PACE
 const EASE_BACK = 0.25;
 
@@ -81,6 +90,10 @@ export default function WelcomeLogo() {
         scrollTo(0, 0);
       };
       if (!landing) return open();
+      // the translation at each point of the line: none where the symbol starts, all of it in the corner
+      const path = [...ROUTE].reverse().map((f) => ({ x: landing.x * (1 - f.x), y: landing.y * (1 - f.y) }));
+      const wing = el.querySelector(".wing");
+      const flyAt = HOLD + DISSOLVE * 0.6;
       travel = gsap
         .timeline({ onComplete: open })
         .to(
@@ -97,15 +110,14 @@ export default function WelcomeLogo() {
           },
           HOLD,
         )
-        .to(
-          el,
-          {
-            ...landing,
-            duration: TRAVEL,
-            ease: "power3.inOut",
-          },
-          HOLD + DISSOLVE * 0.6,
-        );
+        .to(el, { duration: TRAVEL, ease: "sine.inOut", motionPath: { path, curviness: 1.25 } }, flyAt)
+        .to(el, { scale: landing.scale, duration: TRAVEL, ease: "power2.inOut" }, flyAt)
+        // the bird beats its wing the whole way up, and has it folded as the symbol lands
+        .to(wing, {
+          keyframes: [{ rotation: -24, duration: 0.1 }, { rotation: 44, duration: 0.15 }, { rotation: 0, duration: 0.11 }],
+          ease: "sine.inOut",
+          repeat: Math.max(0, Math.round(TRAVEL / FLAP) - 1),
+        }, flyAt);
     };
 
     const intro = playIntro(el, { onWarm() {}, onOpen() {}, onFly: fly }, true);
