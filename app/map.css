@@ -6,8 +6,8 @@
 
 /* ── the controls every screen shares ───────────────────────────────────────────────────────── */
 
-/* Two buttons and no third: the lime primary, one per view, and the inner glass secondary. Full
-   width on the phone, hugging the label from 64rem (see the panel at the end). The label stays on
+/* Two buttons and no third: the lime primary, one per view, and the inner glass secondary. 80% of
+   the column and centred on the phone (two sharing a bar keep their own width), hugging the label from 64rem (see the panel at the end). The label stays on
    one line wherever it fits; with large text on a narrow screen it wraps inside the button rather
    than running out of it. */
 .btn {
@@ -18,7 +18,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.625rem;
-  align-self: stretch;
+  align-self: center;
+  width: 80%;
   flex-shrink: 0;
   border-radius: var(--radius-pill);
   text-decoration: none;
@@ -27,6 +28,8 @@
   transition: transform 160ms var(--ease-out);
 }
 .btn:active { transform: scale(0.97); }
+/* two buttons sharing a bar split it between them instead */
+.b1-pin .btn { width: auto; }
 .btn-primary {
   border: 0;
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
@@ -1017,7 +1020,7 @@ button.float-pill:active { transform: scale(0.97); }
   .a7 .ms-sheet { margin-top: 0.75rem; }
 
   /* buttons hug their label: centred under a list, start-aligned after text or a field */
-  .btn { align-self: flex-start; }
+  .btn { align-self: flex-start; width: auto; }
   .btn.is-closing { align-self: center; margin-top: 1rem; }
 
   /* the compact card: a thumbnail beside the name, the pill row under both */

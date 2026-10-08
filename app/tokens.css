@@ -204,7 +204,6 @@
   --spacing-screen-tablet: 2rem;
   --spacing-sheet-tablet: 3rem;
   --spacing-measure: 40rem;
-  --spacing-button-tablet: 21.375rem;
   --spacing-pin-tablet: 22.625rem;
   --spacing-panel-tablet: 26.25rem;
   --spacing-inset-screen: clamp(1rem, 0.1216rem + 3.6036vw, 2rem);
