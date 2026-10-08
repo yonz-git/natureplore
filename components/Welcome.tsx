@@ -122,9 +122,9 @@ export default function Welcome({ still = false }: { still?: boolean }) {
         <main className="a02-main">
           <h1 className="a02-h1">
             Explore <br className="a02-br" />
-            <span className="a02-close">all the corners of nature</span>
+            <span className="a02-close">all the corners of <span className="a02-nature">Nature</span></span>
           </h1>
-          <p className="a02-lead">What nests and grows there, and what is happening to them.</p>
+          <p className="a02-lead">What nests and grows there, and learn about what is happening to them.</p>
           <Link href="/map/start" className="a02-cta">
             Start Natureploring
           </Link>
