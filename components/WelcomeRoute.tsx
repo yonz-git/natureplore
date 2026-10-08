@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -15,7 +15,7 @@ const STOPS = ["Guided routes", "Spots to stop at", "Organisms", "Notable this s
 
 // one path per size, in that size's board coordinates
 const ROUTE = {
-  phone: { box: "0 0 390 844", d: "M300 190 C 220 200, 100 220, 116 300 S 300 340, 282 410 S 70 460, 96 520" },
+  phone: { box: "0 170 390 370", d: "M300 190 C 220 200, 100 220, 116 300 S 300 340, 282 410 S 70 460, 96 520" },
   desk: { box: "0 0 1440 900", d: "M1240 171 C 1060 181, 780 221, 820 311 S 1210 381, 1180 461 S 800 631, 860 729" },
 };
 
@@ -42,6 +42,20 @@ function stopsAlong(path: SVGPathElement) {
 
 export default function WelcomeRoute() {
   const root = useRef<HTMLDivElement>(null);
+
+  // Phone and tablet centre the route in the space above the heading block (app/welcome2.css), so
+  // the block's top is handed to the CSS, and kept current as the text wraps or the window changes.
+  useEffect(() => {
+    const el = root.current;
+    const main = el?.parentElement?.querySelector<HTMLElement>(".a02-main");
+    if (!el || !main) return;
+    const place = () => el.style.setProperty("--main-top", `${main.offsetTop}px`);
+    const watch = new ResizeObserver(place);
+    watch.observe(main);
+    watch.observe(el.parentElement!);
+    place();
+    return () => watch.disconnect();
+  }, []);
 
   useGSAP(
     () => {
