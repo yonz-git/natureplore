@@ -140,7 +140,7 @@
   align-self: center;
   width: 80%; /* of the column, so 80% of the full-width button it was */
   margin-top: 2.25rem;
-  height: 2.835rem; /* the system button (3.375rem) less 16%, still over the 44px target */
+  height: 3.1185rem; /* the system button (3.375rem) less 16%, then 10% taller */
   padding: 0 2.125rem;
   display: flex;
   align-items: center;
