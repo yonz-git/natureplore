@@ -2,20 +2,20 @@
    the tablet boards on the redesign canvas, not the IA brief's "list left, map right everywhere":
    only the suggestions (A5, A4) and search (A2, A3) become a column down the left beside the map,
    as their boards draw them. Every other screen keeps the phone's shape, with the board's 48 side
-   padding on its sheet, reading text capped at the measure, and buttons capped and centred. A
+   padding on its sheet, reading text capped at the measure, and buttons hugging their label, centred. A
    phone turned sideways is under 36rem tall, so it keeps the phone layout.
 
    The panel is the phone's own sheet, docked: it keeps its glass and its list, and the search bar
    stays floating over the map above it, the same relation as on the phone. Nothing here animates
    an ancestor of glass; the pinned bar moves by its own `translate`. Values are tokens from
-   docs/design.md (sheet-tablet, measure, button-tablet, pin-tablet, panel-tablet). */
+   docs/design.md (sheet-tablet, measure, pin-tablet, panel-tablet). */
 
 @media (min-width: 48rem) and (max-width: 63.99rem) and (min-height: 36rem) {
-  /* ── buttons: 342 and centred, except where two share a bar ─────────────────────────────── */
+  /* ── buttons: hug their label as on the desktop, centred ───────────────────────────────────── */
 
-  .btn { align-self: center; width: min(100%, var(--spacing-button-tablet)); }
+  .btn,
   .b1-pin .btn,
-  .a8-more .btn { width: auto; }
+  .a8-more .btn { align-self: center; width: auto; }
 
   /* ── A5, A4: the sheet docks to the left as a panel, the map fills the rest ──────────────── */
 

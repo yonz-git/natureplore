@@ -216,7 +216,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-look-last { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-look-link { transition: transform 160ms var(--ease-out), box-shadow 240ms var(--ease-out), border-color 240ms var(--ease-out); }
 @media (hover: hover) {
-  .fb-look-link:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 0 0 10rem rgb(255 255 255 / 0.06), inset 0 1px 0 rgb(255 255 255 / 0.08); }
+  .fb-look-link:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), inset 0 0 0 10rem rgb(255 255 255 / 0.06); }
 }
 .fb-look-link:active { transform: scale(0.985); }
 .fb-look-link > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
@@ -257,7 +257,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-nav-name { font-size: var(--text-body-sm); line-height: 1.375rem; font-weight: 500; overflow-wrap: break-word; }
 @media (hover: hover) {
   .fb-nav-prev:hover,
-  .fb-nav-next:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 0 0 10rem rgb(255 255 255 / 0.06), inset 0 1px 0 rgb(255 255 255 / 0.09); }
+  .fb-nav-next:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 10rem rgb(255 255 255 / 0.06); }
 }
 .fb-nav-prev:active,
 .fb-nav-next:active { transform: scale(0.97); }
@@ -306,7 +306,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-axis-ticks { margin-top: 0.625rem; display: flex; justify-content: space-between; font-size: 0.75rem; line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); }
 
 .fb-recorded { gap: 1rem; }
-.fb-recorded .btn { margin-top: 0.25rem; }
+.fb-recorded .btn { margin-top: 0.25rem; width: auto; }
 .fb-legend { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
 /* spots in season by month: this month in mist */
@@ -343,6 +343,10 @@ a.fb-claim-act:active { transform: scale(0.985); }
   right: 0.75rem;
   bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
   z-index: 3;
+  /* the bar fits what it holds, centred: its button hugs the label, as on the desktop */
+  width: fit-content;
+  max-width: calc(100% - 1.5rem);
+  margin-inline: auto;
   padding: 0.5rem;
   display: flex;
   gap: 0.5rem;
@@ -350,7 +354,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 }
 .b1-pin .btn { animation: fade-in 200ms var(--ease-out) both; }
 /* saved on this visit: where the route went, on screen, above the two buttons */
-.b1-pin.has-note { flex-wrap: wrap; border-radius: var(--radius-card); }
+.b1-pin.has-note { flex-wrap: wrap; justify-content: center; border-radius: var(--radius-card); }
 .b1-note {
   flex-basis: 100%;
   margin: 0;
@@ -363,9 +367,8 @@ a.fb-claim-act:active { transform: scale(0.985); }
   animation: fade-in 200ms var(--ease-out) both;
 }
 .b1-note svg { flex-shrink: 0; color: var(--color-mist); }
-.b1-pin .b1-walk { flex-grow: 1; }
 /* with large text a label wraps inside its button rather than running out of the bar */
-.b1-pin .btn { min-width: 0; flex-shrink: 1; height: auto; min-height: 3.375rem; padding-top: 0.5rem; padding-bottom: 0.5rem; white-space: normal; text-align: center; }
+.b1-pin .btn { min-width: 0; flex-shrink: 1; height: auto; min-height: var(--spacing-button-height); padding-top: 0.5rem; padding-bottom: 0.5rem; white-space: normal; text-align: center; }
 .b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-sm); line-height: 1.375rem; animation: fade-in 200ms var(--ease-out) both; }
 .b1-pin .b1-undo { padding: 0 1.5rem; }
 
@@ -515,6 +518,9 @@ button.fb-row:active { transform: scale(0.985); }
   .fb-strip { margin: 0 -2rem; padding: 0 2rem; }
   .b1-pin {
     position: static;
+    width: auto;
+    max-width: none;
+    margin-inline: 0;
     flex-shrink: 0;
     padding: 1rem 2rem 1.75rem;
     border-top: 1px solid var(--color-divider);

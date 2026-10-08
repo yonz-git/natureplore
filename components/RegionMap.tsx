@@ -596,7 +596,7 @@ export default function RegionMap({
           if (pin.start) {
             return (
               <div key={pin.id} className="map-start" style={style} role="img" aria-label={pin.label}>
-                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M6 21V4" />
                   <path d="M6 4h11l-2 4 2 4H6" />
                 </svg>
@@ -654,7 +654,7 @@ export default function RegionMap({
               }
             >
               {pin.count ?? (
-                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="1rem" height="1rem" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 19c0-9 5-14 15-14 0 10-5 15-14 15" />
                   <path d="M5 19 13 11" />
                 </svg>
