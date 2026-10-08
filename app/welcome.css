@@ -368,6 +368,13 @@
     letter-spacing: var(--text-display--letter-spacing);
     white-space: nowrap;
   }
+  /* on a phone it is two lines, "Natureplore" over "all around", at the full display size */
+  @media (max-width: 47.99rem) {
+    .a0s .a0-hero { font-size: var(--text-display); line-height: var(--text-display--line-height); }
+  }
+  @media (min-width: 48rem) {
+    .a0-hero-br { display: none; }
+  }
 
   /* a link that takes keyboard focus must be visible: jump to the end state */
   .a0s:has(a:focus-visible) :is(*, *::after) { animation: none !important; }

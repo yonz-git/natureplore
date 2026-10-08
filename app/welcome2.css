@@ -37,16 +37,18 @@
 .a02-nav { display: none; }
 
 /* the drawn route, stretched over the screen; the stops sit at the same points in percent */
-/* Phone and tablet: the route is a box centred in the space between the logo and the heading. Its
-   height is that space less a margin, capped, and --main-top (the heading block's top, set by
-   components/WelcomeRoute.tsx) is what ends the space. The desktop puts it back on the whole screen. */
+/* Phone and tablet: the route starts level with the corner symbol, so its first stop sits on the
+   symbol's line, and ends a wide margin above the heading. --main-top (the heading block's top, set
+   by components/WelcomeRoute.tsx) is what ends the space. On a tall screen the box reaches its cap
+   and is centred in the space instead. The desktop puts it back on the whole screen. */
 .a02-route {
-  --free-top: 4.5rem;
-  --box-h: min(var(--main-top, 40rem) - var(--free-top) - 2rem, 30rem);
+  --free-top: var(--top-chrome);
+  --space: calc(var(--main-top, 40rem) - var(--free-top) - 2.75rem);
+  --box-h: min(var(--space), 30rem);
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(var(--free-top) + (var(--main-top, 40rem) - var(--free-top) - var(--box-h)) / 2);
+  top: calc(var(--free-top) + (var(--space) - var(--box-h)) / 2);
   height: var(--box-h);
   pointer-events: none;
 }

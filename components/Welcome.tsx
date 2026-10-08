@@ -116,7 +116,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
         </nav>
 
         {/* what the page opens on, alone in the middle of the screen until the scroll takes it away */}
-        {!still && <WelcomeHero text="Natureplore all around" />}
+        {!still && <WelcomeHero lines={["Natureplore", "all around"]} />}
 
         <WelcomeRoute />
 
