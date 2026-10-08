@@ -162,6 +162,11 @@
 .a0-open .a0-mark .intro-logo circle[fill="url(#blob-dark)"],
 .a0-open .a0-mark .intro-logo #fieldfill image { opacity: 0; }
 .a0-mark-corner { color: var(--color-primary-glow); }
+/* the tablet keeps the desktop's corner symbol size, 2.125rem tall */
+@media (min-width: 48rem) {
+  .a0-mark,
+  .a0-mark-corner { height: 2.125rem; }
+}
 .a0-mark-corner svg { display: block; height: 100%; width: auto; }
 .a0-mark .intro-logo { height: 100%; width: auto; filter: none; }
 .a0-mark-slot { visibility: hidden; }
