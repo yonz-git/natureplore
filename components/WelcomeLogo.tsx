@@ -19,14 +19,19 @@ import { followProgress } from "@/lib/welcome-progress";
 // empty corner slot, so both sizes and every window width follow the CSS.
 
 const START = 0.45; // of the scroll: the circle is about half open by here, and the logo starts
-const PACE = 1.35; // the timeline runs this much faster than it was written
+const PACE = 2.109; // the timeline runs this much faster than it was written (1.35, then 20% shorter twice)
 // the symbol's own corner of the logo, in the logo's viewBox units: the pieces are drawn as clipped
 // copies of one fill, so their boxes are the fill's and cannot be measured. These are the drawing.
 const SYM = { x: 0, y: 64.87, w: 283.81, h: 265.34 };
 const LOGO = { w: 1729.5, h: 425.2 };
-const HOLD = 0.9; // seconds the whole logo is left standing once it is built
-const DISSOLVE = 0.6; // seconds the wordmark takes to go
-const TRAVEL = 1.15; // seconds, the symbol travelling to its corner
+const HOLD = 0.58; // seconds the whole logo is left standing once it is built
+const DISSOLVE = 0.38; // seconds the wordmark takes to go
+const TRAVEL = 0.74; // seconds, the symbol travelling to its corner
+// Everything before the swan rises (3.2s in the timeline) plays 30% shorter again, then eases back
+// to PACE over EASE_BACK seconds so the change of speed is never felt as a jolt.
+const OPENING = 1 / 0.7;
+const SWAN = 3.0; // timeline seconds: the ease back starts just before the swan, so it rises at PACE
+const EASE_BACK = 0.25;
 
 export default function WelcomeLogo() {
   const mark = useRef<HTMLDivElement>(null);
@@ -86,7 +91,7 @@ export default function WelcomeLogo() {
             scale: 0.86,
             rotation: () => gsap.utils.random(-14, 14),
             transformOrigin: "50% 100%",
-            stagger: { each: 0.035, from: "start" },
+            stagger: { each: 0.022, from: "start" },
             duration: DISSOLVE,
             ease: "power2.in",
           },
@@ -108,12 +113,18 @@ export default function WelcomeLogo() {
     // until it starts the logo is kept out of the page altogether (app/welcome.css looks for
     // data-ready), and the timeline is held on its first frame, where every piece is off the screen.
     intro.timeline.pause(0);
-    intro.timeline.timeScale(PACE);
+    intro.timeline.timeScale(PACE * OPENING);
+    let settle: gsap.core.Tween | undefined;
+    intro.timeline.call(() => {
+      settle = gsap.to(intro.timeline, { timeScale: PACE, duration: EASE_BACK, ease: "sine.inOut" });
+    }, undefined, SWAN);
 
     // Scrolling back above the trigger while it is still playing puts it all back: the timeline to its
     // first frame, the logo to the middle, A0 out of the page again, so coming down a second time
     // plays the whole thing. Once it has finished, nothing rewinds it.
     const rewind = () => {
+      settle?.kill();
+      intro.timeline.timeScale(PACE * OPENING);
       travel?.kill();
       travel = undefined;
       intro.timeline.pause(0);
@@ -152,6 +163,7 @@ export default function WelcomeLogo() {
       removeEventListener("resize", resize);
       unfollow();
       travel?.kill();
+      settle?.kill();
       intro.revert();
       stage?.classList.remove("a0-open", "a0-done");
     };

@@ -18,6 +18,7 @@ colors:
   bar-rest: "rgb(255 255 255 / 0.3)"
   primary: "#AEB779"
   primary-deep: "#9DA56D"
+  primary-glow: "#DDF57A"
   on-primary: "#14261A"
   on-ground: "#FFFFFF"
   on-ground-soft: "rgb(255 255 255 / 0.78)"
@@ -475,7 +476,7 @@ The system comes from the redesign canvas (welcome on phone and desktop, start s
 
 `ground` is the deep forest green under everything and the colour a long page fades into once its photograph ends. `scrim` is the near-black green used for the photo filter and every shadow, so shadows are tinted, never grey. Glass is built from `glass-fill` with a white wash on top and a `glass-edge` hairline; glass sitting on glass uses `inner-fill` and `inner-edge` instead. `glass-solid` replaces all of it when reduced transparency is on.
 
-`primary` to `primary-deep` is the olive lime, always as a 135 degree gradient. It is allowed in exactly six places: the primary button, the active tab, segment or chip, spot markers and the route line, the current month bar, the logo symbol, and the closing phrase of the page title. That phrase appears once per screen, on the title only; section headings stay white, so the lime never competes with the one action. Ink on lime is `on-primary`, the forest green, at about 7.5:1. Everything else is white: `on-ground` for titles and values, `on-ground-soft` (white 78%) for secondary text and icons, `on-ground-tab` (white 82%) for tabs you are not on. `mist` tints icons inside discs and draws the focus ring.
+`primary` to `primary-deep` is the olive lime, always as a 135 degree gradient. It is allowed in exactly six places: the primary button, the active tab, segment or chip, spot markers and the route line, the current month bar, the logo symbol, and the closing phrase of the page title. That phrase appears once per screen, on the title only; section headings stay white, so the lime never competes with the one action. `primary-glow` is the same lime lit up, used only as light: the blinking stops on the welcome route, which glow like neon and are never a surface or text. Ink on lime is `on-primary`, the forest green, at about 7.5:1. Everything else is white: `on-ground` for titles and values, `on-ground-soft` (white 78%) for secondary text and icons, `on-ground-tab` (white 82%) for tabs you are not on. `mist` tints icons inside discs and draws the focus ring.
 
 The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group-birds`, `group-mammals`) appear only as icon tints, dots and proportion bar segments, always next to the group's name or icon, never as fills behind text. `marker`, `keyboard` and the `map-`, `basemap-` and `field-` colours are carried from the prototype for the base map and the welcome animation; the boards do not use them. The `system-` colours belong to the platform, not to Natureplore: they draw the location prompt the way the phone and the browser draw their own, and nothing else may use them.
 
