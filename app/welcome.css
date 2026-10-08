@@ -143,25 +143,19 @@
 /* the corner holds the symbol alone, the wordmark dissolves before the flight
    (components/WelcomeLogo.tsx) */
 .a0-mark-corner { aspect-ratio: 283.81 / 265.34; }
-/* In its corner the symbol is a brighter lime than the logo it was built in, primary-glow into the
-   brand lime, fading in as it lands. The still page draws it in that lime from the start. */
+/* the built logo's lime (components/intro-logo.ts): the brand lime into its deeper step */
 .a0-mark {
   --logo-lime: var(--color-primary);
   --logo-lime-deep: var(--color-primary-deep);
-  transition: --logo-lime 700ms ease, --logo-lime-deep 700ms ease;
 }
-.a0-open .a0-mark {
-  --logo-lime: var(--color-primary-glow);
-  --logo-lime-deep: color-mix(in srgb, var(--color-primary-glow) 65%, var(--color-primary));
-}
-/* The symbol's corner of the drawing sits under the fill's darkest shading, a forest blob and the
-   shade photograph, which is what made it look dull up there. As it lands they fade away with the
-   lime, so the symbol brightens into its corner. */
-.a0-mark .intro-logo circle[fill="url(#blob-dark)"],
-.a0-mark .intro-logo #fieldfill image { transition: opacity 700ms ease; }
-.a0-open .a0-mark .intro-logo circle[fill="url(#blob-dark)"],
-.a0-open .a0-mark .intro-logo #fieldfill image { opacity: 0; }
-.a0-mark-corner { color: var(--color-primary-glow); }
+/* The built logo carries the fill's dark shading, which sits right over the symbol's corner and made
+   it dull up there. As it lands it crossfades into a clean symbol in the button's lime, in the same
+   box, so the corner symbol matches Start Natureploring. */
+.a0-mark { transition: opacity 700ms ease; }
+.a0-mark-lit { opacity: 0; transition: opacity 700ms ease; }
+.a0-open .a0-mark { opacity: 0; }
+.a0-open .a0-mark-lit { opacity: 1; }
+.a0-mark-corner { color: var(--color-primary); }
 /* the tablet keeps the desktop's corner symbol size, 2.125rem tall */
 @media (min-width: 48rem) {
   .a0-mark,
@@ -314,9 +308,7 @@
     filter: brightness(1.265) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35));
     transition: filter 700ms ease;
   }
-  /* landed, it brightens further: the fill's dark shading sits over the symbol's corner of the
-     drawing, and a filter on the visible logo is what reliably reaches it */
-  .a0s.a0-open .a0-mark .intro-logo { filter: brightness(1.7) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35)); }
+
 
   /* The opening line and the cue go first, as the photograph starts to open behind them. What is
      left of the scroll opens the photograph, and nothing else waits on it. */

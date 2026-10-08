@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { INTRO_LOGO_SVG } from "@/components/intro-logo";
+import Logo from "@/components/Logo";
 import { playIntro, WELCOME_OPENING, WELCOME_PACE } from "@/lib/intro-timeline";
 import { followProgress } from "@/lib/welcome-progress";
 
@@ -186,6 +187,11 @@ export default function WelcomeLogo() {
       <div className="a0-mark" ref={mark} aria-hidden="true" dangerouslySetInnerHTML={{ __html: INTRO_LOGO_SVG }} />
       {/* where it is going: the corner it takes on A0, empty and unseen until it gets there */}
       <div className="a0-mark-slot a0-mark-corner" ref={slot} aria-hidden="true" />
+      {/* what it becomes once there: the symbol in the button's lime, faded in over the built logo
+          as that fades out (app/welcome.css) */}
+      <div className="a0-mark-lit a0-mark-corner" aria-hidden="true">
+        <Logo symbol />
+      </div>
     </>
   );
 }
