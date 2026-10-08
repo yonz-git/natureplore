@@ -16,7 +16,7 @@ const STOPS = ["Guided routes", "Spots to stop at", "Organisms", "Notable this s
 // one path per size, in that size's board coordinates
 const ROUTE = {
   phone: { box: "0 0 390 844", d: "M300 190 C 220 200, 100 220, 116 300 S 300 340, 282 410 S 70 460, 96 520" },
-  desk: { box: "0 0 1440 900", d: "M1240 180 C 1060 190, 780 230, 820 320 S 1210 390, 1180 470 S 800 560, 860 640" },
+  desk: { box: "0 0 1440 900", d: "M1240 180 C 1060 190, 780 230, 820 320 S 1210 390, 1180 470 S 800 640, 860 738" },
 };
 
 const DRAW = 1.6; // seconds, the line from the first stop to the last

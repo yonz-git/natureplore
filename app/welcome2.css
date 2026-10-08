@@ -132,9 +132,9 @@
 }
 .a02-lead {
   margin: 0.875rem 0 0;
-  max-width: 22.5rem; /* 18.75rem, grown with the text */
-  font-size: calc(var(--text-body) * 1.2);
-  line-height: calc(var(--text-body--line-height) * 1.2);
+  max-width: 23.75rem;
+  font-size: 1.25rem;
+  line-height: 1.875rem;
   font-weight: 300;
   color: var(--color-on-ground-soft);
 }
@@ -209,6 +209,11 @@
 
 /* wider than a phone: the button hugs its label as on the desktop, centred; no screen has a
    full-width button */
+/* tablet: the lead a step larger, between the phone and the desktop */
+@media (min-width: 48rem) {
+  .a02-lead { max-width: 30rem; font-size: 1.5rem; line-height: 2.25rem; }
+}
+
 @media (min-width: 30rem) { /* phone-max */
   .a02-cta { width: auto; font-size: 1.125rem; }
 }
@@ -273,7 +278,7 @@
   .a02-stop-1 { left: 86.11%; top: 20%; }
   .a02-stop-2 { left: 56.94%; top: 35.56%; }
   .a02-stop-3 { left: 81.94%; top: 52.22%; }
-  .a02-stop-4 { left: 59.72%; top: 71.11%; }
+  .a02-stop-4 { left: 59.72%; top: 82%; } /* below the one-line lead */
 
   .a02-main {
     left: 7.5rem;
@@ -295,9 +300,11 @@
   .a02-br { display: inline; }
   .a02-lead {
     margin-top: 1.125rem;
-    max-width: 41.4rem; /* 34.5rem, grown with the text */
-    font-size: 1.8rem;
-    line-height: calc(var(--text-lead-desktop--line-height) * 1.2);
+    /* one line on the desktop */
+    max-width: none;
+    white-space: nowrap;
+    font-size: 1.71rem;
+    line-height: 2.4rem;
   }
   .a02-cta { align-self: flex-start; width: auto; margin-top: 2.5rem; font-size: 1.125rem; }
 }
