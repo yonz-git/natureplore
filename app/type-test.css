@@ -1,4 +1,4 @@
-/* TEST, not the system: every type size on the map home (/map) 20% bigger, to judge
+/* TEST, not the system: every type size on the map home (/map) 20% bigger, buttons aside, to judge
    readability before the tokens change. Only font sizes move, line heights and spacing stay.
    Switched on by data-type-test on the A5 screen, so every other page keeps today's sizes.
    Delete this file and the attribute once the sizes go into docs/design.md. */
@@ -21,8 +21,6 @@
   --text-meta: calc(0.875rem * 1.2);
   --text-label: calc(0.8125rem * 1.2);
   --text-field: calc(1rem * 1.2);
-  --text-button: calc(1rem * 1.2);
-  --text-button-secondary: calc(0.9375rem * 1.2);
   --text-chip: calc(0.875rem * 1.2);
   --text-chip-active: calc(0.875rem * 1.2);
   --text-pill: calc(0.8125rem * 1.2);
@@ -36,3 +34,23 @@
 :root:has([data-type-test]) .dot,
 :root:has([data-type-test]) .map-route span { font-size: calc(0.6875rem * 1.2); }
 :root:has([data-type-test]) .a1-credit { font-size: calc(0.625rem * 1.2); }
+
+/* buttons keep today's size: the button tokens are left out above, and Show on map, which borrows
+   the chip size, is held at it here */
+:root:has([data-type-test]) .sg-toggle { font-size: 0.875rem; }
+
+/* the suggestions title takes the h2 step at today's size, as the route's own title does on B1 */
+:root:has([data-type-test]) .sg .ms-title { font-size: 1.5rem; line-height: 1.875rem; }
+
+/* the bigger type needs more air: every gap between pieces of text 35% wider */
+:root:has([data-type-test]) .sg .ms-sheet { gap: calc(1.25rem * 1.35); }
+:root:has([data-type-test]) .sg-scope { margin-top: calc(0.5rem * 1.35); }
+:root:has([data-type-test]) .sg .ms-lead { margin-top: calc(0.125rem * 1.35); }
+:root:has([data-type-test]) .sg-where { gap: calc(0.25rem * 1.35); }
+:root:has([data-type-test]) .sug { gap: calc(1rem * 1.35); }
+:root:has([data-type-test]) .sug-head { gap: calc(0.25rem * 1.35); }
+:root:has([data-type-test]) .dots { gap: calc(0.625rem * 1.35); }
+:root:has([data-type-test]) .sug-season { gap: calc(0.5rem * 1.35); }
+:root:has([data-type-test]) .sug-orgs { gap: calc(0.625rem * 1.35); }
+:root:has([data-type-test]) .sug-org { gap: calc(0.125rem * 1.35); }
+:root:has([data-type-test]) .map-route { gap: calc(0.25rem * 1.35); }
