@@ -197,7 +197,18 @@
 .sg-scope { margin: 0.675rem 0 0; font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
 /* the pin before the region, its drawn edge on the title's left edge and its middle on the words' */
 .sg-scope { display: flex; align-items: center; gap: 0.125rem; }
-.sg-scope svg { flex-shrink: 0; margin: 0 0 0.094rem -0.0615rem; }
+.sg-pin { display: flex; flex-shrink: 0; margin: 0 0 0.094rem -0.0615rem; }
+/* the pin rolls in once the sheet is up, calmly: a half turn from the left, the distance the turn
+   would carry it (half its 11px girth), slowing to rest with no overshoot */
+.sg-pin svg { animation: pin-roll-in 640ms var(--ease-out) 240ms both; }
+@keyframes pin-roll-in {
+  from { opacity: 0; translate: -1.08rem 0; rotate: -180deg; }
+  40% { opacity: 1; }
+  to { opacity: 1; translate: 0 0; rotate: 0deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sg-pin svg { animation: fade-in 200ms var(--ease-out) 120ms both; }
+}
 .sg .ms-lead { margin-top: 0.16875rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
 
 /* Show on map / Show as a list: inner glass on the sheet, the phone only */
