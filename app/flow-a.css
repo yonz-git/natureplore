@@ -642,9 +642,18 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg .seg { flex-shrink: 0; }
 /* the switch and, on Organisms, the group filters beside it; on a phone they wrap under it */
 .sg-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
-.sg-groups { display: none; gap: 0.25rem; /* about a third of 0.6875rem, a whole pixel */ transition: display 220ms allow-discrete; }
-/* on a line of their own, indented to start under the Organisms option (--org-x, measured) */
-.sg-groups.is-on { display: flex; flex-basis: 100%; padding-left: var(--org-x, 0); box-sizing: border-box; }
+/* on a line of their own, indented to start under the Organisms option (--org-x, measured). The line
+   and indent belong to the row whether it is on or not, so while the toggles fade out on the way back
+   to Routes they stay where they were instead of jumping left beside the switch */
+.sg-groups {
+  display: none;
+  flex-basis: 100%;
+  padding-left: var(--org-x, 0);
+  box-sizing: border-box;
+  gap: 0.25rem; /* about a third of 0.6875rem, a whole pixel */
+  transition: display 220ms allow-discrete;
+}
+.sg-groups.is-on { display: flex; }
 /* each toggle fades and grows in on its own, a beat apart, never its row: the toggles are glass, and
    animating anything above glass switches the frost off */
 .sg-group {
@@ -663,6 +672,9 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   transition: opacity 200ms var(--ease-out), scale 200ms var(--ease-out), transform 160ms var(--ease-out), background-color 200ms ease, box-shadow 200ms ease;
 }
 .sg-groups.is-on .sg-group { opacity: 1; scale: 1; }
+/* and out again, the dimmed ones too: the site-wide 45% for a disabled control would otherwise hold
+   them there until the row is gone, and they would vanish instead of fading with the rest */
+.sg-groups:not(.is-on) .sg-group { opacity: 0; scale: 0.9; }
 @starting-style { .sg-groups.is-on .sg-group { opacity: 0; scale: 0.9; } }
 .sg-groups.is-on .sg-group:nth-child(2) { transition-delay: 40ms; }
 .sg-groups.is-on .sg-group:nth-child(3) { transition-delay: 80ms; }
