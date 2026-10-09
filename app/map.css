@@ -96,7 +96,8 @@
 }
 .field input::placeholder { color: var(--color-on-ground-soft); opacity: 1; }
 .field input::-webkit-search-cancel-button { display: none; }
-/* the placeholder is drawn, not native, so it can carry one group icon that changes every 1.5 seconds */
+/* the placeholder is drawn, not native, so it can carry one group icon that changes every 1.8 seconds,
+   each playing its own motion as it arrives (lib/group-motion.ts) */
 .field { position: relative; }
 .field-hint {
   position: absolute;
