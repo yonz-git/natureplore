@@ -61,32 +61,6 @@
 .a0-blob-2 { left: 10%; top: -18%; width: 138%; aspect-ratio: 1.12; background: radial-gradient(closest-side, rgb(255 255 255 / 0.24), transparent); }
 .a0-blob-3 { left: 28%; top: 50%; width: 159%; background: radial-gradient(closest-side, color-mix(in srgb, var(--color-field-mid) 80%, transparent), transparent); }
 .a0-blob-4 { left: -46%; top: 64%; width: 138%; aspect-ratio: 1.17; background: radial-gradient(closest-side, color-mix(in srgb, var(--color-field-glow) 70%, transparent), transparent); }
-/* the rim of the circle the photograph opens in: light gathering inside the edge, one pale green line
-   on the edge itself, a halo outside it. The edge of the lens sits at 80% of this element's radius.
-   It is laid out at a quarter of its final size and scaled up (--a0-rim), so the layer stays small. */
-.a0-orb {
-  --a0-rim: 4;
-  display: none;
-  position: absolute;
-  z-index: -1;
-  left: var(--a0-cx);
-  top: var(--a0-cy);
-  width: calc(hypot(var(--a0-w), var(--a0-h)) * 2.1213 / 0.8 / var(--a0-rim));
-  aspect-ratio: 1;
-  translate: -50% -50%;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(
-    closest-side,
-    transparent 50%,
-    color-mix(in srgb, var(--color-field-glow) 35%, transparent) 70%,
-    color-mix(in srgb, var(--color-group-plants) 60%, transparent) 77.5%,
-    color-mix(in srgb, var(--color-mist) 85%, transparent) 80%,
-    color-mix(in srgb, var(--color-group-plants) 40%, transparent) 82.5%,
-    color-mix(in srgb, var(--color-field-glow) 22%, transparent) 90%,
-    transparent 100%
-  );
-}
 /* the photograph showing through around the mouse (components/WelcomeReveal.tsx), under the liquid layer.
    The mask makes the circle soft all the way out, there is no edge to see. */
 .a0-reveal {
@@ -240,7 +214,7 @@
      background, the same as A0 has it (app/welcome2.css). */
   .a0s.a0-done { height: auto; }
   .a0s.a0-done .a02 { position: relative; }
-  .a0s.a0-done :is(.a0-field, .a0-ether, .a0-orb, .a0-hero, .a0-cue, .a0-mush) { display: none; }
+  .a0s.a0-done :is(.a0-field, .a0-ether, .a0-hero, .a0-cue, .a0-mush) { display: none; }
   .a0s.a0-done .a0-lens {
     inset: 0;
     width: auto;
@@ -248,6 +222,7 @@
     aspect-ratio: auto;
     translate: none;
     border-radius: 0;
+    mask-image: none;
     visibility: visible;
   }
   .a0s.a0-done .a02-photo {
@@ -257,7 +232,7 @@
     translate: none;
   }
   .a0s .a02 { position: sticky; top: 0; height: 100dvh; min-height: 0; container-type: size; }
-  .a0s :is(.a0-field, .a0-orb) { display: block; }
+  .a0s .a0-field { display: block; }
 
   .a0s :is(.a0-field, .a0-ether, .a0-hero, .a0-cue) {
     animation-duration: 1s;
@@ -271,8 +246,9 @@
   .a0s .a0-ether { animation-name: a0s-away; --a0-s: 0.97; --a0-e: 0.98; }
   /* The photograph opens in a circle between --a0-s and --a0-e of the scroll. The lens is that circle at
      its final size, 150% of hypot(w, h) / sqrt(2), enough to clear every corner. WelcomeScroll scales
-     the lens up from nothing, scales the photograph inside it by the inverse so it stays put, and scales
-     the rim with the lens. Only transforms change, so nothing is repainted while the circle grows. */
+     the lens up from nothing and scales the photograph inside it by the inverse so it stays put. Only
+     transforms change, so nothing is repainted while the circle grows. No rim: the circle's edge simply
+     fades out, a soft band over its outer quarter that grows with it. */
   .a0s .a0-lens {
     --a0-s: 0.04;
     --a0-e: 0.95;
@@ -284,6 +260,7 @@
     translate: -50% -50%;
     border-radius: 50%;
     overflow: hidden;
+    mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
   }
   .a0s .a02-photo {
     inset: auto;
@@ -294,8 +271,8 @@
     /* placed and counter-scaled around the centre by components/WelcomeScroll.tsx alone: a CSS
        translate here was added on top of it and slid the photograph off the right of the screen */
   }
-  .a0s :is(.a0-lens, .a02-photo, .a0-orb) { will-change: transform; }
-  .a0s :is(.a0-lens, .a0-orb) { visibility: hidden; } /* until WelcomeScroll places them */
+  .a0s :is(.a0-lens, .a02-photo) { will-change: transform; }
+  .a0s .a0-lens { visibility: hidden; } /* until WelcomeScroll places it */
 
   /* The logo builds in the middle of the page and travels to the corner slot, both worked out by
      components/WelcomeLogo.tsx. The width is the intro board's: the logo as it would be drawn in a
@@ -387,7 +364,6 @@
   /* a link that takes keyboard focus must be visible: jump to the end state */
   .a0s:has(a:focus-visible) :is(*, *::after) { animation: none !important; }
   .a0s:has(a:focus-visible) :is(.a0-lens, .a02-photo) { transform: none !important; visibility: visible !important; }
-  .a0s:has(a:focus-visible) .a0-orb { visibility: hidden !important; }
 
   @media (min-width: 64rem) {
     .a0s {

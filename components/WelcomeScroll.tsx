@@ -8,7 +8,7 @@ import { publishProgress } from "@/lib/welcome-progress";
 // The welcome page's scroll progress, 0 to 1, written as --a0-p on every element app/welcome.css scrubs
 // with it. The value chases the real scroll position instead of jumping to it, so a mouse wheel's steps
 // come out as one glide. The scrolling itself stays native.
-// It also grows the circle the photograph opens in (the lens, the photograph inside it, the rim): sizes
+// It also grows the circle the photograph opens in (the lens and the photograph inside it): sizes
 // and timing are in app/welcome.css, this only sets three scales, through GSAP.
 // The circle opens where the reader is looking: on the frame it starts, the centre is moved to the
 // pointer, the same place components/WelcomeReveal.tsx has been showing the photograph through. The
@@ -31,11 +31,9 @@ export default function WelcomeScroll() {
     const stage = root.querySelector<HTMLElement>(".a02")!;
     const lens = root.querySelector<HTMLElement>(".a0-lens")!;
     const photo = root.querySelector<HTMLElement>(".a02-photo")!;
-    const orb = root.querySelector<HTMLElement>(".a0-orb")!;
     const num = (el: Element, name: string) => parseFloat(getComputedStyle(el).getPropertyValue(name));
     const from = num(lens, "--a0-s");
     const to = num(lens, "--a0-e");
-    const rim = num(orb, "--a0-rim");
 
     // where the pointer is, kept as it moves; a touch says nothing about where someone is looking
     let pointer: { x: number; y: number } | null = null;
@@ -74,10 +72,10 @@ export default function WelcomeScroll() {
     };
 
     // when the opening has played out the page stops being a scroller (app/welcome.css, a0-done):
-    // the circle and its rim are finished with, and what they left behind is theirs to clear
+    // the circle is finished with, and what it left behind is its to clear
     const finish = () => {
-      gsap.set([lens, photo, orb], { clearProps: "transform,translate,rotate,scale" });
-      for (const el of [lens, photo, orb]) el.style.visibility = "";
+      gsap.set([lens, photo], { clearProps: "transform,translate,rotate,scale" });
+      for (const el of [lens, photo]) el.style.visibility = "";
     };
 
     let shown = NaN; // nothing shown yet: the first frame goes straight to where the page is
@@ -102,9 +100,7 @@ export default function WelcomeScroll() {
         scale: 1 / scale,
         transformOrigin: `${centreX}px ${centreY}px`,
       });
-      gsap.set(orb, { scale: scale * rim });
       lens.style.visibility = open > 0 ? "visible" : "hidden";
-      orb.style.visibility = open > 0 && open < 1 ? "visible" : "hidden"; // at the end the rim is far off the page
       last = shown === target ? 0 : now;
       raf = last ? requestAnimationFrame(frame) : 0;
     };
