@@ -32,8 +32,6 @@ const RISE = 90; // px, how high the first arc takes it
 // mushrooms stood side by side.
 const HANDOVER = MUSH_IN / (WELCOME_PACE * WELCOME_OPENING);
 const HAND_FADE = 0.08; // seconds: gone before the logo's mushroom makes its first jump
-const GROUND = "#FAFBF5"; // --color-on-field, the cue's own colour
-const LOGO_INK = "#AEB779"; // --color-primary, what the logo is drawn in
 
 // the mushroom's own corner of the logo, in the logo's viewBox units
 const MUSH = { x: 112, y: 147, w: 60, h: 59 };
@@ -90,7 +88,7 @@ export default function WelcomeCue({ text }: { text: string }) {
       let handing: gsap.core.Tween | null = null;
       let placed = -1;
       // where it is at a point of the way over, 0 to 1: it hops its way, the arcs flattening as it
-      // gets there, and takes the logo's colour
+      // gets there
       const place = (run: number) => {
         if (!going) return;
         const t = glide(run);
@@ -100,7 +98,6 @@ export default function WelcomeCue({ text }: { text: string }) {
           y: going.y * t - hop,
           scale: 1 + (going.scale - 1) * t,
           rotation: Math.sin(run * Math.PI * HOPS * 2) * 8,
-          color: gsap.utils.interpolate(GROUND, LOGO_INK, Math.min(1, run * 1.4)),
         });
       };
       const back = () => {
@@ -118,7 +115,7 @@ export default function WelcomeCue({ text }: { text: string }) {
           going = null;
           back();
           delete sprout.dataset.out;
-          gsap.set(sprout, { clearProps: "transform,opacity,color" });
+          gsap.set(sprout, { clearProps: "transform,opacity" });
           gsap.set(cap, { yPercent: 118 });
           waiting.restart(true);
           return;

@@ -13,6 +13,8 @@
   color: var(--color-on-ground);
   /* the same photograph the logo intro opens on, app/intro.css */
   --a02-photo: url(/img/intro-waterfall.webp);
+  /* the corner symbol stands as far from the top as from the left, at every size (app/welcome.css) */
+  --mark-top: calc(var(--spacing-inset-screen) + env(safe-area-inset-top, 0px));
 }
 /* the lens is only a plain full-size box here, app/welcome.css turns it into the growing circle */
 .a0-lens { position: absolute; inset: 0; z-index: -1; }
@@ -37,13 +39,13 @@
 .a02-nav { display: none; }
 
 /* the drawn route, stretched over the screen; the stops sit at the same points in percent */
-/* Phone and tablet: the route starts level with the corner symbol, so its first stop sits on the
-   symbol's line, and ends a wide margin above the heading. --main-top (the heading block's top, set
+/* Phone and tablet: the route starts a step under the corner symbol, never beside it, and ends a
+   wide margin above the heading. --main-top (the heading block's top, set
    by components/WelcomeRoute.tsx) is what ends the space. On a tall screen the box reaches its cap
    and is centred in the space instead. The desktop puts it back on the whole screen. */
 .a02-route {
-  --free-top: var(--top-chrome);
-  --space: calc(var(--main-top, 40rem) - var(--free-top) - 2.75rem);
+  --free-top: calc(var(--mark-top) + 2.125rem + 1rem);
+  --space: calc(var(--main-top, 40rem) - var(--free-top) - 1.75rem);
   --box-h: min(var(--space), 30rem);
   position: absolute;
   left: 0;
@@ -151,14 +153,15 @@
   margin: 0.875rem 0 0;
   max-width: 23.75rem;
   font-size: 1.25rem;
-  line-height: 1.875rem;
+  line-height: 1.6875rem;
   font-weight: 300;
-  color: var(--color-on-ground-soft);
+  /* full white: at the soft 78% the light weight sank into the photograph */
+  color: var(--color-on-ground);
 }
 .a02-cta {
   align-self: center;
   width: var(--spacing-button-phone);
-  margin-top: 2.25rem;
+  margin-top: 3.25rem; /* room above the button: the heading sits closer to the route instead */
   /* the front door's button only: 10% more padding all round than a standard button, the space
      above and below the label (height less one line) and the sides */
   height: calc(var(--spacing-button-height) + (var(--spacing-button-height) - 1lh) * 0.1);
@@ -170,7 +173,7 @@
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
   color: var(--color-on-primary);
   font-family: var(--text-button--font-family);
-  font-size: var(--text-button);
+  font-size: 1.125rem; /* the front door's button reads a step larger than a standard button, at every size */
   font-weight: var(--text-button--font-weight);
   letter-spacing: var(--text-button--letter-spacing);
   text-decoration: none;
@@ -249,11 +252,11 @@
    full-width button */
 /* tablet: the lead a step larger, between the phone and the desktop */
 @media (min-width: 48rem) {
-  .a02-lead { max-width: 30rem; font-size: 1.5rem; line-height: 2.25rem; }
+  .a02-lead { max-width: 30rem; font-size: 1.5rem; line-height: 2.025rem; }
 }
 
 @media (min-width: 30rem) { /* phone-max */
-  .a02-cta { width: auto; font-size: 1.125rem; }
+  .a02-cta { width: auto; }
 }
 
 @media (min-width: 64rem) {
@@ -349,7 +352,7 @@
     max-width: none;
     white-space: nowrap;
     font-size: 1.71rem;
-    line-height: 2.4rem;
+    line-height: 2.16rem;
   }
-  .a02-cta { align-self: flex-start; width: auto; margin-top: 2.5rem; font-size: 1.125rem; }
+  .a02-cta { align-self: flex-start; width: auto; margin-top: 2.5rem; }
 }

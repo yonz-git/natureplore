@@ -3,7 +3,10 @@
 // along the way the mouse is moving, most at the mouse and fading out over RADIUS, so the letters
 // smear and stretch after it and flow back once it stops.
 // The letters are drawn where the DOM has them, one by one, so the picture sits exactly on the text
-// it replaces. Returns null where WebGL is not available; the DOM text then simply stays.
+// it replaces. A canvas draws the face fuller than the page's thin font smoothing does, so the
+// picture only stands in while the line is actually being pulled: at rest the real letters show,
+// and the line never looks bolder than it is. Returns null where WebGL is not available; the DOM
+// text then simply stays.
 
 const GAIN = 3; // px of pull per px the mouse moved in a frame, at full strength
 const INTENSITY = 0.3; // the reference's effect less 70 percent
@@ -35,7 +38,16 @@ export function warpText(line: HTMLElement, chars: HTMLElement[]) {
     width: "100%",
     height: `calc(100% + ${PAD * 2}px)`,
     pointerEvents: "none",
+    visibility: "hidden",
   });
+  // the picture or the letters, never both: the picture only while the line is being pulled
+  let live = false;
+  const show = (on: boolean) => {
+    if (on === live) return;
+    live = on;
+    canvas.style.visibility = on ? "visible" : "hidden";
+    for (const c of chars) c.style.visibility = on ? "hidden" : "";
+  };
 
   const shader = (type: number, src: string) => {
     const s = gl.createShader(type)!;
@@ -111,8 +123,9 @@ export function warpText(line: HTMLElement, chars: HTMLElement[]) {
     vy += (dy * GAIN - vy) * 0.15;
     strength += ((on ? 1 : 0) - strength) * (on ? 0.15 : 0.03);
     const pull = strength * INTENSITY;
-    // nothing to move and already drawn still: leave the frame as it is
-    if (drawn && Math.abs(vx * pull) + Math.abs(vy * pull) < 0.05) return;
+    const moved = Math.abs(vx * pull) + Math.abs(vy * pull) >= 0.05;
+    // nothing to move and already drawn still: leave the frame as it is, and the real letters on show
+    if (drawn && !moved) return show(false);
     drawn = true;
     const box = canvas.getBoundingClientRect();
     gl.uniform2f(uMouse, mouse.x - box.left, box.bottom - mouse.y);
@@ -120,6 +133,7 @@ export function warpText(line: HTMLElement, chars: HTMLElement[]) {
     gl.uniform1f(uRadius, innerHeight * RADIUS);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    if (moved) show(true);
   };
   const resize = () => {
     draw();
@@ -135,6 +149,7 @@ export function warpText(line: HTMLElement, chars: HTMLElement[]) {
     stop() {
       removeEventListener("pointermove", move);
       removeEventListener("resize", resize);
+      show(false);
       canvas.remove();
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     },
