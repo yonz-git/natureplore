@@ -79,9 +79,15 @@ export const ChevronIcon = (p: P) => (
   </Svg>
 );
 
+// the front bookmark of the Saved tab's icon (.design/icons/saved-bookmarks.svg), on its 178 by 220
+// grid at the same line, centred and scaled to the old bookmark's height
 export const BookmarkIcon = ({ filled = false, ...p }: P & { filled?: boolean }) => (
   <Svg {...p} fill={filled ? "currentColor" : "none"}>
-    <path d="M7 3.8h10V20l-5-3.6L7 20z" />
+    <path
+      transform="translate(12 12) scale(0.0898) translate(-77 -121)"
+      strokeWidth="19"
+      d="M123.184 32H30.8158C25.1675 32.0164 19.7553 34.2721 15.7614 38.2744C11.7674 42.2766 9.5164 47.7 9.5 53.36V210L77 153.04L144.5 210V53.36C144.484 47.7 142.233 42.2766 138.239 38.2744C134.245 34.2721 128.832 32.0164 123.184 32Z"
+    />
   </Svg>
 );
 
