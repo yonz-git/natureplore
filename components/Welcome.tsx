@@ -61,7 +61,6 @@ export default function Welcome({ still = false }: { still?: boolean }) {
           <WelcomeLogo />
         )}
 
-
         {/* what the page opens on, alone in the middle of the screen until the scroll takes it away */}
         {!still && <WelcomeHero lines={["Natureplore", "all around"]} />}
 

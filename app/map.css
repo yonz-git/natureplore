@@ -482,13 +482,13 @@ button.float-pill,
 .a1-map { position: absolute; inset: 0; }
 .a1-map.leaflet-container { font: inherit; background: var(--color-basemap-land); }
 
-/* From 64rem the search field leaves the panel for the top of the screen: centred on the window, on
-   the nav pill's line (3.625rem tall at nav-top-desktop, app/tabbar.css), with the nav at the right. On search
-   its back control comes with it. Rendered there by SuggestionsScreen and SearchScreen. */
+/* From 64rem the search field leaves the panel for the top of the screen: centred on the window, its
+   top edge level with the nav pill's (nav-top-desktop, app/tabbar.css), with the nav at the right. On
+   search its back control comes with it. Rendered there by SuggestionsScreen and SearchScreen. */
 .ms-search-top {
   position: absolute;
   z-index: 3;
-  top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2);
+  top: var(--spacing-nav-top-desktop);
   left: 50%;
   translate: -50% 0;
   /* as wide as it can be while clearing the panel (its right edge at 30rem) by 1rem on both sides of
@@ -622,8 +622,45 @@ button.float-pill,
 
 /* ── A1 ────────────────────────────────────────────────────────────────────────────────────── */
 
+/* no sheet at any size: the heading, the line and the ways in stand in the middle of the map, between
+   the top of the screen and the tab bar, over a soft darkening that keeps them readable. The map
+   stays draggable around them, and the pins under them are hidden (components/RegionMap.tsx). */
+.a1 .ms-sheet {
+  inset: var(--top-chrome) 0 var(--spacing-tabbar-clearance);
+  padding: 1rem var(--spacing-inset-screen);
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  pointer-events: none;
+}
+.a1-words {
+  position: relative;
+  isolation: isolate;
+  width: min(32rem, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  pointer-events: auto;
+}
+.a1-words::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -6rem -5rem;
+  background: radial-gradient(closest-side, rgb(from var(--color-ground) r g b / 0.85) 0%, rgb(from var(--color-ground) r g b / 0.5) 60%, transparent 100%);
+  pointer-events: none;
+}
 .a1 .ms-lead { margin-top: 1.0125rem; }
-.a1 .ms-stack { margin-top: 1.5rem; }
+.a1 .ms-stack { width: 100%; margin-top: 1.5rem; align-items: center; }
+.a1 .ms-stack > form { width: 100%; }
+.a1 .ms-stack .btn { align-self: center; }
+/* the two ways in share one row under the field, side by side, and wrap only when there is no room */
+.a1-ways { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--spacing-control-stack); width: 100%; }
+/* off the panel the secondary button stands on the map, so it frosts like the field above it */
+.a1 .btn-secondary { backdrop-filter: blur(1.875rem) saturate(1.4); }
 .a1 .btn-browse,
 .a1 .ms-note-desk { display: none; }
 
@@ -921,6 +958,9 @@ button.float-pill,
 .a1-lbl-nature { transform: translate(-50%, 1.7rem); font-style: italic; color: var(--color-basemap-label-nature); }
 .a1-lbl-water { font-style: italic; font-weight: 400; color: var(--color-basemap-label-water); }
 .a1-lbl.is-hidden { display: none; }
+/* a name under A1's words fades out of their way (components/RegionMap.tsx) */
+.a1-lbl { transition: opacity 200ms ease; }
+.a1-lbl.is-covered { opacity: 0; }
 
 .a1-credit {
   position: absolute;
@@ -1166,14 +1206,15 @@ button.float-pill,
     backdrop-filter: none;
   }
 
-  /* A1: the heading sits lower in the panel, Browse joins the stack and the note goes to the foot */
-  .a1 .ms-sheet { margin-top: 0; }
-  .a1 .ms-title { margin-top: 4.5rem; font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
+  /* A1: no panel on the desktop either, the words take the whole screen's middle */
+  .a1 .ms-panel { display: contents; }
+  .a1 .ms-sheet { position: absolute; inset: 0; padding: var(--spacing-inset-screen); }
+  .a1 .ms-title { font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
   .a1 .ms-lead { font-size: var(--text-body); line-height: var(--text-body--line-height); }
   .a1 .ms-stack { margin-top: 2.5rem; }
   .a1 .btn-browse { display: flex; }
   .a1 .ms-note-phone { display: none; }
-  .a1 .ms-note-desk { display: block; margin-top: auto; }
+  .a1 .ms-note-desk { display: block; margin-top: 1.5rem; }
 
   /* search: the map comes back beside the panel */
   .search .a1-map,

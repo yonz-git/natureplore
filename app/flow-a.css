@@ -101,9 +101,9 @@
 
 /* the spots in season: numbered dots, the lit ones filled with mist */
 .dots { display: flex; flex-wrap: wrap; align-items: center; gap: 0.84375rem; }
-.dots-row { display: flex; flex-wrap: wrap; gap: 0.5rem; /* room for two 3px halos */ }
+.dots-row { display: flex; flex-wrap: wrap; gap: 0.625rem; /* room for two 3px halos, and 4 between them */ }
 .dot {
-  --dot: 1.63625rem;
+  --dot: calc(1.63625rem * 0.9);
   width: var(--dot);
   height: var(--dot);
   box-sizing: border-box;
@@ -117,7 +117,7 @@
   border: 1px solid rgb(255 255 255 / 0.4);
   color: var(--color-on-ground-soft);
   font-family: var(--font-text);
-  font-size: calc(0.825rem * 1.35);
+  font-size: calc(0.825rem * 1.35 * 0.9);
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -518,8 +518,9 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 /* ── from 64rem ────────────────────────────────────────────────────────────────────────────── */
 
 @media (min-width: 64rem) {
-  /* one panel frame for every Routes screen: it stays in place from the suggestions into search */
-  .ms-panel { inset: 2.5rem auto 2.5rem 2.5rem; }
+  /* one panel frame for every Routes screen: it stays in place from the suggestions into search,
+     and ends as far above the bottom edge as the nav sits below the top */
+  .ms-panel { inset: 2.5rem auto var(--spacing-nav-top-desktop) 2.5rem; }
 
   .sg-toggle,
   .sg-map-note,
@@ -648,6 +649,19 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .seg-opt[aria-pressed="false"]:hover { background-color: rgb(255 255 255 / 0.08); }
 }
 .sg .seg { flex-shrink: 0; }
+/* the icons sit as far from the edge and from the ink of their label's first letter as the nav's
+   (app/tabbar.css): each icon's own empty margin cancelled, and the room R and O leave before
+   their first stroke, measured at 18 */
+.sg .seg-opt:first-of-type > svg { margin: 0 -0.0800rem 0 -0.0350rem; }
+.sg .seg-opt:last-of-type > svg { margin: 0 -0.0663rem 0 -0.0185rem; }
+/* the open option's icon gets heavier, its line 40% thicker as on the nav's Map, and the two ends of
+   Routes' line fill in */
+.sg .seg-opt > svg,
+.sg .seg-opt > svg g { transition: stroke-width 220ms var(--ease-out); }
+.sg .seg-opt > svg circle { fill: rgb(from currentColor r g b / 0); transition: fill 220ms var(--ease-out), stroke-width 220ms var(--ease-out); }
+.sg .seg-opt[aria-pressed="true"] > svg { stroke-width: 2.1; }
+.sg .seg-opt[aria-pressed="true"] > svg g { stroke-width: 3.64; }
+.sg .seg-opt[aria-pressed="true"] > svg circle { fill: currentColor; }
 /* the switch and, on Organisms, the group filters beside it; on a phone they wrap under it */
 .sg-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0 0.75rem; }
 /* on a line of their own, indented to start under the Organisms option (--org-x, measured). The line

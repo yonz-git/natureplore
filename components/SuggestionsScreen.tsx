@@ -11,7 +11,7 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
-import { ChevronIcon, GroupIcon, LeafIcon, ListIcon, MapIcon, PinIcon, RoutesIcon } from "@/components/Icons";
+import { ChevronIcon, GroupIcon, ListIcon, MapIcon, OrganismsIcon, PinIcon, RoutesIcon } from "@/components/Icons";
 import { MapTools, SearchField } from "@/components/MapParts";
 import { useSheet } from "@/components/SheetGrab";
 import { useIsDesktop } from "@/lib/useIsDesktop";
@@ -253,7 +253,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
               <span className="seg-label" data-text="Routes">Routes</span>
             </button>
             <button type="button" ref={orgOpt} className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
-              <LeafIcon size={18} />
+              <OrganismsIcon size={18} />
               <span className="seg-label" data-text="Organisms">Organisms</span>
             </button>
           </div>

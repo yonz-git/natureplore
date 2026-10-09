@@ -386,8 +386,20 @@ export default function RegionMap({
       const docked = !!host.closest(".sg");
       const side = () => wide.matches || (tablet.matches && docked);
       // what covers the map: the sheet on the phone and the tablet, the panel it moves into on the desktop
+      // A1 has no sheet or panel: its words stand in the middle of the map, so the whole map is free
+      // and only the pins and names under those words, or under the phone's tab bar, are hidden
+      const centred = () => !!host.closest(".a1");
       const sheetEl = () =>
-        (host.parentElement?.querySelector(wide.matches ? ".ms-panel" : ".ms-sheet") as HTMLElement | null) ?? null;
+        centred()
+          ? null
+          : ((host.parentElement?.querySelector(wide.matches ? ".ms-panel" : ".ms-sheet") as HTMLElement | null) ?? null);
+      const coverBox = () => {
+        const words = centred() ? host.parentElement?.querySelector<HTMLElement>(".a1-words") : null;
+        if (!words) return null;
+        const r = words.getBoundingClientRect();
+        const h = host.getBoundingClientRect();
+        return { l: r.left - h.left - PIN_EDGE, r: r.right - h.left + PIN_EDGE, t: r.top - h.top - PIN_EDGE, b: r.bottom - h.top + PIN_EDGE };
+      };
       const navEl = () => (document.querySelector(".tabbar-pill") as HTMLElement | null) ?? null;
       const barEl = () => (host.parentElement?.querySelector(".ms-bar") as HTMLElement | null) ?? null;
       // the phone keeps its bar over the map, the desktop moves it into the panel and the nav
@@ -397,6 +409,25 @@ export default function RegionMap({
       const placePins = () => {
         if (still) return;
         const box = freeBox(host, sheetEl(), bandEl(), side());
+        const cover = coverBox();
+        // the map's own place names under the words would read through them, so they fade out too
+        if (cover) {
+          const hr = host.getBoundingClientRect();
+          const pad = PIN_EDGE / 2;
+          for (const { marker } of labels) {
+            const el = (marker as { getElement(): HTMLElement | undefined }).getElement()?.firstChild as
+              | HTMLElement
+              | undefined;
+            if (!el) continue;
+            const r = el.getBoundingClientRect();
+            const l = r.left - hr.left;
+            const t = r.top - hr.top;
+            const under = l + r.width > cover.l + pad && l < cover.r - pad && t + r.height > cover.t + pad && t < cover.b - pad;
+            el.classList.toggle("is-covered", under);
+          }
+        }
+        const nav = centred() && !wide.matches ? navEl() : null;
+        if (nav) box.h = Math.max(1, nav.getBoundingClientRect().top - host.getBoundingClientRect().top - box.y - PIN_EDGE);
         const placed = pts.map((pt) => {
           const p = map.latLngToContainerPoint([pt.lat, pt.lon]);
           // inside the free box on both axes, with half a pin of margin on the side the
@@ -405,7 +436,8 @@ export default function RegionMap({
             p.x >= box.x + (side() ? PIN_EDGE : 0) &&
             p.x <= box.x + box.w &&
             p.y >= box.y &&
-            p.y <= box.y + box.h - (side() ? 0 : PIN_EDGE);
+            p.y <= box.y + box.h - (side() ? 0 : PIN_EDGE) &&
+            !(cover && p.x > cover.l && p.x < cover.r && p.y > cover.t && p.y < cover.b);
           return { ...pt, x: p.x, y: p.y, free };
         });
         // When the map is too small for the route, its numbered discs pile up on each other and

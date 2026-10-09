@@ -14,7 +14,7 @@
   --color-inner-fill:rgb(255 255 255 / 0.09); --color-inner-edge:rgb(255 255 255 / 0.14);
   --color-pill-fill:rgb(255 255 255 / 0.08); --color-divider:rgb(255 255 255 / 0.12); --color-bar-rest:rgb(255 255 255 / 0.3);
   --color-primary:#AEB779; --color-primary-deep:#9DA56D; --color-primary-glow:#DDF57A; --color-on-primary:#14261A;
-  --color-on-ground:#FFFFFF; --color-on-ground-soft:rgb(255 255 255 / 0.78); --color-on-ground-tab:rgb(255 255 255 / 0.82);
+  --color-on-ground:#FFFFFF; --color-on-ground-soft:rgb(255 255 255 / 0.78);
   --color-mist:#DCEBD7;
   --color-group-plants:#3FB97A; --color-group-herbs:#A8E498; --color-group-mushrooms:#C9A227; --color-group-birds:#7FA8C9; --color-group-mammals:#C58A6A;
   --color-marker:#2F4A30; --color-keyboard:#08120A; --color-map-road:#FFFFFF; --color-map-water:#C8E8F0;
@@ -190,7 +190,7 @@ svg.i{display:block;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5
 .list-row .t span{font:var(--type-caption);color:var(--color-on-ground-soft)}
 .div{height:1px;margin-left:3.375rem;background:linear-gradient(90deg,rgb(255 255 255 / .16),rgb(255 255 255 / .04))}
 .tabbar{height:4.375rem;padding:6px;display:inline-flex;align-items:center;gap:4px;border-radius:var(--rounded-pill)}
-.tabbar a{width:5.25rem;height:3.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border-radius:var(--rounded-pill);text-decoration:none;color:var(--color-on-ground-tab);font:var(--type-tab);letter-spacing:var(--track-tab)}
+.tabbar a{width:5.25rem;height:3.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border-radius:var(--rounded-pill);text-decoration:none;color:var(--color-on-ground);font:var(--type-tab);letter-spacing:var(--track-tab)}
 .tabbar a[aria-current]{background:var(--lime);color:var(--color-on-primary);font:var(--type-tab-active);box-shadow:inset 0 1px 0 rgb(255 255 255 / .35)}
 .nav{height:3.625rem;padding:6px;display:inline-flex;align-items:center;gap:2px;border-radius:var(--rounded-pill)}
 .nav a{height:2.75rem;padding:0 1.125rem 0 .875rem;display:flex;align-items:center;gap:var(--space-2);border-radius:var(--rounded-pill);text-decoration:none;font:var(--type-chip)}
@@ -283,7 +283,7 @@ svg.i{display:block;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5
     <div class="sw"><div class="swc" style="background:var(--color-primary-deep);color:var(--color-on-primary)">Ink on primary-deep</div><div class="meta"><span class="k">primary-deep</span><span class="v">#9DA56D</span></div></div>
     <div class="sw"><div class="swc" style="background:var(--color-primary-glow);color:var(--color-on-primary);box-shadow:0 0 1.75rem rgb(221 245 122 / .55)">Light only</div><div class="meta"><span class="k">primary-glow</span><span class="v">#DDF57A, the neon welcome stops</span></div></div>
     <div class="sw"><div class="swc" style="background:var(--lime);color:var(--color-on-primary)">The 135° gradient</div><div class="meta"><span class="k">on-primary</span><span class="v">#14261A, about 7.5:1</span></div></div>
-    <div class="sw"><div class="swc" style="background:var(--color-ground)"><span>White <span style="color:var(--color-on-ground-soft)">78%</span> <span style="color:var(--color-on-ground-tab)">82%</span></span></div><div class="meta"><span class="k">on-ground, -soft, -tab</span><span class="v">#FFFFFF, white 78%, white 82%</span></div></div>
+    <div class="sw"><div class="swc" style="background:var(--color-ground)"><span>White <span style="color:var(--color-on-ground-soft)">78%</span></span></div><div class="meta"><span class="k">on-ground, -soft</span><span class="v">#FFFFFF, white 78%</span></div></div>
     <div class="sw"><div class="swc" style="background:var(--color-mist);color:var(--color-on-primary)">Mist</div><div class="meta"><span class="k">mist</span><span class="v">#DCEBD7, focus ring and disc icons</span></div></div>
   </div>
 
@@ -325,7 +325,7 @@ svg.i{display:block;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5
   <div class="spec"><div><div class="k">button, button-secondary</div><div class="v">Alpino 500 16, +1%; Alpino 400 15; button-small Alpino 400 14</div></div><div class="sample"><span style="font:var(--type-button);letter-spacing:var(--track-button)">Save this route</span>&nbsp;&nbsp;<span style="font:var(--type-button-secondary)">See all 138 records</span></div></div>
   <div class="spec"><div><div class="k">chip, chip-active</div><div class="v">Alpino 400 and 500, 16.8</div></div><div class="sample"><span style="font:var(--type-chip)">Organisms</span>&nbsp;&nbsp;<span style="font:var(--type-chip-active)">Routes</span></div></div>
   <div class="spec"><div><div class="k">pill, pill-count, stat-label</div><div class="v">Alpino 400 15.6, 500 15.6, 400 14.4</div></div><div class="sample"><span style="font:var(--type-pill)">Sep to Oct</span>&nbsp;&nbsp;<span style="font:var(--type-pill-count)">24</span>&nbsp;&nbsp;<span style="font:var(--type-stat-label);color:var(--color-on-ground-soft)">Distance</span></div></div>
-  <div class="spec"><div><div class="k">tab, tab-active</div><div class="v">Alpino 400 and 500, 14.4, +1%</div></div><div class="sample"><span style="font:var(--type-tab);letter-spacing:var(--track-tab);color:var(--color-on-ground-tab)">Learn</span>&nbsp;&nbsp;<span style="font:var(--type-tab-active);letter-spacing:var(--track-tab)">Map</span></div></div>
+  <div class="spec"><div><div class="k">tab, tab-active</div><div class="v">Alpino 400 and 500, 14.4, +1%</div></div><div class="sample"><span style="font:var(--type-tab);letter-spacing:var(--track-tab);color:var(--color-on-ground)">Learn</span>&nbsp;&nbsp;<span style="font:var(--type-tab-active);letter-spacing:var(--track-tab)">Map</span></div></div>
 </section>
 
 <section class="block" id="spacing">
