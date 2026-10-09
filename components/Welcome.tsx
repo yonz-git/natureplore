@@ -15,42 +15,13 @@ import WelcomeZoom from "@/components/WelcomeZoom";
 // "Natureplore all around", in the middle of the screen, no logo. Scrolling takes that line away as
 // the forest photograph opens in a growing circle with a glowing rim, builds the logo piece by piece
 // in the middle and sends the symbol to the top left corner (components/WelcomeLogo.tsx), and only
-// then brings in A0: the heading, the line and the green action, the nav, and the route drawn across
+// then brings in A0: the heading, the line and the green action, and the route drawn across
 // the photograph with the four things the map holds (components/WelcomeRoute.tsx).
 // With `still` it is A0 alone, nothing moves.
 // Layout: app/welcome2.css. Field, opening and scroll choreography: app/welcome.css, fed by
 // components/WelcomeScroll.tsx. Glass: app/glass.css.
 // Boards: "A0 · Welcome, version 4 (animated)" for the opening, "A0 · Welcome" and
 // "A0 · Welcome, desktop" on the redesign canvas for the page it lands on.
-
-const TABS = [
-  {
-    href: "/map",
-    label: "Map",
-    current: true,
-    icon: (
-      <>
-        <path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20z" />
-        <path d="M9 4v13.5M15 6.5V20" />
-      </>
-    ),
-  },
-  {
-    href: "/learn",
-    label: "Learn",
-    icon: (
-      <>
-        <path d="M12 6.5C10.4 5.2 8 4.6 4 4.8v13.6c4-.2 6.4.4 8 1.6 1.6-1.2 4-1.8 8-1.6V4.8c-4-.2-6.4.4-8 1.7z" />
-        <path d="M12 6.5V20" />
-      </>
-    ),
-  },
-  {
-    href: "/saved",
-    label: "Saved",
-    icon: <path d="M7 3.8h10V20l-5-3.6L7 20z" />,
-  },
-];
 
 export default function Welcome({ still = false }: { still?: boolean }) {
   return (
@@ -90,31 +61,6 @@ export default function Welcome({ still = false }: { still?: boolean }) {
           <WelcomeLogo />
         )}
 
-        <nav aria-label="Main" className="a02-nav glass glass-nav">
-          {TABS.map((tab) => (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              aria-current={tab.current ? "page" : undefined}
-              className="a02-tab"
-            >
-              <svg
-                width="1.125rem"
-                height="1.125rem"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                {tab.icon}
-              </svg>
-              {tab.label}
-            </Link>
-          ))}
-        </nav>
 
         {/* what the page opens on, alone in the middle of the screen until the scroll takes it away */}
         {!still && <WelcomeHero lines={["Natureplore", "all around"]} />}
