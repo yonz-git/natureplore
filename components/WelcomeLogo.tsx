@@ -35,6 +35,10 @@ const WORD = (() => {
   const [x, y, w, h] = WORDMARK_BOX.split(" ").map(Number);
   return { x, y, w, h };
 })();
+// For now the logo stays where it is built, whole and in its own colours, as the welcome's centre
+// piece: no flight to the corner and no landing for the name (app/welcome.css, data-stay). Set to
+// false to bring the flight back.
+const STAY = true;
 const WORD_FLIGHT = 1.5; // seconds, the name from the logo to its place
 const WORD_SETTLE = 0.55; // seconds each letter takes to settle as it lands
 const TRAVEL = 2.0; // seconds, the symbol flying to its corner, loop and all
@@ -100,6 +104,7 @@ export default function WelcomeLogo() {
     if (reduce) return;
 
     gsap.set(el, { xPercent: -50, yPercent: -50 }); // centred on the point app/welcome.css puts it at
+    if (STAY) el.dataset.stay = "";
     const stage = el.closest(".a0s");
     let travel: gsap.core.Timeline | undefined;
     // once it has all played out the page keeps it: scrolling back up then changes nothing
@@ -141,6 +146,11 @@ export default function WelcomeLogo() {
         stage?.classList.add("a0-open", "a0-done");
         scrollTo(0, 0);
       };
+      if (STAY) {
+        // it stands where it was built a moment, then the rest of A0 comes in around it
+        travel = gsap.timeline({ onComplete: open }).to({}, { duration: HOLD });
+        return;
+      }
       if (!landing) return open();
       // Where the symbol itself is to be at each point of the sketch, from where it starts...
       const w = landing.width;

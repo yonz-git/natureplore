@@ -129,6 +129,10 @@
 .a0-mark-lit { opacity: 0; transition: opacity 700ms ease; }
 .a0-open .a0-mark { opacity: 0; }
 .a0-open .a0-mark-lit { opacity: 1; }
+/* for now the built logo stays in the middle in its own colours (components/WelcomeLogo.tsx, STAY):
+   no lime corner symbol and no landed name take over from it */
+.a0-open .a0-mark[data-stay] { opacity: 1; }
+.a0s:has(.a0-mark[data-stay]) :is(.a0-mark-lit, .a0-wordmark) { display: none; }
 .a0-mark-corner { color: var(--color-primary); }
 /* the tablet keeps the desktop's corner symbol size, 2.125rem tall */
 @media (min-width: 48rem) {
