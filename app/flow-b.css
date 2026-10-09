@@ -97,12 +97,12 @@ a.fb-row:active { transform: scale(0.985); }
 }
 .fb-pill svg { color: var(--color-mist); }
 .fb-pill.is-none { color: var(--color-on-ground-soft); }
-.fb-pill i { width: 0.5rem; height: 0.5rem; border-radius: var(--radius-pill); }
-.fb-pill i.is-plants { background: var(--color-group-plants); }
-.fb-pill i.is-herbs { background: var(--color-group-herbs); }
-.fb-pill i.is-mushrooms { background: var(--color-group-mushrooms); }
-.fb-pill i.is-birds { background: var(--color-group-birds); }
-.fb-pill i.is-mammals { background: var(--color-group-mammals); }
+/* the legend under the proportion bar: each group's own icon in its bar colour, then its count */
+.fb-legend .group-icon.is-plants { color: var(--color-group-plants); }
+.fb-legend .group-icon.is-herbs { color: var(--color-group-herbs); }
+.fb-legend .group-icon.is-mushrooms { color: var(--color-group-mushrooms); }
+.fb-legend .group-icon.is-birds { color: var(--color-group-birds); }
+.fb-legend .group-icon.is-mammals { color: var(--color-group-mammals); }
 
 /* the claim card: the claim opens its page, the line under it opens the first action */
 .fb-claim {

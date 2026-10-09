@@ -11,7 +11,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, LocationIcon, WalkIcon } from "@/components/Icons";
+import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, GroupIcon, LocationIcon, WalkIcon } from "@/components/Icons";
 import { useSheet } from "@/components/SheetGrab";
 import { MapTools } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
@@ -408,9 +408,9 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
               </div>
               <ul className="fb-legend" aria-hidden="true">
                 {GROUPS.map((g) => (
-                  <li key={g.id} className={`fb-pill${route.counts[g.id] ? "" : " is-none"}`}>
-                    <i className={`is-${g.id}`} />
-                    {g.label} {route.counts[g.id] ?? 0}
+                  <li key={g.id} className={`fb-pill${route.counts[g.id] ? "" : " is-none"}`} title={g.label}>
+                    <GroupIcon group={g.id} size={17} className={`is-${g.id}`} />
+                    {route.counts[g.id] ?? 0}
                   </li>
                 ))}
               </ul>
