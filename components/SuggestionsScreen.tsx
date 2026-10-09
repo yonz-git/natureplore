@@ -194,7 +194,11 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
               <p className="sg-scope">
                 {/* keyed so the pin rolls in again for each region */}
                 <span className="sg-pin" key={region.id}>
-                  <PinIcon size={18} />
+                  {/* a ring on the ground round the pin's tip */}
+                  <svg className="sg-pin-ring" viewBox="0 0 12 5" aria-hidden="true">
+                    <ellipse cx="6" cy="2.5" rx="5.4" ry="1.9" />
+                  </svg>
+                  <PinIcon size={18} className="sg-pin-icon" />
                 </span>
                 {near ? `Near you, in ${region.name}` : region.name}
               </p>
