@@ -212,7 +212,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-spot .fb-spot-title {
   overflow-wrap: break-word;
   margin: 0;
-  font-family: var(--font-heading);
+  font-family: var(--font-text);
   font-size: 1.5rem;
   line-height: 1.875rem;
   font-weight: 300;

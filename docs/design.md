@@ -3,9 +3,8 @@ version: alpha
 name: Natureplore
 description: Delicate frosted glass over a darkened forest photograph, white type in light weights, one olive lime for the thing to do next, and room around every group.
 fonts:
-  heading: "'Comfortaa', 'Trebuchet MS', 'Helvetica Neue', Arial, sans-serif"
   text: "'Alpino', 'Futura', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif"
-  title: "'Shantell Sans', 'Comfortaa', 'Trebuchet MS', cursive"
+  title: "'Shantell Sans', 'Alpino', 'Trebuchet MS', cursive"
 colors:
   ground: "#14261A"
   scrim: "#061209"
@@ -66,46 +65,46 @@ colors:
   system-prompt-rule: "#8E918F"
 typography:
   display-desktop:
-    fontFamily: Comfortaa
+    fontFamily: Alpino
     fontSize: 3.5rem
     fontWeight: 300
     lineHeight: 4rem
     letterSpacing: -0.015em
   display:
-    fontFamily: Comfortaa
+    fontFamily: Alpino
     fontSize: 2.125rem
     fontWeight: 300
     lineHeight: 2.625rem
     letterSpacing: -0.01em
   h1:
-    fontFamily: Comfortaa
+    fontFamily: Alpino
     fontSize: 2rem
     fontWeight: 300
     lineHeight: 2.5rem
     letterSpacing: -0.01em
   h2:
-    fontFamily: Comfortaa
+    fontFamily: Alpino
     fontSize: 1.5rem
     fontWeight: 300
     lineHeight: 1.875rem
     letterSpacing: -0.01em
   h3:
-    fontFamily: Comfortaa
+    fontFamily: Alpino
     fontSize: 1.375rem
     fontWeight: 300
     lineHeight: 1.75rem
   stat:
-    fontFamily: Comfortaa
+    fontFamily: Alpino
     fontSize: 1.5rem
     fontWeight: 300
     lineHeight: 1
   stat-sm:
-    fontFamily: Comfortaa
+    fontFamily: Alpino
     fontSize: 1.375rem
     fontWeight: 300
     lineHeight: 1
   count:
-    fontFamily: Comfortaa
+    fontFamily: Alpino
     fontSize: 0.9375rem
     fontWeight: 300
     lineHeight: 1
@@ -490,7 +489,7 @@ The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group
 
 ## Typography
 
-Three faces with separate jobs. Comfortaa 300 is the voice: open headlines, stat numbers and map counts, round and light so large sizes stay friendly rather than loud. Shantell Sans 300 is the hand: every title that sits in a box or a sheet (panels, sheets, cards), and the four stops along the welcome's drawn route, at line height 1.5 and letter spacing -0.025em, its lower case set to 0.55 of the size (0.57 for a screen's own title) so it matches the rest; buttons, map names and spot numbers never take it. Alpino (Fontshare) carries everything you read or tap, in 300 for running text and 400 for titles, labels and controls, stepping to 500 only on the primary button, the active tab or segment, and counts in pills. Nothing is heavier than 500 and nothing is set in capitals.
+Two faces with separate jobs. Shantell Sans 300 is the hand: every title that sits in a box or a sheet (panels, sheets, cards), and the four stops along the welcome's drawn route, at line height 1.5 and letter spacing -0.025em, its lower case set to 0.55 of the size (0.57 for a screen's own title) so it matches the rest; buttons, map names and spot numbers never take it. Alpino (Fontshare) carries everything else: the open headlines over the photograph or the map, stat numbers and map counts in 300, running text in 300, titles, labels and controls in 400, stepping to 500 only on the primary button, the active tab or segment, and counts in pills. Nothing is heavier than 500 and nothing is set in capitals.
 
 Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, the figures themselves at weight 400 and any word between them (the h in 3 h 00) left at 300, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 27.6/40.8 for the one desktop subline, `body` 19.2/28.8, `body-sm` 18/26.4 for notes under a section, `secondary` 16.8/24, `caption` 15.6/21.6. `title` 20.4/26.4 names a route, spot or organism; `title-sm` 19.2/26.4 names a search result or a fact. Reading text was raised a fifth over the headings, with line heights a fifth taller to match: headings, stats, spot numbers and buttons kept their size. Controls follow: `field` 19.2, `chip` 16.8, `tab` 14.4, `pill` 15.6, `stat-label` 14.4. `button-small` 14 is a small inner glass button on a sheet, such as Show on map. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
 
@@ -534,13 +533,13 @@ Empty, offline and not-mapped screens share one pattern: a glass card with the p
 
 Each organism group has one line icon, drawn on a 24 grid with a 1.5 stroke and round caps: a two-leaf sprig for plants, a four-leaf stem for herbs, a cap and stem for mushrooms, a perched bird for birds and a paw print for mammals. The icon always sits next to the group's name or count and is never used alone. It is 22 in a group tile and 18 in a 40 icon disc, both in the group colour, and 16 with a 1.4 stroke in `mist` inside an organism pill. The groups always appear in this order: plants, herbs, mushrooms, birds, mammals.
 
-`pill` (30) carries a season or a spot link with a 16px icon. `pill-organism` (32, padding 8 left and 9 right, 4 between icon and count, 4 between pills) shows only a group icon in `mist` and a count; the group name is kept for screen readers but not shown. Organism counts are always a row of these pills, on every card, list and sheet at every size, never written out as "24 plants, 72 herbs". Where every group must show, as on a route card that opens the detail, a group with nothing recorded keeps its pill as `pill-organism-none`: a 0 in Alpino 400 and the icon in `on-ground-soft`, named "none recorded yet" for screen readers. The row sits at full card width so five pills fit on one line. `tag` (26) marks a state such as "Not mapped yet". `icon-disc` is a 40 inner glass circle with a `mist` icon, or a group-coloured icon beside a group heading. `cluster-orb` is a 46 glass circle with a Comfortaa count on the map. `spot-marker` is a 32 lime circle numbered in walking order in Alpino 700 at the `count` size (the only use of that weight, which reads at 11 to 15px where Comfortaa Bold stays light), with a 3px lime halo at 60%, the same on the map, in the spots list, on the route axis and in the route card's dots. A spot out of season this month keeps the same size in a muted solid olive, the lime mixed 60% into `ground`, with its halo at 60% of that. A number alone in a circle (a spot marker, a numbered dot, a count disc) is centred on the figures' own height, never on the font's line box, which has more room under the baseline than above: the box is a block with `text-box: trim-both cap alphabetic` and the rest of the circle split evenly above and below as `padding-block: calc((size - 1cap) / 2)`, the `num-disc` rule in app/globals.css. No padding nudges. This holds because Alpino's digits are lining figures (0 to cap height): the font as shipped draws old-style figures, where 3, 4, 5, 7 and 9 hang below the line and no box can centre them all, so its files carry lining figures by default (.design/fonts-original/lining-figures.py; rerun it on any new Alpino file).
+`pill` (30) carries a season or a spot link with a 16px icon. `pill-organism` (32, padding 8 left and 9 right, 4 between icon and count, 4 between pills) shows only a group icon in `mist` and a count; the group name is kept for screen readers but not shown. Organism counts are always a row of these pills, on every card, list and sheet at every size, never written out as "24 plants, 72 herbs". Where every group must show, as on a route card that opens the detail, a group with nothing recorded keeps its pill as `pill-organism-none`: a 0 in Alpino 400 and the icon in `on-ground-soft`, named "none recorded yet" for screen readers. The row sits at full card width so five pills fit on one line. `tag` (26) marks a state such as "Not mapped yet". `icon-disc` is a 40 inner glass circle with a `mist` icon, or a group-coloured icon beside a group heading. `cluster-orb` is a 46 glass circle with an Alpino count on the map. `spot-marker` is a 32 lime circle numbered in walking order in Alpino 700 at the `count` size (the only use of that weight, which reads at 11 to 15px where lighter weights get lost), with a 3px lime halo at 60%, the same on the map, in the spots list, on the route axis and in the route card's dots. A spot out of season this month keeps the same size in a muted solid olive, the lime mixed 60% into `ground`, with its halo at 60% of that. A number alone in a circle (a spot marker, a numbered dot, a count disc) is centred on the figures' own height, never on the font's line box, which has more room under the baseline than above: the box is a block with `text-box: trim-both cap alphabetic` and the rest of the circle split evenly above and below as `padding-block: calc((size - 1cap) / 2)`, the `num-disc` rule in app/globals.css. No padding nudges. This holds because Alpino's digits are lining figures (0 to cap height): the font as shipped draws old-style figures, where 3, 4, 5, 7 and 9 hang below the line and no box can centre them all, so its files carry lining figures by default (.design/fonts-original/lining-figures.py; rerun it on any new Alpino file).
 
 `card` is glass at 28 with 32 padding and a 24 gap inside; `card-compact` pads 20 for a results list. `inner-card` is 18 with 16 padding (20 for a fact or a route card). Stat tiles show a `stat-label`, then the value in `stat` with its unit; nested in a route card they become `stat-tile-nested`, 12 radius, 14 by 12 padding, `stat-sm`. A route card opens with a 168 photo at 12 radius, a save orb top right, the title and a `caption` line, three stat tiles, a divider, then organism pills. An organism card puts a 117 by 105 photo beside the name, Latin name, date and a spot pill.
 
 `list-row` is 68 tall with a 40 icon disc, a `title-sm` over a `caption`, and a chevron or tag; rows are divided by a 1px line that starts after the disc and fades to the right. `sheet` rises to 196 from the top on phone with a 36 by 5 handle, a heading, chips and cards. `bottom-bar` holds a short note and the primary button with a 54 round companion. `tab-bar` is 70 tall with 6 padding and three 84 by 56 items, icon over label; the active item is a lime pill. On desktop, `nav-desktop` is a 58 glass pill centred at the top, 12.8 from the top edge (`nav-top-desktop`), with 44 tall items, icon beside label; the logo, back controls and search bar sit centred on its line. Data: the proportion bar is 12 tall, 4 gaps, radius 6, in group colours; month bars are white 30% with the current month in lime.
 
-Route detail (B1) is the page a route opens to, over the map, modelled on how Komoot shows a route, without editing and without elevation. The map carries the route: `route-line`, a 4.5 lime line with round caps on a 9 `ground` casing at 85%, so it reads over water and land alike; `spot-marker` pins on the line in walking order; and `start-marker`, a 40 white disc with a forest flag and a 4 forest halo, labelled "Start and finish". On the desktop each spot takes a `spot-label` beside it, `label` 500 in white with a `ground` halo, on the side that does not cover the line; on the phone the names live in the list instead. Beside the map (desktop panel) or under it (phone sheet) come, in this order: `photo-group` (one large photograph and two small in a 2 to 1 grid, 4 apart, radius 18, 180 tall on phone and 200 on desktop, with a close control on the photograph on desktop), the title with its closing word in lime and the start place in `secondary`, three `stat-tile-nested` tiles (Distance, Time, Spots), a `body` description, `recorded-box`, the notable line (a 20 calendar icon in `mist`, `meta` 500, linked to the organism it is about), "Spots along the route" as `list-row`s led by a `spot-marker`, a `caption` footnote, and the actions. `recorded-box` is an `inner-card` holding an `h3` "What is recorded along this route" with "Within 250 m of the line" in `secondary`, a `proportion-bar` (12 tall, 4 gaps, radius 6, group colours, empty groups left out), five `group-row`s (48, group icon 20 in its colour, name in `body-sm`, count in Comfortaa 20, a group with none at 60%), and `button-secondary` "See all organisms" with a chevron. On the tablet the rows become five group tiles. The actions: on the phone Save and Share side by side as `button-secondary` and the primary "Navigate" hugging its label in the pinned bar; on the desktop `detail-footer` pins them to the foot of the panel under a 1px rule, Save and Share as text links with icons, "Navigate" hugging its label at the right. The panel scrolls, the footer does not.
+Route detail (B1) is the page a route opens to, over the map, modelled on how Komoot shows a route, without editing and without elevation. The map carries the route: `route-line`, a 4.5 lime line with round caps on a 9 `ground` casing at 85%, so it reads over water and land alike; `spot-marker` pins on the line in walking order; and `start-marker`, a 40 white disc with a forest flag and a 4 forest halo, labelled "Start and finish". On the desktop each spot takes a `spot-label` beside it, `label` 500 in white with a `ground` halo, on the side that does not cover the line; on the phone the names live in the list instead. Beside the map (desktop panel) or under it (phone sheet) come, in this order: `photo-group` (one large photograph and two small in a 2 to 1 grid, 4 apart, radius 18, 180 tall on phone and 200 on desktop, with a close control on the photograph on desktop), the title with its closing word in lime and the start place in `secondary`, three `stat-tile-nested` tiles (Distance, Time, Spots), a `body` description, `recorded-box`, the notable line (a 20 calendar icon in `mist`, `meta` 500, linked to the organism it is about), "Spots along the route" as `list-row`s led by a `spot-marker`, a `caption` footnote, and the actions. `recorded-box` is an `inner-card` holding an `h3` "What is recorded along this route" with "Within 250 m of the line" in `secondary`, a `proportion-bar` (12 tall, 4 gaps, radius 6, group colours, empty groups left out), five `group-row`s (48, group icon 20 in its colour, name in `body-sm`, count in Alpino 20, a group with none at 60%), and `button-secondary` "See all organisms" with a chevron. On the tablet the rows become five group tiles. The actions: on the phone Save and Share side by side as `button-secondary` and the primary "Navigate" hugging its label in the pinned bar; on the desktop `detail-footer` pins them to the foot of the panel under a 1px rule, Save and Share as text links with icons, "Navigate" hugging its label at the right. The panel scrolls, the footer does not.
 
 ## Do's and Don'ts
 

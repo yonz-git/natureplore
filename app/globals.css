@@ -25,11 +25,10 @@
 :root {
   --top-chrome: calc(1.75rem + env(safe-area-inset-top, 0px));
 
-  /* The three families from docs/design.md, with the copies Next self-hosts in front of them.
+  /* The two families from docs/design.md, with the copies Next self-hosts in front of them.
      The stacks themselves stay in tokens.css so the system reads the same outside this app. */
-  --font-heading: var(--font-comfortaa), "Comfortaa", "Trebuchet MS", sans-serif;
   --font-text: var(--font-alpino), "Alpino", "Futura", "Century Gothic", sans-serif;
-  --font-title: var(--font-shantell), "Shantell Sans", "Comfortaa", cursive;
+  --font-title: var(--font-shantell), "Shantell Sans", var(--font-alpino), cursive;
 }
 
 html,
@@ -45,17 +44,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Headings are the one place the heading face is used. */
-h1,
-h2,
-h3 {
-  font-family: var(--font-heading);
-}
-
 /* Titles that sit in a box or a sheet (panels, sheets, cards) are in the hand-drawn title face; the
-   welcome's and A1's open headlines over the photograph or the map keep the heading face. Shantell's
-   lower case is set to 0.55 of the size, 0.57 for a screen's own title, so the titles keep the sizes
-   they had. Important because each screen's title rule sets its own weight and line height. */
+   welcome's and A1's open headlines over the photograph or the map stay in Alpino, like the rest.
+   Shantell's lower case is set to 0.55 of the size, 0.57 for a screen's own title, so the titles keep
+   the sizes they had. Important because each screen's title rule sets its own weight and line height. */
 :is(h1, h2):not(.a02-h1, .a1-words h1) {
   font-family: var(--font-title) !important;
   font-weight: 300 !important;

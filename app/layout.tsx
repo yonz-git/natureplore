@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Comfortaa, Shantell_Sans } from "next/font/google";
+import { Shantell_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -13,11 +13,6 @@ const alpino = localFont({
     { path: "./fonts/alpino-500.woff2", weight: "500", style: "normal" },
     { path: "./fonts/alpino-700.woff2", weight: "700", style: "normal" },
   ],
-});
-
-const comfortaa = Comfortaa({
-  variable: "--font-comfortaa",
-  subsets: ["latin"],
 });
 
 // the title face: titles in boxes and sheets, and the welcome's route stops (app/globals.css)
@@ -43,7 +38,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // extensions mark <html> before React loads (Dark Reader's data-darkreader-* attributes)
-    <html lang="en" className={`${alpino.variable} ${comfortaa.variable} ${shantell.variable} h-full`} suppressHydrationWarning>
+    <html lang="en" className={`${alpino.variable} ${shantell.variable} h-full`} suppressHydrationWarning>
       <body className="min-h-full">{children}</body>
     </html>
   );
