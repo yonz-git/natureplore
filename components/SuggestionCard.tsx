@@ -31,11 +31,11 @@ export function SpotDots({ route }: { route: Suggestion }) {
   );
 }
 
-/** A group icon in a round mist tile, the same icon as the count pills, the group named for screen readers. */
+/** A group icon in its own colour in a round tile, the same icon as the count pills, the group named for screen readers. */
 export function GroupTile({ group }: { group: Suggestion["inSeason"][number]["group"] }) {
   return (
     <span className="group-tile">
-      <GroupIcon group={group} />
+      <GroupIcon group={group} size={17} className={`is-${group}`} />
       <span className="sr-only">{groupWord(group)}: </span>
     </span>
   );

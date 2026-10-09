@@ -146,7 +146,7 @@
 .sug-org-note { font-weight: 300; color: var(--color-on-ground-soft); }
 .sug-org-last { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 
-/* a group icon in a round mist tile, the same icon as the count pills */
+/* a group icon in a round tile, the same icon as the count pills */
 .group-tile {
   width: 2rem;
   height: 2rem;
@@ -160,6 +160,13 @@
   border: 0.5px solid var(--color-inner-edge);
   color: var(--color-mist);
 }
+/* each icon in its group colour, as in the recorded legend, its drawing centred in the tile (each
+   icon's own empty margin inside its box, measured at 17) */
+.group-tile .is-plants { color: var(--color-group-plants); }
+.group-tile .is-herbs { color: var(--color-group-herbs); translate: -0.03875rem -0.01rem; }
+.group-tile .is-mushrooms { color: var(--color-group-mushrooms); translate: -0.01125rem -0.04375rem; }
+.group-tile .is-birds { color: var(--color-group-birds); translate: -0.004rem -0.015rem; }
+.group-tile .is-mammals { color: var(--color-group-mammals); }
 
 /* ── A5, A4: the suggestions ───────────────────────────────────────────────────────────────── */
 
