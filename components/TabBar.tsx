@@ -6,13 +6,6 @@ import { useLayoutEffect, useRef, useState } from "react";
 
 // Map, Learn, Saved: Map is A5, Learn is D0, Saved is E1. The redesign's boards call the first tab
 // Routes; it was renamed Map in the prototype on 1 Oct 2026.
-// the Map icon's pin, the teardrop without its hole: the pin itself, and the gap it leaves in the map
-const PIN_OUTLINE =
-  "M57.5 0C47.88 0 40 7.86 40 17.451c0 1.4.17 2.76.486 4.067l1.881 4.64c.26.446.531.883.828 1.303l12.17 21.035c1.704 2.227 2.837 1.804 4.254-.117l4.475-7.615l2.97-5.057l5.977-10.17c.271-.49.484-1.011.67-1.545a17.3 17.3 0 0 0 1.162-4.537C75 18.15 75 17.8 75 17.451c0-1.244-.135-2.459-.391-3.631C72.92 5.954 65.871 0 57.5 0z";
-
-// the pin moved onto the map's right panel and drawn 4% bigger than in the source drawing, placed by its tip
-const PIN_GROW = "translate(81 46) scale(1.04) translate(-57.4 -49.9)";
-
 // the pin falls onto the map from above and settles with one small bounce, when the Map tab is tapped
 function dropPin(link: HTMLElement) {
   const pin = link.querySelector<SVGGElement>(".tab-pin");
@@ -20,9 +13,9 @@ function dropPin(link: HTMLElement) {
   pin.getAnimations().forEach((a) => a.cancel());
   pin.animate(
     [
-      { transform: "translateY(-38px)", opacity: 0 },
+      { transform: "translateY(-12px)", opacity: 0 },
       { transform: "translateY(0)", opacity: 1, offset: 0.55, easing: "cubic-bezier(0.33, 0, 0.67, 1)" },
-      { transform: "translateY(-7px)", offset: 0.78, easing: "cubic-bezier(0.33, 0, 0.67, 1)" },
+      { transform: "translateY(-2.2px)", offset: 0.78, easing: "cubic-bezier(0.33, 0, 0.67, 1)" },
       { transform: "translateY(0)" },
     ],
     { duration: 560, easing: "cubic-bezier(0.55, 0, 1, 0.45)" },
@@ -33,24 +26,16 @@ const TABS = [
   {
     href: "/map",
     label: "Map",
-    // a folded map with a location pin, a filled drawing on a 100 grid scaled into the 24 box, drawn
-    // 20% bigger than Saved (app/tabbar.css). The pin is its own shape so it can drop onto the map
-    // when the tab is tapped; the map is masked by the pin's outline, so the fold lines never show
-    // through the pin's hole and the pin lands in its own gap.
+    // a location pin beside a folded map, set in Figma on a 33 by 25 grid and fitted to the 24 box's
+    // width, the map drawn as a 2-unit line, the pin filled (.design/icons/map-pin.svg); drawn 20%
+    // bigger than Saved (app/tabbar.css). The pin is its own group so it can drop in when the tab is
+    // tapped.
     big: true,
     icon: (
-      <g transform="scale(0.24)" fill="currentColor" stroke="none">
-        <mask id="tab-map-pin" maskUnits="userSpaceOnUse" x="-5" y="-5" width="110" height="110">
-          <rect x="-5" y="-5" width="110" height="110" fill="#fff" />
-          <path d={PIN_OUTLINE} transform={PIN_GROW} fill="#000" />
-        </mask>
-        <path
-          mask="url(#tab-map-pin)"
-          fillRule="evenodd"
-          d="M34.166 24.453l-30.613-14.22A2.5 2.5 0 0 0 2.523 10A2.5 2.5 0 0 0 0 12.5v70.29a2.5 2.5 0 0 0 1.447 2.267l31.666 14.71a2.5 2.5 0 0 0 1.076.233a2.5 2.5 0 0 0 1.032-.232l30.613-14.221l30.613 14.22A2.5 2.5 0 0 0 100 97.5V27.21a2.5 2.5 0 0 0-1.447-2.267L65.83 9.74zM5 16.418l27.275 12.67l.371 64.95L5 81.192zM35.277 29.451L64.09 16.07l.232 64.664l-28.676 13.323zM67.02 15.8L95 28.805v64.777L67.322 80.725z"
-        />
+      <g transform="translate(0 2.96) scale(0.738)">
+        <path d="M24.5 23.5V6.5M24.5 23.5H24.167L23.809 23.28C21.9177 22.1162 19.7407 21.5 17.52 21.5H17.5M24.5 23.5H24.677C26.8516 23.4999 28.9853 22.9088 30.85 21.79L31.5 21.4V4.5H31.25L30.893 4.72C29.0015 5.88399 26.824 6.50018 24.603 6.5H24.5M24.5 6.5H24.25L23.767 6.21C21.902 5.09103 19.7679 4.49997 17.593 4.5H17.5M17.5 21.5V4.5M17.5 21.5H17.397M17.5 4.5H17.324C15.1491 4.49997 13.015 5.09103 11.15 6.21L10.5 6.6V23.5H10.75L11.107 23.28C12.998 22.1164 15.1747 21.5002 17.395 21.5M17.395 21.5C17.3957 21.5 17.3963 21.5 17.397 21.5M17.395 21.5H17.396H17.397M17.395 21.5H17.25" fill="none" stroke="currentColor" strokeWidth="2" />
         <g className="tab-pin">
-          <path transform={PIN_GROW} fillRule="evenodd" d={`${PIN_OUTLINE}m0 8.178c5.18 0 9.299 4.108 9.299 9.273s-4.12 9.272-9.299 9.272c-5.18 0-9.299-4.107-9.299-9.272s4.12-9.273 9.299-9.273z`} />
+          <path d="M6 0C2.70171 0 0 2.82963 0 6.28242C0 6.78642 0.0582857 7.27603 0.166629 7.74655L0.811543 9.41697C0.900686 9.57753 0.9936 9.73485 1.09543 9.88605L5.268 17.4587C5.85223 18.2604 6.24069 18.1082 6.72651 17.4166L8.2608 14.6752L9.27909 12.8546L11.3283 9.1934C11.4213 9.017 11.4943 8.82944 11.5581 8.6372C11.7608 8.11423 11.8948 7.56475 11.9565 7.00386C12 6.53406 12 6.40806 12 6.28242C12 5.83457 11.9537 5.39717 11.8659 4.97524C11.2869 2.14346 8.87006 0 6 0ZM6 2.94411C7.776 2.94411 9.18823 4.423 9.18823 6.28242C9.18823 8.14183 7.77566 9.62037 6 9.62037C4.224 9.62037 2.81177 8.14183 2.81177 6.28242C2.81177 4.423 4.22434 2.94411 6 2.94411Z" fill="currentColor" fillRule="evenodd" stroke="none" />
         </g>
       </g>
     ),
