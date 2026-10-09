@@ -112,7 +112,7 @@
 .dots { display: flex; flex-wrap: wrap; align-items: center; gap: 0.84375rem; }
 .dots-row { display: flex; flex-wrap: wrap; gap: 0.625rem; /* room for two 3px halos, and 4 between them */ }
 .dot {
-  --dot: calc(1.63625rem * 0.9);
+  --dot: calc(1.63625rem * 0.9 * 0.9);
   width: var(--dot);
   height: var(--dot);
   box-sizing: border-box;
@@ -126,7 +126,7 @@
   border: 1px solid rgb(255 255 255 / 0.4);
   color: var(--color-on-ground-soft);
   font-family: var(--font-text);
-  font-size: calc(0.825rem * 1.35 * 0.9);
+  font-size: calc(0.825rem * 1.35 * 0.9 * 0.9);
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
