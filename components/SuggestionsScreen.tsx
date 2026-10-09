@@ -285,13 +285,11 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                 In season in <em>{MONTH}</em>
               </h1>
               <p className="sg-scope">{near ? `Near you, in ${region.name}` : region.name}</p>
-              <p className="ms-lead">
-                {show === "organisms"
-                  ? `${shown.length} in season along ${routes.length} route${routes.length > 1 ? "s" : ""}`
-                  : near
-                    ? "Sorted by how many spots are in season, then by distance"
-                    : "Sorted by how many spots are in season"}
-              </p>
+              {show === "organisms" && (
+                <p className="ms-lead">
+                  {`${shown.length} in season along ${routes.length} route${routes.length > 1 ? "s" : ""}`}
+                </p>
+              )}
             </div>
             {toggle}
           </div>
