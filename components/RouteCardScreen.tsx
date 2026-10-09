@@ -375,7 +375,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                 <div className="fb-axis" role="img" aria-label={`Spots along the ${route.km} km line, in walking order`}>
                   <span className="fb-axis-line" />
                   {detail.axis.map((f, i) => (
-                    <span key={i} className="fb-axis-mark" style={{ left: `${f * 100}%` }}>
+                    <span key={i} className={`fb-axis-mark${detail.spots[i]?.out ? " is-out" : ""}`} style={{ left: `${f * 100}%` }}>
                       <SpotMark n={i + 1} />
                     </span>
                   ))}
