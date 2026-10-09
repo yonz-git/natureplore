@@ -84,10 +84,11 @@
     letter-spacing: 0;
   }
   .tabbar-tab svg { width: 1.125rem; height: 1.125rem; }
-  /* every icon's drawing, its line included, sits the same distance from the pill's edge and from
-     its label as Saved's (15.9 and 10), each icon's own empty margins cancelled, measured at this size */
-  .tabbar-icon-map { margin: 0 0.0707rem 0 0.0675rem; }
-  .tabbar-icon-learn { margin: 0 0.0188rem 0 0.0162rem; }
+  /* every icon's drawing, its line included, sits the same distance from the pill's edge as Saved's
+     (15.9) and 11 from the ink of its label's first letter, as measured on the render: each icon's
+     own empty margins cancelled */
+  .tabbar-icon-map { margin: 0 0.0569rem 0 0.0675rem; }
+  .tabbar-icon-learn { margin: 0 -0.0012rem 0 0.0162rem; }
   .tabbar-tab.is-current { font-weight: var(--text-chip-active--font-weight); }
 }
 
