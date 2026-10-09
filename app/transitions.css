@@ -39,11 +39,13 @@
 .screen-enter .a1 .ms-sheet,
 .screen-enter .a1 .ms-panel > .ms-sheet { animation: none; }
 .screen-enter .a1 .a1-words > :not(.ms-stack),
-.screen-enter .a1 .ms-stack > :not(form),
+.screen-enter .a1 .ms-stack > :not(form, .a1-ways),
+.screen-enter .a1 .a1-ways > *,
 .screen-enter .a1 .ms-stack .field { animation: sheet-in 320ms var(--ease-out) 60ms both; }
 @media (prefers-reduced-motion: reduce) {
   .screen-enter .a1 .a1-words > :not(.ms-stack),
-  .screen-enter .a1 .ms-stack > :not(form),
+  .screen-enter .a1 .ms-stack > :not(form, .a1-ways),
+  .screen-enter .a1 .a1-ways > *,
   .screen-enter .a1 .ms-stack .field { animation: fade-in 160ms var(--ease-out) both; }
 }
 /* B1's panel keeps its scroll-driven edge fade (app/flow-a.css) while it rises */

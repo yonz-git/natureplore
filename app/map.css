@@ -657,6 +657,8 @@ button.float-pill,
 .a1 .ms-stack { width: 100%; margin-top: 1.5rem; align-items: center; }
 .a1 .ms-stack > form { width: 100%; }
 .a1 .ms-stack .btn { align-self: center; }
+/* the two ways in share one row under the field, side by side, and wrap only when there is no room */
+.a1-ways { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--spacing-control-stack); width: 100%; }
 /* off the panel the secondary button stands on the map, so it frosts like the field above it */
 .a1 .btn-secondary { backdrop-filter: blur(1.875rem) saturate(1.4); }
 .a1 .btn-browse,
