@@ -104,8 +104,9 @@
   top: 50%;
   translate: 0 -50%;
   white-space: nowrap;
-  font-size: calc(var(--text-secondary) * 1.3);
-  line-height: calc(var(--text-secondary--line-height) * 1.3);
+  /* 15% under the first size: the title face runs larger than Alpino did */
+  font-size: calc(var(--text-secondary) * 1.3 * 0.85);
+  line-height: calc(var(--text-secondary--line-height) * 1.3 * 0.85);
   font-weight: 400;
   text-shadow: 0 1px 0.5rem rgb(0 0 0 / 0.45);
 }
@@ -279,7 +280,7 @@
      left of 41rem. From about 1150 wide the box is the whole screen again. */
   .a02-route { inset: 0; height: auto; left: max(0rem, 95.2rem - 132.2vw); }
   .a02-stop { width: 0.84375rem; height: 0.84375rem; --a0-gap: 0.9375rem; }
-  .a02-label { font-size: calc(var(--text-body) * 1.3); line-height: calc(var(--text-body--line-height) * 1.3); }
+  .a02-label { font-size: calc(var(--text-body) * 1.3 * 0.85); line-height: calc(var(--text-body--line-height) * 1.3 * 0.85); }
   .a02-stop-1 { left: 86.11%; top: 19%; }
   .a02-stop-2 { left: 56.94%; top: 34.56%; }
   .a02-stop-3 { left: 81.94%; top: 51.22%; }
