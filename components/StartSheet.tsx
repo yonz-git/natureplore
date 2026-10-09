@@ -15,7 +15,7 @@ export default function StartSheet() {
   const { ask, prompt } = useLocationPrompt("/map");
 
   return (
-    <div className="ms-panel glass-desk">
+    <div className="ms-panel">
       <div className="ms-sheet is-card glass-phone">
         <h1 className="ms-title">
           See what lives <em>around you</em>
@@ -26,7 +26,7 @@ export default function StartSheet() {
         </p>
 
         <div className="ms-stack">
-          <SearchField inner />
+          <SearchField />
           <button type="button" className="btn btn-primary" onClick={ask}>
             <LocationIcon />
             Use my location

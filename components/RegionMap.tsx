@@ -386,8 +386,20 @@ export default function RegionMap({
       const docked = !!host.closest(".sg");
       const side = () => wide.matches || (tablet.matches && docked);
       // what covers the map: the sheet on the phone and the tablet, the panel it moves into on the desktop
+      // A1 on the desktop has no panel: its words stand in the middle of the map, so the whole map is
+      // free and only the pins under those words are hidden
+      const centred = () => wide.matches && !!host.closest(".a1");
       const sheetEl = () =>
-        (host.parentElement?.querySelector(wide.matches ? ".ms-panel" : ".ms-sheet") as HTMLElement | null) ?? null;
+        centred()
+          ? null
+          : ((host.parentElement?.querySelector(wide.matches ? ".ms-panel" : ".ms-sheet") as HTMLElement | null) ?? null);
+      const coverBox = () => {
+        const words = centred() ? host.parentElement?.querySelector<HTMLElement>(".ms-sheet") : null;
+        if (!words) return null;
+        const r = words.getBoundingClientRect();
+        const h = host.getBoundingClientRect();
+        return { l: r.left - h.left - PIN_EDGE, r: r.right - h.left + PIN_EDGE, t: r.top - h.top - PIN_EDGE, b: r.bottom - h.top + PIN_EDGE };
+      };
       const navEl = () => (document.querySelector(".tabbar-pill") as HTMLElement | null) ?? null;
       const barEl = () => (host.parentElement?.querySelector(".ms-bar") as HTMLElement | null) ?? null;
       // the phone keeps its bar over the map, the desktop moves it into the panel and the nav
@@ -397,6 +409,7 @@ export default function RegionMap({
       const placePins = () => {
         if (still) return;
         const box = freeBox(host, sheetEl(), bandEl(), side());
+        const cover = coverBox();
         const placed = pts.map((pt) => {
           const p = map.latLngToContainerPoint([pt.lat, pt.lon]);
           // inside the free box on both axes, with half a pin of margin on the side the
@@ -405,7 +418,8 @@ export default function RegionMap({
             p.x >= box.x + (side() ? PIN_EDGE : 0) &&
             p.x <= box.x + box.w &&
             p.y >= box.y &&
-            p.y <= box.y + box.h - (side() ? 0 : PIN_EDGE);
+            p.y <= box.y + box.h - (side() ? 0 : PIN_EDGE) &&
+            !(cover && p.x > cover.l && p.x < cover.r && p.y > cover.t && p.y < cover.b);
           return { ...pt, x: p.x, y: p.y, free };
         });
         // When the map is too small for the route, its numbered discs pile up on each other and

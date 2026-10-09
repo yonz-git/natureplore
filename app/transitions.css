@@ -34,6 +34,19 @@
   .screen-enter .ms-panel > :not(.ms-bar),
   .screen-enter .ms-panel > .ms-bar > * { animation: sheet-in 320ms var(--ease-out) 60ms both; }
 }
+/* A1 has no panel and its search field is glass of its own, so the parts rise one by one instead of
+   the sheet that holds them: an animated ancestor would switch the field's frost off */
+@media (min-width: 64rem) {
+  .screen-enter .a1 .ms-panel > .ms-sheet { animation: none; }
+  .screen-enter .a1 .ms-sheet > :not(.ms-stack),
+  .screen-enter .a1 .ms-stack > :not(form),
+  .screen-enter .a1 .ms-stack .field { animation: sheet-in 320ms var(--ease-out) 60ms both; }
+}
+@media (min-width: 64rem) and (prefers-reduced-motion: reduce) {
+  .screen-enter .a1 .ms-sheet > :not(.ms-stack),
+  .screen-enter .a1 .ms-stack > :not(form),
+  .screen-enter .a1 .ms-stack .field { animation: fade-in 160ms var(--ease-out) both; }
+}
 /* B1's panel keeps its scroll-driven edge fade (app/flow-a.css) while it rises */
 @media (min-width: 64rem) {
   @supports (animation-timeline: scroll()) {

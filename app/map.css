@@ -1166,14 +1166,27 @@ button.float-pill,
     backdrop-filter: none;
   }
 
-  /* A1: the heading sits lower in the panel, Browse joins the stack and the note goes to the foot */
-  .a1 .ms-sheet { margin-top: 0; }
-  .a1 .ms-title { margin-top: 4.5rem; font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
+  /* A1: no panel. The heading, the line, the field and the two ways in stand in the middle of the
+     map, over a soft darkening that keeps them readable; the map stays draggable around them */
+  .a1 .ms-panel {
+    inset: 0;
+    width: auto;
+    padding: var(--spacing-inset-screen);
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    background: radial-gradient(closest-side, rgb(from var(--color-ground) r g b / 0.7) 0%, rgb(from var(--color-ground) r g b / 0.35) 60%, transparent 100%) center / min(52rem, 100%) 40rem no-repeat;
+    pointer-events: none;
+  }
+  .a1 .ms-sheet { flex: 0 0 auto; width: min(32rem, 100%); margin-top: 0; align-items: center; text-align: center; pointer-events: auto; }
+  .a1 .ms-title { margin-top: 0; font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
   .a1 .ms-lead { font-size: var(--text-body); line-height: var(--text-body--line-height); }
-  .a1 .ms-stack { margin-top: 2.5rem; }
+  .a1 .ms-stack { width: 100%; margin-top: 2.5rem; align-items: center; }
+  .a1 .ms-stack > form { width: 100%; }
+  .a1 .ms-stack .btn { align-self: center; }
   .a1 .btn-browse { display: flex; }
   .a1 .ms-note-phone { display: none; }
-  .a1 .ms-note-desk { display: block; margin-top: auto; }
+  .a1 .ms-note-desk { display: block; margin-top: 1.5rem; }
 
   /* search: the map comes back beside the panel */
   .search .a1-map,
