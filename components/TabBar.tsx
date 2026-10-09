@@ -6,21 +6,50 @@ import { useLayoutEffect, useRef, useState } from "react";
 
 // Map, Learn, Saved: Map is A5, Learn is D0, Saved is E1. The redesign's boards call the first tab
 // Routes; it was renamed Map in the prototype on 1 Oct 2026.
+// the Map icon's pin, the teardrop without its hole: the pin itself, and the gap it leaves in the map
+const PIN_OUTLINE =
+  "M57.5 0C47.88 0 40 7.86 40 17.451c0 1.4.17 2.76.486 4.067l1.881 4.64c.26.446.531.883.828 1.303l12.17 21.035c1.704 2.227 2.837 1.804 4.254-.117l4.475-7.615l2.97-5.057l5.977-10.17c.271-.49.484-1.011.67-1.545a17.3 17.3 0 0 0 1.162-4.537C75 18.15 75 17.8 75 17.451c0-1.244-.135-2.459-.391-3.631C72.92 5.954 65.871 0 57.5 0z";
+
+// the pin falls onto the map from above and settles with one small bounce, when the Map tab is tapped
+function dropPin(link: HTMLElement) {
+  const pin = link.querySelector<SVGGElement>(".tab-pin");
+  if (!pin || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  pin.getAnimations().forEach((a) => a.cancel());
+  pin.animate(
+    [
+      { transform: "translateY(-38px)", opacity: 0 },
+      { transform: "translateY(0)", opacity: 1, offset: 0.55, easing: "cubic-bezier(0.33, 0, 0.67, 1)" },
+      { transform: "translateY(-7px)", offset: 0.78, easing: "cubic-bezier(0.33, 0, 0.67, 1)" },
+      { transform: "translateY(0)" },
+    ],
+    { duration: 560, easing: "cubic-bezier(0.55, 0, 1, 0.45)" },
+  );
+}
+
 const TABS = [
   {
     href: "/map",
     label: "Map",
     // a folded map with a location pin, a filled drawing on a 100 grid scaled into the 24 box, drawn
-    // 20% bigger than Saved (app/tabbar.css)
+    // 20% bigger than Saved (app/tabbar.css). The pin is its own shape so it can drop onto the map
+    // when the tab is tapped; the map is masked by the pin's outline, so the fold lines never show
+    // through the pin's hole and the pin lands in its own gap.
     big: true,
     icon: (
-      <path
-        transform="scale(0.24)"
-        fill="currentColor"
-        fillRule="evenodd"
-        stroke="none"
-        d="M57.5 0C47.88 0 40 7.86 40 17.451c0 1.4.17 2.76.486 4.067l-6.32 2.935l-30.613-14.22A2.5 2.5 0 0 0 2.523 10A2.5 2.5 0 0 0 0 12.5v70.29a2.5 2.5 0 0 0 1.447 2.267l31.666 14.71a2.5 2.5 0 0 0 1.076.233a2.5 2.5 0 0 0 1.032-.232l30.613-14.221l30.613 14.22A2.5 2.5 0 0 0 100 97.5V27.21a2.5 2.5 0 0 0-1.447-2.267L74.609 13.82C72.92 5.954 65.871 0 57.5 0m0 8.178c5.18 0 9.299 4.108 9.299 9.273s-4.12 9.272-9.299 9.272c-5.18 0-9.299-4.107-9.299-9.272s4.12-9.273 9.299-9.273M5 16.418l27.275 12.67l.371 64.95L5 81.192zm69.873 3.037L95 28.805v64.777L67.322 80.725l-.258-45.018l5.977-10.17c.271-.49.484-1.011.67-1.545a17.3 17.3 0 0 0 1.162-4.537m-32.506 6.703c.26.446.531.883.828 1.303l12.17 21.035c1.704 2.227 2.837 1.804 4.254-.117l4.475-7.615l.228 39.97l-28.676 13.323l-.369-64.606z"
-      />
+      <g transform="scale(0.24)" fill="currentColor" stroke="none">
+        <mask id="tab-map-pin" maskUnits="userSpaceOnUse" x="-5" y="-5" width="110" height="110">
+          <rect x="-5" y="-5" width="110" height="110" fill="#fff" />
+          <path d={PIN_OUTLINE} fill="#000" />
+        </mask>
+        <path
+          mask="url(#tab-map-pin)"
+          fillRule="evenodd"
+          d="M34.166 24.453l-30.613-14.22A2.5 2.5 0 0 0 2.523 10A2.5 2.5 0 0 0 0 12.5v70.29a2.5 2.5 0 0 0 1.447 2.267l31.666 14.71a2.5 2.5 0 0 0 1.076.233a2.5 2.5 0 0 0 1.032-.232l30.613-14.221l30.613 14.22A2.5 2.5 0 0 0 100 97.5V27.21a2.5 2.5 0 0 0-1.447-2.267L65.83 9.74zM5 16.418l27.275 12.67l.371 64.95L5 81.192zM35.277 29.451L64.09 16.07l.232 64.664l-28.676 13.323zM67.02 15.8L95 28.805v64.777L67.322 80.725z"
+        />
+        <g className="tab-pin">
+          <path fillRule="evenodd" d={`${PIN_OUTLINE}m0 8.178c5.18 0 9.299 4.108 9.299 9.273s-4.12 9.272-9.299 9.272c-5.18 0-9.299-4.107-9.299-9.272s4.12-9.273 9.299-9.273z`} />
+        </g>
+      </g>
     ),
   },
   {
@@ -107,6 +136,7 @@ export default function TabBar() {
                 href={tab.href}
                 aria-current={current ? "page" : undefined}
                 className={`tabbar-tab${current ? " is-current" : ""}`}
+                onClick={tab.href === "/map" ? (e) => dropPin(e.currentTarget) : undefined}
               >
                 <svg
                   className={"big" in tab ? "tabbar-icon-big" : undefined}

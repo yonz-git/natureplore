@@ -62,7 +62,7 @@
 }
 .tabbar-tab:active { transform: scale(0.97); }
 /* the Map and Learn icons, detailed drawings, read at the others' size only 20% bigger */
-.tabbar-icon-big { scale: 1.2; }
+.tabbar-icon-big { scale: 1.2; overflow: visible; } /* the Map pin falls from above its box */
 .tabbar-tab.is-current {
   color: var(--color-on-primary);
   font-weight: var(--text-tab-active--font-weight);
