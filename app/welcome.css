@@ -335,16 +335,15 @@
   /* A0 arrives on the frame the logo lands in its corner, one layer after another, and the route
      draws itself over the photograph (components/WelcomeLogo.tsx sets a0-open, and
      components/WelcomeRoute.tsx draws the route when it sees it) */
-  .a0s :is(.a02-h1, .a02-lead, .a02-nav, .a02-cta) { opacity: 0; }
+  .a0s :is(.a02-h1, .a02-lead, .a02-cta) { opacity: 0; }
   .a0s .a02-route { visibility: hidden; }
   /* backwards, not both: once it has arrived nothing of the animation stays applied, so the
-     button's hover, press and the tabs' own transitions are free to run */
-  .a0s.a0-open :is(.a02-h1, .a02-lead, .a02-nav, .a02-cta) {
+     button's hover and press are free to run */
+  .a0s.a0-open :is(.a02-h1, .a02-lead, .a02-cta) {
     opacity: 1;
     animation: a0-arrive 800ms var(--a0-ease) backwards;
   }
   .a0s.a0-open .a02-lead { animation-delay: 120ms; }
-  .a0s.a0-open .a02-nav { animation-delay: 180ms; }
   /* the button arrives, then starts to breathe (app/welcome2.css) */
   .a0s.a0-open .a02-cta {
     animation: a0-arrive 800ms var(--a0-ease) 240ms backwards, a02-cta-glow 4.8s ease-in-out 1040ms infinite;
