@@ -51,7 +51,6 @@ export default function Welcome({ still = false }: { still?: boolean }) {
             <div className="a02-photo-in" />
           </div>
         </div>
-        {!still && <div className="a0-orb" aria-hidden="true" />}
         {/* the logo: built by the scroll, already in its corner when the page is still */}
         {still ? (
           <div className="a0-mark-corner">
