@@ -47,9 +47,7 @@ export default function WelcomeHero({ lines }: { lines: string[] }) {
         if (gone || !fine) return;
         const chars = split.chars as HTMLElement[];
         warp = warpText(el, chars);
-        if (!warp) return;
-        gsap.set(chars, { visibility: "hidden" });
-        gsap.ticker.add(warp.frame);
+        if (warp) gsap.ticker.add(warp.frame);
       };
       gsap.from(split.chars, {
         rotationZ: -90,
