@@ -100,9 +100,12 @@
 .field { position: relative; }
 .field-hint {
   position: absolute;
-  inset: 0 1.25rem 0 calc(1.25rem + 1.1875rem + 0.75rem);
+  /* centred on the whole field, not on the room right of the search icon: the same inset on both
+     sides keeps it clear of the icon and its middle on the field's middle */
+  inset: 0 calc(1.25rem + 1.1875rem + 0.75rem);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.375rem;
   min-width: 0;
   color: var(--color-on-ground-soft);
