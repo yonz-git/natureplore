@@ -518,8 +518,9 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 /* ── from 64rem ────────────────────────────────────────────────────────────────────────────── */
 
 @media (min-width: 64rem) {
-  /* one panel frame for every Routes screen: it stays in place from the suggestions into search */
-  .ms-panel { inset: 2.5rem auto 2.5rem 2.5rem; }
+  /* one panel frame for every Routes screen: it stays in place from the suggestions into search,
+     and ends as far above the bottom edge as the nav sits below the top */
+  .ms-panel { inset: 2.5rem auto var(--spacing-nav-top-desktop) 2.5rem; }
 
   .sg-toggle,
   .sg-map-note,
