@@ -18,7 +18,6 @@
 @import "./tabbar.css";
 @import "./tablet.css";
 @import "./transitions.css";
-@import "./type-test.css";
 
 /* The room a screen leaves above its first element. A status bar only exists when the app is
    installed, so the allowance comes from the safe area rather than a fixed value: in a browser,

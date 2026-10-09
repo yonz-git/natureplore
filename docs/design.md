@@ -111,54 +111,54 @@ typography:
     lineHeight: 1
   lead-desktop:
     fontFamily: Alpino
-    fontSize: 1.4375rem
+    fontSize: 1.725rem
     fontWeight: 300
-    lineHeight: 2.125rem
+    lineHeight: 2.55rem
   body:
     fontFamily: Alpino
-    fontSize: 1rem
+    fontSize: 1.2rem
     fontWeight: 300
-    lineHeight: 1.5rem
+    lineHeight: 1.8rem
   body-sm:
     fontFamily: Alpino
-    fontSize: 0.9375rem
+    fontSize: 1.125rem
     fontWeight: 300
-    lineHeight: 1.375rem
+    lineHeight: 1.65rem
   secondary:
     fontFamily: Alpino
-    fontSize: 0.875rem
+    fontSize: 1.05rem
     fontWeight: 300
-    lineHeight: 1.25rem
+    lineHeight: 1.5rem
   caption:
     fontFamily: Alpino
-    fontSize: 0.8125rem
+    fontSize: 0.975rem
     fontWeight: 300
-    lineHeight: 1.125rem
+    lineHeight: 1.35rem
   title:
     fontFamily: Alpino
-    fontSize: 1.0625rem
+    fontSize: 1.275rem
     fontWeight: 400
-    lineHeight: 1.375rem
+    lineHeight: 1.65rem
   title-sm:
     fontFamily: Alpino
-    fontSize: 1rem
+    fontSize: 1.2rem
     fontWeight: 400
-    lineHeight: 1.375rem
+    lineHeight: 1.65rem
   meta:
     fontFamily: Alpino
-    fontSize: 0.875rem
+    fontSize: 1.05rem
     fontWeight: 400
-    lineHeight: 1.25rem
+    lineHeight: 1.5rem
   label:
     fontFamily: Alpino
-    fontSize: 0.8125rem
+    fontSize: 0.975rem
     fontWeight: 400
-    lineHeight: 1.125rem
+    lineHeight: 1.35rem
   field:
     fontFamily: Alpino
-    fontSize: 1rem
+    fontSize: 1.2rem
     fontWeight: 300
-    lineHeight: 1.3
+    lineHeight: 1.56
   button:
     fontFamily: Alpino
     fontSize: 1rem
@@ -170,42 +170,47 @@ typography:
     fontSize: 0.9375rem
     fontWeight: 400
     lineHeight: 1
+  button-small:
+    fontFamily: Alpino
+    fontSize: 0.875rem
+    fontWeight: 400
+    lineHeight: 1
   chip:
     fontFamily: Alpino
-    fontSize: 0.875rem
+    fontSize: 1.05rem
     fontWeight: 400
-    lineHeight: 1
+    lineHeight: 1.2
   chip-active:
     fontFamily: Alpino
-    fontSize: 0.875rem
+    fontSize: 1.05rem
     fontWeight: 500
-    lineHeight: 1
+    lineHeight: 1.2
   pill:
     fontFamily: Alpino
-    fontSize: 0.8125rem
+    fontSize: 0.975rem
     fontWeight: 400
-    lineHeight: 1
+    lineHeight: 1.2
   pill-count:
     fontFamily: Alpino
-    fontSize: 0.8125rem
+    fontSize: 0.975rem
     fontWeight: 500
-    lineHeight: 1
+    lineHeight: 1.2
   stat-label:
     fontFamily: Alpino
-    fontSize: 0.75rem
+    fontSize: 0.9rem
     fontWeight: 400
-    lineHeight: 1
+    lineHeight: 1.2
   tab:
     fontFamily: Alpino
-    fontSize: 0.75rem
+    fontSize: 0.9rem
     fontWeight: 400
-    lineHeight: 1
+    lineHeight: 1.2
     letterSpacing: 0.01em
   tab-active:
     fontFamily: Alpino
-    fontSize: 0.75rem
+    fontSize: 0.9rem
     fontWeight: 500
-    lineHeight: 1
+    lineHeight: 1.2
     letterSpacing: 0.01em
 rounded:
   handle: 0.1875rem
@@ -487,7 +492,7 @@ The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group
 
 Two faces with separate jobs. Comfortaa 300 is the voice: headings, stat numbers and map counts, round and light so large sizes stay friendly rather than loud. Alpino (Fontshare) carries everything you read or tap, in 300 for running text and 400 for titles, labels and controls, stepping to 500 only on the primary button, the active tab or segment, and counts in pills. Nothing is heavier than 500 and nothing is set in capitals.
 
-Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 23/34 for the one desktop subline, `body` 16/24, `body-sm` 15/22 for notes under a section, `secondary` 14/20, `caption` 13/18. `title` 17/22 names a route, spot or organism; `title-sm` 16/22 names a search result or a fact. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
+Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 27.6/40.8 for the one desktop subline, `body` 19.2/28.8, `body-sm` 18/26.4 for notes under a section, `secondary` 16.8/24, `caption` 15.6/21.6. `title` 20.4/26.4 names a route, spot or organism; `title-sm` 19.2/26.4 names a search result or a fact. Reading text was raised a fifth over the headings, with line heights a fifth taller to match: headings, stats, spot numbers and buttons kept their size. Controls follow: `field` 19.2, `chip` 16.8, `tab` 14.4, `pill` 15.6, `stat-label` 14.4. `button-small` 14 is a small inner glass button on a sheet, such as Show on map. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
 
 ## Layout
 
