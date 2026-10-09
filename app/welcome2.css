@@ -1,6 +1,6 @@
 /* A0 · Welcome (components/Welcome.tsx), the page the opening lands on: the forest photograph behind
    its filter, the route drawn across it with the four things the map holds, one heading and one green
-   action, and on desktop the glass nav. Phone first, the desktop layout from 64rem.
+   action. No nav: the button is the way in. Phone first, the desktop layout from 64rem.
    Boards: "A0 · Welcome" and "A0 · Welcome, desktop" on the redesign canvas. The opening that comes
    before it, and the corner the logo lands in, are in app/welcome.css. Tokens only. */
 
