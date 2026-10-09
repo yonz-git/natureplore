@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CtaSquirrel from "@/components/CtaSquirrel";
+import LetterWave from "@/components/LetterWave";
 import Logo from "@/components/Logo";
 import WelcomeCue from "@/components/WelcomeCue";
 import WelcomeEther from "@/components/WelcomeEther";
@@ -127,7 +128,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
           </h1>
           <p className="a02-lead">What nests and grows there, and learn about what is happening to them.</p>
           <Link href="/map/start" className="a02-cta">
-            Start Natureploring
+            <LetterWave text="Start Natureploring" />
             <CtaSquirrel />
           </Link>
         </main>

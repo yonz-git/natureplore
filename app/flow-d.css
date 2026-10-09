@@ -10,8 +10,8 @@
 
 .ln-home .org-sheet { margin-top: 4.75rem; min-height: calc(100% - 4.75rem); }
 .ln-title { margin-top: 0; }
-.ln-sub { margin-top: 0.5rem; }
-.ln-intro { margin-top: 0.75rem; max-width: 40rem; color: var(--color-on-ground-soft); }
+.ln-sub { margin-top: 0.675rem; }
+.ln-intro { margin-top: 1.0125rem; max-width: 40rem; color: var(--color-on-ground-soft); }
 .ln-jump,
 .ln-filter { margin-top: 1.25rem; }
 .ln-jump .chip { text-decoration: none; }
@@ -28,7 +28,7 @@
 .ln-sec { margin-top: 3rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 0.25rem 0.75rem; }
 .ln-sec > div { flex: 1 1 12rem; min-width: 0; }
 .ln-sec .org-h2 { margin: 0; scroll-margin-top: 1.5rem; }
-.ln-sec .org-small { margin: 0.375rem 0 0; max-width: 40rem; }
+.ln-sec .org-small { margin: 0.50625rem 0 0; max-width: 40rem; }
 .ln-more {
   flex-shrink: 0;
   min-height: 2.75rem;
@@ -81,13 +81,13 @@
   padding: 0.1875rem 0.375rem;
   border-radius: 0.375rem;
   background: color-mix(in srgb, var(--color-ground) 72%, transparent);
-  font-size: 0.6875rem;
+  font-size: 0.825rem;
   line-height: 1;
 }
-.dc-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-.dc-text b { font-size: var(--text-body); line-height: 1.375rem; font-weight: 400; }
+.dc-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
+.dc-text b { font-size: var(--text-body); line-height: 1.65rem; font-weight: 400; }
 .dc-text > span:not(.fb-pill) { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
-.dc-text .fb-pill { align-self: flex-start; margin-top: 0.375rem; height: auto; min-height: 1.75rem; padding-block: 0.3125rem; white-space: normal; line-height: 1.2; }
+.dc-text .fb-pill { align-self: flex-start; margin-top: 0.50625rem; height: auto; min-height: 1.75rem; padding-block: 0.3125rem; white-space: normal; line-height: 1.2; }
 
 /* cards: sideways on the phone, the next one showing at the edge */
 .dc-list.is-cards {
@@ -144,7 +144,7 @@ img.cp-icon { padding: 0; object-fit: cover; }
   font-size: var(--text-caption);
   line-height: 1;
 }
-.dc-desc { margin-top: 1.5rem; }
+.dc-desc { margin-top: 2.025rem; }
 .dc-stats-long { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .dc-stats-long > :last-child { grid-column: 1 / -1; }
 
@@ -170,7 +170,7 @@ img.cp-icon { padding: 0; object-fit: cover; }
   object-fit: cover;
 }
 
-.dc-note { margin-top: 1.5rem; }
+.dc-note { margin-top: 2.025rem; }
 .dc-note p { margin: 0; }
 .dc-note b { font-weight: 500; }
 .dc-off .dc-side > .org-h2 { margin-top: 1rem; }
@@ -186,7 +186,7 @@ img.cp-icon { padding: 0; object-fit: cover; }
     display: flex;
   }
   .ln-home .org-sheet { margin-top: 7.625rem; min-height: calc(100% - 7.625rem); }
-  .ln-home .ln-title { margin-top: 0.5rem; }
+  .ln-home .ln-title { margin-top: 0.675rem; }
   .ln-claims { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
   /* the same item as a card: three to a row on Learn, four in the collection */

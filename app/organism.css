@@ -54,7 +54,7 @@ body:has(.org.is-walk) .tabbar { display: none; }
 img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit: cover; }
 .org-credit { margin: 0.5rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
 .org-title {
-  margin: 1rem 0 0;
+  margin: 1.35rem 0 0;
   font-family: var(--text-h1--font-family);
   font-size: var(--text-h1);
   line-height: var(--text-h1--line-height);
@@ -83,7 +83,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
 .org-h3-icon { display: flex; align-items: center; gap: 0.75rem; }
 .org-body { margin: 0; font-size: var(--text-body); line-height: var(--text-body--line-height); }
 .org-soft { margin: 0.75rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
-.org-small { margin: 0.75rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
+.org-small { margin: 1.0125rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
 .org-when { margin-top: 0; }
 
 /* inner glass boxes on the sheet */
@@ -100,8 +100,8 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
   text-decoration: none;
 }
 .org-record-title { margin: 0; font-size: var(--text-title-sm); line-height: var(--text-title-sm--line-height); font-weight: 400; }
-.org-record .org-small { margin-top: 0.25rem; }
-.org-record .org-small + .org-small { margin-top: 0.125rem; }
+.org-record .org-small { margin-top: 0.3375rem; }
+.org-record .org-small + .org-small { margin-top: 0.16875rem; }
 
 /* the months, shared by B4, L3 and the walk: white 30% when in season, this month in mist (lime is
    for controls only) */
@@ -123,7 +123,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
 .fb-months > span.is-now { border-color: transparent; background: var(--color-mist); color: var(--color-ground); font-weight: 500; }
 
 
-.org-impact .org-body { margin-top: 0.5rem; }
+.org-impact .org-body { margin-top: 0.675rem; }
 .org-impact hr { width: 100%; margin: 0.75rem 0 1.25rem; border: 0; border-top: 1px solid var(--color-divider); }
 
 .org-rows { margin: 0; padding: 0; list-style: none; }
@@ -142,7 +142,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
 }
 .org-rows li + li .org-row { border-top: 1px solid var(--color-divider); }
 .org-row > span { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-.org-row b { font-size: var(--text-body); line-height: 1.375rem; font-weight: 400; }
+.org-row b { font-size: var(--text-body); line-height: 1.65rem; font-weight: 400; }
 .org-row > span > span { font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
 .org-row > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
 
@@ -191,7 +191,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
   font-size: var(--text-stat-label);
   line-height: 1;
 }
-.org-note { margin-top: 1.5rem; }
+.org-note { margin-top: 2.025rem; }
 
 @media (min-width: 64rem) {
   .org-sheet {

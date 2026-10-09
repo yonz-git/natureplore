@@ -96,6 +96,40 @@
 }
 .field input::placeholder { color: var(--color-on-ground-soft); opacity: 1; }
 .field input::-webkit-search-cancel-button { display: none; }
+/* the placeholder is drawn, not native, so it can carry one group icon that changes every 1.5 seconds */
+.field { position: relative; }
+.field-hint {
+  position: absolute;
+  /* centred on the whole field, not on the room right of the search icon: the same inset on both
+     sides keeps it clear of the icon and its middle on the field's middle */
+  inset: 0 calc(1.25rem + 1.1875rem + 0.75rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  min-width: 0;
+  color: var(--color-on-ground-soft);
+  font-family: var(--text-field--font-family);
+  font-size: var(--text-field);
+  font-weight: var(--text-field--font-weight);
+  pointer-events: none;
+}
+.field-hint-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.field-hint-icons { display: grid; flex-shrink: 0; }
+/* the next icon rises in from below as the last one drifts up and out, overlapping, so the swap
+   reads as one soft motion; the waiting icons sit below, unseen */
+.field-hint-icons svg {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(40%) scale(0.85);
+  transition: opacity 600ms var(--ease-move), transform 600ms var(--ease-move);
+}
+.field-hint-icons svg.is-shown { opacity: 1; transform: none; }
+.field-hint-icons svg.is-gone { transform: translateY(-40%) scale(0.85); }
+@media (prefers-reduced-motion: reduce) {
+  .field-hint-icons svg,
+  .field-hint-icons svg.is-gone { transition: opacity 400ms ease; transform: none; }
+}
 .field:focus-within { outline: 2px solid var(--color-mist); outline-offset: 3px; }
 .field-clear {
   width: 2.75rem;
@@ -343,7 +377,7 @@ button.float-pill,
   box-sizing: border-box;
 }
 .card-rich .card-photo { height: 10.5rem; }
-.card-text { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+.card-text { display: flex; flex-direction: column; gap: 0.3375rem; min-width: 0; }
 .card-name { margin: 0; font-family: var(--text-title--font-family); font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--text-title--font-weight); }
 .card-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .card-rich .card-line,
@@ -392,7 +426,9 @@ button.float-pill,
 .card-stat dt { font-size: var(--text-stat-label); line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
 .card-stat dd { margin: 0; display: flex; align-items: baseline; gap: 0.25rem; }
 .card-stat dd b { font-family: var(--text-stat-sm--font-family); font-size: var(--text-stat-sm); font-weight: var(--text-stat-sm--font-weight); line-height: 1; font-variant-numeric: tabular-nums; }
-.card-stat dd span { font-size: var(--text-caption); line-height: 1; font-weight: 400; color: var(--color-on-ground); }
+.card-stat dd > span { font-size: var(--text-caption); line-height: 1; font-weight: 400; color: var(--color-on-ground); }
+/* the figures in a stat value sit a weight above its words and units, here and on the impact tiles */
+.stat-num { font-weight: 400; }
 .card:not(.card-rich) .card-stats { display: none; }
 .card-rich .card-spots { display: none; }
 /* on the tall card a rule sets the organisms apart from the numbers above them */
@@ -433,7 +469,7 @@ button.float-pill,
   border: 0.5px solid var(--color-inner-edge);
   color: var(--color-mist);
 }
-.row-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.row-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
 .row-name { font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: 400; }
 .row-meta { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
@@ -575,7 +611,7 @@ button.float-pill,
   -webkit-text-fill-color: transparent;
 }
 /* full white: over a bright map the soft white fell under 4.5:1 (accessibility review #2) */
-.ms-lead { margin: 0.25rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground); }
+.ms-lead { margin: 0.3375rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground); }
 .ms-lead-desk { display: none; }
 .ms-note { margin: 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
 .ms-list { display: flex; flex-direction: column; gap: 1.25rem; }
@@ -586,7 +622,7 @@ button.float-pill,
 
 /* ── A1 ────────────────────────────────────────────────────────────────────────────────────── */
 
-.a1 .ms-lead { margin-top: 0.75rem; }
+.a1 .ms-lead { margin-top: 1.0125rem; }
 .a1 .ms-stack { margin-top: 1.5rem; }
 .a1 .btn-browse,
 .a1 .ms-note-desk { display: none; }
@@ -614,12 +650,12 @@ button.float-pill,
 .search-results.is-compact { padding: 1.25rem; }
 .search-miss { margin-top: 1.5rem; margin-bottom: 0.5rem; }
 .search-miss .ms-title { font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
-.search-miss .ms-lead { margin-top: 0.5rem; font-size: var(--text-body); line-height: var(--text-body--line-height); }
+.search-miss .ms-lead { margin-top: 0.675rem; font-size: var(--text-body); line-height: var(--text-body--line-height); }
 .search .float-pill.is-after { margin-top: 1rem; }
 
-/* ── A5: the location line in the bar ──────────────────────────────────────────────────────── */
+/* ── A5: the suggestions for a region ─────────────────────────────────────────────────────── */
 
-.a5 { --sheet-top: max(min(22.375rem, 100dvh - 18rem), var(--top-chrome) + 8rem); }
+.a5 { --sheet-top: max(min(18.875rem, 100dvh - 18rem), var(--top-chrome) + 4.5rem); }
 
 /* ── A6: a place that is not mapped yet ─────────────────────────────────────────────────────── */
 
@@ -632,14 +668,15 @@ button.float-pill,
   background: var(--color-scrim);
 }
 .a6 .ms-sheet { gap: 0; }
-.a6 .ms-title { margin-top: 1.25rem; }
-.a6 .ms-lead { margin-top: 0.75rem; }
-.a6 .ms-lead + .ms-lead { margin-top: 0.5rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
+.a6 .ms-title { margin-top: 1.6875rem; }
+.a6 .ms-lead { margin-top: 1.0125rem; }
+.a6 .ms-lead + .ms-lead { margin-top: 0.675rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
 .a6 .btn { margin-top: 1.5rem; }
 
 /* ── B1: the route detail, on the map ─────────────────────────────────────────────────────── */
 
-/* the spot marker: a lime disc numbered in walking order, with a forest and mist double ring */
+/* the spot marker: a lime disc numbered in walking order with a 3px lime halo, muted when the spot
+   has nothing in season this month (flow-b.css carries the same face to the spots list and axis) */
 .spot-mark {
   flex-shrink: 0;
   --mark: 2rem;
@@ -655,14 +692,19 @@ button.float-pill,
   text-box: trim-both cap alphabetic;
   border-radius: var(--radius-pill);
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
-  box-shadow: 0 0 0 2px var(--color-ground), 0 0 0 3.5px var(--color-mist), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
+  box-shadow: 0 0 0 0.1875rem rgb(from var(--color-primary) r g b / 0.6), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
   color: var(--color-on-primary);
-  font-family: var(--text-count--font-family);
-  font-size: var(--text-count);
-  font-weight: 400;
+  /* the number in Alpino Bold, the one place that weight is used, so it reads at 11 to 15px */
+  font-family: var(--font-text);
+  font-size: calc(var(--text-count) * 1.35);
+  font-weight: 700;
   line-height: 1;
 }
 .map-spot { position: absolute; transform: translate(-50%, -50%); text-decoration: none; }
+.map-spot.is-out .spot-mark {
+  background: color-mix(in srgb, var(--color-primary) 60%, var(--color-ground));
+  box-shadow: 0 0 0 0.1875rem color-mix(in srgb, color-mix(in srgb, var(--color-primary) 60%, var(--color-ground)) 60%, transparent), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
+}
 /* a 32 marker, 44 to touch */
 .map-spot::before { content: ""; position: absolute; inset: -0.375rem; border-radius: var(--radius-pill); }
 .map-spot-label,
@@ -673,8 +715,8 @@ button.float-pill,
   transform: translateY(-50%);
   white-space: nowrap;
   color: var(--color-on-ground);
-  font-size: var(--text-caption);
-  font-weight: 500;
+  font-size: var(--text-secondary);
+  font-weight: 400;
   line-height: 1;
   text-shadow: 0 0 3px var(--color-ground), 0 0 6px var(--color-ground), 0 1px 8px rgb(6 18 9 / 0.8);
   pointer-events: none;
@@ -745,7 +787,7 @@ button.float-pill,
 .b1-photos > span:nth-child(3) { background: radial-gradient(90% 90% at 40% 60%, rgb(174 183 121 / 0.3) 0%, transparent 65%), linear-gradient(170deg, var(--color-field-shade) 0%, var(--color-ground) 100%); }
 
 .b1-head { display: flex; flex-direction: column; }
-.b1-head .ms-lead { margin-top: 0.25rem; }
+.b1-head .ms-lead { margin-top: 0.3375rem; }
 
 /* what is recorded along the route: the proportion bar, the five groups, and the way to all of them */
 .b1-box {
@@ -787,8 +829,8 @@ button.float-pill,
   font-weight: 500;
 }
 .offline .ms-sheet { gap: 0; }
-.offline .ms-title { margin-top: 1.25rem; }
-.offline .ms-lead { margin-top: 0.75rem; }
+.offline .ms-title { margin-top: 1.6875rem; }
+.offline .ms-lead { margin-top: 1.0125rem; }
 .offline .btn { margin-top: 1.5rem; }
 .offline .ms-note { margin-top: 1rem; text-align: center; }
 
@@ -885,7 +927,7 @@ button.float-pill,
   right: 0.5rem;
   bottom: 0.25rem;
   margin: 0;
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   line-height: 1;
   color: var(--color-on-ground-soft);
   opacity: 0.7;

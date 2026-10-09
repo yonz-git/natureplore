@@ -18,12 +18,24 @@
 }
 .fb-stack { display: flex; flex-direction: column; gap: 0.75rem; }
 .fb-soft { color: var(--color-on-ground-soft); }
-.fb-small { margin: 0.625rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
-.fb-label { font-size: var(--text-body-sm); line-height: 1.375rem; font-weight: 500; color: var(--color-mist); }
-.fb-placeholder { font-size: var(--text-body-sm); line-height: 1.4375rem; font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-small { margin: 0.84375rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-label { font-size: var(--text-body-sm); line-height: 1.65rem; font-weight: 500; color: var(--color-mist); }
+.fb-placeholder { font-size: var(--text-body-sm); line-height: 1.725rem; font-weight: 300; color: var(--color-on-ground-soft); }
 
 /* the spot marker, larger at the head of a spot block */
-.fb-mark.is-lg { --mark: 2.25rem; font-size: 1.125rem; }
+.fb-mark.is-lg { --mark: 2.25rem; font-size: calc(1.125rem * 1.35); }
+/* in the spots list and on the route axis the marker sits on the plain sheet, not the map, so the
+   double ring that lifts it off busy map lines is dropped for a 3px lime halo, as on the welcome's
+   stops, and it is 15% smaller */
+.fb-row .spot-mark,
+.fb-axis-mark .spot-mark { --mark: 1.71rem; font-size: calc(var(--text-count) * 1.35 * 0.855); box-shadow: 0 0 0 0.1875rem rgb(from var(--color-primary) r g b / 0.2), 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
+/* a spot in season this month: the lime disc with a 60% halo */
+.fb-spot-row:not(.is-out) .fb-row .spot-mark,
+.fb-axis-mark:not(.is-out) .spot-mark { box-shadow: 0 0 0 0.1875rem rgb(from var(--color-primary) r g b / 0.6), 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
+/* a spot out of season keeps the same size, disc and halo, in a muted solid olive: the lime mixed
+   60% into the forest, so nothing behind it shows through */
+.fb-spot-row.is-out .fb-row .spot-mark,
+.fb-axis-mark.is-out .spot-mark { background: color-mix(in srgb, var(--color-primary) 60%, var(--color-ground)); box-shadow: 0 0 0 0.1875rem color-mix(in srgb, color-mix(in srgb, var(--color-primary) 60%, var(--color-ground)) 60%, transparent), 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
 
 /* a heading with its closing words in the lime of the titles */
 .fb-sec { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem; scroll-margin-top: 1rem; }
@@ -60,11 +72,11 @@
   transition: transform 160ms var(--ease-out);
 }
 a.fb-row:active { transform: scale(0.985); }
-.fb-row-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-.fb-row-text b { font-size: var(--text-body); line-height: 1.375rem; font-weight: 400; }
+.fb-row-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
+.fb-row-text b { font-size: var(--text-body); line-height: 1.65rem; font-weight: 400; }
 .fb-row-text > span:not(.fb-pill) { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
-.fb-row-text .fb-pill { align-self: flex-start; margin-top: 0.25rem; }
+.fb-row-text .fb-pill { align-self: flex-start; margin-top: 0.3375rem; }
 
 /* a label pill: glass benefit style, never lime, because it is not a control */
 .fb-pill {
@@ -85,12 +97,33 @@ a.fb-row:active { transform: scale(0.985); }
 }
 .fb-pill svg { color: var(--color-mist); }
 .fb-pill.is-none { color: var(--color-on-ground-soft); }
-.fb-pill i { width: 0.5rem; height: 0.5rem; border-radius: var(--radius-pill); }
-.fb-pill i.is-plants { background: var(--color-group-plants); }
-.fb-pill i.is-herbs { background: var(--color-group-herbs); }
-.fb-pill i.is-mushrooms { background: var(--color-group-mushrooms); }
-.fb-pill i.is-birds { background: var(--color-group-birds); }
-.fb-pill i.is-mammals { background: var(--color-group-mammals); }
+/* the legend under the proportion bar: each group's own icon in its bar colour, then its count */
+.fb-legend .group-icon.is-plants { color: var(--color-group-plants); }
+.fb-legend .group-icon.is-herbs { color: var(--color-group-herbs); }
+.fb-legend .group-icon.is-mushrooms { color: var(--color-group-mushrooms); }
+.fb-legend .group-icon.is-birds { color: var(--color-group-birds); }
+.fb-legend .group-icon.is-mammals { color: var(--color-group-mammals); }
+/* centred on the ink, not the boxes: 10 from the pill's edge to the icon's drawing on the left and
+   to the last figure on the right, the figures trimmed to their cap height so they sit on the
+   pill's middle, and each icon's own empty margin inside its 24 box cancelled, measured per icon */
+.fb-legend .fb-pill { padding: 0 0.625rem; }
+.fb-legend-num { display: block; text-box: trim-both cap alphabetic; }
+/* the last figure's own right side bearing, so the ink, not the advance, ends 10 from the edge */
+.fb-legend-num[data-last="0"] { margin-right: -0.0577em; }
+.fb-legend-num[data-last="1"] { margin-right: -0.0891em; }
+.fb-legend-num[data-last="2"] { margin-right: -0.0378em; }
+.fb-legend-num[data-last="3"] { margin-right: -0.0468em; }
+.fb-legend-num[data-last="4"] { margin-right: -0.025em; }
+.fb-legend-num[data-last="5"] { margin-right: -0.0353em; }
+.fb-legend-num[data-last="6"] { margin-right: -0.0372em; }
+.fb-legend-num[data-last="7"] { margin-right: -0.0218em; }
+.fb-legend-num[data-last="8"] { margin-right: -0.0558em; }
+.fb-legend-num[data-last="9"] { margin-right: -0.0391em; }
+.fb-legend .group-icon.is-plants { margin: 0 0.05375rem; }
+.fb-legend .group-icon.is-herbs { margin: 0 0.0094rem 0 -0.068rem; translate: 0 -0.01rem; }
+.fb-legend .group-icon.is-mushrooms { margin: 0 -0.07625rem 0 -0.09875rem; translate: 0 -0.04375rem; }
+.fb-legend .group-icon.is-birds { margin: 0 0.0306rem 0 0.0219rem; translate: 0 -0.015rem; }
+.fb-legend .group-icon.is-mammals { margin: 0 -0.00625rem; }
 
 /* the claim card: the claim opens its page, the line under it opens the first action */
 .fb-claim {
@@ -120,7 +153,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-claim-open { padding: 1.25rem 1.25rem 1rem; align-items: flex-start; border-radius: var(--radius-inner) var(--radius-inner) 0 0; }
 .fb-claim-open > svg { margin-top: 0.1875rem; }
 .fb-claim-open > span:first-child { flex-grow: 1; display: flex; flex-direction: column; gap: 0.5rem; }
-.fb-claim-text { font-size: var(--text-body); line-height: 1.5rem; font-weight: 400; }
+.fb-claim-text { font-size: var(--text-body); line-height: 1.8rem; font-weight: 400; }
 .fb-claim-scope { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-claim .fb-claim-act {
   min-height: 2.75rem;
@@ -129,13 +162,13 @@ a.fb-claim-act:active { transform: scale(0.985); }
   align-items: center;
   border-top: 1px solid var(--color-divider);
   font-size: var(--text-body-sm);
-  line-height: 1.3125rem;
+  line-height: 1.575rem;
 }
 .fb-claim-act > span:first-child { flex-grow: 1; }
 
 
 /* the action row: a marked callout, what not to do here (or what to do), the line, and why */
-.fb-rule { display: flex; flex-direction: column; gap: 0.375rem; }
+.fb-rule { display: flex; flex-direction: column; gap: 0.50625rem; }
 .fb-callout {
   padding: 1rem;
   flex-direction: row;
@@ -157,10 +190,10 @@ a.fb-claim-act:active { transform: scale(0.985); }
   background: rgb(255 255 255 / 0.06);
   border: 0.5px solid var(--color-inner-edge);
 }
-.fb-rule-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-.fb-rule-text .fb-label { margin-bottom: 0.125rem; }
-.fb-rule-line { font-size: var(--text-body); line-height: 1.5rem; font-weight: 500; text-wrap: pretty; }
-.fb-rule-why { font-size: var(--text-body-sm); line-height: 1.4375rem; font-weight: 300; color: var(--color-on-ground-soft); text-wrap: pretty; }
+.fb-rule-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
+.fb-rule-text .fb-label { margin-bottom: 0.16875rem; }
+.fb-rule-line { font-size: var(--text-body); line-height: 1.8rem; font-weight: 500; text-wrap: pretty; }
+.fb-rule-why { font-size: var(--text-body-sm); line-height: 1.725rem; font-weight: 300; color: var(--color-on-ground-soft); text-wrap: pretty; }
 
 /* the spot block: solid, not glass, the same on the spot page and as the walk sheet */
 .fb-spot {
@@ -175,7 +208,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 }
 /* the number and the name read as one: the marker sits centred on the two lines beside it */
 .fb-spot-head { display: flex; align-items: center; gap: 1rem; }
-.fb-spot-head > div { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.125rem; font-size: var(--text-body-sm); line-height: 1.375rem; }
+.fb-spot-head > div { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.16875rem; font-size: var(--text-body-sm); line-height: 1.65rem; }
 .fb-spot .fb-spot-title {
   overflow-wrap: break-word;
   margin: 0;
@@ -185,9 +218,9 @@ a.fb-claim-act:active { transform: scale(0.985); }
   font-weight: 300;
   text-wrap: balance;
 }
-.fb-out { margin: 0; font-size: var(--text-body); line-height: 1.4375rem; }
-.fb-look { display: flex; flex-direction: column; gap: 0.625rem; }
-.fb-look ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.fb-out { margin: 0; font-size: var(--text-body); line-height: 1.725rem; }
+.fb-look { display: flex; flex-direction: column; gap: 0.84375rem; }
+.fb-look ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.675rem; }
 /* what to look for: the organism, its photograph, what it is doing and when it was last seen */
 .fb-look-row {
   min-height: 2.75rem;
@@ -210,9 +243,9 @@ a.fb-claim-act:active { transform: scale(0.985); }
   border-radius: calc(var(--radius-inner) - 0.375rem);
   background: var(--color-field-shade);
 }
-.fb-look-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.0625rem; }
-.fb-look-name { font-size: var(--text-body); line-height: 1.5rem; font-weight: 500; }
-.fb-look-what { font-size: var(--text-body-sm); line-height: 1.375rem; font-weight: 400; color: var(--color-on-ground); }
+.fb-look-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.08438rem; }
+.fb-look-name { font-size: var(--text-body); line-height: 1.8rem; font-weight: 500; }
+.fb-look-what { font-size: var(--text-body-sm); line-height: 1.65rem; font-weight: 400; color: var(--color-on-ground); }
 .fb-look-last { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-look-link { transition: transform 160ms var(--ease-out), box-shadow 240ms var(--ease-out), border-color 240ms var(--ease-out); }
 @media (hover: hover) {
@@ -254,7 +287,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-nav-next > svg { flex-shrink: 0; }
 .fb-nav-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
 .fb-nav-kicker { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
-.fb-nav-name { font-size: var(--text-body-sm); line-height: 1.375rem; font-weight: 500; overflow-wrap: break-word; }
+.fb-nav-name { font-size: var(--text-body-sm); line-height: 1.65rem; font-weight: 500; overflow-wrap: break-word; }
 @media (hover: hover) {
   .fb-nav-prev:hover,
   .fb-nav-next:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 10rem rgb(255 255 255 / 0.06); }
@@ -300,10 +333,11 @@ a.fb-claim-act:active { transform: scale(0.985); }
 /* the route drawn flat: the spots along its length, with the same numbers as the map */
 .fb-axis { position: relative; height: 2.5rem; }
 .fb-axis-line { position: absolute; left: 0; right: 0; top: 1.0625rem; height: 0.1875rem; border-radius: 0.125rem; background: var(--color-mist); opacity: 0.8; }
-/* the marks on the route's distance axis, 30% smaller than the 1.75rem they were, centred on the line */
-.fb-axis-mark { position: absolute; top: calc(1.15625rem - 1.25rem / 2); transform: translateX(-50%); }
-.fb-axis-mark .spot-mark { --mark: 1.25rem; font-size: 0.625rem; }
-.fb-axis-ticks { margin-top: 0.625rem; display: flex; justify-content: space-between; font-size: 0.75rem; line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); }
+/* the marks on the route's distance axis, the spots list markers, centred on the line */
+.fb-axis-mark { position: absolute; top: calc(1.15625rem - 1.71rem * 0.85 / 2); transform: translateX(-50%); }
+/* 15% smaller than the list's, so close spots keep apart */
+.fb-axis-mark .spot-mark { --mark: calc(1.71rem * 0.85); font-size: calc(var(--text-count) * 1.35 * 0.855 * 0.85); }
+.fb-axis-ticks { margin-top: 0.625rem; display: flex; justify-content: space-between; font-size: 0.9rem; line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); }
 
 .fb-recorded { gap: 1rem; }
 .fb-recorded .btn { margin-top: 0.25rem; width: auto; }
@@ -317,7 +351,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
   flex-direction: column;
   align-items: center;
   gap: 0.375rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   line-height: 1;
   font-weight: 300;
   color: var(--color-on-ground-soft);
@@ -328,12 +362,12 @@ a.fb-claim-act:active { transform: scale(0.985); }
 
 .fb-facts { padding: 0.375rem 1.25rem; }
 /* label and value side by side; with large text the value drops under its label instead of running off */
-.fb-facts > div { padding: 0.75rem 0; display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; }
+.fb-facts > div { padding: 0.75rem 0; display: flex; flex-wrap: wrap; gap: 0.3375rem 0.75rem; }
 .fb-facts dt { flex: 0 0 7.5rem; }
 .fb-facts dd { flex: 1 1 10rem; min-width: 0; }
 .fb-facts > div + div { border-top: 1px solid var(--color-divider); }
-.fb-facts dt { font-size: var(--text-caption); line-height: 1.25rem; color: var(--color-on-ground-soft); }
-.fb-facts dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.25rem; }
+.fb-facts dt { font-size: var(--text-caption); line-height: 1.5rem; color: var(--color-on-ground-soft); }
+.fb-facts dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.5rem; }
 .b1-foot { margin-top: 0.5rem; }
 
 /* pinned over the tab bar on the phone, once saved: Walk the route; after a removal, Undo */
@@ -363,13 +397,13 @@ a.fb-claim-act:active { transform: scale(0.985); }
   align-items: center;
   gap: 0.375rem;
   font-size: var(--text-caption);
-  line-height: 1.25rem;
+  line-height: 1.5rem;
   animation: fade-in 200ms var(--ease-out) both;
 }
 .b1-note svg { flex-shrink: 0; color: var(--color-mist); }
 /* with large text a label wraps inside its button rather than running out of the bar */
 .b1-pin .btn { min-width: 0; flex-shrink: 1; height: auto; min-height: var(--spacing-button-height); padding-top: 0.5rem; padding-bottom: 0.5rem; white-space: normal; text-align: center; }
-.b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-sm); line-height: 1.375rem; animation: fade-in 200ms var(--ease-out) both; }
+.b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-sm); line-height: 1.65rem; animation: fade-in 200ms var(--ease-out) both; }
 .b1-pin .b1-undo { padding: 0 1.5rem; }
 
 /* ── L3, a spot, opened in place in B1's spots list ─────────────────────────────────────────── */
@@ -477,7 +511,7 @@ button.fb-row:active { transform: scale(0.985); }
 .walk .fb-spot-head .fb-soft { font-weight: 400; color: var(--color-on-ground); }
 .walk-nav .fb-nav-prev,
 .walk-nav .fb-nav-next { background: var(--color-field-shade); border: 1px solid var(--color-inner-edge); box-shadow: none; }
-.walk-nav .fb-nav-name { font-size: var(--text-body); line-height: 1.5rem; }
+.walk-nav .fb-nav-name { font-size: var(--text-body); line-height: 1.8rem; }
 .walk-nav .fb-nav-kicker { font-weight: 400; color: var(--color-on-ground); }
 .walk-toggle {
   align-self: flex-start;

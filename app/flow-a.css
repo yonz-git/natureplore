@@ -11,7 +11,7 @@
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.35rem;
   border-radius: var(--radius-inner);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
   border: 0.5px solid var(--color-inner-edge);
@@ -28,12 +28,12 @@
     linear-gradient(170deg, var(--color-field-mid) 0%, var(--color-field-shade) 100%);
   border: 0.5px solid var(--color-inner-edge);
 }
-.sug-head { display: flex; flex-direction: column; gap: 0.25rem; }
+.sug-head { display: flex; flex-direction: column; gap: 0.3375rem; }
 .sug-name {
   margin: 0;
   font-family: var(--font-text);
-  font-size: 1.125rem;
-  line-height: 1.5rem;
+  font-size: 1.35rem;
+  line-height: 1.8rem;
   font-weight: 400;
 }
 .sug-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
@@ -100,10 +100,10 @@
 .sug-saved:not(:empty) { animation: sheet-in 240ms var(--ease-out) both; }
 
 /* the spots in season: numbered dots, the lit ones filled with mist */
-.dots { display: flex; flex-wrap: wrap; align-items: center; gap: 0.625rem; }
-.dots-row { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.dots { display: flex; flex-wrap: wrap; align-items: center; gap: 0.84375rem; }
+.dots-row { display: flex; flex-wrap: wrap; gap: 0.5rem; /* room for two 3px halos */ }
 .dot {
-  --dot: 1.375rem;
+  --dot: 1.63625rem;
   width: var(--dot);
   height: var(--dot);
   box-sizing: border-box;
@@ -116,26 +116,37 @@
   border-radius: var(--radius-pill);
   border: 1px solid rgb(255 255 255 / 0.4);
   color: var(--color-on-ground-soft);
-  font-family: var(--text-count--font-family);
-  font-size: 0.6875rem;
-  font-weight: 500;
+  font-family: var(--font-text);
+  font-size: calc(0.825rem * 1.35);
+  font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-.dot.is-lit { border-color: transparent; background: var(--color-mist); color: var(--color-ground); }
+/* the same face as the spots list on B1: a lime disc and halo when the spot is in season, the same
+   disc and halo in a muted solid olive when it is not, the number always whole */
+.dot {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--color-primary) 60%, var(--color-ground));
+  box-shadow: 0 0 0 0.1875rem color-mix(in srgb, color-mix(in srgb, var(--color-primary) 60%, var(--color-ground)) 60%, transparent);
+  color: var(--color-on-primary);
+}
+.dot.is-lit {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  box-shadow: 0 0 0 0.1875rem rgb(from var(--color-primary) r g b / 0.6);
+}
 .dots-line { font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); font-weight: 400; }
 
 /* what is in season along it, each with its group first */
-.sug-season { display: flex; flex-direction: column; gap: 0.5rem; }
+.sug-season { display: flex; flex-direction: column; gap: 0.675rem; }
 .sug-season-label { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
-.sug-orgs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.625rem; }
+.sug-orgs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.84375rem; }
 .sug-orgs li { display: flex; align-items: center; gap: 0.75rem; }
-.sug-org { min-width: 0; display: flex; flex-direction: column; gap: 0.125rem; }
-.sug-org-name { font-size: var(--text-body-sm); line-height: 1.3125rem; font-weight: 400; }
+.sug-org { min-width: 0; display: flex; flex-direction: column; gap: 0.16875rem; }
+.sug-org-name { font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
 .sug-org-note { font-weight: 300; color: var(--color-on-ground-soft); }
 .sug-org-last { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 
-/* a group icon in a round mist tile, the same icon as the count pills */
+/* a group icon in a round tile, the same icon as the count pills */
 .group-tile {
   width: 2rem;
   height: 2rem;
@@ -149,20 +160,33 @@
   border: 0.5px solid var(--color-inner-edge);
   color: var(--color-mist);
 }
+/* each icon in its group colour, as in the recorded legend, its drawing centred in the tile (each
+   icon's own empty margin inside its box, measured at 17) */
+.group-tile .is-plants { color: var(--color-group-plants); }
+.group-tile .is-herbs { color: var(--color-group-herbs); translate: -0.03875rem -0.01rem; }
+.group-tile .is-mushrooms { color: var(--color-group-mushrooms); translate: -0.01125rem -0.04375rem; }
+.group-tile .is-birds { color: var(--color-group-birds); translate: -0.004rem -0.015rem; }
+.group-tile .is-mammals { color: var(--color-group-mammals); }
 
 /* ── A5, A4: the suggestions ───────────────────────────────────────────────────────────────── */
 
 /* the sheet rests high enough that the first route shows above the tab bar: its name on a
-   390 × 844 phone, its photograph on a 375 × 667 one. Opened, it stops under the search bar. */
-.sg { --sheet-top: max(min(20.5rem, 100dvh - 27rem), var(--top-chrome) + 8rem); --sheet-open: calc(var(--top-chrome) + 8rem); }
-.sg .ms-sheet { gap: 1.25rem; }
+   390 × 844 phone, its photograph on a 375 × 667 one. The switch moved from over the map into the
+   sheet, so the sheet rests 3.5rem higher, where the switch was, and the map keeps the same strip.
+   Opened, it stops under the search field, the only thing left over the map. */
+.sg { --sheet-top: max(min(17rem, 100dvh - 27rem), var(--top-chrome) + 4.5rem); --sheet-open: calc(var(--top-chrome) + 4.5rem); }
+/* the switch is the sheet's first row; on the phone it clears the grab handle above it */
+@media (max-width: 47.99rem), (max-width: 63.99rem) and (max-height: 35.99rem) {
+  .sg .ms-sheet > .sg-switch { margin-top: 0.75rem; }
+}
+.sg .ms-sheet { gap: 1.6875rem; }
 .sg-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
 /* the heading shrinks first; "Show on map" only drops under it when the text is very large */
 .sg-head > div { flex: 1 1 11rem; min-width: 0; }
-/* the suggestions title takes the h3 step at every size; it stays the page's h1 */
-.sg .ms-title { font-size: var(--text-h3); line-height: var(--text-h3--line-height); }
-.sg-scope { margin: 0.5rem 0 0; font-size: var(--text-body-sm); line-height: 1.3125rem; font-weight: 400; }
-.sg .ms-lead { margin-top: 0.125rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
+/* the suggestions title takes the h2 step at every size, as a route's own title does on B1; it stays the page's h1 */
+.sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
+.sg-scope { margin: 0.675rem 0 0; font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
+.sg .ms-lead { margin-top: 0.16875rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
 
 /* Show on map / Show as a list: inner glass on the sheet, the phone only */
 .sg-toggle {
@@ -177,9 +201,9 @@
   border: 0.5px solid var(--color-inner-edge);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
   color: var(--color-on-ground);
-  font-family: var(--font-text);
-  font-size: var(--text-chip);
-  font-weight: 400;
+  font-family: var(--text-button-small--font-family);
+  font-size: var(--text-button-small);
+  font-weight: var(--text-button-small--font-weight);
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
@@ -187,26 +211,9 @@
 }
 .sg-toggle:active { transform: scale(0.97); }
 
-.sg-where { margin: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-p.sg-where { flex-direction: row; align-items: center; gap: 0.5rem; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); font-weight: 400; }
-p.sg-where svg { color: var(--color-mist); flex-shrink: 0; }
-.sg-locate {
-  align-self: flex-start;
-  min-height: 2.75rem;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  border: 0;
-  background: none;
-  color: var(--color-on-ground);
-  font-family: var(--font-text);
-  font-size: var(--text-body-sm);
-  font-weight: 500;
-  cursor: pointer;
-}
-.sg-locate span { text-decoration: underline; text-underline-offset: 0.1875rem; }
-.sg-where .ms-note { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
+/* near you: the line that says location is on */
+.sg-where { margin: 0; display: flex; align-items: center; gap: 0.5rem; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); font-weight: 400; }
+.sg-where svg { color: var(--color-mist); flex-shrink: 0; }
 
 .sg-list { display: flex; flex-direction: column; gap: 1rem; }
 .sg-list > .btn { margin-top: 0.25rem; }
@@ -230,7 +237,7 @@ p.sg-where svg { color: var(--color-mist); flex-shrink: 0; }
   padding: 0.5rem 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.3375rem;
   border-radius: var(--radius-tile);
   color: var(--color-on-ground);
   text-decoration: none;
@@ -260,7 +267,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   }
 }
 .map-route b { font-size: var(--text-caption); line-height: 1; font-weight: 500; }
-.map-route span { font-size: 0.6875rem; line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
+.map-route span { font-size: 0.825rem; line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
 
 /* ── A2, A3: search, inside the panel ──────────────────────────────────────────────────────── */
 
@@ -317,7 +324,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.sr-miss p { margin: 0.5rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
+.sr-miss p { margin: 0.675rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
 .notice {
   margin: 0;
   padding: 1rem 1.25rem;
@@ -366,7 +373,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   border-radius: var(--radius-card) var(--radius-card) 0 0;
 }
 .saved-sheet h1 { margin: 0; font-family: var(--font-heading); font-size: var(--text-h1); line-height: var(--text-h1--line-height); font-weight: 300; }
-.saved-sheet > p { margin: 0.5rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
+.saved-sheet > p { margin: 0.675rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
 .saved-sheet h2 { margin: 2.5rem 0 0.75rem; font-family: var(--font-heading); font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: 300; }
 .saved-list { display: flex; flex-direction: column; gap: 0.75rem; }
 .saved-card {
@@ -392,7 +399,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   border: 0.5px solid var(--color-inner-edge);
 }
 .saved-row > span:not(.saved-thumb) { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-.saved-row b { font-size: 1.0625rem; line-height: 1.375rem; font-weight: 400; }
+.saved-row b { font-size: 1.275rem; line-height: 1.65rem; font-weight: 400; }
 .saved-row small { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .saved-row em { display: flex; align-items: center; gap: 0.375rem; font-style: normal; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-mist); }
 .saved-row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
@@ -403,7 +410,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
   border: 0.5px solid var(--color-inner-edge);
   font-size: var(--text-body-sm);
-  line-height: 1.375rem;
+  line-height: 1.65rem;
   font-weight: 300;
   color: var(--color-on-ground-soft);
 }
@@ -497,9 +504,9 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 }
 img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; background: var(--color-field-shade); }
 .a8-rows li > span:last-child { min-width: 0; display: flex; flex-direction: column; gap: 0.1875rem; }
-.a8-rows b { font-size: var(--text-body); line-height: 1.375rem; font-weight: 400; }
+.a8-rows b { font-size: var(--text-body); line-height: 1.65rem; font-weight: 400; }
 .a8-rows small { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
-.a8-group > .saved-empty { margin: 0.875rem 0; padding: 0; background: none; border: 0; }
+.a8-group > .saved-empty { margin: 1.18125rem 0; padding: 0; background: none; border: 0; }
 .a8-more { padding: 0.25rem 0 1rem; display: flex; justify-content: center; }
 .a8-more .btn { align-self: auto; width: auto; min-width: 0; }
 /* with large text the card is narrow for its button: tighter padding so the label wraps inside it */
@@ -517,7 +524,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg-toggle,
   .sg-map-note,
   .sg .ms-handle { display: none; }
-  .sg .ms-sheet { margin-top: 2rem; gap: 1.25rem; }
+  /* the search field has left the panel for the top of the screen, so the sheet starts at its top */
+  .sg .ms-sheet { margin-top: 0; gap: 1.6875rem; }
   .sg-list {
     flex: 1 1 auto;
     min-height: 0;
@@ -596,23 +604,84 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .a8-chev { transform: rotate(90deg); transition: transform 200ms var(--ease-out); }
 .a8-chev.is-up { transform: rotate(-90deg); }
 
-/* Routes or Organisms: what the suggestions list, the one picked in lime */
-.seg-opt[aria-pressed="true"] {
+/* Routes or Organisms: what the suggestions list, the one picked in lime. The lime is one pill,
+   .seg-thumb, that slides from one option to the other (placed by components/SuggestionsScreen.tsx),
+   while the labels crossfade between white and forest green in the same time. Until the script has
+   placed the pill, the picked option carries the lime itself. */
+.seg { position: relative; }
+.seg-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--radius-pill);
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  pointer-events: none;
+  opacity: 0;
+}
+.seg[data-thumb] .seg-thumb {
+  opacity: 1;
+  /* a glide across the pill, easing in and out, the curve the project keeps for on-screen moves */
+  transition: transform 400ms var(--ease-move), width 400ms var(--ease-move);
+}
+.seg:not([data-thumb]) .seg-opt[aria-pressed="true"] {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+}
+.seg-opt[aria-pressed="true"] {
   color: var(--color-on-primary);
   font-weight: var(--text-chip-active--font-weight);
+}
+.sg .seg-opt { transition: transform 160ms var(--ease-out), background-color 200ms ease, color 400ms var(--ease-move); }
+/* each label holds the width of its heavier picked weight, so picking one never nudges the pill */
+.seg-label { display: inline-flex; flex-direction: column; }
+.seg-label::after {
+  content: attr(data-text);
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font-weight: var(--text-chip-active--font-weight);
+}
+@media (prefers-reduced-motion: reduce) {
+  .seg[data-thumb] .seg-thumb { transition: none; }
+  .sg .seg-opt { transition: none; }
 }
 @media (hover: hover) and (pointer: fine) {
   .seg-opt[aria-pressed="false"]:hover { background-color: rgb(255 255 255 / 0.08); }
 }
 .sg .seg { flex-shrink: 0; }
 /* the switch and, on Organisms, the group filters beside it; on a phone they wrap under it */
-.sg-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
-.sg-groups { display: none; gap: 0.25rem; /* about a third of 0.6875rem, a whole pixel */ transition: display 220ms allow-discrete; }
-/* on a line of their own, indented to start under the Organisms option (--org-x, measured) */
-.sg-groups.is-on { display: flex; flex-basis: 100%; padding-left: var(--org-x, 0); box-sizing: border-box; }
-/* each toggle fades and grows in on its own, a beat apart, never its row: the toggles are glass, and
-   animating anything above glass switches the frost off */
+.sg-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0 0.75rem; }
+/* on a line of their own, indented to start under the Organisms option (--org-x, measured). The line
+   and indent belong to the row whether it is on or not, so while the toggles fade out on the way back
+   to Routes they stay where they were instead of jumping left beside the switch */
+/* The row opens and closes its own height, so the heading and list under it glide down and back
+   up instead of jumping: it grows as the toggles come in, and folds once most have gone. Height,
+   not a transform, since everything under it has to move; the space above it is a margin for the
+   same reason, so it opens with the row. */
+.sg-groups {
+  display: none;
+  flex-basis: 100%;
+  height: 0;
+  margin-top: 0;
+  padding-left: var(--org-x, 0);
+  box-sizing: border-box;
+  gap: 0.25rem; /* about a third of 0.6875rem, a whole pixel */
+  /* held until the row has folded */
+  transition:
+    display 480ms allow-discrete,
+    height 300ms var(--ease-move) 180ms,
+    margin-top 300ms var(--ease-move) 180ms;
+}
+.sg-groups.is-on {
+  display: flex;
+  height: 2.125rem;
+  margin-top: 0.5rem;
+  transition: display 0ms allow-discrete, height 340ms var(--ease-move), margin-top 340ms var(--ease-move);
+}
+@starting-style { .sg-groups.is-on { height: 0; margin-top: 0; } }
+/* each toggle fades and grows in on its own, never its row (the toggles are glass, and animating
+   anything above glass switches the frost off): one after another from the left, drifting a touch to
+   the right as they come, and out again the other way, from the right. --d is each one's beat, and
+   only the coming and going wait for it, never a hover or a press */
 .sg-group {
   position: relative;
   /* 3rem less 30%, rounded to 34 so every edge lands on a whole pixel */
@@ -624,31 +693,47 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   justify-content: center;
   border-radius: var(--radius-pill);
   cursor: pointer;
+  --d: 0ms;
+  --in: 300ms;
   opacity: 0;
   scale: 0.9;
-  transition: opacity 200ms var(--ease-out), scale 200ms var(--ease-out), transform 160ms var(--ease-out), background-color 200ms ease, box-shadow 200ms ease;
+  translate: -0.375rem 0;
+  transition:
+    opacity var(--in) var(--ease-out) var(--d),
+    scale var(--in) var(--ease-out) var(--d),
+    translate var(--in) var(--ease-out) var(--d),
+    transform 160ms var(--ease-out),
+    background-color 200ms ease,
+    box-shadow 200ms ease;
 }
-.sg-groups.is-on .sg-group { opacity: 1; scale: 1; }
-@starting-style { .sg-groups.is-on .sg-group { opacity: 0; scale: 0.9; } }
-.sg-groups.is-on .sg-group:nth-child(2) { transition-delay: 40ms; }
-.sg-groups.is-on .sg-group:nth-child(3) { transition-delay: 80ms; }
-.sg-groups.is-on .sg-group:nth-child(4) { transition-delay: 120ms; }
-.sg-groups.is-on .sg-group:nth-child(5) { transition-delay: 160ms; }
+.sg-groups.is-on .sg-group { opacity: 1; scale: 1; translate: 0 0; }
+/* and out again, the dimmed ones too: the site-wide 45% for a disabled control would otherwise hold
+   them there until the row is gone, and they would vanish instead of fading with the rest */
+.sg-groups:not(.is-on) .sg-group { opacity: 0; scale: 0.9; translate: -0.375rem 0; --in: 200ms; }
+@starting-style {
+  /* the dimmed ones as well: their own 40% rule, further down and as specific, would otherwise win
+     here too and skip their fade, so this one is a step more specific */
+  .sg-groups.is-on .sg-group,
+  .sg-groups.is-on .sg-group.sg-group[aria-disabled="true"] { opacity: 0; scale: 0.9; translate: -0.375rem 0; }
+}
+.sg-groups.is-on .sg-group:nth-child(2) { --d: 60ms; }
+.sg-groups.is-on .sg-group:nth-child(3) { --d: 120ms; }
+.sg-groups.is-on .sg-group:nth-child(4) { --d: 180ms; }
+.sg-groups.is-on .sg-group:nth-child(5) { --d: 240ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(4) { --d: 50ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(3) { --d: 100ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(2) { --d: 150ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(1) { --d: 200ms; }
 .sg-group:active { transform: scale(0.94); }
 /* 44 tall to touch; across, the hit areas meet halfway into the gap so neighbours never overlap */
 .sg-group::before { content: ""; position: absolute; inset: calc((2.125rem - 2.75rem) / 2) -0.125rem; }
 /* One clean edge, for the switch and the group toggles alike: on these small pills the glass border,
    its rim of light and the 1px top highlight stack into rings that never quite line up. They keep a
-   single 1px border; over the map (the phone) they keep their float shadow, inside the panel none. */
+   single 1px border, and no float shadow: at every size they sit inside the sheet's glass. */
 .sg .seg.glass,
 .sg-group.glass {
   border: 1px solid var(--color-inner-edge);
-  box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
-}
-@media (min-width: 64rem) {
-  /* on the desktop they sit inside the glass panel (app/glass.css, glass-desk): no float shadow */
-  .sg .glass-desk .seg.glass,
-  .sg .glass-desk .sg-group.glass { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 0 0 rgb(6 18 9 / 0); }
+  box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 0 0 rgb(6 18 9 / 0);
 }
 /* each group icon centred by its drawing, not its 24 box: most sit a touch low, the bird also right */
 /* The lopsided group icons are centred optically, not by their box (components/Icons.tsx): the herbs,
@@ -696,8 +781,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg-group[aria-pressed="false"]:not([aria-disabled="true"]):hover { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 0 0 rgb(6 18 9 / 0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .sg-group { scale: 1; transition: opacity 120ms ease, background-color 200ms ease; }
-  .sg-groups.is-on .sg-group { transition-delay: 0ms; }
+  .sg-groups, .sg-groups.is-on { transition: display 120ms allow-discrete; }
+  .sg-group, .sg-groups:not(.is-on) .sg-group { scale: 1; translate: 0 0; transition: opacity 120ms ease, background-color 200ms ease; }
 }
 .sg-org-link { flex-grow: 1; min-width: 0; display: flex; align-items: center; gap: 0.875rem; color: var(--color-on-ground); text-decoration: none; }
 .sg-org-link > span:nth-child(2) { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1875rem; }

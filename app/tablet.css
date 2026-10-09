@@ -21,7 +21,7 @@
 
   .sg .ms-bar { right: auto; width: var(--spacing-panel-tablet); }
   .sg .ms-sheet {
-    inset: calc(var(--top-chrome) + 8rem) auto 6.25rem var(--spacing-screen-phone);
+    inset: calc(var(--top-chrome) + 4.5rem) auto 6.25rem var(--spacing-screen-phone);
     width: var(--spacing-panel-tablet);
     padding-bottom: 1.5rem;
     scroll-padding-bottom: 1.5rem;
