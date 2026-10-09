@@ -201,7 +201,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   );
 
   return (
-    <section className={`ms sg ${near ? "a4" : "a5"}${onMap ? " is-map" : ""}`}>
+    <section className={`ms sg ${near ? "a4" : "a5"}${onMap ? " is-map" : ""}`} data-type-test={near ? undefined : ""}>
       <RegionMap className="a1-map" behind={!onMap} hot={hot} ref={map} points={points} maxZoom={home ? 9.5 : 11} />
 
       {desk && (

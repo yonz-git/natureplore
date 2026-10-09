@@ -1,0 +1,38 @@
+/* TEST, not the system: every type size on the map home (/map) 20% bigger, to judge
+   readability before the tokens change. Only font sizes move, line heights and spacing stay.
+   Switched on by data-type-test on the A5 screen, so every other page keeps today's sizes.
+   Delete this file and the attribute once the sizes go into docs/design.md. */
+:root:has([data-type-test]) {
+  --text-display-desktop: calc(3.5rem * 1.2);
+  --text-display: calc(2.125rem * 1.2);
+  --text-h1: calc(2rem * 1.2);
+  --text-h2: calc(1.5rem * 1.2);
+  --text-h3: calc(1.375rem * 1.2);
+  --text-stat: calc(1.5rem * 1.2);
+  --text-stat-sm: calc(1.375rem * 1.2);
+  --text-count: calc(0.9375rem * 1.2);
+  --text-lead-desktop: calc(1.4375rem * 1.2);
+  --text-body: calc(1rem * 1.2);
+  --text-body-sm: calc(0.9375rem * 1.2);
+  --text-secondary: calc(0.875rem * 1.2);
+  --text-caption: calc(0.8125rem * 1.2);
+  --text-title: calc(1.0625rem * 1.2);
+  --text-title-sm: calc(1rem * 1.2);
+  --text-meta: calc(0.875rem * 1.2);
+  --text-label: calc(0.8125rem * 1.2);
+  --text-field: calc(1rem * 1.2);
+  --text-button: calc(1rem * 1.2);
+  --text-button-secondary: calc(0.9375rem * 1.2);
+  --text-chip: calc(0.875rem * 1.2);
+  --text-chip-active: calc(0.875rem * 1.2);
+  --text-pill: calc(0.8125rem * 1.2);
+  --text-pill-count: calc(0.8125rem * 1.2);
+  --text-stat-label: calc(0.75rem * 1.2);
+  --text-tab: calc(0.75rem * 1.2);
+  --text-tab-active: calc(0.75rem * 1.2);
+}
+/* the few sizes on this page written as numbers instead of tokens */
+:root:has([data-type-test]) .sug-name { font-size: calc(1.125rem * 1.2); }
+:root:has([data-type-test]) .dot,
+:root:has([data-type-test]) .map-route span { font-size: calc(0.6875rem * 1.2); }
+:root:has([data-type-test]) .a1-credit { font-size: calc(0.625rem * 1.2); }
