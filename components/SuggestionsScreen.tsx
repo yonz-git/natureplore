@@ -12,7 +12,6 @@ import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { ChevronIcon, GroupIcon, LeafIcon, ListIcon, MapIcon, PinIcon, RoutesIcon } from "@/components/Icons";
-import { useLocationPrompt } from "@/components/LocationDialog";
 import { MapTools, SearchField } from "@/components/MapParts";
 import { useSheet } from "@/components/SheetGrab";
 import { useIsDesktop } from "@/lib/useIsDesktop";
@@ -151,7 +150,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   // as the toggles appear the moving icons play once, a beat after they grow in, dimmed or not
   useEffect(() => {
     if (show !== "organisms") return;
-    groupRow.current?.querySelectorAll<HTMLElement>("[data-group]").forEach((b, i) => playGroup(b, b.dataset.group as Group, 120 + i * 40));
+    groupRow.current?.querySelectorAll<HTMLElement>("[data-group]").forEach((b, i) => playGroup(b, b.dataset.group as Group, 160 + i * 60));
   }, [show]);
   const orgOpt = useRef<HTMLButtonElement>(null);
   useLayoutEffect(() => {
@@ -165,9 +164,30 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
     place();
     return () => watch.disconnect();
   }, []);
+  // The lime under the picked option is one pill that slides between the two (.seg-thumb in
+  // app/flow-a.css): placed on the picked option's box, measured, and moved again whenever the option
+  // changes or a width changes. Its first placement is not animated; from then on it glides.
+  const seg = useRef<HTMLDivElement>(null);
+  const thumb = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const box = seg.current;
+    const pill = thumb.current;
+    if (!box || !pill) return;
+    const place = () => {
+      const on = box.querySelector<HTMLElement>('.seg-opt[aria-pressed="true"]');
+      if (!on) return;
+      pill.style.width = `${on.offsetWidth}px`;
+      pill.style.height = `${on.offsetHeight}px`;
+      pill.style.transform = `translate(${on.offsetLeft}px, ${on.offsetTop}px)`;
+    };
+    place();
+    if (!("thumb" in box.dataset)) requestAnimationFrame(() => (box.dataset.thumb = ""));
+    const watch = new ResizeObserver(place);
+    box.querySelectorAll(".seg-opt").forEach((o) => watch.observe(o));
+    return () => watch.disconnect();
+  }, [show]);
   // the region's routes on the map, a memo so the map is built once per region
   const points = useMemo(() => pointsFor(regionId, near), [regionId, near]);
-  const { ask, prompt } = useLocationPrompt();
   useEffect(() => rememberList(near ? "/map/near-you" : home ? "/map" : `/map?region=${region.id}`), [near, home, region.id]);
 
   // The sheet moves between its two heights by its own transform, never an ancestor's (that would
@@ -211,17 +231,30 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
       )}
 
       <div className="ms-panel glass-desk">
-        <div className="ms-bar">
-          {!desk && <SearchField />}
+        {!desk && (
+          <div className="ms-bar">
+            <SearchField />
+          </div>
+        )}
+
+        <div
+          ref={sheet}
+          className={`ms-sheet glass-phone glass-top${grab.open ? " is-open" : ""}`}
+          aria-labelledby="sg-title"
+          onScroll={grab.onScroll}
+        >
+          {grab.grab("list")}
+          {/* Routes or Organisms, and on Organisms the group filters, at the top of the sheet */}
           <div className="sg-switch" ref={switchRow}>
-          <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill">
+          <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill" ref={seg}>
+            <span className="seg-thumb" ref={thumb} aria-hidden="true" />
             <button type="button" className="seg-opt" aria-pressed={show === "routes"} onClick={() => setShow("routes")}>
               <RoutesIcon size={18} />
-              Routes
+              <span className="seg-label" data-text="Routes">Routes</span>
             </button>
             <button type="button" ref={orgOpt} className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
               <LeafIcon size={18} />
-              Organisms
+              <span className="seg-label" data-text="Organisms">Organisms</span>
             </button>
           </div>
           {/* inert, not removed, while on Routes, so the toggles can fade out as well as in */}
@@ -246,15 +279,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             ))}
           </div>
           </div>
-        </div>
-
-        <div
-          ref={sheet}
-          className={`ms-sheet glass-phone glass-top${grab.open ? " is-open" : ""}`}
-          aria-labelledby="sg-title"
-          onScroll={grab.onScroll}
-        >
-          {grab.grab("list")}
           <div className="sg-head">
             <div>
               <h1 id="sg-title" className="ms-title">
@@ -272,19 +296,11 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             {toggle}
           </div>
 
-          {near ? (
+          {near && (
             <p className="sg-where">
               <PinIcon size={18} />
               Location on. It stays on this device.
             </p>
-          ) : (
-            <div className="sg-where">
-              <button type="button" className="sg-locate" onClick={ask}>
-                <PinIcon size={18} />
-                <span>Use my location</span>
-              </button>
-              <span className="ms-note">Location stays on this device</span>
-            </div>
           )}
 
           {show === "routes" ? (
@@ -366,7 +382,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             : undefined
         }
       />
-      {prompt}
     </section>
   );
 }
