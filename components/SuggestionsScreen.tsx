@@ -12,7 +12,6 @@ import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { ChevronIcon, GroupIcon, LeafIcon, ListIcon, MapIcon, PinIcon, RoutesIcon } from "@/components/Icons";
-import { useLocationPrompt } from "@/components/LocationDialog";
 import { MapTools, SearchField } from "@/components/MapParts";
 import { useSheet } from "@/components/SheetGrab";
 import { useIsDesktop } from "@/lib/useIsDesktop";
@@ -189,7 +188,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   }, [show]);
   // the region's routes on the map, a memo so the map is built once per region
   const points = useMemo(() => pointsFor(regionId, near), [regionId, near]);
-  const { ask, prompt } = useLocationPrompt();
   useEffect(() => rememberList(near ? "/map/near-you" : home ? "/map" : `/map?region=${region.id}`), [near, home, region.id]);
 
   // The sheet moves between its two heights by its own transform, never an ancestor's (that would
@@ -233,8 +231,20 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
       )}
 
       <div className="ms-panel glass-desk">
-        <div className="ms-bar">
-          {!desk && <SearchField />}
+        {!desk && (
+          <div className="ms-bar">
+            <SearchField />
+          </div>
+        )}
+
+        <div
+          ref={sheet}
+          className={`ms-sheet glass-phone glass-top${grab.open ? " is-open" : ""}`}
+          aria-labelledby="sg-title"
+          onScroll={grab.onScroll}
+        >
+          {grab.grab("list")}
+          {/* Routes or Organisms, and on Organisms the group filters, at the top of the sheet */}
           <div className="sg-switch" ref={switchRow}>
           <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill" ref={seg}>
             <span className="seg-thumb" ref={thumb} aria-hidden="true" />
@@ -269,15 +279,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             ))}
           </div>
           </div>
-        </div>
-
-        <div
-          ref={sheet}
-          className={`ms-sheet glass-phone glass-top${grab.open ? " is-open" : ""}`}
-          aria-labelledby="sg-title"
-          onScroll={grab.onScroll}
-        >
-          {grab.grab("list")}
           <div className="sg-head">
             <div>
               <h1 id="sg-title" className="ms-title">
@@ -295,19 +296,11 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             {toggle}
           </div>
 
-          {near ? (
+          {near && (
             <p className="sg-where">
               <PinIcon size={18} />
               Location on. It stays on this device.
             </p>
-          ) : (
-            <div className="sg-where">
-              <button type="button" className="sg-locate" onClick={ask}>
-                <PinIcon size={18} />
-                <span>Use my location</span>
-              </button>
-              <span className="ms-note">Location stays on this device</span>
-            </div>
           )}
 
           {show === "routes" ? (
@@ -389,7 +382,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             : undefined
         }
       />
-      {prompt}
     </section>
   );
 }
