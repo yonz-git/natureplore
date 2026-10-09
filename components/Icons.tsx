@@ -85,6 +85,19 @@ export const RoutesIcon = (p: P) => (
   </Svg>
 );
 
+// a round tree crown with its trunk running up into it and two branches, set in Figma on a 33 by 41
+// grid with a 2.6 line, fitted to the 24 box's height so the line comes out at 1.5 like the others
+export const OrganismsIcon = (p: P) => (
+  <Svg {...p}>
+    <g transform="translate(2.35 0) scale(0.585)" strokeWidth="2.6">
+      <path d="M31.5 16.6666C31.5 25.135 24.7843 32 16.5 32C8.21573 32 1.5 25.135 1.5 16.6666C1.5 8.19828 8.21573 1.33331 16.5 1.33331C24.7843 1.33331 31.5 8.19828 31.5 16.6666Z" />
+      <path d="M16.5 10.9166V32" />
+      <path d="M22.5 30.7244C20.6217 31.5657 18.5734 32.0012 16.5 32C14.4268 31.9996 12.3789 31.5643 10.5 30.7244" strokeLinecap="butt" />
+      <path d="M16.5 32V39.6666M16.5 18.5833L22.5 12.8333M16.5 25.2916L10.5 19.5416" />
+    </g>
+  </Svg>
+);
+
 export const LeafIcon = (p: P) => (
   <Svg {...p}>
     <path d="M5 19c0-9 5-14 15-14 0 10-5 15-14 15" />
