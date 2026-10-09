@@ -27,15 +27,31 @@ const SYM = { x: 0, y: 64.87, w: 283.81, h: 265.34 };
 const LOGO = { w: 1729.5, h: 425.2 };
 const HOLD = 0.58; // seconds the whole logo is left standing once it is built
 const DISSOLVE = 0.38; // seconds the wordmark takes to go
-const TRAVEL = 1.15; // seconds, the symbol flying to its corner
-// The symbol does not slide to its corner, it flies there: up along one gentle arc, the bird on it
-// flapping, shrinking as it goes. It lifts first and then glides left into the corner, a single
-// curve with no turns back. The line is fractions of the way from the corner (0) back to where the
-// symbol starts (1), so it fits every screen; flown from 1 to 0.
-const ROUTE = [{ x: 0, y: 0 }, { x: 0.12, y: 0.04 }, { x: 0.42, y: 0.24 }, { x: 0.78, y: 0.62 }, { x: 1, y: 1 }];
-// Rounded twice (Chaikin: every corner cut at a quarter and three quarters of its sides), it keeps
-// its two ends and runs as one smooth line.
-const rounded = (points: { x: number; y: number }[]) => [
+const TRAVEL = 2.0; // seconds, the symbol flying to its corner, loop and all
+// The symbol does not slide to its corner, it flies there, on the line the user sketched: it turns
+// one loop where it stands, heads left under the heading, rises straight up beside it and curves in
+// to the corner, the bird on it flapping and the symbol shrinking as it goes.
+// The loop is in the symbol's own widths, so it stays round on any screen: a circle 1.2 widths
+// across, just left of where the symbol starts, flown once round from the start and left off at
+// its top, heading left. On a phone the symbol starts too near the edge for that, so the loop
+// slides right until it clears the corner's edge (fly, below).
+const LOOP_R = 0.6;
+const LOOP = Array.from({ length: 17 }, (_, i) => {
+  const a = ((10 - i * 28.75) * Math.PI) / 180;
+  return { x: LOOP_R * Math.cos(a), y: -0.12 + LOOP_R * Math.sin(a) };
+});
+// The rest is fractions of the way from the corner (0) back to where the symbol starts (1), so it
+// fits every screen. Measured off the sketch on a 1540 by 869 window.
+const ROUTE = [
+  { x: 0.772, y: 0.882 }, { x: 0.594, y: 0.9 }, { x: 0.475, y: 0.874 }, { x: 0.432, y: 0.777 },
+  { x: 0.42, y: 0.633 }, { x: 0.422, y: 0.501 }, { x: 0.396, y: 0.37 }, { x: 0.327, y: 0.265 },
+  { x: 0.218, y: 0.165 }, { x: 0.109, y: 0.087 }, { x: 0.04, y: 0.029 }, { x: 0, y: 0 },
+];
+// A hand-drawn line has corners where the hand turned; rounded twice (Chaikin: every corner cut at a
+// quarter and three quarters of its sides) it keeps its shape and its two ends and flies as one
+// smooth line.
+type Pt = { x: number; y: number };
+const rounded = (points: Pt[]) => [
   points[0],
   ...points.slice(0, -1).flatMap((a, i) => {
     const b = points[i + 1];
@@ -46,7 +62,6 @@ const rounded = (points: { x: number; y: number }[]) => [
   }),
   points[points.length - 1],
 ];
-const FLIGHT = rounded(rounded(ROUTE));
 // The symbol shrinks to a tenth of its size or less on the way, and shrunk evenly it lost most of
 // its size in the last moments, snapping small just as it landed. This eases the shrink by ratio
 // instead, the same share smaller in every moment of the flight, on the same curve as the flight.
@@ -97,6 +112,12 @@ export default function WelcomeLogo() {
         x: to.left + to.width / 2 - under(box.left + box.width / 2, cx),
         y: to.top + to.height / 2 - under(box.top + box.height / 2, cy),
         scale,
+        // for the flight: the symbol's width, where it sits off the drawing's centre, and how far the
+        // symbol itself has to go
+        width,
+        off: { x: cx - (box.left + box.width / 2), y: cy - (box.top + box.height / 2) },
+        room: cx - to.left, // from the corner's left edge to where the symbol starts
+        reach: { x: to.left + to.width / 2 - cx, y: to.top + to.height / 2 - cy },
       };
     };
     const fly = () => {
@@ -110,8 +131,29 @@ export default function WelcomeLogo() {
         scrollTo(0, 0);
       };
       if (!landing) return open();
-      // the translation at each point of the line: none where the symbol starts, all of it in the corner
-      const path = [...FLIGHT].reverse().map((f) => ({ x: landing.x * (1 - f.x), y: landing.y * (1 - f.y) }));
+      // Where the symbol itself is to be at each point of the sketch, from where it starts...
+      const w = landing.width;
+      const loopX = Math.max(-LOOP_R * w, LOOP_R * w - landing.room); // the loop's centre, never past the edge
+      const marks: Pt[] = [
+        ...LOOP.map((p) => ({ x: loopX + p.x * w, y: p.y * w })),
+        ...ROUTE.map((f) => ({ x: landing.reach.x * (1 - f.x), y: landing.reach.y * (1 - f.y) })),
+      ];
+      // ...and where the whole drawing has to be for that, since it is the drawing that moves and
+      // it shrinks on the way, which pulls the symbol in toward its centre. The shrink runs on the
+      // same curve as the flight, so a point a share u of the way along the line is reached at
+      // scale^u; that share is measured on the line itself, so it is settled in a few rounds.
+      let path = marks;
+      for (let round = 0; round < 4; round++) {
+        const steps = path.map((p, i) => (i ? Math.hypot(p.x - path[i - 1].x, p.y - path[i - 1].y) : 0));
+        const total = steps.reduce((a, b) => a + b, 0) || 1;
+        let run = 0;
+        path = marks.map((m, i) => {
+          run += steps[i];
+          const s = Math.pow(landing.scale, run / total);
+          return { x: m.x - landing.off.x * (s - 1), y: m.y - landing.off.y * (s - 1) };
+        });
+      }
+      path = rounded(rounded([{ x: 0, y: 0 }, ...path]));
       const wing = el.querySelector(".wing");
       const flyAt = HOLD + DISSOLVE * 0.6;
       travel = gsap
@@ -187,7 +229,7 @@ export default function WelcomeLogo() {
       if (!done) return;
       gsap.set(el, { x: 0, y: 0, scale: 1 });
       const landing = corner();
-      if (landing) gsap.set(el, landing);
+      if (landing) gsap.set(el, { x: landing.x, y: landing.y, scale: landing.scale });
     };
     addEventListener("resize", resize);
 
