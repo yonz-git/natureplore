@@ -86,7 +86,7 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
       </div>
       <button
         type="button"
-        className="sug-save"
+        className="sug-save glass glass-pin"
         aria-pressed={saved}
         aria-label={saved ? `Saved, ${route.name}, tap to remove` : `Save ${route.name}`}
         onClick={() => toggle(route.id)}
