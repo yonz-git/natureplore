@@ -653,6 +653,14 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
    their first stroke, measured at 18 */
 .sg .seg-opt:first-of-type > svg { margin: 0 -0.0800rem 0 -0.0350rem; }
 .sg .seg-opt:last-of-type > svg { margin: 0 -0.0663rem 0 -0.0185rem; }
+/* the open option's icon gets heavier, its line 40% thicker as on the nav's Map, and the two ends of
+   Routes' line fill in */
+.sg .seg-opt > svg,
+.sg .seg-opt > svg g { transition: stroke-width 220ms var(--ease-out); }
+.sg .seg-opt > svg circle { fill: rgb(from currentColor r g b / 0); transition: fill 220ms var(--ease-out), stroke-width 220ms var(--ease-out); }
+.sg .seg-opt[aria-pressed="true"] > svg { stroke-width: 2.1; }
+.sg .seg-opt[aria-pressed="true"] > svg g { stroke-width: 3.64; }
+.sg .seg-opt[aria-pressed="true"] > svg circle { fill: currentColor; }
 /* the switch and, on Organisms, the group filters beside it; on a phone they wrap under it */
 .sg-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0 0.75rem; }
 /* on a line of their own, indented to start under the Organisms option (--org-x, measured). The line
