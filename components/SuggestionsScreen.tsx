@@ -151,7 +151,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   // as the toggles appear the moving icons play once, a beat after they grow in, dimmed or not
   useEffect(() => {
     if (show !== "organisms") return;
-    groupRow.current?.querySelectorAll<HTMLElement>("[data-group]").forEach((b, i) => playGroup(b, b.dataset.group as Group, 120 + i * 40));
+    groupRow.current?.querySelectorAll<HTMLElement>("[data-group]").forEach((b, i) => playGroup(b, b.dataset.group as Group, 160 + i * 60));
   }, [show]);
   const orgOpt = useRef<HTMLButtonElement>(null);
   useLayoutEffect(() => {
