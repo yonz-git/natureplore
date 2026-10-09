@@ -692,7 +692,7 @@ button.float-pill,
   color: var(--color-on-primary);
   /* the number in Alpino Bold, the one place that weight is used, so it reads at 11 to 15px */
   font-family: var(--font-text);
-  font-size: var(--text-count);
+  font-size: calc(var(--text-count) * 1.35);
   font-weight: 700;
   line-height: 1;
 }
