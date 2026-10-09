@@ -165,6 +165,28 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
     place();
     return () => watch.disconnect();
   }, []);
+  // The lime under the picked option is one pill that slides between the two (.seg-thumb in
+  // app/flow-a.css): placed on the picked option's box, measured, and moved again whenever the option
+  // changes or a width changes. Its first placement is not animated; from then on it glides.
+  const seg = useRef<HTMLDivElement>(null);
+  const thumb = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const box = seg.current;
+    const pill = thumb.current;
+    if (!box || !pill) return;
+    const place = () => {
+      const on = box.querySelector<HTMLElement>('.seg-opt[aria-pressed="true"]');
+      if (!on) return;
+      pill.style.width = `${on.offsetWidth}px`;
+      pill.style.height = `${on.offsetHeight}px`;
+      pill.style.transform = `translate(${on.offsetLeft}px, ${on.offsetTop}px)`;
+    };
+    place();
+    if (!("thumb" in box.dataset)) requestAnimationFrame(() => (box.dataset.thumb = ""));
+    const watch = new ResizeObserver(place);
+    box.querySelectorAll(".seg-opt").forEach((o) => watch.observe(o));
+    return () => watch.disconnect();
+  }, [show]);
   // the region's routes on the map, a memo so the map is built once per region
   const points = useMemo(() => pointsFor(regionId, near), [regionId, near]);
   const { ask, prompt } = useLocationPrompt();
@@ -214,14 +236,15 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
         <div className="ms-bar">
           {!desk && <SearchField />}
           <div className="sg-switch" ref={switchRow}>
-          <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill">
+          <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill" ref={seg}>
+            <span className="seg-thumb" ref={thumb} aria-hidden="true" />
             <button type="button" className="seg-opt" aria-pressed={show === "routes"} onClick={() => setShow("routes")}>
               <RoutesIcon size={18} />
-              Routes
+              <span className="seg-label" data-text="Routes">Routes</span>
             </button>
             <button type="button" ref={orgOpt} className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
               <LeafIcon size={18} />
-              Organisms
+              <span className="seg-label" data-text="Organisms">Organisms</span>
             </button>
           </div>
           {/* inert, not removed, while on Routes, so the toggles can fade out as well as in */}

@@ -596,11 +596,45 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .a8-chev { transform: rotate(90deg); transition: transform 200ms var(--ease-out); }
 .a8-chev.is-up { transform: rotate(-90deg); }
 
-/* Routes or Organisms: what the suggestions list, the one picked in lime */
-.seg-opt[aria-pressed="true"] {
+/* Routes or Organisms: what the suggestions list, the one picked in lime. The lime is one pill,
+   .seg-thumb, that slides from one option to the other (placed by components/SuggestionsScreen.tsx),
+   while the labels crossfade between white and forest green in the same time. Until the script has
+   placed the pill, the picked option carries the lime itself. */
+.seg { position: relative; }
+.seg-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--radius-pill);
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  pointer-events: none;
+  opacity: 0;
+}
+.seg[data-thumb] .seg-thumb {
+  opacity: 1;
+  /* a glide across the pill, easing in and out, the curve the project keeps for on-screen moves */
+  transition: transform 400ms var(--ease-move), width 400ms var(--ease-move);
+}
+.seg:not([data-thumb]) .seg-opt[aria-pressed="true"] {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+}
+.seg-opt[aria-pressed="true"] {
   color: var(--color-on-primary);
   font-weight: var(--text-chip-active--font-weight);
+}
+.sg .seg-opt { transition: transform 160ms var(--ease-out), background-color 200ms ease, color 400ms var(--ease-move); }
+/* each label holds the width of its heavier picked weight, so picking one never nudges the pill */
+.seg-label { display: inline-flex; flex-direction: column; }
+.seg-label::after {
+  content: attr(data-text);
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font-weight: var(--text-chip-active--font-weight);
+}
+@media (prefers-reduced-motion: reduce) {
+  .seg[data-thumb] .seg-thumb { transition: none; }
+  .sg .seg-opt { transition: none; }
 }
 @media (hover: hover) and (pointer: fine) {
   .seg-opt[aria-pressed="false"]:hover { background-color: rgb(255 255 255 / 0.08); }
