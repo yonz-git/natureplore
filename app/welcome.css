@@ -138,6 +138,27 @@
 .a0-mark-corner svg { display: block; height: 100%; width: auto; }
 .a0-mark .intro-logo { height: 100%; width: auto; filter: none; }
 .a0-mark-slot { visibility: hidden; }
+/* The name, which lands from the logo (components/WelcomeLogo.tsx). On the phone it sits beside the
+   corner symbol exactly as it does in the logo, at the symbol's scale (k: the symbol's height over
+   its 265.34 units), so the two read as the full logo; from 64rem it lands at the foot of the page,
+   under the heading and on its left edge. */
+.a0-wordmark {
+  --k: calc(2rem / 265.34);
+  position: absolute;
+  top: calc(var(--mark-top) + (7.79 - 64.87) * var(--k));
+  left: calc(var(--spacing-inset-screen) + 369.34 * var(--k));
+  height: calc(417.41 * var(--k));
+  aspect-ratio: 1360.14 / 417.41;
+  color: var(--color-on-ground);
+  pointer-events: none;
+}
+.a0-wordmark svg { display: block; width: 100%; height: 100%; overflow: visible; }
+@media (min-width: 48rem) {
+  .a0-wordmark { --k: calc(2.125rem / 265.34); }
+}
+@media (min-width: 64rem) {
+  .a0-wordmark { top: auto; left: 7.5rem; bottom: 3rem; height: auto; width: 20rem; }
+}
 
 .a0-cue {
   position: absolute;
@@ -283,6 +304,8 @@
   /* until components/WelcomeLogo.tsx starts the timeline, the markup is the whole logo, which would
      flash on the page as it loads */
   .a0s .a0-mark:not([data-ready]) { visibility: hidden; }
+  /* the name is unseen until it lifts out of the logo */
+  .a0s .a0-wordmark { opacity: 0; }
   .a0s .a0-mark {
     --a0-mark-w: min(max(39.27cqw, 62.83cqh), max(min(39.27cqw, 62.83cqh), 85.67cqw));
     top: 50%;

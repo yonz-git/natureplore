@@ -53,9 +53,14 @@ export default function Welcome({ still = false }: { still?: boolean }) {
         </div>
         {/* the logo: built by the scroll, already in its corner when the page is still */}
         {still ? (
-          <div className="a0-mark-corner">
-            <Logo symbol />
-          </div>
+          <>
+            <div className="a0-mark-corner">
+              <Logo symbol />
+            </div>
+            <div className="a0-wordmark">
+              <Logo wordmark />
+            </div>
+          </>
         ) : (
           <WelcomeLogo />
         )}
