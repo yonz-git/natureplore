@@ -5,6 +5,7 @@ description: Delicate frosted glass over a darkened forest photograph, white typ
 fonts:
   heading: "'Comfortaa', 'Trebuchet MS', 'Helvetica Neue', Arial, sans-serif"
   text: "'Alpino', 'Futura', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif"
+  title: "'Shantell Sans', 'Comfortaa', 'Trebuchet MS', cursive"
 colors:
   ground: "#14261A"
   scrim: "#061209"
@@ -489,7 +490,7 @@ The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group
 
 ## Typography
 
-Two faces with separate jobs. Comfortaa 300 is the voice: headings, stat numbers and map counts, round and light so large sizes stay friendly rather than loud. Alpino (Fontshare) carries everything you read or tap, in 300 for running text and 400 for titles, labels and controls, stepping to 500 only on the primary button, the active tab or segment, and counts in pills. Nothing is heavier than 500 and nothing is set in capitals.
+Three faces with separate jobs. Comfortaa 300 is the voice: open headlines, stat numbers and map counts, round and light so large sizes stay friendly rather than loud. Shantell Sans 300 is the hand: every title that sits in a box or a sheet (panels, sheets, cards), and the four stops along the welcome's drawn route, at line height 1.5 and letter spacing -0.025em, its lower case set to 0.55 of the size (0.57 for a screen's own title) so it matches the rest; buttons, map names and spot numbers never take it. Alpino (Fontshare) carries everything you read or tap, in 300 for running text and 400 for titles, labels and controls, stepping to 500 only on the primary button, the active tab or segment, and counts in pills. Nothing is heavier than 500 and nothing is set in capitals.
 
 Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, the figures themselves at weight 400 and any word between them (the h in 3 h 00) left at 300, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 27.6/40.8 for the one desktop subline, `body` 19.2/28.8, `body-sm` 18/26.4 for notes under a section, `secondary` 16.8/24, `caption` 15.6/21.6. `title` 20.4/26.4 names a route, spot or organism; `title-sm` 19.2/26.4 names a search result or a fact. Reading text was raised a fifth over the headings, with line heights a fifth taller to match: headings, stats, spot numbers and buttons kept their size. Controls follow: `field` 19.2, `chip` 16.8, `tab` 14.4, `pill` 15.6, `stat-label` 14.4. `button-small` 14 is a small inner glass button on a sheet, such as Show on map. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
 

@@ -60,6 +60,7 @@
 
   --font-heading: 'Comfortaa', 'Trebuchet MS', 'Helvetica Neue', Arial, sans-serif;
   --font-text: 'Alpino', 'Futura', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif;
+  --font-title: 'Shantell Sans', 'Comfortaa', 'Trebuchet MS', cursive;
 
   --text-display-desktop: 3.5rem;
   --text-display-desktop--font-family: var(--font-heading);

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Comfortaa } from "next/font/google";
+import { Comfortaa, Shantell_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -20,6 +20,13 @@ const comfortaa = Comfortaa({
   subsets: ["latin"],
 });
 
+// the title face: titles in boxes and sheets, and the welcome's route stops (app/globals.css)
+const shantell = Shantell_Sans({
+  variable: "--font-shantell",
+  subsets: ["latin"],
+  weight: "300",
+});
+
 export const metadata: Metadata = {
   title: { default: "Natureplore", template: "%s, Natureplore" },
   description: "v1 prototype: find nature near you, understand it, help it.",
@@ -36,7 +43,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // extensions mark <html> before React loads (Dark Reader's data-darkreader-* attributes)
-    <html lang="en" className={`${alpino.variable} ${comfortaa.variable} h-full`} suppressHydrationWarning>
+    <html lang="en" className={`${alpino.variable} ${comfortaa.variable} ${shantell.variable} h-full`} suppressHydrationWarning>
       <body className="min-h-full">{children}</body>
     </html>
   );
