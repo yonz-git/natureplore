@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Natureplore Design System</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400&display=swap">
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=alpino@300,400,500&display=swap">
 <style>
 :root{
@@ -27,7 +26,7 @@
   --color-system-alert:rgb(37 37 37 / 0.78); --color-system-alert-rule:rgb(255 255 255 / 0.18); --color-system-alert-action:#0A84FF; --color-system-prompt:#282A2C; --color-system-prompt-text:#E3E3E3; --color-system-prompt-soft:#C4C7C5; --color-system-prompt-action:#A8C7FA; --color-system-prompt-on-action:#062E6F; --color-system-prompt-rule:#8E918F;
   --lime:linear-gradient(135deg,var(--color-primary) 0%,var(--color-primary-deep) 100%);
   /* fonts */
-  --font-heading:'Comfortaa','Trebuchet MS','Helvetica Neue',Arial,sans-serif;
+  --font-heading:var(--font-text);
   --font-text:'Alpino','Futura','Century Gothic','Helvetica Neue',Arial,sans-serif;
   /* typography: weight size/line-height family, then tracking */
   --type-display-desktop:300 3.5rem/4rem var(--font-heading); --track-display-desktop:-0.015em;
@@ -307,13 +306,13 @@ svg.i{display:block;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5
 
 <section class="block" id="typography">
   <h2>Typography</h2>
-  <p class="lede">Comfortaa 300 is the voice: open headlines, numbers and counts. Shantell Sans 300 is the hand: titles in boxes and sheets, and the welcome's route stops. Alpino carries everything you read or tap, 300 for running text, 400 for titles and controls, 500 only for the primary action, the active control and pill counts.</p>
-  <div class="spec"><div><div class="k">display-desktop</div><div class="v">Comfortaa 300, 56/64, −1.5%</div></div><div class="sample" style="font:var(--type-display-desktop);letter-spacing:var(--track-display-desktop)">Explore <span class="grad">all the corners</span></div></div>
-  <div class="spec"><div><div class="k">display</div><div class="v">Comfortaa 300, 34/42, −1%</div></div><div class="sample" style="font:var(--type-display);letter-spacing:var(--track-display)">Explore all the corners of nature</div></div>
-  <div class="spec"><div><div class="k">h1</div><div class="v">Comfortaa 300, 32/40, −1%</div></div><div class="sample" style="font:var(--type-h1);letter-spacing:var(--track-h1)">What is recorded <span class="grad">in this area</span></div></div>
-  <div class="spec"><div><div class="k">h2</div><div class="v">Comfortaa 300, 24/30, −1%</div></div><div class="sample" style="font:var(--type-h2);letter-spacing:var(--track-h2)">Routes <span class="grad">near you</span></div></div>
-  <div class="spec"><div><div class="k">h3</div><div class="v">Comfortaa 300, 22/28</div></div><div class="sample" style="font:var(--type-h3)">Spots along this route</div></div>
-  <div class="spec"><div><div class="k">stat, stat-sm, count</div><div class="v">Comfortaa 300, 24, 22, 15, tabular</div></div><div class="sample"><span style="font:var(--type-stat)">6.0</span> <span style="font:var(--type-stat-sm)">1:50</span> <span style="font:var(--type-count)">164</span></div></div>
+  <p class="lede">Shantell Sans 300 is the hand: titles in boxes and sheets, and the welcome's route stops. Alpino carries everything else: open headlines, numbers, counts and running text in 300, titles and controls in 400, 500 only for the primary action, the active control and pill counts.</p>
+  <div class="spec"><div><div class="k">display-desktop</div><div class="v">Alpino 300, 56/64, −1.5%</div></div><div class="sample" style="font:var(--type-display-desktop);letter-spacing:var(--track-display-desktop)">Explore <span class="grad">all the corners</span></div></div>
+  <div class="spec"><div><div class="k">display</div><div class="v">Alpino 300, 34/42, −1%</div></div><div class="sample" style="font:var(--type-display);letter-spacing:var(--track-display)">Explore all the corners of nature</div></div>
+  <div class="spec"><div><div class="k">h1</div><div class="v">Alpino 300, 32/40, −1%</div></div><div class="sample" style="font:var(--type-h1);letter-spacing:var(--track-h1)">What is recorded <span class="grad">in this area</span></div></div>
+  <div class="spec"><div><div class="k">h2</div><div class="v">Alpino 300, 24/30, −1%</div></div><div class="sample" style="font:var(--type-h2);letter-spacing:var(--track-h2)">Routes <span class="grad">near you</span></div></div>
+  <div class="spec"><div><div class="k">h3</div><div class="v">Alpino 300, 22/28</div></div><div class="sample" style="font:var(--type-h3)">Spots along this route</div></div>
+  <div class="spec"><div><div class="k">stat, stat-sm, count</div><div class="v">Alpino 300, 24, 22, 15, tabular</div></div><div class="sample"><span style="font:var(--type-stat)">6.0</span> <span style="font:var(--type-stat-sm)">1:50</span> <span style="font:var(--type-count)">164</span></div></div>
   <div class="spec"><div><div class="k">lead-desktop</div><div class="v">Alpino 300, 27.6/40.8</div></div><div class="sample" style="font:var(--type-lead-desktop);color:var(--color-on-ground-soft)">What nests and grows there, and what is happening to them.</div></div>
   <div class="spec"><div><div class="k">body</div><div class="v">Alpino 300, 19.2/28.8</div></div><div class="sample" style="font:var(--type-body);color:var(--color-on-ground-soft)">1 h 45 at a looking pace, not a walking pace. Flat, unpaved, a pushchair gets round.</div></div>
   <div class="spec"><div><div class="k">body-sm</div><div class="v">Alpino 300, 18/26.4</div></div><div class="sample" style="font:var(--type-body-sm);color:var(--color-on-ground-soft)">Five of the six spots are in season now.</div></div>
