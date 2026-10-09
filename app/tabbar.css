@@ -66,6 +66,11 @@
 /* the open tab's icon gets heavier: the front bookmark of Saved becomes solid */
 .tabbar-tab .tab-fill { fill: rgb(from currentColor r g b / 0); transition: fill 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-fill { fill: currentColor; }
+/* Learn's earth turns to its negative when selected, the two drawings crossfade */
+.tabbar-tab .tab-earth-off, .tabbar-tab .tab-earth-on { transition: opacity 220ms var(--ease-out); }
+.tabbar-tab .tab-earth-on { opacity: 0; }
+.tabbar-tab.is-current .tab-earth-on { opacity: 1; }
+.tabbar-tab.is-current .tab-earth-off { opacity: 0; }
 /* Map's line thickens instead */
 .tabbar-tab .tab-outline { transition: stroke-width 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-outline { stroke-width: 2.8; }
