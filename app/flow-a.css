@@ -119,6 +119,10 @@
   font-family: var(--text-count--font-family);
   font-size: 0.825rem;
   font-weight: 700;
+  /* Comfortaa Bold is still light at this size, and macOS's antialiased smoothing thins it further:
+     a hairline stroke in the number's own colour and the system smoothing give it its weight */
+  -webkit-text-stroke: 0.35px currentColor;
+  -webkit-font-smoothing: auto;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
