@@ -312,7 +312,11 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-axis { position: relative; height: 2.5rem; }
 .fb-axis-line { position: absolute; left: 0; right: 0; top: 1.0625rem; height: 0.1875rem; border-radius: 0.125rem; background: var(--color-mist); opacity: 0.8; }
 /* the marks on the route's distance axis, the spots list markers, centred on the line */
-.fb-axis-mark { position: absolute; top: calc(1.15625rem - 1.71rem / 2); transform: translateX(-50%); }
+.fb-axis-mark { position: absolute; top: calc(1.15625rem - 1.71rem * 0.85 / 2); transform: translateX(-50%); }
+/* 15% smaller than the list's, so close spots keep apart */
+.fb-axis-mark .spot-mark { --mark: calc(1.71rem * 0.85); font-size: calc(var(--text-count) * 0.855 * 0.85); }
+/* out of season it is muted solid, not see-through, so the axis line does not show through it */
+.fb-axis-mark.is-out .spot-mark { background: color-mix(in srgb, var(--color-primary) 60%, var(--color-ground)); }
 .fb-axis-ticks { margin-top: 0.625rem; display: flex; justify-content: space-between; font-size: 0.9rem; line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); }
 
 .fb-recorded { gap: 1rem; }
