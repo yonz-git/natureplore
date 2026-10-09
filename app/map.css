@@ -653,9 +653,9 @@ button.float-pill,
 .search-miss .ms-lead { margin-top: 0.675rem; font-size: var(--text-body); line-height: var(--text-body--line-height); }
 .search .float-pill.is-after { margin-top: 1rem; }
 
-/* ── A5: the location line in the bar ──────────────────────────────────────────────────────── */
+/* ── A5: the suggestions for a region ─────────────────────────────────────────────────────── */
 
-.a5 { --sheet-top: max(min(22.375rem, 100dvh - 18rem), var(--top-chrome) + 8rem); }
+.a5 { --sheet-top: max(min(18.875rem, 100dvh - 18rem), var(--top-chrome) + 4.5rem); }
 
 /* ── A6: a place that is not mapped yet ─────────────────────────────────────────────────────── */
 

@@ -171,8 +171,14 @@
 /* ── A5, A4: the suggestions ───────────────────────────────────────────────────────────────── */
 
 /* the sheet rests high enough that the first route shows above the tab bar: its name on a
-   390 × 844 phone, its photograph on a 375 × 667 one. Opened, it stops under the search bar. */
-.sg { --sheet-top: max(min(20.5rem, 100dvh - 27rem), var(--top-chrome) + 8rem); --sheet-open: calc(var(--top-chrome) + 8rem); }
+   390 × 844 phone, its photograph on a 375 × 667 one. The switch moved from over the map into the
+   sheet, so the sheet rests 3.5rem higher, where the switch was, and the map keeps the same strip.
+   Opened, it stops under the search field, the only thing left over the map. */
+.sg { --sheet-top: max(min(17rem, 100dvh - 27rem), var(--top-chrome) + 4.5rem); --sheet-open: calc(var(--top-chrome) + 4.5rem); }
+/* the switch is the sheet's first row; on the phone it clears the grab handle above it */
+@media (max-width: 47.99rem), (max-width: 63.99rem) and (max-height: 35.99rem) {
+  .sg .ms-sheet > .sg-switch { margin-top: 0.75rem; }
+}
 .sg .ms-sheet { gap: 1.6875rem; }
 .sg-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
 /* the heading shrinks first; "Show on map" only drops under it when the text is very large */
@@ -205,26 +211,9 @@
 }
 .sg-toggle:active { transform: scale(0.97); }
 
-.sg-where { margin: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
-p.sg-where { flex-direction: row; align-items: center; gap: 0.5rem; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); font-weight: 400; }
-p.sg-where svg { color: var(--color-mist); flex-shrink: 0; }
-.sg-locate {
-  align-self: flex-start;
-  min-height: 2.75rem;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  border: 0;
-  background: none;
-  color: var(--color-on-ground);
-  font-family: var(--font-text);
-  font-size: var(--text-body-sm);
-  font-weight: 500;
-  cursor: pointer;
-}
-.sg-locate span { text-decoration: underline; text-underline-offset: 0.1875rem; }
-.sg-where .ms-note { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
+/* near you: the line that says location is on */
+.sg-where { margin: 0; display: flex; align-items: center; gap: 0.5rem; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); font-weight: 400; }
+.sg-where svg { color: var(--color-mist); flex-shrink: 0; }
 
 .sg-list { display: flex; flex-direction: column; gap: 1rem; }
 .sg-list > .btn { margin-top: 0.25rem; }
@@ -535,7 +524,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg-toggle,
   .sg-map-note,
   .sg .ms-handle { display: none; }
-  .sg .ms-sheet { margin-top: 2rem; gap: 1.6875rem; }
+  /* the search field has left the panel for the top of the screen, so the sheet starts at its top */
+  .sg .ms-sheet { margin-top: 0; gap: 1.6875rem; }
   .sg-list {
     flex: 1 1 auto;
     min-height: 0;
@@ -614,23 +604,84 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .a8-chev { transform: rotate(90deg); transition: transform 200ms var(--ease-out); }
 .a8-chev.is-up { transform: rotate(-90deg); }
 
-/* Routes or Organisms: what the suggestions list, the one picked in lime */
-.seg-opt[aria-pressed="true"] {
+/* Routes or Organisms: what the suggestions list, the one picked in lime. The lime is one pill,
+   .seg-thumb, that slides from one option to the other (placed by components/SuggestionsScreen.tsx),
+   while the labels crossfade between white and forest green in the same time. Until the script has
+   placed the pill, the picked option carries the lime itself. */
+.seg { position: relative; }
+.seg-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--radius-pill);
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  pointer-events: none;
+  opacity: 0;
+}
+.seg[data-thumb] .seg-thumb {
+  opacity: 1;
+  /* a glide across the pill, easing in and out, the curve the project keeps for on-screen moves */
+  transition: transform 400ms var(--ease-move), width 400ms var(--ease-move);
+}
+.seg:not([data-thumb]) .seg-opt[aria-pressed="true"] {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+}
+.seg-opt[aria-pressed="true"] {
   color: var(--color-on-primary);
   font-weight: var(--text-chip-active--font-weight);
+}
+.sg .seg-opt { transition: transform 160ms var(--ease-out), background-color 200ms ease, color 400ms var(--ease-move); }
+/* each label holds the width of its heavier picked weight, so picking one never nudges the pill */
+.seg-label { display: inline-flex; flex-direction: column; }
+.seg-label::after {
+  content: attr(data-text);
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font-weight: var(--text-chip-active--font-weight);
+}
+@media (prefers-reduced-motion: reduce) {
+  .seg[data-thumb] .seg-thumb { transition: none; }
+  .sg .seg-opt { transition: none; }
 }
 @media (hover: hover) and (pointer: fine) {
   .seg-opt[aria-pressed="false"]:hover { background-color: rgb(255 255 255 / 0.08); }
 }
 .sg .seg { flex-shrink: 0; }
 /* the switch and, on Organisms, the group filters beside it; on a phone they wrap under it */
-.sg-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
-.sg-groups { display: none; gap: 0.25rem; /* about a third of 0.6875rem, a whole pixel */ transition: display 220ms allow-discrete; }
-/* on a line of their own, indented to start under the Organisms option (--org-x, measured) */
-.sg-groups.is-on { display: flex; flex-basis: 100%; padding-left: var(--org-x, 0); box-sizing: border-box; }
-/* each toggle fades and grows in on its own, a beat apart, never its row: the toggles are glass, and
-   animating anything above glass switches the frost off */
+.sg-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0 0.75rem; }
+/* on a line of their own, indented to start under the Organisms option (--org-x, measured). The line
+   and indent belong to the row whether it is on or not, so while the toggles fade out on the way back
+   to Routes they stay where they were instead of jumping left beside the switch */
+/* The row opens and closes its own height, so the heading and list under it glide down and back
+   up instead of jumping: it grows as the toggles come in, and folds once most have gone. Height,
+   not a transform, since everything under it has to move; the space above it is a margin for the
+   same reason, so it opens with the row. */
+.sg-groups {
+  display: none;
+  flex-basis: 100%;
+  height: 0;
+  margin-top: 0;
+  padding-left: var(--org-x, 0);
+  box-sizing: border-box;
+  gap: 0.25rem; /* about a third of 0.6875rem, a whole pixel */
+  /* held until the row has folded */
+  transition:
+    display 480ms allow-discrete,
+    height 300ms var(--ease-move) 180ms,
+    margin-top 300ms var(--ease-move) 180ms;
+}
+.sg-groups.is-on {
+  display: flex;
+  height: 2.125rem;
+  margin-top: 0.5rem;
+  transition: display 0ms allow-discrete, height 340ms var(--ease-move), margin-top 340ms var(--ease-move);
+}
+@starting-style { .sg-groups.is-on { height: 0; margin-top: 0; } }
+/* each toggle fades and grows in on its own, never its row (the toggles are glass, and animating
+   anything above glass switches the frost off): one after another from the left, drifting a touch to
+   the right as they come, and out again the other way, from the right. --d is each one's beat, and
+   only the coming and going wait for it, never a hover or a press */
 .sg-group {
   position: relative;
   /* 3rem less 30%, rounded to 34 so every edge lands on a whole pixel */
@@ -642,31 +693,47 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   justify-content: center;
   border-radius: var(--radius-pill);
   cursor: pointer;
+  --d: 0ms;
+  --in: 300ms;
   opacity: 0;
   scale: 0.9;
-  transition: opacity 200ms var(--ease-out), scale 200ms var(--ease-out), transform 160ms var(--ease-out), background-color 200ms ease, box-shadow 200ms ease;
+  translate: -0.375rem 0;
+  transition:
+    opacity var(--in) var(--ease-out) var(--d),
+    scale var(--in) var(--ease-out) var(--d),
+    translate var(--in) var(--ease-out) var(--d),
+    transform 160ms var(--ease-out),
+    background-color 200ms ease,
+    box-shadow 200ms ease;
 }
-.sg-groups.is-on .sg-group { opacity: 1; scale: 1; }
-@starting-style { .sg-groups.is-on .sg-group { opacity: 0; scale: 0.9; } }
-.sg-groups.is-on .sg-group:nth-child(2) { transition-delay: 40ms; }
-.sg-groups.is-on .sg-group:nth-child(3) { transition-delay: 80ms; }
-.sg-groups.is-on .sg-group:nth-child(4) { transition-delay: 120ms; }
-.sg-groups.is-on .sg-group:nth-child(5) { transition-delay: 160ms; }
+.sg-groups.is-on .sg-group { opacity: 1; scale: 1; translate: 0 0; }
+/* and out again, the dimmed ones too: the site-wide 45% for a disabled control would otherwise hold
+   them there until the row is gone, and they would vanish instead of fading with the rest */
+.sg-groups:not(.is-on) .sg-group { opacity: 0; scale: 0.9; translate: -0.375rem 0; --in: 200ms; }
+@starting-style {
+  /* the dimmed ones as well: their own 40% rule, further down and as specific, would otherwise win
+     here too and skip their fade, so this one is a step more specific */
+  .sg-groups.is-on .sg-group,
+  .sg-groups.is-on .sg-group.sg-group[aria-disabled="true"] { opacity: 0; scale: 0.9; translate: -0.375rem 0; }
+}
+.sg-groups.is-on .sg-group:nth-child(2) { --d: 60ms; }
+.sg-groups.is-on .sg-group:nth-child(3) { --d: 120ms; }
+.sg-groups.is-on .sg-group:nth-child(4) { --d: 180ms; }
+.sg-groups.is-on .sg-group:nth-child(5) { --d: 240ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(4) { --d: 50ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(3) { --d: 100ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(2) { --d: 150ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(1) { --d: 200ms; }
 .sg-group:active { transform: scale(0.94); }
 /* 44 tall to touch; across, the hit areas meet halfway into the gap so neighbours never overlap */
 .sg-group::before { content: ""; position: absolute; inset: calc((2.125rem - 2.75rem) / 2) -0.125rem; }
 /* One clean edge, for the switch and the group toggles alike: on these small pills the glass border,
    its rim of light and the 1px top highlight stack into rings that never quite line up. They keep a
-   single 1px border; over the map (the phone) they keep their float shadow, inside the panel none. */
+   single 1px border, and no float shadow: at every size they sit inside the sheet's glass. */
 .sg .seg.glass,
 .sg-group.glass {
   border: 1px solid var(--color-inner-edge);
-  box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
-}
-@media (min-width: 64rem) {
-  /* on the desktop they sit inside the glass panel (app/glass.css, glass-desk): no float shadow */
-  .sg .glass-desk .seg.glass,
-  .sg .glass-desk .sg-group.glass { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 0 0 rgb(6 18 9 / 0); }
+  box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 0 0 rgb(6 18 9 / 0);
 }
 /* each group icon centred by its drawing, not its 24 box: most sit a touch low, the bird also right */
 /* The lopsided group icons are centred optically, not by their box (components/Icons.tsx): the herbs,
@@ -714,8 +781,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg-group[aria-pressed="false"]:not([aria-disabled="true"]):hover { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 0 0 rgb(6 18 9 / 0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .sg-group { scale: 1; transition: opacity 120ms ease, background-color 200ms ease; }
-  .sg-groups.is-on .sg-group { transition-delay: 0ms; }
+  .sg-groups, .sg-groups.is-on { transition: display 120ms allow-discrete; }
+  .sg-group, .sg-groups:not(.is-on) .sg-group { scale: 1; translate: 0 0; transition: opacity 120ms ease, background-color 200ms ease; }
 }
 .sg-org-link { flex-grow: 1; min-width: 0; display: flex; align-items: center; gap: 0.875rem; color: var(--color-on-ground); text-decoration: none; }
 .sg-org-link > span:nth-child(2) { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1875rem; }
