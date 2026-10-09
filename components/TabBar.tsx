@@ -11,15 +11,16 @@ const TABS = [
     href: "/map",
     label: "Map",
     // a folded map with a pin and a dashed trail on it, set in Figma on a 22 by 20 grid, centred in
-    // the 24 box at 0.99; its outline is a 1.75-unit line, and when the tab is open the line thickens,
-    // the pin and trail gain a thin line of their own and the pin grows from its middle (app/tabbar.css)
+    // the 24 box at 0.99; its outline is a 1.75-unit line, closed where Figma left three stray stubs at
+    // the foot of the left fold; when the tab is open the outline stays as it is, the pin and trail gain
+    // a thin line of their own and the pin grows from its middle (app/tabbar.css)
     big: true,
     icon: (
       <g transform="translate(12 12) scale(0.99) translate(-10.75 -9.75)">
         <path
           className="tab-outline"
           strokeWidth="1.75"
-          d="M7.14502 17.25C4.92472 17.2502 2.74798 17.8664 0.857 19.03L0.5 19.25H0.25V2.35L0.9 1.96C2.76501 0.84103 4.89906 0.249965 7.074 0.25H7.25H7.343C9.51794 0.249965 11.652 0.84103 13.517 1.96L14 2.25H14.353C16.574 2.25018 18.7515 1.63399 20.643 0.47L21 0.25H21.25V17.15L20.6 17.54C18.7353 18.6588 16.6016 19.2499 14.427 19.25H14.25H13.917L13.559 19.03C11.6677 17.8662 9.49065 17.25 7.27 17.25H7.25H7.147M7.14502 17.25C7.14568 17.25 7.14634 17.25 7.147 17.25M7.14502 17.25H7.146H7.147M7.14502 17.25H7"
+          d="M7.14502 17.25C4.92472 17.2502 2.74798 17.8664 0.857 19.03L0.5 19.25H0.25V2.35L0.9 1.96C2.76501 0.84103 4.89906 0.249965 7.074 0.25H7.25H7.343C9.51794 0.249965 11.652 0.84103 13.517 1.96L14 2.25H14.353C16.574 2.25018 18.7515 1.63399 20.643 0.47L21 0.25H21.25V17.15L20.6 17.54C18.7353 18.6588 16.6016 19.2499 14.427 19.25H14.25H13.917L13.559 19.03C11.6677 17.8662 9.49065 17.25 7.27 17.25H7.25H7.147Z"
         />
         <g className="tab-fills" fill="currentColor" strokeWidth="0">
           <path className="tab-pin" d="M7.25 3.75C5.3265 3.75 3.75 5.32166 3.75 7.23999C3.75 7.98332 3.98733 8.67415 4.38917 9.24198L6.823 13.4493C7.16383 13.8946 7.3905 13.8101 7.674 13.426L10.3583 8.85765C10.4125 8.75932 10.455 8.65498 10.4922 8.54832C10.6624 8.13312 10.75 7.68871 10.75 7.23999C10.75 5.32166 9.174 3.75 7.25 3.75ZM7.25 5.38533C8.286 5.38533 9.11 6.20716 9.11 7.24015C9.11 8.27315 8.28583 9.09465 7.25 9.09465C6.21417 9.09465 5.39 8.27298 5.39 7.24015C5.39 6.20732 6.21433 5.38533 7.25 5.38533Z" />

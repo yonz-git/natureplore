@@ -77,9 +77,7 @@
 .tabbar-tab .tab-earth-on circle { stroke-width: 1.2; transition: stroke-width 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-learn { stroke-width: 0.417; }
 .tabbar-tab.is-current .tab-earth-on circle { stroke-width: 1.617; }
-/* Map's line thickens instead */
-.tabbar-tab .tab-outline { transition: stroke-width 220ms var(--ease-out); }
-.tabbar-tab.is-current .tab-outline { stroke-width: 2.45; }
+/* Map's outline stays as drawn; its pin and trail take a thin line of their own */
 .tabbar-tab .tab-fills { transition: stroke-width 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-fills { stroke-width: 0.5; }
 /* the pin sits midway between the map's top and bottom edges where it stands (8.75 on its grid, the
