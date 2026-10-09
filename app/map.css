@@ -423,7 +423,9 @@ button.float-pill,
 .card-stat dt { font-size: var(--text-stat-label); line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
 .card-stat dd { margin: 0; display: flex; align-items: baseline; gap: 0.25rem; }
 .card-stat dd b { font-family: var(--text-stat-sm--font-family); font-size: var(--text-stat-sm); font-weight: var(--text-stat-sm--font-weight); line-height: 1; font-variant-numeric: tabular-nums; }
-.card-stat dd span { font-size: var(--text-caption); line-height: 1; font-weight: 400; color: var(--color-on-ground); }
+.card-stat dd > span { font-size: var(--text-caption); line-height: 1; font-weight: 400; color: var(--color-on-ground); }
+/* the figures in a stat value sit a weight above its words and units, here and on the impact tiles */
+.stat-num { font-weight: 400; }
 .card:not(.card-rich) .card-stats { display: none; }
 .card-rich .card-spots { display: none; }
 /* on the tall card a rule sets the organisms apart from the numbers above them */

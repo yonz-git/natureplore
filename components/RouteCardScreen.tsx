@@ -15,6 +15,7 @@ import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, Loc
 import { useSheet } from "@/components/SheetGrab";
 import { MapTools } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
+import { StatValue } from "@/components/CParts";
 import { ActionRow, ClaimCard, MonthGrid, RecordedToo, SpotLook, SpotMark } from "@/components/SpotParts";
 import { organismPhoto } from "@/lib/photos";
 import { GROUPS, recordsOf, spotsOf, type Route } from "@/lib/routes";
@@ -275,20 +276,20 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
             <div className="card-stat">
               <dt>Distance</dt>
               <dd>
-                <b>{route.km}</b>
+                <StatValue value={String(route.km)} />
                 <span>km</span>
               </dd>
             </div>
             <div className="card-stat">
               <dt>Time</dt>
               <dd>
-                <b>{route.time.replace(":", " h ")}</b>
+                <StatValue value={route.time.replace(":", " h ")} />
               </dd>
             </div>
             <div className="card-stat">
               <dt>Spots</dt>
               <dd>
-                <b>{route.spots}</b>
+                <StatValue value={String(route.spots)} />
               </dd>
             </div>
           </dl>
