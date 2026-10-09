@@ -690,7 +690,7 @@ button.float-pill,
   color: var(--color-on-primary);
   font-family: var(--text-count--font-family);
   font-size: var(--text-count);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1;
 }
 .map-spot { position: absolute; transform: translate(-50%, -50%); text-decoration: none; }
