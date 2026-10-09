@@ -386,15 +386,15 @@ export default function RegionMap({
       const docked = !!host.closest(".sg");
       const side = () => wide.matches || (tablet.matches && docked);
       // what covers the map: the sheet on the phone and the tablet, the panel it moves into on the desktop
-      // A1 on the desktop has no panel: its words stand in the middle of the map, so the whole map is
-      // free and only the pins under those words are hidden
-      const centred = () => wide.matches && !!host.closest(".a1");
+      // A1 has no sheet or panel: its words stand in the middle of the map, so the whole map is free
+      // and only the pins and names under those words, or under the phone's tab bar, are hidden
+      const centred = () => !!host.closest(".a1");
       const sheetEl = () =>
         centred()
           ? null
           : ((host.parentElement?.querySelector(wide.matches ? ".ms-panel" : ".ms-sheet") as HTMLElement | null) ?? null);
       const coverBox = () => {
-        const words = centred() ? host.parentElement?.querySelector<HTMLElement>(".ms-sheet") : null;
+        const words = centred() ? host.parentElement?.querySelector<HTMLElement>(".a1-words") : null;
         if (!words) return null;
         const r = words.getBoundingClientRect();
         const h = host.getBoundingClientRect();
@@ -410,6 +410,24 @@ export default function RegionMap({
         if (still) return;
         const box = freeBox(host, sheetEl(), bandEl(), side());
         const cover = coverBox();
+        // the map's own place names under the words would read through them, so they fade out too
+        if (cover) {
+          const hr = host.getBoundingClientRect();
+          const pad = PIN_EDGE / 2;
+          for (const { marker } of labels) {
+            const el = (marker as { getElement(): HTMLElement | undefined }).getElement()?.firstChild as
+              | HTMLElement
+              | undefined;
+            if (!el) continue;
+            const r = el.getBoundingClientRect();
+            const l = r.left - hr.left;
+            const t = r.top - hr.top;
+            const under = l + r.width > cover.l + pad && l < cover.r - pad && t + r.height > cover.t + pad && t < cover.b - pad;
+            el.classList.toggle("is-covered", under);
+          }
+        }
+        const nav = centred() && !wide.matches ? navEl() : null;
+        if (nav) box.h = Math.max(1, nav.getBoundingClientRect().top - host.getBoundingClientRect().top - box.y - PIN_EDGE);
         const placed = pts.map((pt) => {
           const p = map.latLngToContainerPoint([pt.lat, pt.lon]);
           // inside the free box on both axes, with half a pin of margin on the side the

@@ -16,29 +16,31 @@ export default function StartSheet() {
 
   return (
     <div className="ms-panel">
-      <div className="ms-sheet is-card glass-phone">
-        <h1 className="ms-title">
-          See what lives <em>around you</em>
-        </h1>
-        <p className="ms-lead ms-lead-phone">Location stays on this device.</p>
-        <p className="ms-lead ms-lead-desk">
-          Routes near you, the plants, mushrooms and birds recorded along them, and what is happening to them.
-        </p>
+      <div className="ms-sheet">
+        <div className="a1-words">
+          <h1 className="ms-title">
+            See what lives <em>around you</em>
+          </h1>
+          <p className="ms-lead ms-lead-phone">Location stays on this device.</p>
+          <p className="ms-lead ms-lead-desk">
+            Routes near you, the plants, mushrooms and birds recorded along them, and what is happening to them.
+          </p>
 
-        <div className="ms-stack">
-          <SearchField />
-          <button type="button" className="btn btn-primary" onClick={ask}>
-            <LocationIcon />
-            Use my location
-          </button>
-          <Link href="/map" className="btn btn-secondary btn-browse">
-            Browse Berlin and Brandenburg
-          </Link>
+          <div className="ms-stack">
+            <SearchField />
+            <button type="button" className="btn btn-primary" onClick={ask}>
+              <LocationIcon />
+              Use my location
+            </button>
+            <Link href="/map" className="btn btn-secondary btn-browse">
+              Browse Berlin and Brandenburg
+            </Link>
+          </div>
+
+          <p className="ms-note ms-note-desk">
+            Your browser asks before sharing your location, and it stays on this device.
+          </p>
         </div>
-
-        <p className="ms-note ms-note-desk">
-          Your browser asks before sharing your location, and it stays on this device.
-        </p>
       </div>
       {prompt}
     </div>
