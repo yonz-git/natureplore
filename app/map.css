@@ -374,7 +374,7 @@ button.float-pill,
   box-sizing: border-box;
 }
 .card-rich .card-photo { height: 10.5rem; }
-.card-text { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+.card-text { display: flex; flex-direction: column; gap: 0.3375rem; min-width: 0; }
 .card-name { margin: 0; font-family: var(--text-title--font-family); font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--text-title--font-weight); }
 .card-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .card-rich .card-line,
@@ -464,7 +464,7 @@ button.float-pill,
   border: 0.5px solid var(--color-inner-edge);
   color: var(--color-mist);
 }
-.row-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.row-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
 .row-name { font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: 400; }
 .row-meta { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
@@ -606,7 +606,7 @@ button.float-pill,
   -webkit-text-fill-color: transparent;
 }
 /* full white: over a bright map the soft white fell under 4.5:1 (accessibility review #2) */
-.ms-lead { margin: 0.25rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground); }
+.ms-lead { margin: 0.3375rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground); }
 .ms-lead-desk { display: none; }
 .ms-note { margin: 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
 .ms-list { display: flex; flex-direction: column; gap: 1.25rem; }
@@ -617,7 +617,7 @@ button.float-pill,
 
 /* ── A1 ────────────────────────────────────────────────────────────────────────────────────── */
 
-.a1 .ms-lead { margin-top: 0.75rem; }
+.a1 .ms-lead { margin-top: 1.0125rem; }
 .a1 .ms-stack { margin-top: 1.5rem; }
 .a1 .btn-browse,
 .a1 .ms-note-desk { display: none; }
@@ -645,7 +645,7 @@ button.float-pill,
 .search-results.is-compact { padding: 1.25rem; }
 .search-miss { margin-top: 1.5rem; margin-bottom: 0.5rem; }
 .search-miss .ms-title { font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
-.search-miss .ms-lead { margin-top: 0.5rem; font-size: var(--text-body); line-height: var(--text-body--line-height); }
+.search-miss .ms-lead { margin-top: 0.675rem; font-size: var(--text-body); line-height: var(--text-body--line-height); }
 .search .float-pill.is-after { margin-top: 1rem; }
 
 /* ── A5: the location line in the bar ──────────────────────────────────────────────────────── */
@@ -663,9 +663,9 @@ button.float-pill,
   background: var(--color-scrim);
 }
 .a6 .ms-sheet { gap: 0; }
-.a6 .ms-title { margin-top: 1.25rem; }
-.a6 .ms-lead { margin-top: 0.75rem; }
-.a6 .ms-lead + .ms-lead { margin-top: 0.5rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
+.a6 .ms-title { margin-top: 1.6875rem; }
+.a6 .ms-lead { margin-top: 1.0125rem; }
+.a6 .ms-lead + .ms-lead { margin-top: 0.675rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
 .a6 .btn { margin-top: 1.5rem; }
 
 /* ── B1: the route detail, on the map ─────────────────────────────────────────────────────── */
@@ -776,7 +776,7 @@ button.float-pill,
 .b1-photos > span:nth-child(3) { background: radial-gradient(90% 90% at 40% 60%, rgb(174 183 121 / 0.3) 0%, transparent 65%), linear-gradient(170deg, var(--color-field-shade) 0%, var(--color-ground) 100%); }
 
 .b1-head { display: flex; flex-direction: column; }
-.b1-head .ms-lead { margin-top: 0.25rem; }
+.b1-head .ms-lead { margin-top: 0.3375rem; }
 
 /* what is recorded along the route: the proportion bar, the five groups, and the way to all of them */
 .b1-box {
@@ -818,8 +818,8 @@ button.float-pill,
   font-weight: 500;
 }
 .offline .ms-sheet { gap: 0; }
-.offline .ms-title { margin-top: 1.25rem; }
-.offline .ms-lead { margin-top: 0.75rem; }
+.offline .ms-title { margin-top: 1.6875rem; }
+.offline .ms-lead { margin-top: 1.0125rem; }
 .offline .btn { margin-top: 1.5rem; }
 .offline .ms-note { margin-top: 1rem; text-align: center; }
 

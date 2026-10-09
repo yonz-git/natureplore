@@ -328,7 +328,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.sr-miss p { margin: 0.5rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
+.sr-miss p { margin: 0.675rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
 .notice {
   margin: 0;
   padding: 1rem 1.25rem;
@@ -377,7 +377,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   border-radius: var(--radius-card) var(--radius-card) 0 0;
 }
 .saved-sheet h1 { margin: 0; font-family: var(--font-heading); font-size: var(--text-h1); line-height: var(--text-h1--line-height); font-weight: 300; }
-.saved-sheet > p { margin: 0.5rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
+.saved-sheet > p { margin: 0.675rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
 .saved-sheet h2 { margin: 2.5rem 0 0.75rem; font-family: var(--font-heading); font-size: var(--text-h2); line-height: var(--text-h2--line-height); font-weight: 300; }
 .saved-list { display: flex; flex-direction: column; gap: 0.75rem; }
 .saved-card {
@@ -403,7 +403,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   border: 0.5px solid var(--color-inner-edge);
 }
 .saved-row > span:not(.saved-thumb) { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-.saved-row b { font-size: 1.0625rem; line-height: 1.375rem; font-weight: 400; }
+.saved-row b { font-size: 1.275rem; line-height: 1.65rem; font-weight: 400; }
 .saved-row small { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .saved-row em { display: flex; align-items: center; gap: 0.375rem; font-style: normal; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-mist); }
 .saved-row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
@@ -414,7 +414,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
   border: 0.5px solid var(--color-inner-edge);
   font-size: var(--text-body-sm);
-  line-height: 1.375rem;
+  line-height: 1.65rem;
   font-weight: 300;
   color: var(--color-on-ground-soft);
 }
@@ -508,9 +508,9 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 }
 img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; background: var(--color-field-shade); }
 .a8-rows li > span:last-child { min-width: 0; display: flex; flex-direction: column; gap: 0.1875rem; }
-.a8-rows b { font-size: var(--text-body); line-height: 1.375rem; font-weight: 400; }
+.a8-rows b { font-size: var(--text-body); line-height: 1.65rem; font-weight: 400; }
 .a8-rows small { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
-.a8-group > .saved-empty { margin: 0.875rem 0; padding: 0; background: none; border: 0; }
+.a8-group > .saved-empty { margin: 1.18125rem 0; padding: 0; background: none; border: 0; }
 .a8-more { padding: 0.25rem 0 1rem; display: flex; justify-content: center; }
 .a8-more .btn { align-self: auto; width: auto; min-width: 0; }
 /* with large text the card is narrow for its button: tighter padding so the label wraps inside it */
