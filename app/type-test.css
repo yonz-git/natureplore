@@ -86,3 +86,6 @@
 :root:has([data-type-test]) .sug-name { line-height: calc(1.5rem * 1.2); }
 :root:has([data-type-test]) .sug-org-name,
 :root:has([data-type-test]) .sg-scope { line-height: calc(1.3125rem * 1.2); }
+
+/* the spot dots 19% bigger to hold the bigger numbers */
+:root:has([data-type-test]) .dot { --dot: calc(1.375rem * 1.19); }
