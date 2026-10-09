@@ -410,7 +410,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                 {GROUPS.map((g) => (
                   <li key={g.id} className={`fb-pill${route.counts[g.id] ? "" : " is-none"}`} title={g.label}>
                     <GroupIcon group={g.id} size={17} className={`is-${g.id}`} />
-                    {route.counts[g.id] ?? 0}
+                    <span className="fb-legend-num" data-last={String(route.counts[g.id] ?? 0).slice(-1)}>{route.counts[g.id] ?? 0}</span>
                   </li>
                 ))}
               </ul>

@@ -103,6 +103,27 @@ a.fb-row:active { transform: scale(0.985); }
 .fb-legend .group-icon.is-mushrooms { color: var(--color-group-mushrooms); }
 .fb-legend .group-icon.is-birds { color: var(--color-group-birds); }
 .fb-legend .group-icon.is-mammals { color: var(--color-group-mammals); }
+/* centred on the ink, not the boxes: 10 from the pill's edge to the icon's drawing on the left and
+   to the last figure on the right, the figures trimmed to their cap height so they sit on the
+   pill's middle, and each icon's own empty margin inside its 24 box cancelled, measured per icon */
+.fb-legend .fb-pill { padding: 0 0.625rem; }
+.fb-legend-num { display: block; text-box: trim-both cap alphabetic; }
+/* the last figure's own right side bearing, so the ink, not the advance, ends 10 from the edge */
+.fb-legend-num[data-last="0"] { margin-right: -0.0577em; }
+.fb-legend-num[data-last="1"] { margin-right: -0.0891em; }
+.fb-legend-num[data-last="2"] { margin-right: -0.0378em; }
+.fb-legend-num[data-last="3"] { margin-right: -0.0468em; }
+.fb-legend-num[data-last="4"] { margin-right: -0.025em; }
+.fb-legend-num[data-last="5"] { margin-right: -0.0353em; }
+.fb-legend-num[data-last="6"] { margin-right: -0.0372em; }
+.fb-legend-num[data-last="7"] { margin-right: -0.0218em; }
+.fb-legend-num[data-last="8"] { margin-right: -0.0558em; }
+.fb-legend-num[data-last="9"] { margin-right: -0.0391em; }
+.fb-legend .group-icon.is-plants { margin: 0 0.05375rem; }
+.fb-legend .group-icon.is-herbs { margin: 0 0.0094rem 0 -0.068rem; translate: 0 -0.01rem; }
+.fb-legend .group-icon.is-mushrooms { margin: 0 -0.07625rem 0 -0.09875rem; translate: 0 -0.04375rem; }
+.fb-legend .group-icon.is-birds { margin: 0 0.0306rem 0 0.0219rem; translate: 0 -0.015rem; }
+.fb-legend .group-icon.is-mammals { margin: 0 -0.00625rem; }
 
 /* the claim card: the claim opens its page, the line under it opens the first action */
 .fb-claim {
