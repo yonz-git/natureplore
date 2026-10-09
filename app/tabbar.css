@@ -61,10 +61,8 @@
   transition: transform 160ms var(--ease-out), color 280ms var(--ease-out), background-color 220ms var(--ease-out);
 }
 .tabbar-tab:active { transform: scale(0.97); }
-.tabbar-tab.is-current {
-  color: var(--color-on-primary);
-  font-weight: var(--text-tab-active--font-weight);
-}
+/* the lime says which tab is open; the label keeps the same weight as the others */
+.tabbar-tab.is-current { color: var(--color-on-primary); }
 
 @media (min-width: 64rem) {
   /* at the top right, with the search field centred on the same line (app/map.css) */
@@ -82,7 +80,6 @@
     letter-spacing: 0;
   }
   .tabbar-tab svg { width: 1.125rem; height: 1.125rem; }
-  .tabbar-tab.is-current { font-weight: var(--text-chip-active--font-weight); }
 }
 
 @media (hover: hover) and (pointer: fine) {
