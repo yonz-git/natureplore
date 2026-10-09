@@ -24,9 +24,9 @@
 
 /* the spot marker, larger at the head of a spot block */
 .fb-mark.is-lg { --mark: 2.25rem; font-size: 1.125rem; }
-/* in the spots list the marker sits on the plain sheet, not the map, so the mist ring that lifts it
-   off busy map lines is dropped; the forest ring and shadow stay */
-.fb-row .spot-mark { box-shadow: 0 0 0 2px var(--color-ground), 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
+/* in the spots list the marker sits on the plain sheet, not the map, so the double ring that lifts
+   it off busy map lines is dropped; only the shadow stays */
+.fb-row .spot-mark { box-shadow: 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
 
 /* a heading with its closing words in the lime of the titles */
 .fb-sec { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem; scroll-margin-top: 1rem; }
