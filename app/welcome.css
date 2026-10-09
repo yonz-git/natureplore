@@ -134,7 +134,7 @@
 .a0-mark,
 .a0-mark-corner {
   position: absolute;
-  top: var(--top-chrome);
+  top: var(--mark-top);
   left: var(--spacing-inset-screen);
   height: 2rem;
   width: auto;
@@ -173,9 +173,11 @@
   opacity: 0;
   pointer-events: none;
   text-align: center;
-  /* a size of its own, a step above a caption, so the one instruction on the page is easy to read */
-  font-size: calc(var(--text-caption) * 1.15);
-  line-height: var(--text-caption--line-height);
+  /* the title step at every width, size and weight, so the one instruction on the page is easy
+     to read */
+  font-size: var(--text-title);
+  line-height: var(--text-title--line-height);
+  font-weight: var(--text-title--font-weight);
 }
 .a0-cue span { display: inline-block; }
 
@@ -192,7 +194,8 @@
   margin: 0 auto;
   overflow: hidden;
   pointer-events: none;
-  color: var(--color-on-field);
+  /* already the logo's lime it is going to join */
+  color: var(--color-primary);
 }
 .a0-mush[data-out] { overflow: visible; }
 .a0-mush svg { display: block; width: 100%; height: auto; }
@@ -406,10 +409,9 @@
 }
 
 @media (min-width: 64rem) {
-  /* the corner lines up with the nav: the symbol centred on the nav pill's height, as on the board */
+  /* the desktop corner: the same inset from the top and the left as on the phone, a size larger */
   .a0-mark,
   .a0-mark-corner {
-    top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 2.125rem) / 2);
     left: var(--spacing-inset-screen); /* the same inset as the tablet, 2rem from 64rem */
     height: 2.125rem;
   }
