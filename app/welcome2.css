@@ -317,3 +317,15 @@
   }
   .a02-cta { align-self: flex-start; width: auto; margin-top: 2.5rem; }
 }
+
+/* For now, while the welcome is reworked: the heading, lead and button are taken off, and the drawn
+   route stands alone, a fifth of its size, against the right edge. The box takes the whole screen at
+   every size so the phone's sizing, which hangs on the heading's top, has nothing to measure. */
+.a02-main { display: none; }
+.a02-route,
+.a0s .a02-route {
+  inset: 0;
+  height: auto;
+  scale: 0.2;
+  transform-origin: 100% 50%;
+}
