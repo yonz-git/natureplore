@@ -126,6 +126,12 @@
 }
 .field-hint-icons svg.is-shown { opacity: 1; transform: none; }
 .field-hint-icons svg.is-gone { transform: translateY(-40%) scale(0.85); }
+/* each icon in its group colour, as on the legend and the group tiles */
+.field-hint-icons .is-plants { color: var(--color-group-plants); }
+.field-hint-icons .is-herbs { color: var(--color-group-herbs); }
+.field-hint-icons .is-mushrooms { color: var(--color-group-mushrooms); }
+.field-hint-icons .is-birds { color: var(--color-group-birds); }
+.field-hint-icons .is-mammals { color: var(--color-group-mammals); }
 @media (prefers-reduced-motion: reduce) {
   .field-hint-icons svg,
   .field-hint-icons svg.is-gone { transition: opacity 400ms ease; transform: none; }

@@ -69,7 +69,7 @@ export function SearchField({
             <span className="field-hint-text">{label}</span>
             <span className="field-hint-icons">
               {GROUPS.map((g, i) => (
-                <GroupIcon key={g.id} group={g.id} size={18} className={i === shown ? "is-shown" : i === (shown + GROUPS.length - 1) % GROUPS.length ? "is-gone" : undefined} />
+                <GroupIcon key={g.id} group={g.id} size={19.8} className={`is-${g.id}${i === shown ? " is-shown" : i === (shown + GROUPS.length - 1) % GROUPS.length ? " is-gone" : ""}`} />
               ))}
             </span>
           </span>
