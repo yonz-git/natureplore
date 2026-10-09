@@ -61,7 +61,7 @@
   transition: transform 160ms var(--ease-out), color 280ms var(--ease-out), background-color 220ms var(--ease-out);
 }
 .tabbar-tab:active { transform: scale(0.97); }
-/* the Map icon, a detailed drawing, reads at the others' size only 20% bigger */
+/* the Map and Learn icons, detailed drawings, read at the others' size only 20% bigger */
 .tabbar-icon-big { scale: 1.2; }
 .tabbar-tab.is-current {
   color: var(--color-on-primary);

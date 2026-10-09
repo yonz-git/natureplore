@@ -26,7 +26,9 @@ const TABS = [
   {
     href: "/learn",
     label: "Learn",
-    // two hands holding up the earth, a filled drawing on a 512 grid scaled into the 24 box
+    // two hands holding up the earth, a filled drawing on a 512 grid scaled into the 24 box, drawn
+    // 20% bigger like Map
+    big: true,
     icon: (
       <path
         transform="scale(0.046875)"
