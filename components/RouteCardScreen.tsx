@@ -310,7 +310,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                 ? detail.spots.map((s) => {
                     const open = openSpot === s.n;
                     return (
-                      <li key={s.n} id={`spot-${s.n}`} className={`fb-spot-row${open ? " is-open" : ""}`}>
+                      <li key={s.n} id={`spot-${s.n}`} className={`fb-spot-row${open ? " is-open" : ""}${s.out ? " is-out" : ""}`}>
                         <button
                           type="button"
                           className="fb-row"
