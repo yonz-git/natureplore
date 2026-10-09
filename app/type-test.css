@@ -1,5 +1,5 @@
 /* TEST, not the system: every type size on the map home (/map) 20% bigger, buttons aside, to judge
-   readability before the tokens change. Only font sizes move, line heights and spacing stay.
+   readability before the tokens change. Font sizes, line heights and the gaps between text move; nothing else.
    Switched on by data-type-test on the A5 screen, so every other page keeps today's sizes.
    Delete this file and the attribute once the sizes go into docs/design.md. */
 :root:has([data-type-test]) {
@@ -54,3 +54,35 @@
 :root:has([data-type-test]) .sug-orgs { gap: calc(0.625rem * 1.35); }
 :root:has([data-type-test]) .sug-org { gap: calc(0.125rem * 1.35); }
 :root:has([data-type-test]) .map-route { gap: calc(0.25rem * 1.35); }
+
+/* line heights 20% taller with the type, buttons and the title aside as they keep today's size */
+:root:has([data-type-test]) {
+  --text-display-desktop--line-height: calc(4rem * 1.2);
+  --text-display--line-height: calc(2.625rem * 1.2);
+  --text-h1--line-height: calc(2.5rem * 1.2);
+  --text-h2--line-height: calc(1.875rem * 1.2);
+  --text-h3--line-height: calc(1.75rem * 1.2);
+  --text-stat--line-height: calc(1 * 1.2);
+  --text-stat-sm--line-height: calc(1 * 1.2);
+  --text-count--line-height: calc(1 * 1.2);
+  --text-lead-desktop--line-height: calc(2.125rem * 1.2);
+  --text-body--line-height: calc(1.5rem * 1.2);
+  --text-body-sm--line-height: calc(1.375rem * 1.2);
+  --text-secondary--line-height: calc(1.25rem * 1.2);
+  --text-caption--line-height: calc(1.125rem * 1.2);
+  --text-title--line-height: calc(1.375rem * 1.2);
+  --text-title-sm--line-height: calc(1.375rem * 1.2);
+  --text-meta--line-height: calc(1.25rem * 1.2);
+  --text-label--line-height: calc(1.125rem * 1.2);
+  --text-field--line-height: calc(1.3 * 1.2);
+  --text-chip--line-height: calc(1 * 1.2);
+  --text-chip-active--line-height: calc(1 * 1.2);
+  --text-pill--line-height: calc(1 * 1.2);
+  --text-pill-count--line-height: calc(1 * 1.2);
+  --text-stat-label--line-height: calc(1 * 1.2);
+  --text-tab--line-height: calc(1 * 1.2);
+  --text-tab-active--line-height: calc(1 * 1.2);
+}
+:root:has([data-type-test]) .sug-name { line-height: calc(1.5rem * 1.2); }
+:root:has([data-type-test]) .sug-org-name,
+:root:has([data-type-test]) .sg-scope { line-height: calc(1.3125rem * 1.2); }
