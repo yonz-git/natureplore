@@ -129,8 +129,8 @@
 
 /* The logo. Without the scroll choreography it is simply in its corner, the place A0 keeps it and
    the box components/WelcomeLogo.tsx sends it to; the scroll media query below puts it in the middle
-   of the page instead and hands it to the scroll. The corner mirrors the nav opposite it: on desktop
-   it takes the nav pill's box, 3.5rem tall from 1.75rem, with the logo centred in it. */
+   of the page instead and hands it to the scroll. The corner is as far from the top as from the
+   left, at every size. */
 .a0-mark,
 .a0-mark-corner {
   position: absolute;
@@ -316,6 +316,12 @@
        translate into its own x and y the first time it moves the logo, which threw the landing off */
     font-size: calc(var(--a0-mark-w) / 35.34);
   }
+  /* tablet and desktop: 15% smaller, still centred; the phone keeps the full width */
+  @media (min-width: 48rem) {
+    .a0s .a0-mark {
+      --a0-mark-w: calc(min(max(39.27cqw, 62.83cqh), max(min(39.27cqw, 62.83cqh), 85.67cqw)) * 0.85);
+    }
+  }
   .a0s .a0-mark .intro-logo {
     height: auto;
     width: 100%;
@@ -335,16 +341,15 @@
   /* A0 arrives on the frame the logo lands in its corner, one layer after another, and the route
      draws itself over the photograph (components/WelcomeLogo.tsx sets a0-open, and
      components/WelcomeRoute.tsx draws the route when it sees it) */
-  .a0s :is(.a02-h1, .a02-lead, .a02-nav, .a02-cta) { opacity: 0; }
+  .a0s :is(.a02-h1, .a02-lead, .a02-cta) { opacity: 0; }
   .a0s .a02-route { visibility: hidden; }
   /* backwards, not both: once it has arrived nothing of the animation stays applied, so the
-     button's hover, press and the tabs' own transitions are free to run */
-  .a0s.a0-open :is(.a02-h1, .a02-lead, .a02-nav, .a02-cta) {
+     button's hover and press are free to run */
+  .a0s.a0-open :is(.a02-h1, .a02-lead, .a02-cta) {
     opacity: 1;
     animation: a0-arrive 800ms var(--a0-ease) backwards;
   }
   .a0s.a0-open .a02-lead { animation-delay: 120ms; }
-  .a0s.a0-open .a02-nav { animation-delay: 180ms; }
   /* the button arrives, then starts to breathe (app/welcome2.css) */
   .a0s.a0-open .a02-cta {
     animation: a0-arrive 800ms var(--a0-ease) 240ms backwards, a02-cta-glow 4.8s ease-in-out 1040ms infinite;
