@@ -690,13 +690,10 @@ button.float-pill,
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
   box-shadow: 0 0 0 2px var(--color-ground), 0 0 0 3.5px var(--color-mist), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
   color: var(--color-on-primary);
-  font-family: var(--text-count--font-family);
+  /* the number in Alpino Bold, the one place that weight is used, so it reads at 11 to 15px */
+  font-family: var(--font-text);
   font-size: var(--text-count);
   font-weight: 700;
-  /* Comfortaa Bold is still light at this size, and macOS's antialiased smoothing thins it further:
-     a hairline stroke in the number's own colour and the system smoothing give it its weight */
-  -webkit-text-stroke: 0.35px currentColor;
-  -webkit-font-smoothing: auto;
   line-height: 1;
 }
 .map-spot { position: absolute; transform: translate(-50%, -50%); text-decoration: none; }
