@@ -11,10 +11,11 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, LocationIcon, WalkIcon } from "@/components/Icons";
+import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, GroupIcon, LocationIcon, WalkIcon } from "@/components/Icons";
 import { useSheet } from "@/components/SheetGrab";
 import { MapTools } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
+import { StatValue } from "@/components/CParts";
 import { ActionRow, ClaimCard, MonthGrid, RecordedToo, SpotLook, SpotMark } from "@/components/SpotParts";
 import { organismPhoto } from "@/lib/photos";
 import { GROUPS, recordsOf, spotsOf, type Route } from "@/lib/routes";
@@ -172,11 +173,12 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
         lat: s.lat,
         lon: s.lon,
         n: s.n,
+        out: !!detail?.spots[i]?.out,
         label: route.stops[i]?.name ?? `Spot ${s.n}`,
         left: route.stops[i]?.left,
       })),
     ],
-    [route, spots],
+    [route, spots, detail],
   );
 
   // one spot open at a time, inside its row. The URL keeps it (?spot=n), so coming back from an
@@ -275,20 +277,20 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
             <div className="card-stat">
               <dt>Distance</dt>
               <dd>
-                <b>{route.km}</b>
+                <StatValue value={String(route.km)} />
                 <span>km</span>
               </dd>
             </div>
             <div className="card-stat">
               <dt>Time</dt>
               <dd>
-                <b>{route.time.replace(":", " h ")}</b>
+                <StatValue value={route.time.replace(":", " h ")} />
               </dd>
             </div>
             <div className="card-stat">
               <dt>Spots</dt>
               <dd>
-                <b>{route.spots}</b>
+                <StatValue value={String(route.spots)} />
               </dd>
             </div>
           </dl>
@@ -310,7 +312,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                 ? detail.spots.map((s) => {
                     const open = openSpot === s.n;
                     return (
-                      <li key={s.n} id={`spot-${s.n}`} className={`fb-spot-row${open ? " is-open" : ""}`}>
+                      <li key={s.n} id={`spot-${s.n}`} className={`fb-spot-row${open ? " is-open" : ""}${s.out ? " is-out" : ""}`}>
                         <button
                           type="button"
                           className="fb-row"
@@ -375,7 +377,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                 <div className="fb-axis" role="img" aria-label={`Spots along the ${route.km} km line, in walking order`}>
                   <span className="fb-axis-line" />
                   {detail.axis.map((f, i) => (
-                    <span key={i} className="fb-axis-mark" style={{ left: `${f * 100}%` }}>
+                    <span key={i} className={`fb-axis-mark${detail.spots[i]?.out ? " is-out" : ""}`} style={{ left: `${f * 100}%` }}>
                       <SpotMark n={i + 1} />
                     </span>
                   ))}
@@ -406,9 +408,9 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
               </div>
               <ul className="fb-legend" aria-hidden="true">
                 {GROUPS.map((g) => (
-                  <li key={g.id} className={`fb-pill${route.counts[g.id] ? "" : " is-none"}`}>
-                    <i className={`is-${g.id}`} />
-                    {g.label} {route.counts[g.id] ?? 0}
+                  <li key={g.id} className={`fb-pill${route.counts[g.id] ? "" : " is-none"}`} title={g.label}>
+                    <GroupIcon group={g.id} size={17} className={`is-${g.id}`} />
+                    <span className="fb-legend-num" data-last={String(route.counts[g.id] ?? 0).slice(-1)}>{route.counts[g.id] ?? 0}</span>
                   </li>
                 ))}
               </ul>

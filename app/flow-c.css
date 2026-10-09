@@ -35,9 +35,9 @@
   font-weight: 300;
   letter-spacing: -0.01em;
 }
-.cp-title { margin-top: 1rem; }
+.cp-title { margin-top: 1.35rem; }
 .cp-reviewed { margin-top: 0.75rem; }
-.cp-lead { margin-top: 0.75rem; color: var(--color-on-ground-soft); }
+.cp-lead { margin-top: 1.0125rem; color: var(--color-on-ground-soft); }
 
 /* three tiles side by side; with large text they wrap rather than run into each other */
 .cp-stats { margin-top: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr)); gap: 0.5rem; }
@@ -52,13 +52,13 @@
   border: 0.5px solid var(--color-inner-edge);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
 }
-.cp-stat > span:first-child { font-size: 0.75rem; line-height: 1rem; color: var(--color-on-ground-soft); }
+.cp-stat > span:first-child { font-size: 0.9rem; line-height: 1.2rem; color: var(--color-on-ground-soft); }
 .cp-stat > span:last-child { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem; }
 .cp-stat b { font-family: var(--font-heading); font-size: 1.375rem; line-height: 1; font-weight: 300; font-variant-numeric: tabular-nums; }
 .cp-stat small { font-size: var(--text-caption); line-height: 1; color: var(--color-on-ground-soft); }
 
-.cp-facts { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.875rem; }
-.cp-facts li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: var(--text-body-sm); line-height: 1.375rem; }
+.cp-facts { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 1.18125rem; }
+.cp-facts li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: var(--text-body-sm); line-height: 1.65rem; }
 .cp-facts li > svg { flex-shrink: 0; margin-top: 0.0625rem; color: var(--color-mist); }
 .cp-facts li > span { min-width: 0; overflow-wrap: break-word; }
 .cp-done { margin-top: 0; }
@@ -102,11 +102,11 @@
   line-height: 1;
 }
 .cp-aerial > div > span + span em { left: auto; right: 0.75rem; }
-.cp-aerial figcaption { margin-top: 0.5rem; }
+.cp-aerial figcaption { margin-top: 0.675rem; }
 
 .cp-source { margin-top: 1rem; }
 .cp-source > p:first-child { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
-.cp-source .org-small { margin-top: 0.375rem; }
+.cp-source .org-small { margin-top: 0.50625rem; }
 .cp-link {
   align-self: flex-start;
   min-height: 2.75rem;
@@ -144,22 +144,22 @@
 }
 .cp-date { height: 3.5rem; color: var(--color-on-ground); }
 .cp-date b { font-family: var(--font-heading); font-size: 1.25rem; line-height: 1; font-weight: 300; }
-.cp-date small { font-size: 0.6875rem; line-height: 1; color: var(--color-on-ground-soft); }
-.cp-plain { display: flex; flex-direction: column; gap: 0.25rem; }
-.cp-plain b { font-size: var(--text-body); line-height: 1.375rem; font-weight: 400; }
+.cp-date small { font-size: 0.825rem; line-height: 1; color: var(--color-on-ground-soft); }
+.cp-plain { display: flex; flex-direction: column; gap: 0.3375rem; }
+.cp-plain b { font-size: var(--text-body); line-height: 1.65rem; font-weight: 400; }
 .cp-plain .org-small { margin: 0; }
 
 /* ── the actions ───────────────────────────────────────────────────────────────────────────── */
 
 .cp-photo { height: 12.5rem; }
 .cp-quantified h3 { margin: 0; font-family: var(--font-heading); font-size: var(--text-h3); line-height: var(--text-h3--line-height); font-weight: 300; }
-.cp-quantified p { margin: 0.5rem 0 0; font-size: var(--text-body-sm); line-height: 1.375rem; }
-.cp-org b { font-size: var(--text-body); line-height: 1.375rem; font-weight: 400; }
-.cp-org .org-small { margin-top: 0.25rem; }
+.cp-quantified p { margin: 0.675rem 0 0; font-size: var(--text-body-sm); line-height: 1.65rem; }
+.cp-org b { font-size: var(--text-body); line-height: 1.65rem; font-weight: 400; }
+.cp-org .org-small { margin-top: 0.3375rem; }
 .cp-figure-value { margin: 0; display: flex; align-items: baseline; gap: 0.375rem; flex-wrap: wrap; }
 .cp-figure-value b { font-family: var(--font-heading); font-size: 2.25rem; line-height: 1; font-weight: 300; color: var(--color-mist); }
 .cp-figure-value small { font-size: var(--text-body-sm); color: var(--color-on-ground-soft); }
-.cp-figure-line { margin: 0.75rem 0 0; font-size: var(--text-body); line-height: 1.375rem; }
+.cp-figure-line { margin: 1.0125rem 0 0; font-size: var(--text-body); line-height: 1.65rem; }
 .cp-figure-source { padding-top: 0.75rem; border-top: 1px solid var(--color-divider); }
 .cp-steps { margin-top: 0; padding: 0.25rem 1.25rem; list-style: none; counter-reset: step; }
 .cp-steps li {
@@ -168,7 +168,7 @@
   display: flex;
   gap: 0.75rem;
   font-size: var(--text-body-sm);
-  line-height: 1.375rem;
+  line-height: 1.65rem;
 }
 .cp-steps li + li { border-top: 1px solid var(--color-divider); }
 .cp-steps li::before {
@@ -215,7 +215,7 @@ body:has(.cp-dialog) .tabbar { display: none; }
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
 }
 .cp-dialog-title {
-  margin: 1rem 0 0;
+  margin: 1.35rem 0 0;
   overflow-wrap: anywhere;
   font-family: var(--font-heading);
   font-size: 2rem;
@@ -234,18 +234,18 @@ body:has(.cp-dialog) .tabbar { display: none; }
 }
 .cp-dl { padding: 0.375rem 1.25rem; }
 /* label beside value; with large text the value moves under its label */
-.cp-dl > div { padding: 0.875rem 0; display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; }
+.cp-dl > div { padding: 0.875rem 0; display: flex; flex-wrap: wrap; gap: 0.3375rem 0.75rem; }
 .cp-dl dt { flex: 0 0 6.875rem; }
 .cp-dl dd { flex: 1 1 10rem; }
 .cp-dl > div + div { border-top: 1px solid var(--color-divider); }
-.cp-dl dt { font-size: var(--text-caption); line-height: 1.25rem; color: var(--color-on-ground-soft); }
-.cp-dl dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.25rem; }
-.cp-quote { margin: 1.5rem 0 0; padding: 0.25rem 0 0.25rem 1.125rem; border-left: 2px solid var(--color-mist); }
-.cp-quote p { margin: 0; font-family: var(--font-heading); font-size: 1.1875rem; line-height: 1.75rem; font-weight: 300; }
-.cp-note { flex-direction: row; gap: 0.75rem; align-items: flex-start; font-size: var(--text-secondary); line-height: 1.25rem; }
+.cp-dl dt { font-size: var(--text-caption); line-height: 1.5rem; color: var(--color-on-ground-soft); }
+.cp-dl dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.5rem; }
+.cp-quote { margin: 2.025rem 0 0; padding: 0.25rem 0 0.25rem 1.125rem; border-left: 2px solid var(--color-mist); }
+.cp-quote p { margin: 0; font-family: var(--font-heading); font-size: 1.425rem; line-height: 2.1rem; font-weight: 300; }
+.cp-note { flex-direction: row; gap: 0.75rem; align-items: flex-start; font-size: var(--text-secondary); line-height: 1.5rem; }
 .cp-note svg { flex-shrink: 0; color: var(--color-mist); }
-.cp-note + .cp-note { margin-top: 0.75rem; }
-.cp-out { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.625rem; }
+.cp-note + .cp-note { margin-top: 1.0125rem; }
+.cp-out { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.84375rem; }
 .cp-out .org-small { margin: 0; text-align: center; }
 .cp-out .cp-cancel { align-self: center; }
 .cp-done-mark {
@@ -261,7 +261,7 @@ body:has(.cp-dialog) .tabbar { display: none; }
 }
 .cp-reg { gap: 0; }
 .cp-reg hr { width: 100%; margin: 1.25rem 0 1rem; border: 0; border-top: 1px solid var(--color-divider); }
-.cp-reg + .org-small { margin-top: 1rem; }
+.cp-reg + .org-small { margin-top: 1.35rem; }
 
 /* ── from 64rem ────────────────────────────────────────────────────────────────────────────── */
 

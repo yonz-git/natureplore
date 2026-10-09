@@ -84,6 +84,8 @@ export type MapPoint = {
   current?: boolean;
   /** a spot on a route, numbered in walking order */
   n?: number;
+  /** a spot with nothing in season this month, drawn muted */
+  out?: boolean;
   /** where a route starts and finishes */
   start?: boolean;
   /** a spot's name goes on the left of its marker */
@@ -582,7 +584,7 @@ export default function RegionMap({
                 </span>
               </>
             );
-            const cls = `map-spot${pin.left ? " is-left" : ""}${pin.current ? " is-current" : ""}`;
+            const cls = `map-spot${pin.left ? " is-left" : ""}${pin.current ? " is-current" : ""}${pin.out ? " is-out" : ""}`;
             return pin.href ? (
               <Link key={pin.id} href={pin.href} className={cls} style={style} aria-label={`Spot ${pin.n}, ${pin.label}`}>
                 {body}
