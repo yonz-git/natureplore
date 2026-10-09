@@ -71,6 +71,12 @@
 .tabbar-tab .tab-earth-on { opacity: 0; }
 .tabbar-tab.is-current .tab-earth-on { opacity: 1; }
 .tabbar-tab.is-current .tab-earth-off { opacity: 0; }
+/* and gains a 0.5px outline round the earth and the hands: 0.417 units at this group's scale
+   (1.375rem box on a 24 grid, the group's 1.09 and the big icons' 1.2); the ring grows by the same */
+.tabbar-tab .tab-learn { transition: stroke-width 220ms var(--ease-out); }
+.tabbar-tab .tab-earth-on circle { stroke-width: 1.2; transition: stroke-width 220ms var(--ease-out); }
+.tabbar-tab.is-current .tab-learn { stroke-width: 0.417; }
+.tabbar-tab.is-current .tab-earth-on circle { stroke-width: 1.617; }
 /* Map's line thickens instead */
 .tabbar-tab .tab-outline { transition: stroke-width 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-outline { stroke-width: 2.8; }
