@@ -96,7 +96,7 @@
 }
 .field input::placeholder { color: var(--color-on-ground-soft); opacity: 1; }
 .field input::-webkit-search-cancel-button { display: none; }
-/* the placeholder is drawn, not native, so it can carry one group icon that changes every second */
+/* the placeholder is drawn, not native, so it can carry one group icon that changes every 1.5 seconds */
 .field { position: relative; }
 .field-hint {
   position: absolute;
@@ -113,15 +113,19 @@
 }
 .field-hint-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .field-hint-icons { display: grid; flex-shrink: 0; }
+/* the next icon rises in from below as the last one drifts up and out, overlapping, so the swap
+   reads as one soft motion; the waiting icons sit below, unseen */
 .field-hint-icons svg {
   grid-area: 1 / 1;
   opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 240ms var(--ease-out), transform 240ms var(--ease-out);
+  transform: translateY(40%) scale(0.85);
+  transition: opacity 600ms var(--ease-move), transform 600ms var(--ease-move);
 }
 .field-hint-icons svg.is-shown { opacity: 1; transform: none; }
+.field-hint-icons svg.is-gone { transform: translateY(-40%) scale(0.85); }
 @media (prefers-reduced-motion: reduce) {
-  .field-hint-icons svg { transition: opacity 240ms ease; transform: none; }
+  .field-hint-icons svg,
+  .field-hint-icons svg.is-gone { transition: opacity 400ms ease; transform: none; }
 }
 .field:focus-within { outline: 2px solid var(--color-mist); outline-offset: 3px; }
 .field-clear {

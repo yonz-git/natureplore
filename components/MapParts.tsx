@@ -34,7 +34,7 @@ export function SearchField({
   // the placeholder names one group at a time, so the field says what an organism can be
   useEffect(() => {
     if (value || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setInterval(() => setShown((i) => (i + 1) % GROUPS.length), 1000);
+    const id = setInterval(() => setShown((i) => (i + 1) % GROUPS.length), 1500);
     return () => clearInterval(id);
   }, [value]);
   const set = (v: string) => {
@@ -69,7 +69,7 @@ export function SearchField({
             <span className="field-hint-text">{label}</span>
             <span className="field-hint-icons">
               {GROUPS.map((g, i) => (
-                <GroupIcon key={g.id} group={g.id} size={18} className={i === shown ? "is-shown" : undefined} />
+                <GroupIcon key={g.id} group={g.id} size={18} className={i === shown ? "is-shown" : i === (shown + GROUPS.length - 1) % GROUPS.length ? "is-gone" : undefined} />
               ))}
             </span>
           </span>
