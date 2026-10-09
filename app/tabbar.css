@@ -62,7 +62,7 @@
 }
 .tabbar-tab:active { transform: scale(0.97); }
 /* the Map and Learn icons, detailed drawings, read at the others' size only 20% bigger */
-.tabbar-icon-big { scale: 1.2; overflow: visible; } /* the Map pin falls from above its box */
+.tabbar-icon-big { scale: 1.2; overflow: visible; }
 .tabbar-tab.is-current {
   color: var(--color-on-primary);
   font-weight: var(--text-tab-active--font-weight);
@@ -84,6 +84,10 @@
     letter-spacing: 0;
   }
   .tabbar-tab svg { width: 1.125rem; height: 1.125rem; }
+  /* every icon's drawing, its line included, sits the same distance from the pill's edge and from
+     its label as Saved's (15.9 and 10), each icon's own empty margins cancelled, measured at this size */
+  .tabbar-icon-map { margin: 0 0.0707rem 0 0.0675rem; }
+  .tabbar-icon-learn { margin: 0 0.0188rem 0 0.0162rem; }
   .tabbar-tab.is-current { font-weight: var(--text-chip-active--font-weight); }
 }
 

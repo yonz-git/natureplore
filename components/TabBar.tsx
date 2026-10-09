@@ -6,39 +6,21 @@ import { useLayoutEffect, useRef, useState } from "react";
 
 // Map, Learn, Saved: Map is A5, Learn is D0, Saved is E1. The redesign's boards call the first tab
 // Routes; it was renamed Map in the prototype on 1 Oct 2026.
-// the pin falls onto the map from above and settles with one small bounce, when the Map tab is tapped
-function dropPin(link: HTMLElement) {
-  const pin = link.querySelector<SVGGElement>(".tab-pin");
-  if (!pin || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  pin.getAnimations().forEach((a) => a.cancel());
-  pin.animate(
-    [
-      { transform: "translateY(-13px)", opacity: 0 },
-      { transform: "translateY(0)", opacity: 1, offset: 0.55, easing: "cubic-bezier(0.33, 0, 0.67, 1)" },
-      { transform: "translateY(-2.4px)", offset: 0.78, easing: "cubic-bezier(0.33, 0, 0.67, 1)" },
-      { transform: "translateY(0)" },
-    ],
-    { duration: 560, easing: "cubic-bezier(0.55, 0, 1, 0.45)" },
-  );
-}
-
 const TABS = [
   {
     href: "/map",
     label: "Map",
-    // a location pin beside a folded map, set in Figma on a 35 by 21 grid, 15% wider than the 24 box
-    // and centred on it, the map drawn as a 2-unit line, the pin filled (.design/icons/map-pin.svg); drawn 20%
-    // bigger than Saved (app/tabbar.css). The pin is its own group so it can drop in when the tab is
-    // tapped.
+    // a folded map, set in Figma on a 35 by 21 grid (.design/icons/map-pin.svg, its pin left out),
+    // centred in the 24 box and drawn as a 2-unit line; drawn 20% bigger than Saved (app/tabbar.css)
     big: true,
     icon: (
-      <g transform="translate(-1.8 3.72) scale(0.7886)">
-        <path d="M27 20V3M27 20H26.667L26.309 19.78C24.4177 18.6162 22.2407 18 20.02 18H20M27 20H27.177C29.3516 19.9999 31.4853 19.4088 33.35 18.29L34 17.9V1H33.75L33.393 1.22C31.5015 2.38399 29.324 3.00018 27.103 3H27M27 3H26.75L26.267 2.71C24.402 1.59103 22.2679 0.999965 20.093 1H20M20 18V1M20 18H19.897M20 1H19.824C17.6491 0.999965 15.515 1.59103 13.65 2.71L13 3.1V20H13.25L13.607 19.78C15.498 18.6164 17.6747 18.0002 19.895 18M19.895 18C19.8957 18 19.8963 18 19.897 18M19.895 18H19.896H19.897M19.895 18H19.75" fill="none" stroke="currentColor" strokeWidth="2" />
-        <g className="tab-pin">
-          {/* 1px closer to the map and 0.5px higher than in the Figma frame, at the desktop size */}
-          <path transform="translate(1.4 -0.7)" d="M5 3C2.25143 3 0 5.20082 0 7.88632C0 8.27833 0.0485714 8.65913 0.138857 9.02509L0.676286 10.3243C0.750572 10.4492 0.828 10.5715 0.912857 10.6891L4.39 16.579C4.87686 17.2026 5.20057 17.0841 5.60543 16.5462L6.884 14.414L7.73257 12.9981L9.44029 10.1504C9.51772 10.0132 9.57857 9.86734 9.63171 9.71782C9.80063 9.31107 9.91232 8.8837 9.96371 8.44745C10 8.08205 10 7.98405 10 7.88632C10 7.538 9.96143 7.1978 9.88829 6.86963C9.40571 4.66713 7.39171 3 5 3ZM5 5.28986C6.48 5.28986 7.65686 6.44011 7.65686 7.88632C7.65686 9.33254 6.47971 10.4825 5 10.4825C3.52 10.4825 2.34314 9.33254 2.34314 7.88632C2.34314 6.44011 3.52029 5.28986 5 5.28986Z" fill="currentColor" fillRule="evenodd" stroke="none" />
-        </g>
-      </g>
+      <path
+        transform="translate(12 12) scale(0.7886) translate(-23.5 -10.5)"
+        d="M27 20V3M27 20H26.667L26.309 19.78C24.4177 18.6162 22.2407 18 20.02 18H20M27 20H27.177C29.3516 19.9999 31.4853 19.4088 33.35 18.29L34 17.9V1H33.75L33.393 1.22C31.5015 2.38399 29.324 3.00018 27.103 3H27M27 3H26.75L26.267 2.71C24.402 1.59103 22.2679 0.999965 20.093 1H20M20 18V1M20 18H19.897M20 1H19.824C17.6491 0.999965 15.515 1.59103 13.65 2.71L13 3.1V20H13.25L13.607 19.78C15.498 18.6164 17.6747 18.0002 19.895 18M19.895 18C19.8957 18 19.8963 18 19.897 18M19.895 18H19.896H19.897M19.895 18H19.75"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
     ),
   },
   {
@@ -58,10 +40,10 @@ const TABS = [
     href: "/saved",
     label: "Saved",
     // two bookmarks, one behind the other, set in Figma on a 178 by 220 grid and fitted to the 24
-    // box's height less a tenth (.design/icons/saved-bookmarks.svg); drawn 20% bigger like Map and Learn
+    // box's height less a fifth (.design/icons/saved-bookmarks.svg); drawn 20% bigger like Map and Learn
     big: true,
     icon: (
-      <g transform="translate(3.26 1.2) scale(0.09819)" fill="none" stroke="currentColor" strokeLinejoin="round">
+      <g transform="translate(4.135 2.28) scale(0.08837)" fill="none" stroke="currentColor" strokeLinejoin="round">
         <path
           strokeWidth="16"
           d="M36.5 34.6154V27.9615C36.5154 22.6721 38.6221 17.6038 42.3602 13.8636C46.0982 10.1234 51.1637 8.01536 56.45 8H149.55C154.836 8.01536 159.902 10.1234 163.64 13.8636C167.378 17.6038 169.485 22.6721 169.5 27.9615V181L145.5 157"
@@ -137,10 +119,9 @@ export default function TabBar() {
                 href={tab.href}
                 aria-current={current ? "page" : undefined}
                 className={`tabbar-tab${current ? " is-current" : ""}`}
-                onClick={tab.href === "/map" ? (e) => dropPin(e.currentTarget) : undefined}
               >
                 <svg
-                  className={"big" in tab ? "tabbar-icon-big" : undefined}
+                  className={`tabbar-icon-${tab.label.toLowerCase()}${"big" in tab ? " tabbar-icon-big" : ""}`}
                   width="1.375rem"
                   height="1.375rem"
                   viewBox="0 0 24 24"
