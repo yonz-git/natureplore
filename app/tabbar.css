@@ -82,7 +82,9 @@
 .tabbar-tab.is-current .tab-outline { stroke-width: 2.45; }
 .tabbar-tab .tab-fills { transition: stroke-width 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-fills { stroke-width: 0.5; }
-.tabbar-tab .tab-pin { transform-box: fill-box; transform-origin: 50% 100%; transition: scale 220ms var(--ease-out); }
+/* the pin sits midway between the map's top and bottom edges where it stands (8.75 on its grid, the
+   pin's own middle 8.74), and grows from that middle so it stays there when the tab is open */
+.tabbar-tab .tab-pin { transform-box: fill-box; transform-origin: 50% 50%; transition: scale 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-pin { scale: 1.2; }
 .tabbar-tab.is-current {
   color: var(--color-on-primary);
