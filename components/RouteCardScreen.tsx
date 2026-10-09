@@ -76,7 +76,7 @@ function SaveToggle({ route, save }: { route: Route; save: RouteSave }) {
   return (
     <button
       type="button"
-      className="sug-save b1-save"
+      className="sug-save b1-save glass glass-pin"
       aria-pressed={save.saved}
       aria-label={save.saved ? `Saved, ${route.name}, remove it from Saved` : `Save ${route.name}`}
       onClick={save.toggle}

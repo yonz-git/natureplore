@@ -44,7 +44,7 @@
 .sug-open:focus-visible { outline: none; }
 .sug:has(.sug-open:focus-visible) { outline: 2px solid var(--color-mist); outline-offset: 3px; }
 
-/* Save: a round frost on the photograph's top right, the one blur allowed inside glass */
+/* Save: a round glass pin on the photograph's top right, the same as Share on the organism page */
 .sug-save {
   position: absolute;
   z-index: 1;
@@ -57,15 +57,24 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-pill);
-  background: rgb(14 28 18 / 0.45);
-  backdrop-filter: blur(1.25rem);
-  border: 0.5px solid rgb(255 255 255 / 0.22);
   color: var(--color-on-ground);
   cursor: pointer;
   transition: transform 160ms var(--ease-out);
 }
 .sug-save:active { transform: scale(0.94); }
 .sug-save svg { transition: transform 200ms var(--ease-out); }
+/* inside a glass card it would turn inner glass; it sits on a photograph, so it keeps the full
+   recipe from glass.css, its blur reaching only the photograph under it */
+.sug-save.glass,
+.glass .sug-save.glass {
+  position: absolute;
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 0.16) 0%, rgb(255 255 255 / 0.05) 100%),
+    var(--color-glass-fill);
+  backdrop-filter: blur(1.875rem) saturate(1.4);
+  border: 0.5px solid var(--color-glass-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.11), inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
+}
 .sug-save[aria-pressed="true"] svg { animation: save-pop 280ms var(--ease-out); }
 @keyframes save-pop {
   from { transform: scale(0.7); }
@@ -103,7 +112,7 @@
 .dots { display: flex; flex-wrap: wrap; align-items: center; gap: 0.84375rem; }
 .dots-row { display: flex; flex-wrap: wrap; gap: 0.625rem; /* room for two 3px halos, and 4 between them */ }
 .dot {
-  --dot: calc(1.63625rem * 0.9);
+  --dot: calc(1.63625rem * 0.9 * 0.9);
   width: var(--dot);
   height: var(--dot);
   box-sizing: border-box;
@@ -117,7 +126,7 @@
   border: 1px solid rgb(255 255 255 / 0.4);
   color: var(--color-on-ground-soft);
   font-family: var(--font-text);
-  font-size: calc(0.825rem * 1.35 * 0.9);
+  font-size: calc(0.825rem * 1.35 * 0.9 * 0.9);
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -186,6 +195,40 @@
 /* the suggestions title takes the h2 step at every size, as a route's own title does on B1; it stays the page's h1 */
 .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
 .sg-scope { margin: 0.675rem 0 0; font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
+/* the pin before the region, its drawn edge on the title's left edge and its middle on the words' */
+.sg-scope { display: flex; align-items: center; gap: 0.125rem; }
+.sg-pin { position: relative; display: flex; flex-shrink: 0; margin: 0 0 0.094rem -0.0615rem; }
+/* the pin spins in once the sheet is up, calmly: a full turn about its upright axis, like a coin on
+   its edge, fading in through the first third and slowing to rest with no overshoot */
+.sg-pin-icon { position: relative; animation: pin-roll-in 900ms var(--ease-out) 240ms both; }
+/* the ring it lands in: an ellipse on the ground, centred under the tip (9 across and 15.6 down the
+   18 box), drawn behind the pin so the pin stands in it; it opens out as the pin comes to rest */
+.sg-pin-ring {
+  position: absolute;
+  left: calc(0.5625rem - 0.375rem);
+  top: calc(0.975rem - 0.15625rem);
+  width: 0.75rem;
+  height: 0.3125rem;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-opacity: 0.7;
+  animation: pin-ring-in 360ms var(--ease-out) 780ms both;
+}
+@keyframes pin-ring-in {
+  from { opacity: 0; scale: 0.4; }
+  to { opacity: 1; scale: 1; }
+}
+@keyframes pin-roll-in {
+  from { opacity: 0; transform: rotateY(-360deg); }
+  33% { opacity: 1; }
+  to { opacity: 1; transform: rotateY(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sg-pin-icon,
+  .sg-pin-ring { animation: fade-in 200ms var(--ease-out) 120ms both; }
+}
 .sg .ms-lead { margin-top: 0.16875rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
 
 /* Show on map / Show as a list: inner glass on the sheet, the phone only */
@@ -598,7 +641,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 
 @media (prefers-reduced-transparency: reduce) {
   .sr-panel,
-  .sug-save { background: var(--color-glass-solid); backdrop-filter: none; }
+  .sug-save,
+  .glass .sug-save.glass { background: var(--color-glass-solid); backdrop-filter: none; }
 }
 
 /* See all points down, Show fewer up */
