@@ -196,8 +196,8 @@
 .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
 .sg-scope { margin: 0.675rem 0 0; font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
 /* the pin before the region, its drawn edge on the title's left edge and its middle on the words' */
-.sg-scope { display: flex; align-items: center; gap: 0.25rem; }
-.sg-scope svg { flex-shrink: 0; margin: 0 0 0.094rem -0.124rem; }
+.sg-scope { display: flex; align-items: center; gap: 0.125rem; }
+.sg-scope svg { flex-shrink: 0; margin: 0 0 0.094rem -0.0615rem; }
 .sg .ms-lead { margin-top: 0.16875rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
 
 /* Show on map / Show as a list: inner glass on the sheet, the phone only */

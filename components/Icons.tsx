@@ -45,10 +45,18 @@ export const LocationOffIcon = (p: P) => (
   </Svg>
 );
 
+// a solid pin with a round hole, from Lordicon's location pin (wired lineal 18,
+// .design/icons/wired-lineal-18-location-pin-hover-jump.json): its shape and 2-unit line taken off
+// the first frame, centred on the 24 grid and scaled to 18.5 tall, the old pin's height
 export const PinIcon = (p: P) => (
   <Svg {...p}>
-    <path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z" />
-    <circle cx="12" cy="10" r="2.2" />
+    <path
+      transform="translate(12 12) scale(0.2065) translate(0 -6.4)"
+      fill="currentColor"
+      fillRule="evenodd"
+      strokeWidth="2"
+      d="M-31.669 6.468C-32.746 3.135 -33.377 -0.409 -33.377 -4.105C-33.377 -23.266 -17.227 -38.656 2.215 -37.404C18.698 -36.343 32.098 -23.04 33.285 -6.566C33.595 -2.266 33.05 1.865 31.902 5.72C26.544 23.707 0.003 50.2 0.003 50.2C0.003 50.2 -24.979 27.166 -31.669 6.468ZM15.704 -4.103C15.704 -12.776 8.673 -19.807 0 -19.807C-8.673 -19.807 -15.704 -12.776 -15.704 -4.103C-15.704 4.57 -8.673 11.6 0 11.6C8.673 11.6 15.704 4.57 15.704 -4.103Z"
+    />
   </Svg>
 );
 
