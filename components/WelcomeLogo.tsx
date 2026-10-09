@@ -27,18 +27,14 @@ const SYM = { x: 0, y: 64.87, w: 283.81, h: 265.34 };
 const LOGO = { w: 1729.5, h: 425.2 };
 const HOLD = 0.58; // seconds the whole logo is left standing once it is built
 const DISSOLVE = 0.38; // seconds the wordmark takes to go
-const TRAVEL = 1.0; // seconds, the symbol flying to its corner
-// The symbol does not slide to its corner, it flies there: up along a winding line, the bird on it
-// flapping, shrinking as it goes. The line is the user's sketch, as fractions of the way from the
-// corner (0) back to where the symbol starts (1), so it fits every screen; flown from 1 to 0.
-const ROUTE = [
-  { x: 0, y: 0 }, { x: 0.003, y: 0.063 }, { x: 0.079, y: 0.159 }, { x: 0.368, y: 0.127 },
-  { x: 0.627, y: 0.241 }, { x: 0.505, y: 0.468 }, { x: 0.52, y: 0.582 }, { x: 0.673, y: 0.684 },
-  { x: 0.916, y: 0.709 }, { x: 1.038, y: 0.797 }, { x: 1, y: 1 },
-];
-// The sketch has corners where the hand turned; flown as drawn, the symbol jerked through them.
+const TRAVEL = 1.15; // seconds, the symbol flying to its corner
+// The symbol does not slide to its corner, it flies there: up along one gentle arc, the bird on it
+// flapping, shrinking as it goes. It lifts first and then glides left into the corner, a single
+// curve with no turns back. The line is fractions of the way from the corner (0) back to where the
+// symbol starts (1), so it fits every screen; flown from 1 to 0.
+const ROUTE = [{ x: 0, y: 0 }, { x: 0.12, y: 0.04 }, { x: 0.42, y: 0.24 }, { x: 0.78, y: 0.62 }, { x: 1, y: 1 }];
 // Rounded twice (Chaikin: every corner cut at a quarter and three quarters of its sides), it keeps
-// the sketch's shape and its two ends, and the flight through it runs on one smooth line.
+// its two ends and runs as one smooth line.
 const rounded = (points: { x: number; y: number }[]) => [
   points[0],
   ...points.slice(0, -1).flatMap((a, i) => {
@@ -59,7 +55,7 @@ const evenShrink = (to: number) => {
   if (Math.abs(to - 1) < 0.001) return curve;
   return (p: number) => (Math.pow(to, curve(p)) - 1) / (to - 1);
 };
-const FLAP = 0.36; // seconds, one wingbeat
+const FLAP = 0.44; // seconds, one wingbeat, slow and shallow so the flight reads as a glide
 // The opening can play OPENING times faster again (lib/intro-timeline.ts, 1 for now), then eases back to PACE over
 // EASE_BACK seconds, so the change of speed is never felt as a jolt, before the mushroom jumps.
 const OPENING = WELCOME_OPENING;
@@ -138,7 +134,7 @@ export default function WelcomeLogo() {
         .to(el, { scale: landing.scale, duration: TRAVEL, ease: evenShrink(landing.scale) }, flyAt)
         // the bird beats its wing the whole way up, and has it folded as the symbol lands
         .to(wing, {
-          keyframes: [{ rotation: -24, duration: 0.1 }, { rotation: 44, duration: 0.15 }, { rotation: 0, duration: 0.11 }],
+          keyframes: [{ rotation: -12, duration: 0.12 }, { rotation: 22, duration: 0.18 }, { rotation: 0, duration: 0.14 }],
           ease: "sine.inOut",
           repeat: Math.max(0, Math.round(TRAVEL / FLAP) - 1),
         }, flyAt);
