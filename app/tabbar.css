@@ -63,15 +63,12 @@
 .tabbar-tab:active { transform: scale(0.97); }
 /* the Map and Learn icons, detailed drawings, read at the others' size only 20% bigger */
 .tabbar-icon-big { scale: 1.2; overflow: visible; }
-/* the open tab's icon fills in: the front bookmark of Saved becomes solid, and Map's outline gives
-   way to its solid map */
+/* the open tab's icon gets heavier: the front bookmark of Saved becomes solid */
 .tabbar-tab .tab-fill { fill: rgb(from currentColor r g b / 0); transition: fill 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-fill { fill: currentColor; }
-.tabbar-tab .tab-outline,
-.tabbar-tab .tab-solid { transition: opacity 220ms var(--ease-out); }
-.tabbar-tab .tab-solid { opacity: 0; }
-.tabbar-tab.is-current .tab-solid { opacity: 1; }
-.tabbar-tab.is-current .tab-outline { opacity: 0; }
+/* Map's line thickens instead */
+.tabbar-tab .tab-outline { transition: stroke-width 220ms var(--ease-out); }
+.tabbar-tab.is-current .tab-outline { stroke-width: 2.8; }
 .tabbar-tab.is-current {
   color: var(--color-on-primary);
   font-weight: var(--text-tab-active--font-weight);

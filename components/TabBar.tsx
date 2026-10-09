@@ -11,26 +11,18 @@ const TABS = [
     href: "/map",
     label: "Map",
     // a folded map, set in Figma on a 35 by 21 grid (.design/icons/map-pin.svg, its pin left out),
-    // centred in the 24 box and drawn as a 2-unit line; drawn 20% bigger than Saved (app/tabbar.css).
-    // When the tab is open it turns solid: the map's outline filled, its two folds cut out of it.
+    // centred in the 24 box and drawn as a 2-unit line, thicker when the tab is open; drawn 20% bigger
+    // than Saved (app/tabbar.css)
     big: true,
     icon: (
-      <g transform="translate(12 12) scale(0.7886) translate(-23.5 -10.5)">
-        <mask id="tab-map-folds" maskUnits="userSpaceOnUse" x="10" y="-2" width="27" height="25">
-          <rect x="10" y="-2" width="27" height="25" fill="#fff" />
-          <path d="M20 1.6V17.4M27 3.6V19.4" stroke="#000" strokeWidth="1.6" strokeLinecap="round" />
-        </mask>
-        <path className="tab-outline" d="M27 20V3M27 20H26.667L26.309 19.78C24.4177 18.6162 22.2407 18 20.02 18H20M27 20H27.177C29.3516 19.9999 31.4853 19.4088 33.35 18.29L34 17.9V1H33.75L33.393 1.22C31.5015 2.38399 29.324 3.00018 27.103 3H27M27 3H26.75L26.267 2.71C24.402 1.59103 22.2679 0.999965 20.093 1H20M20 18V1M20 18H19.897M20 1H19.824C17.6491 0.999965 15.515 1.59103 13.65 2.71L13 3.1V20H13.25L13.607 19.78C15.498 18.6164 17.6747 18.0002 19.895 18M19.895 18C19.8957 18 19.8963 18 19.897 18M19.895 18H19.896H19.897M19.895 18H19.75" fill="none" stroke="currentColor" strokeWidth="2" />
-        <path
-          className="tab-solid"
-          mask="url(#tab-map-folds)"
-          d="M13 3.1L13.65 2.71C15.515 1.591 17.649 1 19.824 1H20.093C22.268 1 24.402 1.591 26.267 2.71L26.75 3H27.103C29.324 3 31.502 2.384 33.393 1.22L33.75 1H34V17.9L33.35 18.29C31.485 19.409 29.352 20 27.177 20H26.667L26.309 19.78C24.418 18.616 22.241 18 20.02 18H19.895C17.675 18 15.498 18.616 13.607 19.78L13.25 20H13Z"
-          fill="currentColor"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinejoin="round"
-        />
-      </g>
+      <path
+        className="tab-outline"
+        transform="translate(12 12) scale(0.7886) translate(-23.5 -10.5)"
+        d="M27 20V3M27 20H26.667L26.309 19.78C24.4177 18.6162 22.2407 18 20.02 18H20M27 20H27.177C29.3516 19.9999 31.4853 19.4088 33.35 18.29L34 17.9V1H33.75L33.393 1.22C31.5015 2.38399 29.324 3.00018 27.103 3H27M27 3H26.75L26.267 2.71C24.402 1.59103 22.2679 0.999965 20.093 1H20M20 18V1M20 18H19.897M20 1H19.824C17.6491 0.999965 15.515 1.59103 13.65 2.71L13 3.1V20H13.25L13.607 19.78C15.498 18.6164 17.6747 18.0002 19.895 18M19.895 18C19.8957 18 19.8963 18 19.897 18M19.895 18H19.896H19.897M19.895 18H19.75"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
     ),
   },
   {
