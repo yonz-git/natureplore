@@ -198,9 +198,9 @@
 /* the pin before the region, its drawn edge on the title's left edge and its middle on the words' */
 .sg-scope { display: flex; align-items: center; gap: 0.125rem; }
 .sg-pin { position: relative; display: flex; flex-shrink: 0; margin: 0 0 0.094rem -0.0615rem; }
-/* the pin rolls in once the sheet is up, calmly: a half turn from the left, the distance the turn
-   would carry it (half its 11px girth), slowing to rest with no overshoot */
-.sg-pin-icon { position: relative; animation: pin-roll-in 640ms var(--ease-out) 240ms both; }
+/* the pin spins in once the sheet is up, calmly: a full turn about its upright axis, like a coin on
+   its edge, fading in through the first third and slowing to rest with no overshoot */
+.sg-pin-icon { position: relative; animation: pin-roll-in 900ms var(--ease-out) 240ms both; }
 /* the ring it lands in: an ellipse on the ground, centred under the tip (9 across and 15.6 down the
    18 box), drawn behind the pin so the pin stands in it; it opens out as the pin comes to rest */
 .sg-pin-ring {
@@ -214,16 +214,16 @@
   stroke: currentColor;
   stroke-width: 1;
   stroke-opacity: 0.7;
-  animation: pin-ring-in 360ms var(--ease-out) 680ms both;
+  animation: pin-ring-in 360ms var(--ease-out) 780ms both;
 }
 @keyframes pin-ring-in {
   from { opacity: 0; scale: 0.4; }
   to { opacity: 1; scale: 1; }
 }
 @keyframes pin-roll-in {
-  from { opacity: 0; translate: -1.08rem 0; rotate: -180deg; }
-  40% { opacity: 1; }
-  to { opacity: 1; translate: 0 0; rotate: 0deg; }
+  from { opacity: 0; transform: rotateY(-360deg); }
+  33% { opacity: 1; }
+  to { opacity: 1; transform: rotateY(0deg); }
 }
 @media (prefers-reduced-motion: reduce) {
   .sg-pin-icon,
