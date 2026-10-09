@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { INTRO_LOGO_SVG } from "@/components/intro-logo";
-import Logo from "@/components/Logo";
+import Logo, { WORDMARK_BOX } from "@/components/Logo";
 import { playIntro, WELCOME_OPENING, WELCOME_PACE, WELCOME_START } from "@/lib/intro-timeline";
 import { followProgress } from "@/lib/welcome-progress";
 
@@ -12,9 +12,9 @@ import { followProgress } from "@/lib/welcome-progress";
 // is built and held at its first frame, where every piece is still off the screen and the drawing is
 // transparent. The scroll is the background's, not the logo's: it opens the photograph, and as that
 // circle starts to open the logo starts and then plays at its own speed, whatever the scroll
-// does from there. When it has built itself it stands a moment, the wordmark lifts off letter by
-// letter, and the symbol alone shrinks into the top left corner; only when it lands does the rest of
-// A0 come in, which is what the a0-open class below starts (app/welcome.css).
+// does from there. When it has built itself it stands a moment, then the name lifts out and lands
+// at the foot of the page while the symbol shrinks into the top left corner; only when the symbol
+// lands does the rest of A0 come in, which is what the a0-open class below starts (app/welcome.css).
 //
 // The travel is worked out from two boxes rather than written down: the logo where it stands, and the
 // empty corner slot, so both sizes and every window width follow the CSS.
@@ -26,7 +26,17 @@ const PACE = WELCOME_PACE; // the timeline runs this much faster than it was wri
 const SYM = { x: 0, y: 64.87, w: 283.81, h: 265.34 };
 const LOGO = { w: 1729.5, h: 425.2 };
 const HOLD = 0.58; // seconds the whole logo is left standing once it is built
-const DISSOLVE = 0.38; // seconds the wordmark takes to go
+const DISSOLVE = 0.38; // seconds the logo's own wordmark takes to hand over to the one that lands
+// The wordmark does not vanish: as the symbol takes off, the name lifts out of the logo and lands at
+// the foot of the welcome (beside the corner symbol on a phone), its letters settling one by one.
+// It is a second, plain wordmark (.a0-wordmark, app/welcome.css) laid exactly over the logo's own
+// and flown from there, the logo's letters fading as it takes over.
+const WORD = (() => {
+  const [x, y, w, h] = WORDMARK_BOX.split(" ").map(Number);
+  return { x, y, w, h };
+})();
+const WORD_FLIGHT = 1.5; // seconds, the name from the logo to its place
+const WORD_SETTLE = 0.55; // seconds each letter takes to settle as it lands
 const TRAVEL = 2.0; // seconds, the symbol flying to its corner, loop and all
 // The symbol does not slide to its corner, it flies there, on the line the user sketched: it turns
 // one loop where it stands, heads left under the heading, rises straight up beside it and curves in
@@ -80,6 +90,7 @@ const EASE_BACK = 0.25;
 export default function WelcomeLogo() {
   const mark = useRef<HTMLDivElement>(null);
   const slot = useRef<HTMLDivElement>(null);
+  const word = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     const el = mark.current;
@@ -158,20 +169,7 @@ export default function WelcomeLogo() {
       const flyAt = HOLD + DISSOLVE * 0.6;
       travel = gsap
         .timeline({ onComplete: open })
-        .to(
-          letters,
-          {
-            y: -18,
-            opacity: 0,
-            scale: 0.86,
-            rotation: () => gsap.utils.random(-14, 14),
-            transformOrigin: "50% 100%",
-            stagger: { each: 0.022, from: "start" },
-            duration: DISSOLVE,
-            ease: "power2.in",
-          },
-          HOLD,
-        )
+        .to(letters, { opacity: 0, duration: DISSOLVE, ease: "power1.in" }, HOLD)
         .to(el, { duration: TRAVEL, ease: "sine.inOut", motionPath: { path, curviness: 1 } }, flyAt)
         .to(el, { scale: landing.scale, duration: TRAVEL, ease: evenShrink(landing.scale) }, flyAt)
         // the bird beats its wing the whole way up, and has it folded as the symbol lands
@@ -180,6 +178,44 @@ export default function WelcomeLogo() {
           ease: "sine.inOut",
           repeat: Math.max(0, Math.round(TRAVEL / FLAP) - 1),
         }, flyAt);
+      // the name: laid over the logo's own wordmark, then flown to its place
+      const name = word.current;
+      if (name) {
+        gsap.set(name, { clearProps: "transform,opacity" });
+        const home = name.getBoundingClientRect();
+        const box = el.getBoundingClientRect();
+        const from = {
+          left: box.left + (WORD.x / LOGO.w) * box.width,
+          top: box.top + (WORD.y / LOGO.h) * box.height,
+          width: (WORD.w / LOGO.w) * box.width,
+        };
+        if (home.width && from.width) {
+          const s = from.width / home.width;
+          const x = from.left - home.left;
+          const y = from.top - home.top;
+          const parts = name.querySelectorAll("path");
+          gsap.set(name, { x, y, scale: s, transformOrigin: "0 0", opacity: 0 });
+          travel
+            .to(name, { opacity: 1, duration: DISSOLVE, ease: "power1.out" }, HOLD)
+            // it dips first, then sweeps out to its place on a long curve
+            .to(name, {
+              duration: WORD_FLIGHT,
+              ease: "power3.inOut",
+              motionPath: { path: [{ x, y }, { x: x * 0.55, y: y * 0.35 + 40 }, { x: 0, y: 0 }], curviness: 1.2 },
+            }, HOLD + DISSOLVE * 0.5)
+            .to(name, { scale: 1, duration: WORD_FLIGHT, ease: "power3.inOut" }, HOLD + DISSOLVE * 0.5)
+            // and its letters settle one by one as it comes down
+            .fromTo(parts, { y: -26, rotation: () => gsap.utils.random(-6, 6) }, {
+              y: 0,
+              rotation: 0,
+              transformOrigin: "50% 100%",
+              duration: WORD_SETTLE,
+              ease: "back.out(2.2)",
+              stagger: 0.035,
+            }, HOLD + DISSOLVE * 0.5 + WORD_FLIGHT * 0.62)
+            .set(name, { clearProps: "transform" });
+        }
+      }
     };
 
     const intro = playIntro(el, { onWarm() {}, onOpen() {}, onFly: fly }, true);
@@ -204,6 +240,10 @@ export default function WelcomeLogo() {
       intro.timeline.pause(0);
       gsap.set(el, { x: 0, y: 0, scale: 1 });
       gsap.set(el.querySelectorAll(".wordmark > *"), { clearProps: "opacity,transform" });
+      if (word.current) {
+        gsap.set(word.current, { clearProps: "transform,opacity" });
+        gsap.set(word.current.querySelectorAll("path"), { clearProps: "transform" });
+      }
       delete el.dataset.ready;
       el.querySelector(".sway")?.classList.remove("swaying");
       stage?.classList.remove("a0-open", "a0-done");
@@ -252,6 +292,10 @@ export default function WelcomeLogo() {
           as that fades out (app/welcome.css) */}
       <div className="a0-mark-lit a0-mark-corner" aria-hidden="true">
         <Logo symbol />
+      </div>
+      {/* the name, where it lands once it leaves the logo: unseen until then (app/welcome.css) */}
+      <div className="a0-wordmark" ref={word} aria-hidden="true">
+        <Logo wordmark />
       </div>
     </>
   );
