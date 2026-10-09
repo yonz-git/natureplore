@@ -173,11 +173,12 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
         lat: s.lat,
         lon: s.lon,
         n: s.n,
+        out: !!detail?.spots[i]?.out,
         label: route.stops[i]?.name ?? `Spot ${s.n}`,
         left: route.stops[i]?.left,
       })),
     ],
-    [route, spots],
+    [route, spots, detail],
   );
 
   // one spot open at a time, inside its row. The URL keeps it (?spot=n), so coming back from an

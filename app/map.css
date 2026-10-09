@@ -672,7 +672,8 @@ button.float-pill,
 
 /* ── B1: the route detail, on the map ─────────────────────────────────────────────────────── */
 
-/* the spot marker: a lime disc numbered in walking order, with a forest and mist double ring */
+/* the spot marker: a lime disc numbered in walking order with a 3px lime halo, muted when the spot
+   has nothing in season this month (flow-b.css carries the same face to the spots list and axis) */
 .spot-mark {
   flex-shrink: 0;
   --mark: 2rem;
@@ -688,7 +689,7 @@ button.float-pill,
   text-box: trim-both cap alphabetic;
   border-radius: var(--radius-pill);
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
-  box-shadow: 0 0 0 2px var(--color-ground), 0 0 0 3.5px var(--color-mist), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
+  box-shadow: 0 0 0 0.1875rem rgb(from var(--color-primary) r g b / 0.6), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
   color: var(--color-on-primary);
   /* the number in Alpino Bold, the one place that weight is used, so it reads at 11 to 15px */
   font-family: var(--font-text);
@@ -697,6 +698,10 @@ button.float-pill,
   line-height: 1;
 }
 .map-spot { position: absolute; transform: translate(-50%, -50%); text-decoration: none; }
+.map-spot.is-out .spot-mark {
+  background: color-mix(in srgb, var(--color-primary) 60%, var(--color-ground));
+  box-shadow: 0 0 0 0.1875rem color-mix(in srgb, color-mix(in srgb, var(--color-primary) 60%, var(--color-ground)) 60%, transparent), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
+}
 /* a 32 marker, 44 to touch */
 .map-spot::before { content: ""; position: absolute; inset: -0.375rem; border-radius: var(--radius-pill); }
 .map-spot-label,
