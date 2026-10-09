@@ -44,7 +44,7 @@
 .sug-open:focus-visible { outline: none; }
 .sug:has(.sug-open:focus-visible) { outline: 2px solid var(--color-mist); outline-offset: 3px; }
 
-/* Save: a round frost on the photograph's top right, the one blur allowed inside glass */
+/* Save: a clear ring on the photograph's top right, the photograph showing through it */
 .sug-save {
   position: absolute;
   z-index: 1;
@@ -57,15 +57,15 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-pill);
-  background: rgb(14 28 18 / 0.45);
-  backdrop-filter: blur(1.25rem);
+  background: transparent;
   border: 0.5px solid rgb(255 255 255 / 0.22);
   color: var(--color-on-ground);
   cursor: pointer;
   transition: transform 160ms var(--ease-out);
 }
 .sug-save:active { transform: scale(0.94); }
-.sug-save svg { transition: transform 200ms var(--ease-out); }
+/* with no backing, a soft shadow keeps the bookmark readable on bright leaves */
+.sug-save svg { filter: drop-shadow(0 0 0.25rem rgb(0 0 0 / 0.55)); transition: transform 200ms var(--ease-out); }
 .sug-save[aria-pressed="true"] svg { animation: save-pop 280ms var(--ease-out); }
 @keyframes save-pop {
   from { transform: scale(0.7); }
@@ -186,6 +186,9 @@
 /* the suggestions title takes the h2 step at every size, as a route's own title does on B1; it stays the page's h1 */
 .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
 .sg-scope { margin: 0.675rem 0 0; font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
+/* the pin before the region, its drawn edge on the title's left edge and its middle on the words' */
+.sg-scope { display: flex; align-items: center; gap: 0.25rem; }
+.sg-scope svg { flex-shrink: 0; margin: 0 0 0.094rem -0.124rem; }
 .sg .ms-lead { margin-top: 0.16875rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
 
 /* Show on map / Show as a list: inner glass on the sheet, the phone only */
