@@ -56,7 +56,21 @@ const TABS = [
   {
     href: "/saved",
     label: "Saved",
-    icon: <path d="M7 3.8h10V20l-5-3.6L7 20z" />,
+    // two bookmarks, one behind the other, set in Figma on a 178 by 220 grid and fitted to the 24
+    // box's height (.design/icons/saved-bookmarks.svg); drawn 20% bigger like Map and Learn
+    big: true,
+    icon: (
+      <g transform="translate(2.3 0) scale(0.1091)" fill="none" stroke="currentColor" strokeLinejoin="round">
+        <path
+          strokeWidth="16"
+          d="M36.5 34.6154V27.9615C36.5154 22.6721 38.6221 17.6038 42.3602 13.8636C46.0982 10.1234 51.1637 8.01536 56.45 8H149.55C154.836 8.01536 159.902 10.1234 163.64 13.8636C167.378 17.6038 169.485 22.6721 169.5 27.9615V181L145.5 157"
+        />
+        <path
+          strokeWidth="19"
+          d="M123.184 32H30.8158C25.1675 32.0164 19.7553 34.2721 15.7614 38.2744C11.7674 42.2766 9.5164 47.7 9.5 53.36V210L77 153.04L144.5 210V53.36C144.484 47.7 142.233 42.2766 138.239 38.2744C134.245 34.2721 128.832 32.0164 123.184 32Z"
+        />
+      </g>
+    ),
   },
 ];
 
