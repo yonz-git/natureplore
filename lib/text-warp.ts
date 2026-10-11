@@ -9,7 +9,7 @@
 // text then simply stays.
 
 const GAIN = 3; // px of pull per px the mouse moved in a frame, at full strength
-const INTENSITY = 0.3; // the reference's effect less 70 percent
+const INTENSITY = 0.5; // the reference's effect at half strength, enough to see over the photograph
 const RADIUS = 0.3; // of the window's height, how far from the mouse the pull reaches
 const PAD = 60; // px of room above and below the line for the pixels to be pulled into
 
