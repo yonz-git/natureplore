@@ -29,10 +29,6 @@ export default function Welcome({ still = false }: { still?: boolean }) {
       <div className="a02" data-screen={still ? "A0 · Welcome" : "Opening, A0 · Welcome"}>
         {!still && (
           <div className="a0-field" aria-hidden="true">
-            <div className="a0-blob a0-blob-1" />
-            <div className="a0-blob a0-blob-b a0-blob-2" />
-            <div className="a0-blob a0-blob-3" />
-            <div className="a0-blob a0-blob-b a0-blob-4" />
             <WelcomeReveal />
             <div className="a0-ether">
               <WelcomeEther />
