@@ -3,19 +3,18 @@
 import dynamic from "next/dynamic";
 import { useSyncExternalStore } from "react";
 
-// The liquid layer over A0's green field: the pointer, and the layer itself when the pointer rests, stir slow, broad flows that lift the field to a
-// slightly brighter green of the same tone. app/welcome.css screens the layer over the field, so it
-// never goes darker than the field, and the canvas is transparent, so the field's own colour stays
-// underneath. The colour comes from the design tokens.
+// The liquid layer over A0's mist photograph: the pointer, and the layer itself when the pointer rests,
+// stir slow, broad flows of green haze through the light. app/welcome.css lays it straight over the
+// photograph, and the canvas is transparent, so the photograph shows wherever nothing is flowing.
+// The colour comes from the design tokens.
 // Tuned for calm: a wide brush on a coarse grid gives few large shapes, viscosity and plain advection
 // (no BFECC) take the smoke-like wisps out, a gentle force and a small time step keep it slow.
 // Not mounted for a person who asked for reduced motion. three is loaded after the page, not with it.
 
 const LiquidEther = dynamic(() => import("@/components/LiquidEther"), { ssr: false });
 
-// One dark green: the flow speed alone sets how much of it shows. Screened over the field it lifts the
-// field to about field-glow at most, the same tone a bit brighter. A light ink goes white and grey, a
-// saturated one goes neon.
+// One dark green: the flow speed alone sets how much of it shows, a soft haze where the pointer passed.
+// A saturated ink goes neon.
 const TOKENS = ["--color-field-flow", "--color-field-flow"];
 const MOTION_OK = "(prefers-reduced-motion: no-preference)";
 

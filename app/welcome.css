@@ -82,9 +82,9 @@
 }
 
 /* the liquid layer (components/WelcomeEther.tsx), between the photograph and the grain */
-/* screen: the layer can only lighten what is under it, towards its green, and fades out into the field
-   with no dark or grey edge */
-.a0-ether { position: absolute; inset: 0; mix-blend-mode: screen; }
+/* laid straight over the photograph: screened, its dark green vanished into the bright mist, so the
+   mouse's trail now shows as green haze stirred through the light */
+.a0-ether { position: absolute; inset: 0; }
 .a0-ether .liquid-ether-container { touch-action: auto; }
 .a0-grain {
   position: absolute;
@@ -329,6 +329,16 @@
   .a0s .a02-cta::before { animation: none; }
   .a0s.a0-open .a02-cta::before { animation: a02-cta-fill 4.8s ease-in-out 1040ms infinite; }
 
+  /* a soft dark veil behind the opening line, so the white letters hold over the brightest mist;
+     inside the line, so it leaves with it */
+  .a0s .a0-hero::before {
+    content: "";
+    position: absolute;
+    inset: -130% 6%;
+    z-index: -1;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--color-ground) 60%, transparent), transparent);
+    pointer-events: none;
+  }
   /* the opening line, centred on the screen, in the display face */
   .a0s .a0-hero {
     display: block;
