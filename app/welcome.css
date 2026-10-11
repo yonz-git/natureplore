@@ -50,6 +50,15 @@
   pointer-events: none;
   background: linear-gradient(160deg, var(--color-field-light) 0%, var(--color-field) 40%, var(--color-field-deep) 100%);
 }
+/* mossy forest floor over the drifting colour (ambientCG Ground037, CC0), grey so the greens stay the field's own */
+.a0-field::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url(/img/intro-ground.webp) center / 32rem repeat;
+  mix-blend-mode: soft-light;
+  opacity: 0.55;
+}
 .a0-blob {
   position: absolute;
   border-radius: 50%;
