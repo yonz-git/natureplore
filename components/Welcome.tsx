@@ -3,7 +3,6 @@ import CtaSquirrel from "@/components/CtaSquirrel";
 import LetterWave from "@/components/LetterWave";
 import Logo from "@/components/Logo";
 import WelcomeCue from "@/components/WelcomeCue";
-import WelcomeEther from "@/components/WelcomeEther";
 import WelcomeHero from "@/components/WelcomeHero";
 import WelcomeLogo from "@/components/WelcomeLogo";
 import WelcomeReveal from "@/components/WelcomeReveal";
@@ -30,9 +29,6 @@ export default function Welcome({ still = false }: { still?: boolean }) {
         {!still && (
           <div className="a0-field" aria-hidden="true">
             <WelcomeReveal />
-            <div className="a0-ether">
-              <WelcomeEther />
-            </div>
             <svg className="a0-grain">
               <filter id="a0-grain">
                 <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch" />

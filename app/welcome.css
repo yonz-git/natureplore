@@ -23,7 +23,6 @@
 /* scrubbed by the scroll, each one only names the end it is not in */
 @keyframes a0s-leave { from { opacity: 1; } }
 @keyframes a0s-hide { to { visibility: hidden; } }
-@keyframes a0s-away { to { transform: translateY(-200%); } }
 
 .a0s {
   --a0-ease: cubic-bezier(0.23, 1, 0.32, 1);
@@ -47,7 +46,7 @@
   pointer-events: none;
   background: var(--color-ground);
 }
-/* the ground: sun through mist and tall grass, swaying slowly, under the liquid layer and the grain */
+/* the ground: sun through mist and tall grass, swaying slowly, under the grain */
 .a0-field::before {
   content: "";
   position: absolute;
@@ -81,11 +80,6 @@
   will-change: transform;
 }
 
-/* the liquid layer (components/WelcomeEther.tsx), between the photograph and the grain */
-/* laid straight over the photograph: screened, its dark green vanished into the bright mist, so the
-   mouse's trail now shows as green haze stirred through the light */
-.a0-ether { position: absolute; inset: 0; }
-.a0-ether .liquid-ether-container { touch-action: auto; }
 .a0-grain {
   position: absolute;
   inset: 0;
@@ -208,7 +202,7 @@
      background, the same as A0 has it (app/welcome2.css). */
   .a0s.a0-done { height: auto; }
   .a0s.a0-done .a02 { position: relative; }
-  .a0s.a0-done :is(.a0-field, .a0-ether, .a0-hero, .a0-cue, .a0-mush) { display: none; }
+  .a0s.a0-done :is(.a0-field, .a0-hero, .a0-cue, .a0-mush) { display: none; }
   .a0s.a0-done .a0-lens {
     inset: 0;
     width: auto;
@@ -228,7 +222,7 @@
   .a0s .a02 { position: sticky; top: 0; height: 100dvh; min-height: 0; container-type: size; }
   .a0s .a0-field { display: block; }
 
-  .a0s :is(.a0-field, .a0-ether, .a0-hero, .a0-cue) {
+  .a0s :is(.a0-field, .a0-hero, .a0-cue) {
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-fill-mode: both;
@@ -237,7 +231,6 @@
   }
   .a0s .a0-field { animation-name: a0s-hide; --a0-s: 0.97; --a0-e: 0.98; }
   /* once the field is covered the liquid layer steps out of it, which is what pauses its simulation */
-  .a0s .a0-ether { animation-name: a0s-away; --a0-s: 0.97; --a0-e: 0.98; }
   /* The photograph opens in a circle between --a0-s and --a0-e of the scroll. The lens is that circle at
      its final size, 150% of hypot(w, h) / sqrt(2), enough to clear every corner. WelcomeScroll scales
      the lens up from nothing and scales the photograph inside it by the inverse so it stays put. Only
