@@ -33,6 +33,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
             <div className="a0-blob a0-blob-b a0-blob-2" />
             <div className="a0-blob a0-blob-3" />
             <div className="a0-blob a0-blob-b a0-blob-4" />
+            <div className="a0-rays" />
             <WelcomeReveal />
             <div className="a0-ether">
               <WelcomeEther />
