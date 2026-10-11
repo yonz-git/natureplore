@@ -21,62 +21,6 @@
   to { transform: translate3d(calc(var(--a0-drift-x) * -1.2), calc(var(--a0-drift-y) * -0.8), 0) scale(1); }
 }
 
-/* sun coming in from above the top right corner: two beams, one wide and one narrow, fanning out from
-   one point, soft at the edges and gone before the far corner. Each turns slowly about the sun at its
-   own pace, so the light keeps passing over the ground without ever repeating a step. */
-.a0-rays {
-  position: absolute;
-  right: -25%;
-  top: -35%;
-  width: 160%;
-  height: 170%;
-  --rays-from: 218deg; /* the first beam's heading, so the fan crosses the screen whatever its shape */
-  z-index: 1; /* over the grass and the liquid layer, light lands on top of everything */
-  transform-origin: 100% 0;
-  filter: blur(0.75rem);
-  mix-blend-mode: screen;
-  -webkit-mask-image: radial-gradient(circle at 100% 0, #000 15%, transparent 72%);
-  mask-image: radial-gradient(circle at 100% 0, #000 15%, transparent 72%);
-  pointer-events: none;
-}
-.a0-rays {
-  background: conic-gradient(from var(--rays-from) at 100% 0,
-    transparent 0deg, transparent 18deg, rgb(255 246 214 / 0.62) 23deg, transparent 29deg,
-    transparent 360deg);
-  animation: a0-rays 72s ease-in-out infinite alternate;
-}
-.a0-rays::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  transform-origin: 100% 0;
-  width: 100%;
-  height: 100%;
-  background: conic-gradient(from var(--rays-from) at 100% 0,
-    transparent 0deg, transparent 4deg, rgb(255 250 228 / 0.5) 7deg, transparent 10deg,
-    transparent 360deg);
-  animation: a0-rays-b 53s ease-in-out infinite alternate;
-}
-@media (max-width: 47.99rem) {
-  .a0-rays { --rays-from: 198deg; } /* a tall screen sits further round the fan */
-}
-/* uneven steps and a light that dims and comes back now and then, as if a cloud or a branch went by */
-@keyframes a0-rays {
-  0% { transform: rotate(3deg); opacity: 0.85; }
-  22% { transform: rotate(1.6deg); opacity: 1; }
-  48% { transform: rotate(-0.4deg); opacity: 0.7; }
-  71% { transform: rotate(-2.2deg); opacity: 0.95; }
-  100% { transform: rotate(-3.5deg); opacity: 0.8; }
-}
-@keyframes a0-rays-b {
-  0% { transform: rotate(-2.5deg); opacity: 1; }
-  31% { transform: rotate(-0.8deg); opacity: 0.75; }
-  58% { transform: rotate(1.4deg); opacity: 1; }
-  83% { transform: rotate(3deg); opacity: 0.6; }
-  100% { transform: rotate(4deg); opacity: 0.85; }
-}
-
 /* the ground sways slowly against the colour, a little off the colour's own beat so the two never line up */
 @keyframes a0-ground {
   0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
@@ -113,12 +57,12 @@
   pointer-events: none;
   background: linear-gradient(160deg, var(--color-field-light) 0%, var(--color-field) 40%, var(--color-field-deep) 100%);
 }
-/* wind-combed grass over the drifting colour (Unsplash 5HI7Ea3yD-w), grey so the greens stay the field's own */
+/* sun through mist and tall grass over the drifting colour, grey so the greens stay the field's own */
 .a0-field::after {
   content: "";
   position: absolute;
   inset: -8%;
-  background: url(/img/intro-grass.webp) center / cover no-repeat;
+  background: url(/img/intro-mist.webp) center / cover no-repeat;
   mix-blend-mode: soft-light;
   opacity: 0.55;
   animation: a0-ground 26s ease-in-out infinite alternate;
@@ -459,7 +403,7 @@
 @media (prefers-reduced-motion: reduce) {
   @keyframes a0-word { from { opacity: 0; } to { opacity: 1; } }
   @keyframes a0-arrive { from { opacity: 0; } to { opacity: 1; } }
-  .a0-blob, .a0-field::after, .a0-rays, .a0-rays::after { animation: none; }
+  .a0-blob, .a0-field::after { animation: none; }
 }
 
 @media (min-width: 64rem) {
