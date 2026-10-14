@@ -12,7 +12,7 @@
   background: var(--color-ground);
   color: var(--color-on-ground);
   /* the same photograph the logo intro opens on, app/intro.css */
-  --a02-photo: url(/img/intro-waterfall.webp);
+  --a02-photo: url(/img/intro-lake.jpg); /* was /img/intro-waterfall.webp */
   /* the corner symbol stands as far from the top as from the left, at every size (app/welcome.css) */
   --mark-top: calc(var(--spacing-inset-screen) + env(safe-area-inset-top, 0px));
 }
@@ -22,6 +22,8 @@
 /* the photograph itself, inside the box the scroll moves, so its slow zoom and that motion never
    write the same transform (components/WelcomeZoom.tsx) */
 .a02-photo-in { position: absolute; inset: 0; background: var(--a02-photo) center / cover; }
+/* the scroll-driven film in the photograph's place (components/WelcomeZoom.tsx, BG_VIDEO) */
+.a02-film { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* the filter over the photograph: darker at the top for the mark, darkest at the bottom for the text */
 .a02-photo::after {
@@ -321,9 +323,10 @@
 /* For now, while the welcome is reworked: the heading, lead and button are taken off, and the drawn
    route stands alone, a fifth of its size, against the right edge. The box takes the whole screen at
    every size so the phone's sizing, which hangs on the heading's top, has nothing to measure. */
-.a02-main { display: none; }
-.a02-route,
-.a0s .a02-route {
+/* With the descent (lib/welcome-progress.ts) the page ends on the full A0, so none of this applies. */
+.a02-main:not([data-descent] *) { display: none; }
+.a02-route:not([data-descent] *),
+.a0s:not([data-descent]) .a02-route {
   inset: 0;
   height: auto;
   scale: 0.2;

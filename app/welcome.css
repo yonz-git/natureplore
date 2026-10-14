@@ -130,6 +130,34 @@
 .a0-mark-corner svg { display: block; height: 100%; width: auto; }
 .a0-mark .intro-logo { height: 100%; width: auto; filter: none; }
 .a0-mark-slot { visibility: hidden; }
+/* The 3D film in place of the drawing (components/WelcomeLogo.tsx, FILM). Its frame is 16:9 with the
+   logo a third of its width in the middle, so it is laid three times the logo's width, centred on the
+   logo's middle (216.45 of its 425.2 units down). The drawing keeps the box, unseen. */
+.a0-film {
+  position: absolute;
+  left: 50%;
+  top: 50.906%;
+  width: 299.76%;
+  max-width: none;
+  aspect-ratio: 16 / 9;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.a0-mark[data-film] .intro-logo { visibility: hidden; }
+/* The leaves' clip on the descent (components/WelcomeLogo.tsx): laid over the drawing on the box the
+   3D clip covers, in the logo's units (x -14.19, y -6.49, 1757.88 by 445.88 of 1729.5 by 425.2) */
+.a0-leaves {
+  position: absolute;
+  left: -0.8205%;
+  top: -1.5265%;
+  width: 101.641%;
+  height: 104.864%;
+  max-width: none;
+  opacity: 0;
+  pointer-events: none;
+}
+/* on the descent the symbol lands alone: the name goes with the leaves */
+.a0s[data-descent] .a0-wordmark { display: none; }
 /* The name, which lands from the logo (components/WelcomeLogo.tsx). On the phone it sits beside the
    corner symbol exactly as it does in the logo, at the symbol's scale (k: the symbol's height over
    its 265.34 units), so the two read as the full logo; from 64rem it lands at the foot of the page,
@@ -214,6 +242,8 @@
      there on its own clock (components/WelcomeLogo.tsx). The page is this tall so that the circle
      opens over a long scroll rather than a flick of the wheel. */
   .a0s { height: 350vh; }
+  /* while the descent plays by itself (components/WelcomeLogo.tsx) the page holds still */
+  html:has(.a0s[data-descending]) { overflow: hidden; }
   /* No scrollbar while the opening plays. Where the system draws one beside the page (a Mac with a
      mouse, Windows) it took 15px off the width, and at a0-done, with nothing left to scroll, it went
      and gave them back: everything placed from the middle moved 7.5px right on the frame the symbol

@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { INTRO_LOGO_SVG } from "@/components/intro-logo";
 import Logo, { WORDMARK_BOX } from "@/components/Logo";
 import { playIntro, WELCOME_OPENING, WELCOME_PACE, WELCOME_START } from "@/lib/intro-timeline";
-import { followProgress } from "@/lib/welcome-progress";
+import { DESCENT, DESCENT_SECONDS, followDescent as followDescentLocal, followProgress, publishDescent } from "@/lib/welcome-progress";
 
 // The logo on A0 · Welcome. The page opens with no logo at all: the timeline (lib/intro-timeline.ts)
 // is built and held at its first frame, where every piece is still off the screen and the drawing is
@@ -39,6 +39,21 @@ const WORD = (() => {
 // piece: no flight to the corner and no landing for the name (app/welcome.css, data-stay). Set to
 // false to bring the flight back.
 const STAY = true;
+// The logo plays as the 3D film of this same timeline (video/logo-3d, build.py --film): the same
+// pieces in the same motion, modelled and lit, and from the squirrel's arrival covered in leaves from
+// the foot up. The drawing and its timeline still run underneath, unseen, for the beats and the
+// layout. Safari plays the HEVC file with its transparency; the others the VP9 one. false: the drawing.
+const FILM = false;
+// The descent (lib/welcome-progress.ts), in shares of its scroll: the logo grows to BIG, leaves grow
+// over it (the 3D clip, video/logo-3d build.py --welcome, scrubbed: its first frame is this drawing,
+// it swells into relief and is covered from the foot up), then the leaves fall away, the name goes and
+// the plain symbol flies to its corner on the sketched line, shrinking back as it goes, and A0 comes
+// in as the film behind reaches the forest.
+const BIG = 1.6;
+const GROW_TO = 0.1; // grown by here
+const LEAVES = [0.04, 0.68]; // the leaves' clip, start to end: done as the film behind stops (DESCENT_FILM)
+const FLIGHT = [0.72, 0.94]; // the flight, start to landing; A0 is in from the landing
+const CROSS = 0.03; // the drawing and the clip cross over in this much
 const WORD_FLIGHT = 1.5; // seconds, the name from the logo to its place
 const WORD_SETTLE = 0.55; // seconds each letter takes to settle as it lands
 const TRAVEL = 2.0; // seconds, the symbol flying to its corner, loop and all
@@ -104,6 +119,18 @@ export default function WelcomeLogo() {
     if (reduce) return;
 
     gsap.set(el, { xPercent: -50, yPercent: -50 }); // centred on the point app/welcome.css puts it at
+    let film: HTMLVideoElement | undefined;
+    if (FILM) {
+      film = document.createElement("video");
+      const safari = /^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent);
+      film.src = safari ? "/video/logo-film.mov" : "/video/logo-film.webm";
+      film.muted = true;
+      film.playsInline = true;
+      film.preload = "auto";
+      film.className = "a0-film";
+      el.appendChild(film);
+      el.dataset.film = "";
+    }
     if (STAY) el.dataset.stay = "";
     const stage = el.closest(".a0s");
     let travel: gsap.core.Timeline | undefined;
@@ -136,22 +163,8 @@ export default function WelcomeLogo() {
         reach: { x: to.left + to.width / 2 - cx, y: to.top + to.height / 2 - cy },
       };
     };
-    const fly = () => {
-      const letters = el.querySelectorAll(".wordmark > *");
-      const landing = corner();
-      const open = () => {
-        done = true;
-        // the scroll has done its work: the page stops being a scroller and is A0 alone, so there
-        // is nothing left to scroll back up into (app/welcome.css)
-        stage?.classList.add("a0-open", "a0-done");
-        scrollTo(0, 0);
-      };
-      if (STAY) {
-        // it stands where it was built a moment, then the rest of A0 comes in around it
-        travel = gsap.timeline({ onComplete: open }).to({}, { duration: HOLD });
-        return;
-      }
-      if (!landing) return open();
+    // the line the symbol flies to its corner on, in the drawing's own x and y
+    const flightPath = (landing: NonNullable<ReturnType<typeof corner>>) => {
       // Where the symbol itself is to be at each point of the sketch, from where it starts...
       const w = landing.width;
       const loopX = Math.max(-LOOP_R * w, LOOP_R * w - landing.room); // the loop's centre, never past the edge
@@ -174,7 +187,48 @@ export default function WelcomeLogo() {
           return { x: m.x - landing.off.x * (s - 1), y: m.y - landing.off.y * (s - 1) };
         });
       }
-      path = rounded(rounded([{ x: 0, y: 0 }, ...path]));
+      return rounded(rounded([{ x: 0, y: 0 }, ...path]));
+    };
+    const fly = () => {
+      const letters = el.querySelectorAll(".wordmark > *");
+      const landing = corner();
+      const open = () => {
+        done = true;
+        if (DESCENT) {
+          // the logo is built: the page may now go on down (WelcomeScroll), and the descent below
+          // takes it from here, A0 coming in only at its end
+          if (stage instanceof HTMLElement) {
+            stage.dataset.logoDone = "";
+            // it plays by itself, at an even pace: each part brings its own ease (grow, flight), and
+            // the two films run at their own speed (see descend)
+            stage.dataset.descending = "";
+            descent = gsap.to({ d: 0 }, {
+              d: 1,
+              duration: DESCENT_SECONDS,
+              ease: "none",
+              onUpdate() { publishDescent(this.targets()[0].d); },
+              onComplete() {
+                delete stage.dataset.descending;
+                // the page is A0 and nothing else, as it is without the descent
+                stage.classList.add("a0-done");
+                scrollTo(0, 0);
+              },
+            });
+          }
+          return;
+        }
+        // the scroll has done its work: the page stops being a scroller and is A0 alone, so there
+        // is nothing left to scroll back up into (app/welcome.css)
+        stage?.classList.add("a0-open", "a0-done");
+        scrollTo(0, 0);
+      };
+      if (STAY) {
+        // it stands where it was built a moment, then the rest of A0 comes in around it
+        travel = gsap.timeline({ onComplete: open }).to({}, { duration: HOLD });
+        return;
+      }
+      if (!landing) return open();
+      const path = flightPath(landing);
       const wing = el.querySelector(".wing");
       const flyAt = HOLD + DISSOLVE * 0.6;
       travel = gsap
@@ -229,6 +283,88 @@ export default function WelcomeLogo() {
     };
 
     const intro = playIntro(el, { onWarm() {}, onOpen() {}, onFly: fly }, true);
+
+    // ---- the descent: grow, leaves, flight, A0, all from the scroll, so going back up undoes it
+    const drawing = el.querySelector<SVGSVGElement>(".intro-logo");
+    let leaves: HTMLVideoElement | undefined;
+    let flight: gsap.core.Timeline | undefined;
+    let landed = false;
+    let descent: gsap.core.Tween | undefined;
+    let leafAt = 0;
+    let leafRaf = 0;
+    if (DESCENT && drawing) {
+      leaves = document.createElement("video");
+      const safari = /^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent);
+      leaves.src = safari ? "/video/logo-leaves-scrub.mov" : "/video/logo-leaves-scrub.webm";
+      leaves.muted = true;
+      leaves.playsInline = true;
+      leaves.preload = "auto";
+      leaves.className = "a0-leaves";
+      el.appendChild(leaves);
+    }
+    const seekLeaves = () => {
+      leafRaf = 0;
+      if (!leaves || leaves.readyState < 1) return;
+      if (leaves.seeking) leafRaf = requestAnimationFrame(seekLeaves);
+      else if (Math.abs(leaves.currentTime - leafAt) > 0.02) leaves.currentTime = leafAt;
+    };
+    leaves?.addEventListener("seeked", () => {
+      if (!leafRaf && leaves && Math.abs(leaves.currentTime - leafAt) > 0.02) leafRaf = requestAnimationFrame(seekLeaves);
+    });
+    const share = (d: number, [a, b]: number[]) => Math.min(1, Math.max(0, (d - a) / (b - a)));
+    const smooth = gsap.parseEase("sine.inOut");
+    const descend = (d: number) => {
+      if (!drawing || !leaves || !stage || !(stage instanceof HTMLElement) || !("logoDone" in stage.dataset)) return;
+      // bigger, then back to its own size over the flight; on the drawing and the clip, never on the
+      // box, whose place the flight is worked out from
+      const s = 1 + (BIG - 1) * smooth(share(d, [0, GROW_TO])) * (1 - smooth(share(d, FLIGHT)));
+      gsap.set(drawing, { scale: s, transformOrigin: "50% 50%" });
+      gsap.set(leaves, { scale: s, transformOrigin: "50% 49.14%" }); // the logo's middle in the clip's box
+      // the clip in for the leaves, the drawing back for the flight
+      const clip = share(d, [LEAVES[0], LEAVES[0] + CROSS]) * (1 - share(d, [FLIGHT[0] - CROSS, FLIGHT[0]]));
+      leaves.style.opacity = String(clip);
+      drawing.style.opacity = String(1 - clip);
+      // the clip plays at the speed that fits it into its share of the descent; it is only sought
+      // when it has to be put somewhere (the descent starting over)
+      const span = (LEAVES[1] - LEAVES[0]) * DESCENT_SECONDS;
+      if (d > LEAVES[0] && d < LEAVES[1] && leaves.paused && leaves.readyState >= 1) {
+        leaves.playbackRate = (leaves.duration || 9) / span;
+        leaves.currentTime = share(d, LEAVES) * (leaves.duration || 9);
+        leaves.play().catch(() => {});
+      } else if (d <= LEAVES[0] && leaves.currentTime > 0) {
+        leaves.pause();
+        leafAt = 0;
+        if (!leafRaf) leafRaf = requestAnimationFrame(seekLeaves);
+      }
+      // the flight, built the first time it is needed, from where the box stands
+      if (d >= FLIGHT[0] && !flight) {
+        const landing = corner();
+        if (landing) {
+          const path = flightPath(landing);
+          const wing = el.querySelector(".wing");
+          flight = gsap
+            .timeline({ paused: true })
+            .to(el.querySelectorAll(".wordmark > *"), { opacity: 0, duration: DISSOLVE, ease: "power1.in" }, 0)
+            .to(el, { duration: TRAVEL, ease: "sine.inOut", motionPath: { path, curviness: 1 } }, DISSOLVE * 0.6)
+            .to(el, { scale: landing.scale, duration: TRAVEL, ease: evenShrink(landing.scale) }, DISSOLVE * 0.6)
+            .to(wing, {
+              keyframes: [{ rotation: -12, duration: 0.12 }, { rotation: 22, duration: 0.18 }, { rotation: 0, duration: 0.14 }],
+              ease: "sine.inOut",
+              repeat: Math.max(0, Math.round(TRAVEL / FLAP) - 1),
+            }, DISSOLVE * 0.6);
+        }
+      }
+      flight?.progress(share(d, FLIGHT));
+      // landed: A0 comes in, and the corner symbol in the button's lime takes over (app/welcome.css)
+      const atEnd = d >= FLIGHT[1];
+      if (atEnd !== landed) {
+        landed = atEnd;
+        stage.classList.toggle("a0-open", atEnd);
+        if (atEnd) delete el.dataset.stay;
+        else el.dataset.stay = "";
+      }
+    };
+    const unDescent = DESCENT ? followDescentLocal(descend) : () => {};
     // A paused timeline has not drawn anything yet, and the markup on its own is the finished logo, so
     // until it starts the logo is kept out of the page altogether (app/welcome.css looks for
     // data-ready), and the timeline is held on its first frame, where every piece is off the screen.
@@ -255,6 +391,10 @@ export default function WelcomeLogo() {
         gsap.set(word.current.querySelectorAll("path"), { clearProps: "transform" });
       }
       delete el.dataset.ready;
+      if (film) {
+        film.pause();
+        film.currentTime = 0;
+      }
       el.querySelector(".sway")?.classList.remove("swaying");
       stage?.classList.remove("a0-open", "a0-done");
     };
@@ -267,6 +407,15 @@ export default function WelcomeLogo() {
         started = true;
         el.dataset.ready = "";
         intro.timeline.play();
+        if (film) {
+          // a frame later: on this one the logo is still out of the page (data-ready), and Chrome
+          // pauses a video it is asked to play while it cannot be seen
+          const f = film;
+          f.currentTime = 0;
+          requestAnimationFrame(() => {
+            if (started) f.play().catch(() => f.addEventListener("canplay", () => started && f.play(), { once: true }));
+          });
+        }
       } else if (started) {
         started = false;
         rewind();
@@ -276,7 +425,8 @@ export default function WelcomeLogo() {
     // the landing is in pixels from the middle of the page, so a window that changes size once it has
     // landed has to have it worked out again
     const resize = () => {
-      if (!done) return;
+      // a logo that stays in the middle (STAY) has no landing to work out: it would be sent to the corner
+      if (!done || STAY) return;
       gsap.set(el, { x: 0, y: 0, scale: 1 });
       const landing = corner();
       if (landing) gsap.set(el, { x: landing.x, y: landing.y, scale: landing.scale });
@@ -286,9 +436,16 @@ export default function WelcomeLogo() {
     return () => {
       removeEventListener("resize", resize);
       unfollow();
+      unDescent();
+      descent?.kill();
+      cancelAnimationFrame(leafRaf);
+      flight?.kill();
+      leaves?.remove();
       travel?.kill();
       settle?.kill();
       intro.revert();
+      film?.remove();
+      if (FILM) delete el.dataset.film;
       stage?.classList.remove("a0-open", "a0-done");
     };
   }, { scope: mark });
