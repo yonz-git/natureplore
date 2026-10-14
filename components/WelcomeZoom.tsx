@@ -32,6 +32,17 @@ function breathe(target: gsap.TweenTarget) {
   });
 }
 
+// Over the forest the zoom cannot set off from rest as the photograph's does: it would sit still for
+// the first seconds after the film stops. It sets off at its full speed instead while the film slows
+// (from HANDOVER of the film's run), eases into its first turn, then breathes like the photograph.
+const HANDOVER = 0.6;
+function settleIn(target: HTMLElement) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+  return gsap.timeline()
+    .fromTo(target, { scale: 1 }, { scale: ZOOM, duration: OVER, ease: "sine.out", transformOrigin: "50% 50%" })
+    .to(target, { scale: 1, duration: OVER, ease: "sine.inOut", yoyo: true, repeat: -1 });
+}
+
 export default function WelcomeZoom() {
   useGSAP(() => {
     if (BG_VIDEO) {
@@ -49,7 +60,7 @@ export default function WelcomeZoom() {
       // comes to rest on the forest. Only its speed is steered, never its place: a seek would stall it.
       const stage = document.querySelector<HTMLElement>(".a0s");
       let run: gsap.core.Tween | undefined;
-      let zoom: gsap.core.Tween | undefined;
+      let zoom: gsap.core.Timeline | undefined;
       const go = () => {
         if (run || !stage || !("glided" in stage.dataset)) return;
         const length = film.duration || 6.9;
@@ -63,12 +74,11 @@ export default function WelcomeZoom() {
           onUpdate() {
             const x = this.targets()[0].x as number;
             film.playbackRate = Math.min(4, Math.max(0.07, (length * (Math.PI / 2) * Math.sin(Math.PI * x)) / FILM_SECONDS));
+            // the zoom takes over while the film is still slowing, so the picture never stands still
+            if (x >= HANDOVER && !zoom) zoom = settleIn(layer);
           },
           onComplete() {
             film.pause();
-            // at rest on the forest, the picture breathes as the photograph did: the same slow zoom,
-            // setting off from rest so it carries straight on from the film
-            zoom = breathe(layer);
           },
         });
       };
