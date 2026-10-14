@@ -50,10 +50,14 @@ const FILM = false;
 // the plain symbol flies to its corner on the sketched line, shrinking back as it goes, and A0 comes
 // in as the film behind reaches the forest.
 const BIG = 1.6;
-const GROW_TO = 0.1; // grown by here
-const LEAVES = [0.04, 0.68]; // the leaves' clip, start to end: done as the film behind stops (DESCENT_FILM)
-const FLIGHT = [0.72, 0.94]; // the flight, start to landing; A0 is in from the landing
-const CROSS = 0.03; // the drawing and the clip cross over in this much
+// One flow, so the parts overlap and nothing stops while the next starts: the logo keeps growing all
+// the while the leaves cover it, the flight sets off while the last leaves are still coming, A0 rises
+// while the symbol is still landing, and the film behind rests on the forest as it lands.
+const GROW_TO = 0.55; // grown by here, easing out as the flight takes over
+const LEAVES = [0, 0.62]; // the leaves' clip, start to end
+const FLIGHT = [0.52, 0.9]; // the flight, start to landing
+const A0_AT = 0.78; // A0 starts to rise
+const CROSS = 0.08; // the clip gives way to the drawing over this much of the flight's start
 const WORD_FLIGHT = 1.5; // seconds, the name from the logo to its place
 const WORD_SETTLE = 0.55; // seconds each letter takes to settle as it lands
 const TRAVEL = 2.0; // seconds, the symbol flying to its corner, loop and all
@@ -208,10 +212,9 @@ export default function WelcomeLogo() {
               ease: "none",
               onUpdate() { publishDescent(this.targets()[0].d); },
               onComplete() {
+                // the page is A0 and stays as it is: no switch of layout to jump at the end, and
+                // the reader's scroll stays held, as A0 is one screen (app/welcome.css)
                 delete stage.dataset.descending;
-                // the page is A0 and nothing else, as it is without the descent
-                stage.classList.add("a0-done");
-                scrollTo(0, 0);
               },
             });
           }
@@ -224,7 +227,7 @@ export default function WelcomeLogo() {
       };
       if (STAY) {
         // it stands where it was built a moment, then the rest of A0 comes in around it
-        travel = gsap.timeline({ onComplete: open }).to({}, { duration: HOLD });
+        travel = gsap.timeline({ onComplete: open }).to({}, { duration: DESCENT ? 0.05 : HOLD });
         return;
       }
       if (!landing) return open();
@@ -313,15 +316,16 @@ export default function WelcomeLogo() {
     });
     const share = (d: number, [a, b]: number[]) => Math.min(1, Math.max(0, (d - a) / (b - a)));
     const smooth = gsap.parseEase("sine.inOut");
+    const easeOut = gsap.parseEase("sine.out");
     const descend = (d: number) => {
       if (!drawing || !leaves || !stage || !(stage instanceof HTMLElement) || !("logoDone" in stage.dataset)) return;
       // bigger, then back to its own size over the flight; on the drawing and the clip, never on the
       // box, whose place the flight is worked out from
-      const s = 1 + (BIG - 1) * smooth(share(d, [0, GROW_TO])) * (1 - smooth(share(d, FLIGHT)));
+      const s = 1 + (BIG - 1) * easeOut(share(d, [0, GROW_TO])) * (1 - smooth(share(d, FLIGHT)));
       gsap.set(drawing, { scale: s, transformOrigin: "50% 50%" });
       gsap.set(leaves, { scale: s, transformOrigin: "50% 49.14%" }); // the logo's middle in the clip's box
       // the clip in for the leaves, the drawing back for the flight
-      const clip = share(d, [LEAVES[0], LEAVES[0] + CROSS]) * (1 - share(d, [FLIGHT[0] - CROSS, FLIGHT[0]]));
+      const clip = smooth(share(d, [LEAVES[0], LEAVES[0] + 0.04])) * (1 - smooth(share(d, [FLIGHT[0], FLIGHT[0] + CROSS])));
       leaves.style.opacity = String(clip);
       drawing.style.opacity = String(1 - clip);
       // the clip plays at the speed that fits it into its share of the descent; it is only sought
@@ -356,10 +360,10 @@ export default function WelcomeLogo() {
       }
       flight?.progress(share(d, FLIGHT));
       // landed: A0 comes in, and the corner symbol in the button's lime takes over (app/welcome.css)
+      stage.classList.toggle("a0-open", d >= A0_AT);
       const atEnd = d >= FLIGHT[1];
       if (atEnd !== landed) {
         landed = atEnd;
-        stage.classList.toggle("a0-open", atEnd);
         if (atEnd) delete el.dataset.stay;
         else el.dataset.stay = "";
       }

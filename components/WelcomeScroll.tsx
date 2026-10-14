@@ -3,7 +3,7 @@
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 
-import { DESCENT, OPEN_SCREENS, publishProgress } from "@/lib/welcome-progress";
+import { DESCENT, OPEN_SCREENS, OPEN_SECONDS, publishProgress } from "@/lib/welcome-progress";
 
 // The welcome page's scroll progress, 0 to 1, written as --a0-p on every element app/welcome.css scrubs
 // with it. The value chases the real scroll position instead of jumping to it, so a mouse wheel's steps
@@ -36,6 +36,25 @@ export default function WelcomeScroll() {
     // components/WelcomeLogo.tsx) the scroll is held at the end of the opening
     const hold = () => {
       if (DESCENT && !("logoDone" in root.dataset) && scrollY > openLen()) scrollTo(0, openLen());
+    };
+    // the first touch of the scroll sets the flow going: from there the page glides to the end of
+    // the opening by itself, on one ease, and the reader's own scroll is held (app/welcome.css)
+    let glide: gsap.core.Tween | undefined;
+    const start = () => {
+      if (!DESCENT || glide || scrollY < 4) return;
+      root.dataset.auto = "";
+      const y = { v: scrollY };
+      glide = gsap.to(y, {
+        v: openLen(),
+        duration: OPEN_SECONDS,
+        ease: "sine.inOut",
+        onUpdate() {
+          scrollTo(0, y.v);
+          // the film behind sets off while the glide is still slowing, so one hands over to the
+          // other and the page is never still between them (components/WelcomeZoom.tsx)
+          if (this.progress() > 0.55 && !("glided" in root.dataset)) root.dataset.glided = "";
+        },
+      });
     };
 
     const stage = root.querySelector<HTMLElement>(".a02")!;
@@ -117,6 +136,7 @@ export default function WelcomeScroll() {
     };
     const wake = () => {
       hold();
+      start();
       if (!raf) raf = requestAnimationFrame(frame);
     };
     // the centre is in pixels, so a window that changes size has to have it again
@@ -133,6 +153,7 @@ export default function WelcomeScroll() {
       removeEventListener("scroll", wake);
       removeEventListener("resize", remeasure);
       cancelAnimationFrame(raf);
+      glide?.kill();
     };
   });
   return null;

@@ -2,7 +2,7 @@
 
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { DESCENT_FILM, DESCENT_SECONDS, followDescent } from "@/lib/welcome-progress";
+import { FILM_SECONDS } from "@/lib/welcome-progress";
 
 // The photograph behind the welcome breathes: it zooms in over 40 seconds, then back out over the next 40,
 // and round again, so the picture is never quite still and never runs away either. It runs on the
@@ -11,13 +11,26 @@ import { DESCENT_FILM, DESCENT_SECONDS, followDescent } from "@/lib/welcome-prog
 //
 // With BG_VIDEO set, a film takes the photograph's place: the drone shot over the lake, run
 // backwards, sinking from the lake's edge into the forest (video/background.mp4, 4.6 to 11.5 s,
-// reversed). It holds on its first frame through the opening and the logo, then plays with the
-// descent (lib/welcome-progress.ts), at the speed that fits it into its share, DESCENT_FILM.
+// reversed). It holds on its first frame through the opening, then glides on its own clock
+// (FILM_SECONDS, lib/welcome-progress.ts).
 // null: the photograph and its zoom.
 const BG_VIDEO: string | null = "/video/welcome-forest-down.mp4";
 
 const ZOOM = 1.6;
 const OVER = 40; // seconds, in; the same again out
+
+// in over OVER seconds and back out, round again; nothing for someone who asked for less motion
+function breathe(target: gsap.TweenTarget) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+  return gsap.fromTo(target, { scale: 1 }, {
+    scale: ZOOM,
+    duration: OVER,
+    ease: "sine.inOut",
+    transformOrigin: "50% 50%",
+    yoyo: true,
+    repeat: -1,
+  });
+}
 
 export default function WelcomeZoom() {
   useGSAP(() => {
@@ -31,49 +44,47 @@ export default function WelcomeZoom() {
       film.preload = "auto";
       film.className = "a02-film";
       layer.appendChild(film);
-      let target = 0;
-      let raf = 0;
-      const seek = () => {
-        raf = 0;
-        if (film.readyState < 1) return;
-        if (film.seeking) raf = requestAnimationFrame(seek);
-        else if (Math.abs(film.currentTime - target) > 0.02) film.currentTime = target;
+      // It sets off when the opening has glided through (data-glided, components/WelcomeScroll.tsx) and
+      // plays at a speed that rises and falls on a sine over FILM_SECONDS, so it leaves from rest and
+      // comes to rest on the forest. Only its speed is steered, never its place: a seek would stall it.
+      const stage = document.querySelector<HTMLElement>(".a0s");
+      let run: gsap.core.Tween | undefined;
+      let zoom: gsap.core.Tween | undefined;
+      const go = () => {
+        if (run || !stage || !("glided" in stage.dataset)) return;
+        const length = film.duration || 6.9;
+        film.currentTime = 0;
+        film.playbackRate = 0.07;
+        film.play().catch(() => {});
+        run = gsap.to({ x: 0 }, {
+          x: 1,
+          duration: FILM_SECONDS,
+          ease: "none",
+          onUpdate() {
+            const x = this.targets()[0].x as number;
+            film.playbackRate = Math.min(4, Math.max(0.07, (length * (Math.PI / 2) * Math.sin(Math.PI * x)) / FILM_SECONDS));
+          },
+          onComplete() {
+            film.pause();
+            // at rest on the forest, the picture breathes as the photograph did: the same slow zoom,
+            // setting off from rest so it carries straight on from the film
+            zoom = breathe(layer);
+          },
+        });
       };
-      film.addEventListener("seeked", () => {
-        if (!raf && Math.abs(film.currentTime - target) > 0.02) raf = requestAnimationFrame(seek);
-      });
-      film.addEventListener("loadedmetadata", seek);
-      const unfollow = followDescent((p) => {
-        if (p > 0 && film.paused && !film.ended && film.readyState >= 1) {
-          const length = film.duration || 6.9;
-          film.playbackRate = length / (DESCENT_FILM * DESCENT_SECONDS);
-          film.currentTime = Math.min(1, p / DESCENT_FILM) * length;
-          film.play().catch(() => {});
-        } else if (p <= 0 && film.currentTime > 0) {
-          film.pause();
-          target = 0;
-          if (!raf) raf = requestAnimationFrame(seek);
-        }
-      });
+      const watch = new MutationObserver(go);
+      if (stage) watch.observe(stage, { attributes: true, attributeFilter: ["data-glided"] });
+      const unfollow = () => {
+        watch.disconnect();
+        run?.kill();
+        zoom?.kill();
+      };
       return () => {
         unfollow();
-        cancelAnimationFrame(raf);
         film.remove();
       };
     }
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    gsap.fromTo(
-      ".a02-photo-in",
-      { scale: 1 },
-      {
-        scale: ZOOM,
-        duration: OVER,
-        ease: "sine.inOut",
-        transformOrigin: "50% 50%",
-        yoyo: true,
-        repeat: -1,
-      },
-    );
+    breathe(".a02-photo-in");
   });
   return null;
 }

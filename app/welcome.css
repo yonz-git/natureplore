@@ -242,8 +242,9 @@
      there on its own clock (components/WelcomeLogo.tsx). The page is this tall so that the circle
      opens over a long scroll rather than a flick of the wheel. */
   .a0s { height: 350vh; }
-  /* while the descent plays by itself (components/WelcomeLogo.tsx) the page holds still */
-  html:has(.a0s[data-descending]) { overflow: hidden; }
+  /* while the welcome plays by itself (components/WelcomeScroll.tsx, WelcomeLogo.tsx) the reader's
+     scroll is held: the page moves only as the flow moves it */
+  html:has(.a0s:is([data-auto], [data-descending]):not(.a0-done)) { overflow: hidden; }
   /* No scrollbar while the opening plays. Where the system draws one beside the page (a Mac with a
      mouse, Windows) it took 15px off the width, and at a0-done, with nothing left to scroll, it went
      and gave them back: everything placed from the middle moved 7.5px right on the frame the symbol

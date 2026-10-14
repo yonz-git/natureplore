@@ -21,9 +21,13 @@ export function followProgress(fn: Follower) {
 // published by components/WelcomeLogo.tsx. false: the page stops at A0 as before.
 export const DESCENT = true;
 export const DESCENT_SECONDS = 6;
-// the share of it the film behind takes: it stops on the forest as the leaves finish, and the flight
-// and A0 play over its last frame
-export const DESCENT_FILM = 0.72;
+// The whole welcome is one flow: the first touch of the scroll sets it going, and the opening (the
+// circle, the line leaving, the logo starting) glides through on its own over OPEN_SECONDS instead of
+// following the wheel, straight into the logo and the descent.
+export const OPEN_SECONDS = 3;
+// The film behind runs on its own clock from the end of the opening, so it is already gliding while
+// the logo finishes building, and comes to rest on the forest as the symbol lands.
+export const FILM_SECONDS = 7.5;
 // screens of scroll the opening takes (the page was 350vh tall, one screen of it on view)
 export const OPEN_SCREENS = 2.5;
 const descentFollowers = new Set<Follower>();
