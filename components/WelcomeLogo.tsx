@@ -57,6 +57,14 @@ const FILM = false;
 // --welcome --name-only, which takes over from the drawing's own letters at its bare frame), then
 // fades as A0 comes in and the film behind reaches the forest.
 const BIG = 1.6;
+// IMPACT: no descent of parts. Once built, the logo draws in a breath, then bursts at the reader,
+// huge enough to cover the page, and is gone through them; A0 slams in at the moment the screen is
+// all logo (app/welcome.css, data-impact). false: the leafy name and the symbol's flight below.
+const IMPACT = true;
+const GATHER = 0.32; // seconds, the breath in before the burst
+const BURST = 0.6; // seconds, from its own size to the width of the page
+const BURST_FILL = 0.96; // of the page's width, never past it
+const OPEN = 0.3; // seconds it takes to go, where it stands
 // One flow, so the parts overlap and nothing stops while the next starts: the name keeps growing all
 // the while the leaves cover it, A0 rises as the last leaves come and the name gives way to it.
 const GROW_TO = 0.6; // the name grown by here
@@ -218,7 +226,26 @@ export default function WelcomeLogo() {
         if (DESCENT) {
           // the logo is built: the page may now go on down (WelcomeScroll), and the descent below
           // takes it from here, A0 coming in only at its end
-          if (stage instanceof HTMLElement) {
+          if (stage instanceof HTMLElement && IMPACT) {
+            stage.dataset.logoDone = "";
+            stage.dataset.impact = "";
+            stage.dataset.descending = "";
+            const drawn = el.querySelector(".intro-logo");
+            descent = gsap.timeline({ onComplete() { delete stage.dataset.descending; } })
+              .to(drawn, { scale: 0.88, duration: GATHER, ease: "power2.inOut", transformOrigin: "50% 50%" })
+              // out to the page's edges and no further
+              .to(drawn, {
+                scale: () => (innerWidth * BURST_FILL) / Math.max(1, el.getBoundingClientRect().width),
+                duration: BURST,
+                ease: "power4.in",
+              })
+              // and gone on the spot, A0 landing under it, the corner symbol with it
+              .call(() => {
+                delete el.dataset.stay;
+                stage.classList.add("a0-open");
+              })
+              .to(drawn, { opacity: 0, filter: "blur(1rem)", duration: OPEN, ease: "power2.out" });
+          } else if (stage instanceof HTMLElement) {
             stage.dataset.logoDone = "";
             // it plays by itself, at an even pace: each part brings its own ease (grow, flight), and
             // the two films run at their own speed (see descend)
@@ -311,10 +338,10 @@ export default function WelcomeLogo() {
     let nameBox: HTMLDivElement | undefined;
     let flight: gsap.core.Timeline | undefined;
     let landed = false;
-    let descent: gsap.core.Tween | undefined;
+    let descent: gsap.core.Tween | gsap.core.Timeline | undefined;
     let leafAt = CLIP_BARE; // where the paused clip is to be shown
     let leafRaf = 0;
-    if (DESCENT && drawing) {
+    if (DESCENT && !IMPACT && drawing) {
       leaves = document.createElement("video");
       const safari = /^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent);
       leaves.src = safari ? "/video/logo-name-leaves.mov" : "/video/logo-name-leaves.webm";
