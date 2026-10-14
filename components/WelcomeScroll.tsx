@@ -3,7 +3,7 @@
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 
-import { publishProgress } from "@/lib/welcome-progress";
+import { DESCENT, OPEN_SCREENS, publishProgress } from "@/lib/welcome-progress";
 
 // The welcome page's scroll progress, 0 to 1, written as --a0-p on every element app/welcome.css scrubs
 // with it. The value chases the real scroll position instead of jumping to it, so a mouse wheel's steps
@@ -27,6 +27,16 @@ export default function WelcomeScroll() {
     const scrubbed = [...root.querySelectorAll<HTMLElement>("*")].filter((el) =>
       getComputedStyle(el).animationName.includes("a0s-"),
     );
+
+    if (DESCENT) root.dataset.descent = "";
+    // the opening's share of the scroll, in pixels; with the descent the page goes on past it
+    const openLen = () =>
+      DESCENT ? innerHeight * OPEN_SCREENS : Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    // the logo plays out in full before the page goes down: until it is built (data-logo-done, set by
+    // components/WelcomeLogo.tsx) the scroll is held at the end of the opening
+    const hold = () => {
+      if (DESCENT && !("logoDone" in root.dataset) && scrollY > openLen()) scrollTo(0, openLen());
+    };
 
     const stage = root.querySelector<HTMLElement>(".a02")!;
     const lens = root.querySelector<HTMLElement>(".a0-lens")!;
@@ -83,13 +93,14 @@ export default function WelcomeScroll() {
     let raf = 0;
     const frame = (now: number) => {
       if (root.classList.contains("a0-done")) return finish();
-      const target = scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight);
+      const target = scrollY / openLen(); // past 1 on the descent
       const dt = last ? now - last : 16;
       shown = Number.isNaN(shown) ? target : shown + (target - shown) * (1 - Math.exp(-dt / SETTLE));
       if (Math.abs(target - shown) < 0.0002) shown = target;
-      for (const el of scrubbed) el.style.setProperty("--a0-p", shown.toFixed(4));
-      publishProgress(shown);
-      const open = Math.min(1, Math.max(0, (shown - from) / (to - from)));
+      const opening = Math.min(1, shown);
+      for (const el of scrubbed) el.style.setProperty("--a0-p", opening.toFixed(4));
+      publishProgress(opening);
+      const open = Math.min(1, Math.max(0, (opening - from) / (to - from)));
       if (open > 0 && !centred) centre();
       else if (open <= 0 && centred) uncentre();
       const scale = Math.max(open, 0.002);
@@ -105,6 +116,7 @@ export default function WelcomeScroll() {
       raf = last ? requestAnimationFrame(frame) : 0;
     };
     const wake = () => {
+      hold();
       if (!raf) raf = requestAnimationFrame(frame);
     };
     // the centre is in pixels, so a window that changes size has to have it again
