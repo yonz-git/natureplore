@@ -148,6 +148,12 @@
    3D clip covers, in the logo's units (x -14.19, y -6.49, 1757.88 by 445.88 of 1729.5 by 425.2) */
 /* the patterned drawing (lib/welcome-progress.ts, PATTERN_IMG) is lit already: no brightening */
 .a0s .a0-mark[data-pattern] .intro-logo { filter: drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35)); }
+/* the name's leaf clip, laid over the logo where it was built (components/WelcomeLogo.tsx) while the
+   symbol flies off on its own */
+.a0-name3d {
+  position: absolute;
+  pointer-events: none;
+}
 .a0-leaves {
   position: absolute;
   left: -0.8205%;

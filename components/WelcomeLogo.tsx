@@ -51,21 +51,21 @@ const STAY = true;
 // the foot up. The drawing and its timeline still run underneath, unseen, for the beats and the
 // layout. Safari plays the HEVC file with its transparency; the others the VP9 one. false: the drawing.
 const FILM = false;
-// The descent (lib/welcome-progress.ts), in shares of its scroll: the logo grows to BIG, leaves grow
-// over it (the 3D clip, video/logo-3d build.py --welcome, scrubbed: its first frame is this drawing,
-// it swells into relief and is covered from the foot up), then the leaves fall away, the name goes and
-// the plain symbol flies to its corner on the sketched line, shrinking back as it goes, and A0 comes
-// in as the film behind reaches the forest.
+// The descent (lib/welcome-progress.ts), in shares of its run: the plain symbol sets off at once for
+// its corner on the sketched line, shrinking as it goes, while the name stays, grows to BIG and is
+// covered in leaves from its outline inward (the 3D clip of the name alone, video/logo-3d build.py
+// --welcome --name-only, which takes over from the drawing's own letters at its bare frame), then
+// fades as A0 comes in and the film behind reaches the forest.
 const BIG = 1.6;
-// One flow, so the parts overlap and nothing stops while the next starts: the logo keeps growing all
-// the while the leaves cover it, the flight sets off while the last leaves are still coming, A0 rises
-// while the symbol is still landing, and the film behind rests on the forest as it lands.
-const GROW_TO = 0.55; // grown by here, easing out as the flight takes over
-const LEAVES = [0, 0.62]; // the leaves' clip, start to end
+// One flow, so the parts overlap and nothing stops while the next starts: the name keeps growing all
+// the while the leaves cover it, A0 rises as the last leaves come and the name gives way to it.
+const GROW_TO = 0.6; // the name grown by here
+const NAME_IN = 0.025; // the clip takes over from the drawing's letters, which then go, before anything moves
+const LEAVES = [0, 0.7]; // the leaves' clip, start to end
 const CLIP_BARE = 1.4; // seconds of the clip before its first leaf (video/logo-3d, --welcome HOLD)
-const FLIGHT = [0.52, 0.9]; // the flight, start to landing
-const A0_AT = 0.78; // A0 starts to rise
-const CROSS = 0.08; // the clip gives way to the drawing over this much of the flight's start
+const FLIGHT = [NAME_IN * 2, 0.5]; // the symbol's flight, start to landing, once the letters are left behind
+const NAME_OUT = [0.7, 0.88]; // the leafy name fades
+const A0_AT = 0.72; // A0 starts to rise
 const WORD_FLIGHT = 1.5; // seconds, the name from the logo to its place
 const WORD_SETTLE = 0.55; // seconds each letter takes to settle as it lands
 const TRAVEL = 2.0; // seconds, the symbol flying to its corner, loop and all
@@ -307,21 +307,44 @@ export default function WelcomeLogo() {
     // ---- the descent: grow, leaves, flight, A0, all from the scroll, so going back up undoes it
     const drawing = el.querySelector<SVGSVGElement>(".intro-logo");
     let leaves: HTMLVideoElement | undefined;
+    // the name's clip sits beside the logo, not in it, so the flight takes the symbol alone
+    let nameBox: HTMLDivElement | undefined;
     let flight: gsap.core.Timeline | undefined;
     let landed = false;
     let descent: gsap.core.Tween | undefined;
-    let leafAt = 0;
+    let leafAt = CLIP_BARE; // where the paused clip is to be shown
     let leafRaf = 0;
     if (DESCENT && drawing) {
       leaves = document.createElement("video");
       const safari = /^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent);
-      leaves.src = safari ? "/video/logo-leaves-scrub.mov" : "/video/logo-leaves-scrub.webm";
+      leaves.src = safari ? "/video/logo-name-leaves.mov" : "/video/logo-name-leaves.webm";
       leaves.muted = true;
       leaves.playsInline = true;
       leaves.preload = "auto";
       leaves.className = "a0-leaves";
-      el.appendChild(leaves);
+      // waiting on its bare frame, the one the drawing wears
+      leaves.addEventListener("loadedmetadata", () => {
+        if (leaves && leaves.paused && leaves.currentTime < CLIP_BARE) leaves.currentTime = CLIP_BARE;
+      }, { once: true });
+      nameBox = document.createElement("div");
+      nameBox.className = "a0-name3d";
+      nameBox.appendChild(leaves);
+      el.after(nameBox);
     }
+    // laid exactly over the logo where it was built, before the flight moves it
+    const placeName = () => {
+      if (!nameBox) return;
+      const box = el.getBoundingClientRect();
+      const host = (nameBox.offsetParent ?? document.body).getBoundingClientRect();
+      Object.assign(nameBox.style, {
+        left: `${box.left - host.left}px`,
+        top: `${box.top - host.top}px`,
+        width: `${box.width}px`,
+        height: `${box.height}px`,
+        zIndex: getComputedStyle(el).zIndex,
+      });
+    };
+    let placed = false;
     const seekLeaves = () => {
       leafRaf = 0;
       if (!leaves || leaves.readyState < 1) return;
@@ -329,33 +352,37 @@ export default function WelcomeLogo() {
       else if (Math.abs(leaves.currentTime - leafAt) > 0.02) leaves.currentTime = leafAt;
     };
     leaves?.addEventListener("seeked", () => {
-      if (!leafRaf && leaves && Math.abs(leaves.currentTime - leafAt) > 0.02) leafRaf = requestAnimationFrame(seekLeaves);
+      if (!leafRaf && leaves && leaves.paused && Math.abs(leaves.currentTime - leafAt) > 0.02) leafRaf = requestAnimationFrame(seekLeaves);
     });
     const share = (d: number, [a, b]: number[]) => Math.min(1, Math.max(0, (d - a) / (b - a)));
     const smooth = gsap.parseEase("sine.inOut");
     const easeOut = gsap.parseEase("sine.out");
     const descend = (d: number) => {
       if (!drawing || !leaves || !stage || !(stage instanceof HTMLElement) || !("logoDone" in stage.dataset)) return;
-      // bigger, then back to its own size over the flight; on the drawing and the clip, never on the
-      // box, whose place the flight is worked out from
-      const s = 1 + (BIG - 1) * easeOut(share(d, [0, GROW_TO])) * (1 - smooth(share(d, FLIGHT)));
-      gsap.set(drawing, { scale: s, transformOrigin: "50% 50%" });
-      gsap.set(leaves, { scale: s, transformOrigin: "50% 49.14%" }); // the logo's middle in the clip's box
-      // the clip in for the leaves, the drawing back for the flight
-      const clip = smooth(share(d, [LEAVES[0], LEAVES[0] + 0.04])) * (1 - smooth(share(d, [FLIGHT[0], FLIGHT[0] + CROSS])));
-      leaves.style.opacity = String(clip);
-      drawing.style.opacity = String(1 - clip);
-      // The clip from its bare frame on (CLIP_BARE): the drawing already wears that same patterned
-      // logo (PATTERN_IMG), so the clip takes over without a change, and plays its leaves at the
-      // speed that fits them into LEAVES; it is only sought when it has to be put somewhere.
+      if (!placed && nameBox) {
+        placed = true;
+        placeName();
+      }
+      // the name grows about its own middle, and once covered gives way to A0
+      const grow = 1 + (BIG - 1) * easeOut(share(d, [NAME_IN * 2, GROW_TO])) + 0.08 * smooth(share(d, NAME_OUT));
+      gsap.set(nameBox!, {
+        scale: grow,
+        transformOrigin: `${((WORD.x + WORD.w / 2) / LOGO.w) * 100}% ${((WORD.y + WORD.h / 2) / LOGO.h) * 100}%`,
+      });
+      // the clip comes in whole over the drawing's letters, which then go: the same patterned name,
+      // so the swap is not seen
+      leaves.style.opacity = String(smooth(share(d, [0, NAME_IN])) * (1 - smooth(share(d, NAME_OUT))));
+      gsap.set(el.querySelectorAll(".wordmark > *"), { opacity: 1 - share(d, [NAME_IN, NAME_IN * 2]) });
+      // The clip from its bare frame on (CLIP_BARE), playing its leaves at the speed that fits them
+      // into LEAVES; it is only sought when it has to be put somewhere.
       const length = leaves.duration || 9;
       if (d > LEAVES[0] && d < LEAVES[1] && leaves.paused && leaves.readyState >= 1) {
         leaves.playbackRate = (length - CLIP_BARE) / ((LEAVES[1] - LEAVES[0]) * DESCENT_SECONDS);
         leaves.currentTime = CLIP_BARE + share(d, LEAVES) * (length - CLIP_BARE);
         leaves.play().catch(() => {});
-      } else if (d <= LEAVES[0] && leaves.currentTime > 0) {
+      } else if (d <= LEAVES[0] && leaves.currentTime > CLIP_BARE) {
         leaves.pause();
-        leafAt = 0;
+        leafAt = CLIP_BARE;
         if (!leafRaf) leafRaf = requestAnimationFrame(seekLeaves);
       }
       // the flight, built the first time it is needed, from where the box stands
@@ -366,14 +393,13 @@ export default function WelcomeLogo() {
           const wing = el.querySelector(".wing");
           flight = gsap
             .timeline({ paused: true })
-            .to(el.querySelectorAll(".wordmark > *"), { opacity: 0, duration: DISSOLVE, ease: "power1.in" }, 0)
-            .to(el, { duration: TRAVEL, ease: "sine.inOut", motionPath: { path, curviness: 1 } }, DISSOLVE * 0.6)
-            .to(el, { scale: landing.scale, duration: TRAVEL, ease: evenShrink(landing.scale) }, DISSOLVE * 0.6)
+            .to(el, { duration: TRAVEL, ease: "sine.inOut", motionPath: { path, curviness: 1 } }, 0)
+            .to(el, { scale: landing.scale, duration: TRAVEL, ease: evenShrink(landing.scale) }, 0)
             .to(wing, {
               keyframes: [{ rotation: -12, duration: 0.12 }, { rotation: 22, duration: 0.18 }, { rotation: 0, duration: 0.14 }],
               ease: "sine.inOut",
               repeat: Math.max(0, Math.round(TRAVEL / FLAP) - 1),
-            }, DISSOLVE * 0.6);
+            }, 0);
         }
       }
       flight?.progress(share(d, FLIGHT));
@@ -462,7 +488,7 @@ export default function WelcomeLogo() {
       descent?.kill();
       cancelAnimationFrame(leafRaf);
       flight?.kill();
-      leaves?.remove();
+      nameBox?.remove();
       travel?.kill();
       settle?.kill();
       intro.revert();
