@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { INTRO_LOGO_SVG } from "@/components/intro-logo";
 import Logo from "@/components/Logo";
 import { playIntro, WELCOME_OPENING, WELCOME_PACE, WELCOME_START } from "@/lib/intro-timeline";
-import { followProgress } from "@/lib/welcome-progress";
+import { PATTERN_IMG, followProgress } from "@/lib/welcome-progress";
 
 // The logo on A0 · Welcome. The page opens with no logo at all: the timeline (lib/intro-timeline.ts)
 // is built and held at its first frame, where every piece is still off the screen and the drawing is
@@ -89,6 +89,14 @@ export default function WelcomeLogo() {
     if (reduce) return;
 
     gsap.set(el, { xPercent: -50, yPercent: -50 }); // centred on the point app/welcome.css puts it at
+    // the patterned logo: every piece is clipped from the fill, so the pattern laid in it dresses them all
+    const fill = el.querySelector("#fieldfill");
+    if (fill && !fill.querySelector(".pattern")) {
+      const { href, x, y, w, h } = PATTERN_IMG;
+      fill.insertAdjacentHTML("beforeend",
+        `<image class="pattern" href="${href}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="none" />`);
+    }
+    el.dataset.pattern = "";
     const stage = el.closest(".a0s");
     let travel: gsap.core.Timeline | undefined;
     // once it has all played out the page keeps it: scrolling back up then changes nothing

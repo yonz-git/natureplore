@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 
 import { MUSH_IN, MUSH_POP, WELCOME_OPENING, WELCOME_PACE, WELCOME_START } from "@/lib/intro-timeline";
-import { followProgress } from "@/lib/welcome-progress";
+import { PATTERN_IMG, followProgress } from "@/lib/welcome-progress";
 
 gsap.registerPlugin(SplitText);
 
@@ -166,7 +166,20 @@ export default function WelcomeCue({ text }: { text: string }) {
           on the same scroll instead. */}
       <div className="a0-mush" aria-hidden="true" ref={mush}>
         <svg viewBox={`${MUSH.x} ${MUSH.y} ${MUSH.w} ${MUSH.h}`} fill="currentColor" aria-hidden="true">
-          <path d="M119.53 180.75C114.68 178.02 112.85 171.65 114.68 165.29C118 155.27 128.93 149.22 140.14 148.61C152.58 148 163.48 154.97 168.03 164.68C171.97 173.16 169.25 180.45 161.68 181.36C155.31 182.25 151.62 180.36 150.06 176.98C154.75 178.29 158.63 175.59 159.25 171.96C160.26 166.02 153.24 159.55 148.03 158.69C140.74 157.49 136.52 160.41 135.59 167.08C134.39 175.27 143.38 178.5 149.45 183.35C155.52 188.2 155.6 194.09 154.09 199.24C152.88 203.48 146.81 205.3 141.96 203.79C137.11 202.26 136.19 200.14 136.19 195.59C136.19 192.27 135.59 188.92 135.59 186.2C135.59 182.87 134.39 181.05 131.34 181.36C127.4 182.57 122.55 182.57 119.53 180.75Z" />
+          <path id="cue-mush-shape" d="M119.53 180.75C114.68 178.02 112.85 171.65 114.68 165.29C118 155.27 128.93 149.22 140.14 148.61C152.58 148 163.48 154.97 168.03 164.68C171.97 173.16 169.25 180.45 161.68 181.36C155.31 182.25 151.62 180.36 150.06 176.98C154.75 178.29 158.63 175.59 159.25 171.96C160.26 166.02 153.24 159.55 148.03 158.69C140.74 157.49 136.52 160.41 135.59 167.08C134.39 175.27 143.38 178.5 149.45 183.35C155.52 188.2 155.6 194.09 154.09 199.24C152.88 203.48 146.81 205.3 141.96 203.79C137.11 202.26 136.19 200.14 136.19 195.59C136.19 192.27 135.59 188.92 135.59 186.2C135.59 182.87 134.39 181.05 131.34 181.36C127.4 182.57 122.55 182.57 119.53 180.75Z" />
+          {/* the patterned logo's mushroom, as the logo's own is (components/WelcomeLogo.tsx) */}
+          <clipPath id="cue-mush-clip">
+            <use href="#cue-mush-shape" />
+          </clipPath>
+          <image
+            href={PATTERN_IMG.href}
+            x={PATTERN_IMG.x}
+            y={PATTERN_IMG.y}
+            width={PATTERN_IMG.w}
+            height={PATTERN_IMG.h}
+            preserveAspectRatio="none"
+            clipPath="url(#cue-mush-clip)"
+          />
         </svg>
       </div>
     </>
