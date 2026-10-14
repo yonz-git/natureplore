@@ -21,13 +21,18 @@ export function followProgress(fn: Follower) {
 // published by components/WelcomeLogo.tsx. false: the page stops at A0 as before.
 export const DESCENT = true;
 export const DESCENT_SECONDS = 6;
+// With the descent the logo is the patterned one from the start: the 3D logo's own frame before its
+// first leaf (video/logo-3d, --welcome), lit, in its leaf-vein relief, laid in as the fill every piece
+// of the drawing is clipped from (components/WelcomeLogo.tsx), and the scroll cue's mushroom
+// (components/WelcomeCue.tsx). Its box in the logo's units is the clip's (renders/welcome-full-box.json).
+export const PATTERN_IMG = { href: "/img/logo-pattern.png", x: -14.1905, y: -6.4905, w: 1757.881, h: 445.881 };
 // The whole welcome is one flow: the first touch of the scroll sets it going, and the opening (the
 // circle, the line leaving, the logo starting) glides through on its own over OPEN_SECONDS instead of
 // following the wheel, straight into the logo and the descent.
 export const OPEN_SECONDS = 3;
 // The film behind runs on its own clock from the end of the opening, so it is already gliding while
 // the logo finishes building, and comes to rest on the forest as the symbol lands.
-export const FILM_SECONDS = 7.5;
+export const FILM_SECONDS = 8.5;
 // screens of scroll the opening takes (the page was 350vh tall, one screen of it on view)
 export const OPEN_SCREENS = 2.5;
 const descentFollowers = new Set<Follower>();

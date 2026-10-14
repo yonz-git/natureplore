@@ -6,7 +6,14 @@ import { useGSAP } from "@gsap/react";
 import { INTRO_LOGO_SVG } from "@/components/intro-logo";
 import Logo, { WORDMARK_BOX } from "@/components/Logo";
 import { playIntro, WELCOME_OPENING, WELCOME_PACE, WELCOME_START } from "@/lib/intro-timeline";
-import { DESCENT, DESCENT_SECONDS, followDescent as followDescentLocal, followProgress, publishDescent } from "@/lib/welcome-progress";
+import {
+  DESCENT,
+  DESCENT_SECONDS,
+  PATTERN_IMG,
+  followDescent as followDescentLocal,
+  followProgress,
+  publishDescent,
+} from "@/lib/welcome-progress";
 
 // The logo on A0 · Welcome. The page opens with no logo at all: the timeline (lib/intro-timeline.ts)
 // is built and held at its first frame, where every piece is still off the screen and the drawing is
@@ -55,6 +62,7 @@ const BIG = 1.6;
 // while the symbol is still landing, and the film behind rests on the forest as it lands.
 const GROW_TO = 0.55; // grown by here, easing out as the flight takes over
 const LEAVES = [0, 0.62]; // the leaves' clip, start to end
+const CLIP_BARE = 1.4; // seconds of the clip before its first leaf (video/logo-3d, --welcome HOLD)
 const FLIGHT = [0.52, 0.9]; // the flight, start to landing
 const A0_AT = 0.78; // A0 starts to rise
 const CROSS = 0.08; // the clip gives way to the drawing over this much of the flight's start
@@ -123,6 +131,15 @@ export default function WelcomeLogo() {
     if (reduce) return;
 
     gsap.set(el, { xPercent: -50, yPercent: -50 }); // centred on the point app/welcome.css puts it at
+    if (DESCENT) {
+      const fill = el.querySelector("#fieldfill");
+      if (fill && !fill.querySelector(".pattern")) {
+        const { href, x, y, w, h } = PATTERN_IMG;
+        fill.insertAdjacentHTML("beforeend",
+          `<image class="pattern" href="${href}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="none" />`);
+      }
+      el.dataset.pattern = "";
+    }
     let film: HTMLVideoElement | undefined;
     if (FILM) {
       film = document.createElement("video");
@@ -328,12 +345,13 @@ export default function WelcomeLogo() {
       const clip = smooth(share(d, [LEAVES[0], LEAVES[0] + 0.04])) * (1 - smooth(share(d, [FLIGHT[0], FLIGHT[0] + CROSS])));
       leaves.style.opacity = String(clip);
       drawing.style.opacity = String(1 - clip);
-      // the clip plays at the speed that fits it into its share of the descent; it is only sought
-      // when it has to be put somewhere (the descent starting over)
-      const span = (LEAVES[1] - LEAVES[0]) * DESCENT_SECONDS;
+      // The clip from its bare frame on (CLIP_BARE): the drawing already wears that same patterned
+      // logo (PATTERN_IMG), so the clip takes over without a change, and plays its leaves at the
+      // speed that fits them into LEAVES; it is only sought when it has to be put somewhere.
+      const length = leaves.duration || 9;
       if (d > LEAVES[0] && d < LEAVES[1] && leaves.paused && leaves.readyState >= 1) {
-        leaves.playbackRate = (leaves.duration || 9) / span;
-        leaves.currentTime = share(d, LEAVES) * (leaves.duration || 9);
+        leaves.playbackRate = (length - CLIP_BARE) / ((LEAVES[1] - LEAVES[0]) * DESCENT_SECONDS);
+        leaves.currentTime = CLIP_BARE + share(d, LEAVES) * (length - CLIP_BARE);
         leaves.play().catch(() => {});
       } else if (d <= LEAVES[0] && leaves.currentTime > 0) {
         leaves.pause();
