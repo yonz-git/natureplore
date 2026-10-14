@@ -126,6 +126,8 @@
 .a0-mark-corner svg { display: block; height: 100%; width: auto; }
 .a0-mark .intro-logo { height: 100%; width: auto; filter: none; }
 .a0-mark-slot { visibility: hidden; }
+/* the patterned drawing (lib/welcome-progress.ts, PATTERN_IMG) is lit already: no brightening */
+.a0s .a0-mark[data-pattern] .intro-logo { filter: drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35)); }
 
 .a0-cue {
   position: absolute;
