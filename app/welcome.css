@@ -12,25 +12,21 @@
   from { opacity: 0; filter: blur(0.375rem); transform: translateY(0.5rem); }
   to { opacity: 1; filter: blur(0); transform: translateY(0); }
 }
-@keyframes a0-drift-a {
-  from { transform: translate3d(0, 0, 0) scale(1); }
-  to { transform: translate3d(var(--a0-drift-x), var(--a0-drift-y), 0) scale(1.12); }
-}
-@keyframes a0-drift-b {
-  from { transform: translate3d(0, 0, 0) scale(1.08); }
-  to { transform: translate3d(calc(var(--a0-drift-x) * -1.2), calc(var(--a0-drift-y) * -0.8), 0) scale(1); }
+
+/* the ground sways slowly, like air moving through the mist */
+@keyframes a0-ground {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  45% { transform: translate3d(-3%, 1.5%, 0) rotate(-1.2deg) scale(1.04); }
+  100% { transform: translate3d(2%, -2%, 0) rotate(0.8deg) scale(1.06); }
 }
 
 /* scrubbed by the scroll, each one only names the end it is not in */
 @keyframes a0s-leave { from { opacity: 1; } }
 @keyframes a0s-hide { to { visibility: hidden; } }
-@keyframes a0s-away { to { transform: translateY(-200%); } }
 
 .a0s {
   --a0-ease: cubic-bezier(0.23, 1, 0.32, 1);
   --a0-inset: var(--spacing-inset-screen);
-  --a0-drift-x: 2.5rem;
-  --a0-drift-y: 1.875rem;
   --a0-rise: 1.5rem;
   --a0-cx: 50%;
   --a0-cy: 78%;
@@ -40,7 +36,7 @@
   --a0-h: calc(100cqh + var(--top-chrome));
 }
 
-/* the green field, under the photograph */
+/* the opening's ground, under the waterfall photograph */
 .a0-field {
   display: none;
   position: absolute;
@@ -48,44 +44,15 @@
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
-  background: linear-gradient(160deg, var(--color-field-light) 0%, var(--color-field) 40%, var(--color-field-deep) 100%);
+  background: var(--color-ground);
 }
-.a0-blob {
+/* the ground: sun through mist and tall grass, swaying slowly, under the grain */
+.a0-field::before {
+  content: "";
   position: absolute;
-  border-radius: 50%;
-  aspect-ratio: 1;
-  animation: a0-drift-a 22s ease-in-out infinite alternate;
-}
-.a0-blob-b { animation: a0-drift-b 28s ease-in-out infinite alternate; }
-.a0-blob-1 { left: -56%; top: -21%; width: 164%; background: radial-gradient(closest-side, color-mix(in srgb, var(--color-field-shade) 85%, transparent), transparent); }
-.a0-blob-2 { left: 10%; top: -18%; width: 138%; aspect-ratio: 1.12; background: radial-gradient(closest-side, rgb(255 255 255 / 0.24), transparent); }
-.a0-blob-3 { left: 28%; top: 50%; width: 159%; background: radial-gradient(closest-side, color-mix(in srgb, var(--color-field-mid) 80%, transparent), transparent); }
-.a0-blob-4 { left: -46%; top: 64%; width: 138%; aspect-ratio: 1.17; background: radial-gradient(closest-side, color-mix(in srgb, var(--color-field-glow) 70%, transparent), transparent); }
-/* the rim of the circle the photograph opens in: light gathering inside the edge, one pale green line
-   on the edge itself, a halo outside it. The edge of the lens sits at 80% of this element's radius.
-   It is laid out at a quarter of its final size and scaled up (--a0-rim), so the layer stays small. */
-.a0-orb {
-  --a0-rim: 4;
-  display: none;
-  position: absolute;
-  z-index: -1;
-  left: var(--a0-cx);
-  top: var(--a0-cy);
-  width: calc(hypot(var(--a0-w), var(--a0-h)) * 2.1213 / 0.8 / var(--a0-rim));
-  aspect-ratio: 1;
-  translate: -50% -50%;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(
-    closest-side,
-    transparent 50%,
-    color-mix(in srgb, var(--color-field-glow) 35%, transparent) 70%,
-    color-mix(in srgb, var(--color-group-plants) 60%, transparent) 77.5%,
-    color-mix(in srgb, var(--color-mist) 85%, transparent) 80%,
-    color-mix(in srgb, var(--color-group-plants) 40%, transparent) 82.5%,
-    color-mix(in srgb, var(--color-field-glow) 22%, transparent) 90%,
-    transparent 100%
-  );
+  inset: -8%;
+  background: url(/img/intro-mist.webp) center / cover no-repeat;
+  animation: a0-ground 26s ease-in-out infinite alternate;
 }
 /* the photograph showing through around the mouse (components/WelcomeReveal.tsx), under the liquid layer.
    The mask makes the circle soft all the way out, there is no edge to see. */
@@ -113,11 +80,6 @@
   will-change: transform;
 }
 
-/* the liquid layer (components/WelcomeEther.tsx), between the blobs and the grain */
-/* screen: the layer can only lighten what is under it, towards its green, and fades out into the field
-   with no dark or grey edge */
-.a0-ether { position: absolute; inset: 0; mix-blend-mode: screen; }
-.a0-ether .liquid-ether-container { touch-action: auto; }
 .a0-grain {
   position: absolute;
   inset: 0;
@@ -129,12 +91,12 @@
 
 /* The logo. Without the scroll choreography it is simply in its corner, the place A0 keeps it and
    the box components/WelcomeLogo.tsx sends it to; the scroll media query below puts it in the middle
-   of the page instead and hands it to the scroll. The corner mirrors the nav opposite it: on desktop
-   it takes the nav pill's box, 3.5rem tall from 1.75rem, with the logo centred in it. */
+   of the page instead and hands it to the scroll. The corner is as far from the top as from the
+   left, at every size. */
 .a0-mark,
 .a0-mark-corner {
   position: absolute;
-  top: var(--top-chrome);
+  top: var(--mark-top);
   left: var(--spacing-inset-screen);
   height: 2rem;
   width: auto;
@@ -143,9 +105,29 @@
 /* the corner holds the symbol alone, the wordmark dissolves before the flight
    (components/WelcomeLogo.tsx) */
 .a0-mark-corner { aspect-ratio: 283.81 / 265.34; }
+/* the built logo's lime (components/intro-logo.ts): the brand lime into its deeper step */
+.a0-mark {
+  --logo-lime: var(--color-primary);
+  --logo-lime-deep: var(--color-primary-deep);
+}
+/* The built logo carries the fill's dark shading, which sits right over the symbol's corner and made
+   it dull up there. As it lands it crossfades into a clean symbol in the button's lime, in the same
+   box, so the corner symbol matches Start Natureploring. */
+.a0-mark { transition: opacity 700ms ease; }
+.a0-mark-lit { opacity: 0; transition: opacity 700ms ease; }
+.a0-open .a0-mark { opacity: 0; }
+.a0-open .a0-mark-lit { opacity: 1; }
+.a0-mark-corner { color: var(--color-primary); }
+/* the tablet keeps the desktop's corner symbol size, 2.125rem tall */
+@media (min-width: 48rem) {
+  .a0-mark,
+  .a0-mark-corner { height: 2.125rem; }
+}
 .a0-mark-corner svg { display: block; height: 100%; width: auto; }
 .a0-mark .intro-logo { height: 100%; width: auto; filter: none; }
 .a0-mark-slot { visibility: hidden; }
+/* the patterned drawing (lib/welcome-progress.ts, PATTERN_IMG) is lit already: no brightening */
+.a0s .a0-mark[data-pattern] .intro-logo { filter: drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35)); }
 
 .a0-cue {
   position: absolute;
@@ -155,9 +137,11 @@
   opacity: 0;
   pointer-events: none;
   text-align: center;
-  /* a size of its own, a step above a caption, so the one instruction on the page is easy to read */
-  font-size: calc(var(--text-caption) * 1.15);
-  line-height: var(--text-caption--line-height);
+  /* the title step at every width, size and weight, so the one instruction on the page is easy
+     to read */
+  font-size: var(--text-title);
+  line-height: var(--text-title--line-height);
+  font-weight: var(--text-title--font-weight);
 }
 .a0-cue span { display: inline-block; }
 
@@ -174,7 +158,8 @@
   margin: 0 auto;
   overflow: hidden;
   pointer-events: none;
-  color: var(--color-on-field);
+  /* already the logo's lime it is going to join */
+  color: var(--color-primary);
 }
 .a0-mush[data-out] { overflow: visible; }
 .a0-mush svg { display: block; width: 100%; height: auto; }
@@ -184,8 +169,15 @@
 .a0-hero { display: none; }
 
 /* the opening, once on load: the line writes itself letter by letter
-   (components/WelcomeHero.tsx), then the cue arrives under it */
-.a0s .a0-cue span { animation: a0-arrive 800ms var(--a0-ease) 2300ms both; }
+   (components/WelcomeHero.tsx), and the cue arrives under it as "all" starts to appear: the 12th
+   letter, 11 staggers of 60ms in. FIRST in components/WelcomeCue.tsx follows this delay. */
+.a0s .a0-cue span { animation: a0-arrive 800ms var(--a0-ease) 660ms both; }
+/* The letters start when the page's script does, which can be a few hundred ms after this stylesheet,
+   so with scripting the cue holds until WelcomeCue, mounting on the same frame as the line, sets
+   data-go: the 660ms then count from the same moment as the letters. */
+@media (scripting: enabled) {
+  .a0s .a0-cue:not([data-go]) span { animation-play-state: paused; }
+}
 
 /* The scroll choreography. components/WelcomeScroll.tsx writes --a0-p on each of these elements: the
    scroll progress from 0 to 1, eased so the page glides after the scroll instead of stepping with it.
@@ -199,6 +191,12 @@
      there on its own clock (components/WelcomeLogo.tsx). The page is this tall so that the circle
      opens over a long scroll rather than a flick of the wheel. */
   .a0s { height: 350vh; }
+  /* No scrollbar while the opening plays. Where the system draws one beside the page (a Mac with a
+     mouse, Windows) it took 15px off the width, and at a0-done, with nothing left to scroll, it went
+     and gave them back: everything placed from the middle moved 7.5px right on the frame the symbol
+     landed, so the symbol jumped beside the lit one fading in over it. */
+  html:has(.a0s) { scrollbar-width: none; }
+  html:has(.a0s)::-webkit-scrollbar { display: none; }
   /* Once it has all played, the page is A0 and nothing else: no scroller, nothing above it to go
      back to (components/WelcomeLogo.tsx sets a0-done on the frame the logo lands). Everything the
      scroll was driving is put in its finished state here, because the scroll position itself is gone:
@@ -206,7 +204,7 @@
      background, the same as A0 has it (app/welcome2.css). */
   .a0s.a0-done { height: auto; }
   .a0s.a0-done .a02 { position: relative; }
-  .a0s.a0-done :is(.a0-field, .a0-ether, .a0-orb, .a0-hero, .a0-cue, .a0-mush) { display: none; }
+  .a0s.a0-done :is(.a0-field, .a0-hero, .a0-cue, .a0-mush) { display: none; }
   .a0s.a0-done .a0-lens {
     inset: 0;
     width: auto;
@@ -214,6 +212,7 @@
     aspect-ratio: auto;
     translate: none;
     border-radius: 0;
+    mask-image: none;
     visibility: visible;
   }
   .a0s.a0-done .a02-photo {
@@ -223,9 +222,9 @@
     translate: none;
   }
   .a0s .a02 { position: sticky; top: 0; height: 100dvh; min-height: 0; container-type: size; }
-  .a0s :is(.a0-field, .a0-orb) { display: block; }
+  .a0s .a0-field { display: block; }
 
-  .a0s :is(.a0-field, .a0-ether, .a0-hero, .a0-cue) {
+  .a0s :is(.a0-field, .a0-hero, .a0-cue) {
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-fill-mode: both;
@@ -234,11 +233,11 @@
   }
   .a0s .a0-field { animation-name: a0s-hide; --a0-s: 0.97; --a0-e: 0.98; }
   /* once the field is covered the liquid layer steps out of it, which is what pauses its simulation */
-  .a0s .a0-ether { animation-name: a0s-away; --a0-s: 0.97; --a0-e: 0.98; }
   /* The photograph opens in a circle between --a0-s and --a0-e of the scroll. The lens is that circle at
      its final size, 150% of hypot(w, h) / sqrt(2), enough to clear every corner. WelcomeScroll scales
-     the lens up from nothing, scales the photograph inside it by the inverse so it stays put, and scales
-     the rim with the lens. Only transforms change, so nothing is repainted while the circle grows. */
+     the lens up from nothing and scales the photograph inside it by the inverse so it stays put. Only
+     transforms change, so nothing is repainted while the circle grows. No rim: the circle's edge simply
+     fades out, a soft band over its outer quarter that grows with it. */
   .a0s .a0-lens {
     --a0-s: 0.04;
     --a0-e: 0.95;
@@ -250,6 +249,7 @@
     translate: -50% -50%;
     border-radius: 50%;
     overflow: hidden;
+    mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
   }
   .a0s .a02-photo {
     inset: auto;
@@ -260,8 +260,8 @@
     /* placed and counter-scaled around the centre by components/WelcomeScroll.tsx alone: a CSS
        translate here was added on top of it and slid the photograph off the right of the screen */
   }
-  .a0s :is(.a0-lens, .a02-photo, .a0-orb) { will-change: transform; }
-  .a0s :is(.a0-lens, .a0-orb) { visibility: hidden; } /* until WelcomeScroll places them */
+  .a0s :is(.a0-lens, .a02-photo) { will-change: transform; }
+  .a0s .a0-lens { visibility: hidden; } /* until WelcomeScroll places it */
 
   /* The logo builds in the middle of the page and travels to the corner slot, both worked out by
      components/WelcomeLogo.tsx. The width is the intro board's: the logo as it would be drawn in a
@@ -282,31 +282,58 @@
        translate into its own x and y the first time it moves the logo, which threw the landing off */
     font-size: calc(var(--a0-mark-w) / 35.34);
   }
+  /* tablet and desktop: 15% smaller, still centred; the phone keeps the full width */
+  @media (min-width: 48rem) {
+    .a0s .a0-mark {
+      --a0-mark-w: calc(min(max(39.27cqw, 62.83cqh), max(min(39.27cqw, 62.83cqh), 85.67cqw)) * 0.85);
+    }
+  }
   .a0s .a0-mark .intro-logo {
     height: auto;
     width: 100%;
     aspect-ratio: 1729.5 / 425.2;
     overflow: visible;
     filter: brightness(1.265) drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35));
+    transition: filter 700ms ease;
   }
+
 
   /* The opening line and the cue go first, as the photograph starts to open behind them. What is
      left of the scroll opens the photograph, and nothing else waits on it. */
   .a0s .a0-cue { animation-name: a0s-leave; --a0-s: 0; --a0-e: 0.08; }
-  .a0s .a0-hero { animation-name: a0s-leave; --a0-s: 0.04; --a0-e: 0.25; }
+  /* the line is gone before the logo starts building over it (WELCOME_START, 0.17) */
+  .a0s .a0-hero { animation-name: a0s-leave; --a0-s: 0.02; --a0-e: 0.16; }
 
   /* A0 arrives on the frame the logo lands in its corner, one layer after another, and the route
      draws itself over the photograph (components/WelcomeLogo.tsx sets a0-open, and
      components/WelcomeRoute.tsx draws the route when it sees it) */
-  .a0s :is(.a02-h1, .a02-lead, .a02-nav, .a02-cta) { opacity: 0; }
+  .a0s :is(.a02-h1, .a02-lead, .a02-cta) { opacity: 0; }
   .a0s .a02-route { visibility: hidden; }
-  .a0s.a0-open :is(.a02-h1, .a02-lead, .a02-nav, .a02-cta) {
-    animation: a0-arrive 800ms var(--a0-ease) both;
+  /* backwards, not both: once it has arrived nothing of the animation stays applied, so the
+     button's hover and press are free to run */
+  .a0s.a0-open :is(.a02-h1, .a02-lead, .a02-cta) {
+    opacity: 1;
+    animation: a0-arrive 800ms var(--a0-ease) backwards;
   }
   .a0s.a0-open .a02-lead { animation-delay: 120ms; }
-  .a0s.a0-open .a02-nav { animation-delay: 180ms; }
-  .a0s.a0-open .a02-cta { animation-delay: 240ms; }
+  /* the button arrives, then starts to breathe (app/welcome2.css) */
+  .a0s.a0-open .a02-cta {
+    animation: a0-arrive 800ms var(--a0-ease) 240ms backwards, a02-cta-glow 4.8s ease-in-out 1040ms infinite;
+  }
+  /* its fill waits for the open too, so fill and halo breathe together */
+  .a0s .a02-cta::before { animation: none; }
+  .a0s.a0-open .a02-cta::before { animation: a02-cta-fill 4.8s ease-in-out 1040ms infinite; }
 
+  /* a soft dark veil behind the opening line, so the white letters hold over the brightest mist;
+     inside the line, so it leaves with it */
+  .a0s .a0-hero::before {
+    content: "";
+    position: absolute;
+    inset: -130% 6%;
+    z-index: -1;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--color-ground) 60%, transparent), transparent);
+    pointer-events: none;
+  }
   /* the opening line, centred on the screen, in the display face */
   .a0s .a0-hero {
     display: block;
@@ -325,18 +352,22 @@
     letter-spacing: var(--text-display--letter-spacing);
     white-space: nowrap;
   }
+  /* on a phone it is two lines, "Natureplore" over "all around", at the full display size */
+  @media (max-width: 47.99rem) {
+    .a0s .a0-hero { font-size: var(--text-display); line-height: var(--text-display--line-height); }
+  }
+  @media (min-width: 48rem) {
+    .a0-hero-br { display: none; }
+  }
 
   /* a link that takes keyboard focus must be visible: jump to the end state */
   .a0s:has(a:focus-visible) :is(*, *::after) { animation: none !important; }
   .a0s:has(a:focus-visible) :is(.a0-lens, .a02-photo) { transform: none !important; visibility: visible !important; }
-  .a0s:has(a:focus-visible) .a0-orb { visibility: hidden !important; }
 
   @media (min-width: 64rem) {
     .a0s {
       --a0-inset: clamp(3rem, 6.67vw, var(--spacing-screen-desktop));
       --a0-gap: clamp(2.25rem, 5vw, 4.5rem);
-      --a0-drift-x: 5.625rem;
-      --a0-drift-y: 3.125rem;
       --a0-cx: 76%;
       --a0-cy: 58%;
       --a0-w: 100cqw;
@@ -352,19 +383,14 @@
 @media (prefers-reduced-motion: reduce) {
   @keyframes a0-word { from { opacity: 0; } to { opacity: 1; } }
   @keyframes a0-arrive { from { opacity: 0; } to { opacity: 1; } }
-  .a0-blob { animation: none; }
+  .a0-field::before { animation: none; }
 }
 
 @media (min-width: 64rem) {
-  /* the corner lines up with the nav: the symbol centred on the nav pill's height, as on the board */
+  /* the desktop corner: the same inset from the top and the left as on the phone, a size larger */
   .a0-mark,
   .a0-mark-corner {
-    top: calc(2rem + (3.625rem - 2.125rem) / 2);
-    left: 2.5rem;
+    left: var(--spacing-inset-screen); /* the same inset as the tablet, 2rem from 64rem */
     height: 2.125rem;
   }
-  .a0-blob-1 { left: -18%; top: -20%; width: 68%; }
-  .a0-blob-2 { left: 25%; top: -29%; width: 69%; aspect-ratio: 1.22; }
-  .a0-blob-3 { left: 62%; top: 42%; width: 62%; }
-  .a0-blob-4 { left: 8%; top: 58%; width: 53%; aspect-ratio: 1.23; }
 }

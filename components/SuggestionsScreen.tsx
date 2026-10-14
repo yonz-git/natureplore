@@ -11,14 +11,14 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
-import { ChevronIcon, LeafIcon, ListIcon, MapIcon, PinIcon, RoutesIcon } from "@/components/Icons";
-import { useLocationPrompt } from "@/components/LocationDialog";
+import { ChevronIcon, GroupIcon, ListIcon, MapIcon, OrganismsIcon, PinIcon, RoutesIcon } from "@/components/Icons";
 import { MapTools, SearchField } from "@/components/MapParts";
 import { useSheet } from "@/components/SheetGrab";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { SuggestionCard } from "@/components/SuggestionCard";
-import { HERE } from "@/lib/routes";
+import { playGroup } from "@/lib/group-motion";
+import { GROUPS, HERE, type Group } from "@/lib/routes";
 import { rememberList } from "@/lib/saved";
 import { organismPhoto } from "@/lib/photos";
 import { groupWord, HOME_REGION, MONTH, organismsIn, regionById, ROUTE_POINTS, ROUTE_TOTAL, routesIn } from "@/lib/suggestions";
@@ -45,9 +45,56 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   const home = region.id === HOME_REGION;
   const routes = routesIn(region);
   const organisms = organismsIn(region);
+  // On Organisms, all five groups sit beside the switch as filters, the ones with nothing in season
+  // here dimmed and unpickable. None picked shows all; each one picked narrows the list to those.
+  const [picked, setPicked] = useState<Group[]>([]);
+  const has = (g: Group) => organisms.some(({ organism }) => organism.group === g);
+  const shown = picked.length ? organisms.filter(({ organism }) => picked.includes(organism.group)) : organisms;
+  const pick = (g: Group) => setPicked((now) => (now.includes(g) ? now.filter((x) => x !== g) : [...now, g]));
+  // the toggles line up under the Organisms option they filter: its left edge, measured, is their indent
+  const switchRow = useRef<HTMLDivElement>(null);
+  const groupRow = useRef<HTMLDivElement>(null);
+  // as the toggles appear the moving icons play once, a beat after they grow in, dimmed or not
+  useEffect(() => {
+    if (show !== "organisms") return;
+    groupRow.current?.querySelectorAll<HTMLElement>("[data-group]").forEach((b, i) => playGroup(b, b.dataset.group as Group, 160 + i * 60));
+  }, [show]);
+  const orgOpt = useRef<HTMLButtonElement>(null);
+  useLayoutEffect(() => {
+    const row = switchRow.current;
+    const opt = orgOpt.current;
+    if (!row || !opt) return;
+    const place = () => row.style.setProperty("--org-x", `${opt.getBoundingClientRect().left - row.getBoundingClientRect().left}px`);
+    const watch = new ResizeObserver(place);
+    watch.observe(row);
+    watch.observe(opt);
+    place();
+    return () => watch.disconnect();
+  }, []);
+  // The lime under the picked option is one pill that slides between the two (.seg-thumb in
+  // app/flow-a.css): placed on the picked option's box, measured, and moved again whenever the option
+  // changes or a width changes. Its first placement is not animated; from then on it glides.
+  const seg = useRef<HTMLDivElement>(null);
+  const thumb = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const box = seg.current;
+    const pill = thumb.current;
+    if (!box || !pill) return;
+    const place = () => {
+      const on = box.querySelector<HTMLElement>('.seg-opt[aria-pressed="true"]');
+      if (!on) return;
+      pill.style.width = `${on.offsetWidth}px`;
+      pill.style.height = `${on.offsetHeight}px`;
+      pill.style.transform = `translate(${on.offsetLeft}px, ${on.offsetTop}px)`;
+    };
+    place();
+    if (!("thumb" in box.dataset)) requestAnimationFrame(() => (box.dataset.thumb = ""));
+    const watch = new ResizeObserver(place);
+    box.querySelectorAll(".seg-opt").forEach((o) => watch.observe(o));
+    return () => watch.disconnect();
+  }, [show]);
   // the region's routes on the map, a memo so the map is built once per region
   const points = useMemo(() => pointsFor(regionId, near), [regionId, near]);
-  const { ask, prompt } = useLocationPrompt();
   useEffect(() => rememberList(near ? "/map/near-you" : home ? "/map" : `/map?region=${region.id}`), [near, home, region.id]);
 
   // The sheet moves between its two heights by its own transform, never an ancestor's (that would
@@ -91,19 +138,11 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
       )}
 
       <div className="ms-panel glass-desk">
-        <div className="ms-bar">
-          {!desk && <SearchField />}
-          <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill">
-            <button type="button" className="seg-opt" aria-pressed={show === "routes"} onClick={() => setShow("routes")}>
-              <RoutesIcon size={18} />
-              Routes
-            </button>
-            <button type="button" className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
-              <LeafIcon size={18} />
-              Organisms
-            </button>
+        {!desk && (
+          <div className="ms-bar">
+            <SearchField />
           </div>
-        </div>
+        )}
 
         <div
           ref={sheet}
@@ -112,36 +151,71 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           onScroll={grab.onScroll}
         >
           {grab.grab("list")}
+          {/* Routes or Organisms, and on Organisms the group filters, at the top of the sheet */}
+          <div className="sg-switch" ref={switchRow}>
+          <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill" ref={seg}>
+            <span className="seg-thumb" ref={thumb} aria-hidden="true" />
+            <button type="button" className="seg-opt" aria-pressed={show === "routes"} onClick={() => setShow("routes")}>
+              <RoutesIcon size={18} />
+              <span className="seg-label" data-text="Routes">Routes</span>
+            </button>
+            <button type="button" ref={orgOpt} className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
+              <OrganismsIcon size={18} />
+              <span className="seg-label" data-text="Organisms">Organisms</span>
+            </button>
+          </div>
+          {/* inert, not removed, while on Routes, so the toggles can fade out as well as in */}
+          <div role="group" aria-label="Filter by group" ref={groupRow} className={`sg-groups${show === "organisms" ? " is-on" : ""}`} inert={show !== "organisms"}>
+            {GROUPS.map((g) => (
+              <button
+                key={g.id}
+                type="button"
+                className={`sg-group glass glass-pill is-${g.id}`}
+                aria-pressed={picked.includes(g.id)}
+                aria-disabled={!has(g.id) || undefined}
+                aria-label={has(g.id) ? g.label : `${g.label}, none in season here`}
+                title={has(g.id) ? g.label : `${g.label}: none in season here`}
+                data-group={g.id}
+                onClick={() => has(g.id) && pick(g.id)}
+                // again under a mouse or on keyboard focus, when the group can be picked
+                onPointerEnter={(e) => e.pointerType === "mouse" && has(g.id) && playGroup(e.currentTarget, g.id)}
+                onFocus={(e) => e.currentTarget.matches(":focus-visible") && has(g.id) && playGroup(e.currentTarget, g.id)}
+              >
+                <GroupIcon group={g.id} size={18.2} />
+              </button>
+            ))}
+          </div>
+          </div>
           <div className="sg-head">
             <div>
               <h1 id="sg-title" className="ms-title">
                 In season in <em>{MONTH}</em>
               </h1>
-              <p className="sg-scope">{near ? `Near you, in ${region.name}` : region.name}</p>
-              <p className="ms-lead">
-                {show === "organisms"
-                  ? `${organisms.length} in season along ${routes.length} route${routes.length > 1 ? "s" : ""}`
-                  : near
-                    ? "Sorted by how many spots are in season, then by distance"
-                    : "Sorted by how many spots are in season"}
+              <p className="sg-scope">
+                {/* keyed so the pin rolls in again for each region */}
+                <span className="sg-pin" key={region.id}>
+                  {/* a ring on the ground round the pin's tip */}
+                  <svg className="sg-pin-ring" viewBox="0 0 12 5" aria-hidden="true">
+                    <ellipse cx="6" cy="2.5" rx="5.4" ry="1.9" />
+                  </svg>
+                  <PinIcon size={18} className="sg-pin-icon" />
+                </span>
+                {near ? `Near you, in ${region.name}` : region.name}
               </p>
+              {show === "organisms" && (
+                <p className="ms-lead">
+                  {`${shown.length} in season along ${routes.length} route${routes.length > 1 ? "s" : ""}`}
+                </p>
+              )}
             </div>
             {toggle}
           </div>
 
-          {near ? (
+          {near && (
             <p className="sg-where">
               <PinIcon size={18} />
               Location on. It stays on this device.
             </p>
-          ) : (
-            <div className="sg-where">
-              <button type="button" className="sg-locate" onClick={ask}>
-                <PinIcon size={18} />
-                <span>Use my location</span>
-              </button>
-              <span className="ms-note">Location stays on this device</span>
-            </div>
           )}
 
           {show === "routes" ? (
@@ -169,7 +243,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             <div className="sg-list" key="organisms">
               <div className="saved-card a8-group">
                 <ul className="a8-rows">
-                  {organisms.map(({ organism: o, routes: on, href }) => {
+                  {shown.map(({ organism: o, routes: on, href }) => {
                     const photo = organismPhoto(o.name);
                     const body = (
                       <>
@@ -223,7 +297,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             : undefined
         }
       />
-      {prompt}
     </section>
   );
 }

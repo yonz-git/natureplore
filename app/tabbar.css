@@ -51,7 +51,7 @@
   justify-content: center;
   gap: 0.375rem;
   border-radius: var(--radius-pill);
-  color: var(--color-on-ground-tab);
+  color: var(--color-on-ground);
   font-size: var(--text-tab);
   line-height: 1;
   font-weight: var(--text-tab--font-weight);
@@ -61,6 +61,29 @@
   transition: transform 160ms var(--ease-out), color 280ms var(--ease-out), background-color 220ms var(--ease-out);
 }
 .tabbar-tab:active { transform: scale(0.97); }
+/* the Map and Learn icons, detailed drawings, read at the others' size only 20% bigger */
+.tabbar-icon-big { scale: 1.2; overflow: visible; }
+/* the open tab's icon gets heavier: the front bookmark of Saved becomes solid */
+.tabbar-tab .tab-fill { fill: rgb(from currentColor r g b / 0); transition: fill 220ms var(--ease-out); }
+.tabbar-tab.is-current .tab-fill { fill: currentColor; }
+/* Learn's earth turns to its negative when selected, the two drawings crossfade */
+.tabbar-tab .tab-earth-off, .tabbar-tab .tab-earth-on { transition: opacity 220ms var(--ease-out); }
+.tabbar-tab .tab-earth-on { opacity: 0; }
+.tabbar-tab.is-current .tab-earth-on { opacity: 1; }
+.tabbar-tab.is-current .tab-earth-off { opacity: 0; }
+/* and gains a 0.5px outline round the earth and the hands: 0.417 units at this group's scale
+   (1.375rem box on a 24 grid, the group's 1.09 and the big icons' 1.2); the ring grows by the same */
+.tabbar-tab .tab-learn { transition: stroke-width 220ms var(--ease-out); }
+.tabbar-tab .tab-earth-on circle { stroke-width: 1.2; transition: stroke-width 220ms var(--ease-out); }
+.tabbar-tab.is-current .tab-learn { stroke-width: 0.417; }
+.tabbar-tab.is-current .tab-earth-on circle { stroke-width: 1.617; }
+/* Map's outline stays as drawn; its pin and trail take a thin line of their own */
+.tabbar-tab .tab-fills { transition: stroke-width 220ms var(--ease-out); }
+.tabbar-tab.is-current .tab-fills { stroke-width: 0.5; }
+/* the pin sits midway between the map's top and bottom edges where it stands (8.75 on its grid, the
+   pin's own middle 8.74), and grows from that middle so it stays there when the tab is open */
+.tabbar-tab .tab-pin { transform-box: fill-box; transform-origin: 50% 50%; transition: scale 220ms var(--ease-out); }
+.tabbar-tab.is-current .tab-pin { scale: 1.2; }
 .tabbar-tab.is-current {
   color: var(--color-on-primary);
   font-weight: var(--text-tab-active--font-weight);
@@ -68,7 +91,7 @@
 
 @media (min-width: 64rem) {
   /* at the top right, with the search field centred on the same line (app/map.css) */
-  .tabbar { inset: 2rem 0 auto; justify-content: flex-end; padding: 0 2.5rem; }
+  .tabbar { inset: var(--spacing-nav-top-desktop) 0 auto; justify-content: flex-end; padding: 0 2.5rem; }
   .tabbar-pill { height: 3.625rem; gap: 0.125rem; }
   .tabbar-tab {
     width: auto;
@@ -82,6 +105,11 @@
     letter-spacing: 0;
   }
   .tabbar-tab svg { width: 1.125rem; height: 1.125rem; }
+  /* every icon's drawing, its line included, sits the same distance from the pill's edge as Saved's
+     (15.9) and 11 from the ink of its label's first letter, as measured on the render: each icon's
+     own empty margins cancelled */
+  .tabbar-icon-map { margin: 0 0.18rem 0 0.165rem; }
+  .tabbar-icon-learn { margin: 0 -0.0113rem 0 0.0263rem; }
   .tabbar-tab.is-current { font-weight: var(--text-chip-active--font-weight); }
 }
 

@@ -5,9 +5,10 @@
 // Layout: app/map.css. Glass: app/glass.css.
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ClearIcon, GroupIcon, LocationIcon, SearchIcon } from "@/components/Icons";
+import { playGroup } from "@/lib/group-motion";
 import { GROUPS, type Counts } from "@/lib/routes";
 
 /**
@@ -30,6 +31,19 @@ export function SearchField({
 }) {
   const router = useRouter();
   const [value, setValue] = useState(defaultValue);
+  const [shown, setShown] = useState(0);
+  // the placeholder names one group at a time, so the field says what an organism can be
+  useEffect(() => {
+    if (value || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setInterval(() => setShown((i) => (i + 1) % GROUPS.length), 1800);
+    return () => clearInterval(id);
+  }, [value]);
+  // and each group plays its own motion as it rises in, the one it plays on the Organisms filters
+  const hintIcons = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const icon = hintIcons.current?.children[shown];
+    if (icon) playGroup(icon, GROUPS[shown].id, 150);
+  }, [shown]);
   const set = (v: string) => {
     setValue(v);
     onChange?.(v);
@@ -52,12 +66,21 @@ export function SearchField({
         <input
           id="map-q"
           type="search"
-          placeholder={label}
           value={value}
           autoFocus={autoFocus}
           autoComplete="off"
           onChange={(e) => set(e.target.value)}
         />
+        {!value && (
+          <span className="field-hint" aria-hidden="true">
+            <span className="field-hint-text">{label}</span>
+            <span className="field-hint-icons" ref={hintIcons}>
+              {GROUPS.map((g, i) => (
+                <GroupIcon key={g.id} group={g.id} size={19.8} className={`is-${g.id}${i === shown ? " is-shown" : i === (shown + GROUPS.length - 1) % GROUPS.length ? " is-gone" : ""}`} />
+              ))}
+            </span>
+          </span>
+        )}
         {value && (
           <button type="button" className="field-clear" aria-label="Clear" onClick={() => set("")}>
             <ClearIcon />

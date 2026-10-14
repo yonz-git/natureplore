@@ -3,13 +3,15 @@ import { Comfortaa } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
-// Alpino is a Fontshare face, not on Google Fonts, so Next self-hosts the three weights from app/fonts.
+// Alpino is a Fontshare face, not on Google Fonts, so Next self-hosts the four weights from app/fonts
+// (700 only sets the spot numbers).
 const alpino = localFont({
   variable: "--font-alpino",
   src: [
     { path: "./fonts/alpino-300.woff2", weight: "300", style: "normal" },
     { path: "./fonts/alpino-400.woff2", weight: "400", style: "normal" },
     { path: "./fonts/alpino-500.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/alpino-700.woff2", weight: "700", style: "normal" },
   ],
 });
 

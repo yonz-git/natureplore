@@ -111,6 +111,11 @@ moves up through pull requests.
 2. **Keep it small.** One task per branch, aiming at under 400 changed lines
    (generated files such as `app/tokens.css` aside). If a task grows past that,
    stop, split it into steps and give each step its own branch and pull request.
+   A review pass, going through the screens and fixing what turns up, is the
+   one exception to one task per branch: it lives on one branch named
+   `np-<n>-polish-pass` (or after the area, `np-<n>-map-polish`), every fix is
+   its own commit, and the pass is cut into a pull request at about 400 lines
+   or at the end of a screen, then continues on the next number.
 3. **Commit as you go.** Each commit is one working step with a short
    imperative message that says what changed ("Shrink route axis spot marks").
 4. **Open the pull request when the task works.** Push the branch and open a

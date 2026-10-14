@@ -170,12 +170,21 @@ export function Facts({ items }: { items: Fact[] }) {
   );
 }
 
+/** A stat value with its figures a weight up from the words and units around them ("3 h 00"). */
+export function StatValue({ value }: { value: string }) {
+  return (
+    <b>
+      {value.split(/(\d[\d.,]*)/).map((part, i) => (i % 2 ? <span key={i} className="stat-num">{part}</span> : part))}
+    </b>
+  );
+}
+
 export function Stat({ label, value, unit }: { label: string; value: string; unit?: string }) {
   return (
     <div className="cp-stat">
       <span>{label}</span>
       <span>
-        <b>{value}</b>
+        <StatValue value={value} />
         {unit && <small>{unit}</small>}
       </span>
     </div>

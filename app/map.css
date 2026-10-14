@@ -6,19 +6,20 @@
 
 /* ── the controls every screen shares ───────────────────────────────────────────────────────── */
 
-/* Two buttons and no third: the lime primary, one per view, and the inner glass secondary. Full
-   width on the phone, hugging the label from 64rem (see the panel at the end). The label stays on
+/* Two buttons and no third: the lime primary, one per view, and the inner glass secondary. 80% of
+   the column and centred on the phone (two sharing a bar keep their own width), hugging the label from 64rem (see the panel at the end). The label stays on
    one line wherever it fits; with large text on a narrow screen it wraps inside the button rather
    than running out of it. */
 .btn {
-  min-height: 3.375rem;
+  min-height: var(--spacing-button-height);
   padding: 0.75rem 1.75rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.625rem;
-  align-self: stretch;
+  align-self: center;
+  width: var(--spacing-button-phone);
   flex-shrink: 0;
   border-radius: var(--radius-pill);
   text-decoration: none;
@@ -27,6 +28,15 @@
   transition: transform 160ms var(--ease-out);
 }
 .btn:active { transform: scale(0.97); }
+/* a button inside a section, a bar or a card, hugs its label on the phone too, as on the desktop:
+   80% is for the buttons that close a page */
+.b1-pin .btn,
+.saved-card .btn { width: auto; }
+/* 80% is for a phone's width only: anything wider than a phone hugs the label, as on the desktop,
+   so no window between phone and tablet gets a stretched button */
+@media (min-width: 30rem) { /* phone-max */
+  .btn { width: auto; }
+}
 .btn-primary {
   border: 0;
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
@@ -41,7 +51,7 @@
 .btn-secondary {
   background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
   border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
   color: var(--color-on-ground);
   font-family: var(--text-button-secondary--font-family);
   font-size: var(--text-button-secondary);
@@ -68,7 +78,7 @@
 .field.is-inner {
   background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
   border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
 }
 .field svg { flex-shrink: 0; }
 .field input {
@@ -86,6 +96,47 @@
 }
 .field input::placeholder { color: var(--color-on-ground-soft); opacity: 1; }
 .field input::-webkit-search-cancel-button { display: none; }
+/* the placeholder is drawn, not native, so it can carry one group icon that changes every 1.8 seconds,
+   each playing its own motion as it arrives (lib/group-motion.ts) */
+.field { position: relative; }
+.field-hint {
+  position: absolute;
+  /* centred on the whole field, not on the room right of the search icon: the same inset on both
+     sides keeps it clear of the icon and its middle on the field's middle */
+  inset: 0 calc(1.25rem + 1.1875rem + 0.75rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-width: 0;
+  color: var(--color-on-ground-soft);
+  font-family: var(--text-field--font-family);
+  font-size: var(--text-field);
+  font-weight: var(--text-field--font-weight);
+  pointer-events: none;
+}
+.field-hint-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.field-hint-icons { display: grid; flex-shrink: 0; }
+/* the next icon rises in from below as the last one drifts up and out, overlapping, so the swap
+   reads as one soft motion; the waiting icons sit below, unseen */
+.field-hint-icons svg {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(40%) scale(0.85);
+  transition: opacity 600ms var(--ease-move), transform 600ms var(--ease-move);
+}
+.field-hint-icons svg.is-shown { opacity: 1; transform: none; }
+.field-hint-icons svg.is-gone { transform: translateY(-40%) scale(0.85); }
+/* each icon in its group colour, as on the legend and the group tiles */
+.field-hint-icons .is-plants { color: var(--color-group-plants); }
+.field-hint-icons .is-herbs { color: var(--color-group-herbs); }
+.field-hint-icons .is-mushrooms { color: var(--color-group-mushrooms); }
+.field-hint-icons .is-birds { color: var(--color-group-birds); }
+.field-hint-icons .is-mammals { color: var(--color-group-mammals); }
+@media (prefers-reduced-motion: reduce) {
+  .field-hint-icons svg,
+  .field-hint-icons svg.is-gone { transition: opacity 400ms ease; transform: none; }
+}
 .field:focus-within { outline: 2px solid var(--color-mist); outline-offset: 3px; }
 .field-clear {
   width: 2.75rem;
@@ -153,7 +204,7 @@
   border-radius: var(--radius-pill);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
   border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
   color: var(--color-on-ground);
   font-family: var(--text-chip--font-family);
   font-size: var(--text-chip);
@@ -266,10 +317,29 @@ button.float-pill:active { transform: scale(0.97); }
   white-space: nowrap;
 }
 
-/* Hover, mouse and pen only: the primary dims a little, glass and inner glass controls take a white
-   8% wash, drawn as an inset layer so the fill, edge and float shadow underneath stay as they are. */
+/* Hover, mouse and pen only: the lime lightens, glass and inner glass controls take a white 8% wash,
+   drawn as an inset layer so the fill, edge and float shadow underneath stay as they are. Every
+   resting shadow carries that wash layer at 0% so the two lists match and the wash fades in and out
+   instead of snapping (app/glass.css). */
+.btn,
+.chip,
+.row,
+.org-row,
+.round,
+.tool-pill,
+button.float-pill,
+.seg-opt,
+.card,
+.card-save {
+  transition:
+    transform 160ms var(--ease-out),
+    box-shadow 200ms ease,
+    background-color 200ms ease,
+    border-color 200ms ease,
+    filter 200ms ease;
+}
 @media (hover: hover) and (pointer: fine) {
-  .btn-primary:not([aria-disabled="true"]):hover { filter: brightness(0.96); }
+  .btn-primary:not([aria-disabled="true"]):hover { filter: brightness(1.1); }
   .btn-secondary:not([aria-disabled="true"]):hover,
   .chip:not([aria-pressed="true"]):hover,
   .row:hover,
@@ -301,7 +371,7 @@ button.float-pill:active { transform: scale(0.97); }
   border-radius: var(--radius-inner);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
   border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), inset 0 0 0 100vmax rgb(255 255 255 / 0);
 }
 .card-photo {
   width: 100%;
@@ -314,7 +384,7 @@ button.float-pill:active { transform: scale(0.97); }
   box-sizing: border-box;
 }
 .card-rich .card-photo { height: 10.5rem; }
-.card-text { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+.card-text { display: flex; flex-direction: column; gap: 0.3375rem; min-width: 0; }
 .card-name { margin: 0; font-family: var(--text-title--font-family); font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--text-title--font-weight); }
 .card-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .card-rich .card-line,
@@ -344,7 +414,7 @@ button.float-pill:active { transform: scale(0.97); }
   border: 0.5px solid rgb(255 255 255 / 0.22);
   color: var(--color-on-ground);
   cursor: pointer;
-  transition: transform 160ms var(--ease-out);
+  transition: transform 160ms var(--ease-out), background-color 200ms ease;
 }
 .card-save:active { transform: scale(0.94); }
 
@@ -358,12 +428,14 @@ button.float-pill:active { transform: scale(0.97); }
   border-radius: var(--radius-tile);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
   border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
 }
 .card-stat dt { font-size: var(--text-stat-label); line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
 .card-stat dd { margin: 0; display: flex; align-items: baseline; gap: 0.25rem; }
 .card-stat dd b { font-family: var(--text-stat-sm--font-family); font-size: var(--text-stat-sm); font-weight: var(--text-stat-sm--font-weight); line-height: 1; font-variant-numeric: tabular-nums; }
-.card-stat dd span { font-size: var(--text-caption); line-height: 1; font-weight: 400; color: var(--color-on-ground); }
+.card-stat dd > span { font-size: var(--text-caption); line-height: 1; font-weight: 400; color: var(--color-on-ground); }
+/* the figures in a stat value sit a weight above its words and units, here and on the impact tiles */
+.stat-num { font-weight: 400; }
 .card:not(.card-rich) .card-stats { display: none; }
 .card-rich .card-spots { display: none; }
 /* on the tall card a rule sets the organisms apart from the numbers above them */
@@ -404,7 +476,7 @@ button.float-pill:active { transform: scale(0.97); }
   border: 0.5px solid var(--color-inner-edge);
   color: var(--color-mist);
 }
-.row-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.row-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
 .row-name { font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: 400; }
 .row-meta { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
@@ -417,13 +489,13 @@ button.float-pill:active { transform: scale(0.97); }
 .a1-map { position: absolute; inset: 0; }
 .a1-map.leaflet-container { font: inherit; background: var(--color-basemap-land); }
 
-/* From 64rem the search field leaves the panel for the top of the screen: centred on the window, on
-   the nav pill's line (3.625rem tall at 2rem, app/tabbar.css), with the nav at the right. On search
-   its back control comes with it. Rendered there by SuggestionsScreen and SearchScreen. */
+/* From 64rem the search field leaves the panel for the top of the screen: centred on the window, its
+   top edge level with the nav pill's (nav-top-desktop, app/tabbar.css), with the nav at the right. On
+   search its back control comes with it. Rendered there by SuggestionsScreen and SearchScreen. */
 .ms-search-top {
   position: absolute;
   z-index: 3;
-  top: calc(2rem + (3.625rem - 3.25rem) / 2);
+  top: var(--spacing-nav-top-desktop);
   left: 50%;
   translate: -50% 0;
   /* as wide as it can be while clearing the panel (its right edge at 30rem) by 1rem on both sides of
@@ -546,7 +618,7 @@ button.float-pill:active { transform: scale(0.97); }
   -webkit-text-fill-color: transparent;
 }
 /* full white: over a bright map the soft white fell under 4.5:1 (accessibility review #2) */
-.ms-lead { margin: 0.25rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground); }
+.ms-lead { margin: 0.3375rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground); }
 .ms-lead-desk { display: none; }
 .ms-note { margin: 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
 .ms-list { display: flex; flex-direction: column; gap: 1.25rem; }
@@ -557,8 +629,45 @@ button.float-pill:active { transform: scale(0.97); }
 
 /* ── A1 ────────────────────────────────────────────────────────────────────────────────────── */
 
-.a1 .ms-lead { margin-top: 0.75rem; }
-.a1 .ms-stack { margin-top: 1.5rem; }
+/* no sheet at any size: the heading, the line and the ways in stand in the middle of the map, between
+   the top of the screen and the tab bar, over a soft darkening that keeps them readable. The map
+   stays draggable around them, and the pins under them are hidden (components/RegionMap.tsx). */
+.a1 .ms-sheet {
+  inset: var(--top-chrome) 0 var(--spacing-tabbar-clearance);
+  padding: 1rem var(--spacing-inset-screen);
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  pointer-events: none;
+}
+.a1-words {
+  position: relative;
+  isolation: isolate;
+  width: min(32rem, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  pointer-events: auto;
+}
+.a1-words::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -6rem -5rem;
+  background: radial-gradient(closest-side, rgb(from var(--color-ground) r g b / 0.85) 0%, rgb(from var(--color-ground) r g b / 0.5) 60%, transparent 100%);
+  pointer-events: none;
+}
+.a1 .ms-lead { margin-top: 1.0125rem; }
+.a1 .ms-stack { width: 100%; margin-top: 1.5rem; align-items: center; }
+.a1 .ms-stack > form { width: 100%; }
+.a1 .ms-stack .btn { align-self: center; }
+/* the two ways in share one row under the field, side by side, and wrap only when there is no room */
+.a1-ways { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--spacing-control-stack); width: 100%; }
+/* off the panel the secondary button stands on the map, so it frosts like the field above it */
+.a1 .btn-secondary { backdrop-filter: blur(1.875rem) saturate(1.4); }
 .a1 .btn-browse,
 .a1 .ms-note-desk { display: none; }
 
@@ -585,12 +694,12 @@ button.float-pill:active { transform: scale(0.97); }
 .search-results.is-compact { padding: 1.25rem; }
 .search-miss { margin-top: 1.5rem; margin-bottom: 0.5rem; }
 .search-miss .ms-title { font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
-.search-miss .ms-lead { margin-top: 0.5rem; font-size: var(--text-body); line-height: var(--text-body--line-height); }
+.search-miss .ms-lead { margin-top: 0.675rem; font-size: var(--text-body); line-height: var(--text-body--line-height); }
 .search .float-pill.is-after { margin-top: 1rem; }
 
-/* ── A5: the location line in the bar ──────────────────────────────────────────────────────── */
+/* ── A5: the suggestions for a region ─────────────────────────────────────────────────────── */
 
-.a5 { --sheet-top: max(min(22.375rem, 100dvh - 18rem), var(--top-chrome) + 8rem); }
+.a5 { --sheet-top: max(min(18.875rem, 100dvh - 18rem), var(--top-chrome) + 4.5rem); }
 
 /* ── A6: a place that is not mapped yet ─────────────────────────────────────────────────────── */
 
@@ -603,14 +712,15 @@ button.float-pill:active { transform: scale(0.97); }
   background: var(--color-scrim);
 }
 .a6 .ms-sheet { gap: 0; }
-.a6 .ms-title { margin-top: 1.25rem; }
-.a6 .ms-lead { margin-top: 0.75rem; }
-.a6 .ms-lead + .ms-lead { margin-top: 0.5rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
+.a6 .ms-title { margin-top: 1.6875rem; }
+.a6 .ms-lead { margin-top: 1.0125rem; }
+.a6 .ms-lead + .ms-lead { margin-top: 0.675rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
 .a6 .btn { margin-top: 1.5rem; }
 
 /* ── B1: the route detail, on the map ─────────────────────────────────────────────────────── */
 
-/* the spot marker: a lime disc numbered in walking order, with a forest and mist double ring */
+/* the spot marker: a lime disc numbered in walking order with a 3px lime halo, muted when the spot
+   has nothing in season this month (flow-b.css carries the same face to the spots list and axis) */
 .spot-mark {
   flex-shrink: 0;
   --mark: 2rem;
@@ -626,14 +736,19 @@ button.float-pill:active { transform: scale(0.97); }
   text-box: trim-both cap alphabetic;
   border-radius: var(--radius-pill);
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
-  box-shadow: 0 0 0 2px var(--color-ground), 0 0 0 3.5px var(--color-mist), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
+  box-shadow: 0 0 0 0.1875rem rgb(from var(--color-primary) r g b / 0.6), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
   color: var(--color-on-primary);
-  font-family: var(--text-count--font-family);
-  font-size: var(--text-count);
-  font-weight: 400;
+  /* the number in Alpino Bold, the one place that weight is used, so it reads at 11 to 15px */
+  font-family: var(--font-text);
+  font-size: calc(var(--text-count) * 1.35);
+  font-weight: 700;
   line-height: 1;
 }
 .map-spot { position: absolute; transform: translate(-50%, -50%); text-decoration: none; }
+.map-spot.is-out .spot-mark {
+  background: color-mix(in srgb, var(--color-primary) 60%, var(--color-ground));
+  box-shadow: 0 0 0 0.1875rem color-mix(in srgb, color-mix(in srgb, var(--color-primary) 60%, var(--color-ground)) 60%, transparent), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
+}
 /* a 32 marker, 44 to touch */
 .map-spot::before { content: ""; position: absolute; inset: -0.375rem; border-radius: var(--radius-pill); }
 .map-spot-label,
@@ -644,8 +759,8 @@ button.float-pill:active { transform: scale(0.97); }
   transform: translateY(-50%);
   white-space: nowrap;
   color: var(--color-on-ground);
-  font-size: var(--text-caption);
-  font-weight: 500;
+  font-size: var(--text-secondary);
+  font-weight: 400;
   line-height: 1;
   text-shadow: 0 0 3px var(--color-ground), 0 0 6px var(--color-ground), 0 1px 8px rgb(6 18 9 / 0.8);
   pointer-events: none;
@@ -716,7 +831,7 @@ button.float-pill:active { transform: scale(0.97); }
 .b1-photos > span:nth-child(3) { background: radial-gradient(90% 90% at 40% 60%, rgb(174 183 121 / 0.3) 0%, transparent 65%), linear-gradient(170deg, var(--color-field-shade) 0%, var(--color-ground) 100%); }
 
 .b1-head { display: flex; flex-direction: column; }
-.b1-head .ms-lead { margin-top: 0.25rem; }
+.b1-head .ms-lead { margin-top: 0.3375rem; }
 
 /* what is recorded along the route: the proportion bar, the five groups, and the way to all of them */
 .b1-box {
@@ -728,7 +843,7 @@ button.float-pill:active { transform: scale(0.97); }
   border-radius: var(--radius-inner);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
   border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
 }
 .b1-bar { height: 0.75rem; display: flex; gap: 0.25rem; border-radius: 0.375rem; overflow: hidden; }
 .b1-bar span { flex-basis: 0; }
@@ -758,8 +873,8 @@ button.float-pill:active { transform: scale(0.97); }
   font-weight: 500;
 }
 .offline .ms-sheet { gap: 0; }
-.offline .ms-title { margin-top: 1.25rem; }
-.offline .ms-lead { margin-top: 0.75rem; }
+.offline .ms-title { margin-top: 1.6875rem; }
+.offline .ms-lead { margin-top: 1.0125rem; }
 .offline .btn { margin-top: 1.5rem; }
 .offline .ms-note { margin-top: 1rem; text-align: center; }
 
@@ -850,13 +965,16 @@ button.float-pill:active { transform: scale(0.97); }
 .a1-lbl-nature { transform: translate(-50%, 1.7rem); font-style: italic; color: var(--color-basemap-label-nature); }
 .a1-lbl-water { font-style: italic; font-weight: 400; color: var(--color-basemap-label-water); }
 .a1-lbl.is-hidden { display: none; }
+/* a name under A1's words fades out of their way (components/RegionMap.tsx) */
+.a1-lbl { transition: opacity 200ms ease; }
+.a1-lbl.is-covered { opacity: 0; }
 
 .a1-credit {
   position: absolute;
   right: 0.5rem;
   bottom: 0.25rem;
   margin: 0;
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   line-height: 1;
   color: var(--color-on-ground-soft);
   opacity: 0.7;
@@ -1017,7 +1135,7 @@ button.float-pill:active { transform: scale(0.97); }
   .a7 .ms-sheet { margin-top: 0.75rem; }
 
   /* buttons hug their label: centred under a list, start-aligned after text or a field */
-  .btn { align-self: flex-start; }
+  .btn { align-self: flex-start; width: auto; }
   .btn.is-closing { align-self: center; margin-top: 1rem; }
 
   /* the compact card: a thumbnail beside the name, the pill row under both */
@@ -1060,11 +1178,11 @@ button.float-pill:active { transform: scale(0.97); }
   .b1 .ms-sheet::-webkit-scrollbar { display: none; }
   .b1-photos { height: 12.5rem; }
 
-  /* the map's own controls, top right under the nav pill (3.625rem tall at 2rem, app/tabbar.css),
+  /* the map's own controls, top right under the nav pill (3.625rem tall at nav-top-desktop, app/tabbar.css),
      lined up with its right edge; absolute to the screen, not to the map */
   .ms-tools {
     position: absolute;
-    top: calc(2rem + 3.625rem + 0.75rem);
+    top: calc(var(--spacing-nav-top-desktop) + 3.625rem + 0.75rem);
     right: 2.5rem;
     z-index: 2;
     display: flex;
@@ -1095,14 +1213,15 @@ button.float-pill:active { transform: scale(0.97); }
     backdrop-filter: none;
   }
 
-  /* A1: the heading sits lower in the panel, Browse joins the stack and the note goes to the foot */
-  .a1 .ms-sheet { margin-top: 0; }
-  .a1 .ms-title { margin-top: 4.5rem; font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
+  /* A1: no panel on the desktop either, the words take the whole screen's middle */
+  .a1 .ms-panel { display: contents; }
+  .a1 .ms-sheet { position: absolute; inset: 0; padding: var(--spacing-inset-screen); }
+  .a1 .ms-title { font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
   .a1 .ms-lead { font-size: var(--text-body); line-height: var(--text-body--line-height); }
   .a1 .ms-stack { margin-top: 2.5rem; }
   .a1 .btn-browse { display: flex; }
   .a1 .ms-note-phone { display: none; }
-  .a1 .ms-note-desk { display: block; margin-top: auto; }
+  .a1 .ms-note-desk { display: block; margin-top: 1.5rem; }
 
   /* search: the map comes back beside the panel */
   .search .a1-map,

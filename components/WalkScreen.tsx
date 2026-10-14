@@ -44,6 +44,7 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
         lat: s.lat,
         lon: s.lon,
         n: s.n,
+        out: !!detail.spots[i]?.out,
         label: route.stops[i]?.name ?? `Spot ${s.n}`,
         left: route.stops[i]?.left,
         href: `${here}?spot=${s.n}`,

@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import { BackTop, Benefits, Facts, KindTag, ShareButton, Stat } from "@/components/CParts";
+import { BackTop, Benefits, Facts, KindTag, Stat } from "@/components/CParts";
 import { BookmarkIcon, CalendarIcon, CheckCircleIcon, CheckIcon, ExternalIcon } from "@/components/Icons";
 import type { Action, CleanUp, Figure, Practice, Support } from "@/lib/actions";
 import { backLabel, useBack } from "@/lib/back";
@@ -104,7 +104,6 @@ function CleanUpSide({ a, registered, register }: { a: CleanUp; registered: bool
           <p className="org-small">Registering asks for nothing</p>
         </>
       )}
-      <ShareButton title={`${a.title} ${a.close}`} className="btn btn-secondary" label />
     </div>
   );
 }
