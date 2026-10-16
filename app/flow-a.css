@@ -860,3 +860,20 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   4%, 96% { --fade-top: 2.5rem; --fade-bottom: 2.5rem; }
   100% { --fade-top: 2.5rem; --fade-bottom: 0rem; }
 }
+
+/* the credits link at the foot of Learn, at the right: a quiet text link, 44 tall to tap */
+.ln-credits { margin: 1rem 0 0; display: flex; justify-content: flex-end; }
+.ln-credits a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  color: var(--color-on-ground-soft);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color var(--hover-fade) var(--ease-hover);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ln-credits a:hover { color: var(--color-on-ground); }
+}
