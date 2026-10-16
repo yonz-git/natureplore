@@ -137,12 +137,12 @@
   --text-field--font-family: var(--font-text);
   --text-field--line-height: 1.56;
   --text-field--font-weight: 300;
-  --text-button: 1rem;
+  --text-button: 1.05rem;
   --text-button--font-family: var(--font-text);
   --text-button--line-height: 1;
-  --text-button--font-weight: 500;
+  --text-button--font-weight: 400;
   --text-button--letter-spacing: 0.01em;
-  --text-button-secondary: 0.9375rem;
+  --text-button-secondary: 1.05rem;
   --text-button-secondary--font-family: var(--font-text);
   --text-button-secondary--line-height: 1;
   --text-button-secondary--font-weight: 400;
