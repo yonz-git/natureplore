@@ -47,6 +47,8 @@ export function ActionRow({ spot, className = "" }: { spot: Spot; className?: st
 
 /** What to look for at a spot this month, each organism with its photo, or why nothing is in season. */
 export function SpotLook({ spot, organismHref }: { spot: Spot; organismHref?: (id: string) => string }) {
+  // in season with no entry for this month: what is recorded here, not an empty "Look for" list
+  if (!spot.out && !spot.look.length) return spot.outText ? <p className="fb-out">{spot.outText}</p> : null;
   return spot.out ? (
     <p className="fb-out">{spot.out}</p>
   ) : (
