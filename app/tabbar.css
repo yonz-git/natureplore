@@ -63,7 +63,7 @@
 .tabbar-tab:active { transform: scale(0.97); }
 /* the Map and Learn icons, detailed drawings, read at the others' size only 20% bigger */
 .tabbar-icon-big { scale: 1.2; overflow: visible; }
-/* the open tab's icon gets heavier: the front bookmark of Saved becomes solid */
+/* the open tab's icon gets heavier: Saved's bookmark becomes solid */
 .tabbar-tab .tab-fill { fill: rgb(from currentColor r g b / 0); transition: fill 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-fill { fill: currentColor; }
 /* Learn's earth turns to its negative when selected, the two drawings crossfade */

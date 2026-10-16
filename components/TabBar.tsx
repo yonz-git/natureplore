@@ -53,15 +53,11 @@ const TABS = [
   {
     href: "/saved",
     label: "Saved",
-    // two bookmarks, one behind the other, set in Figma on a 178 by 220 grid and fitted to the 24
-    // box's height less a fifth (.design/icons/saved-bookmarks.svg); drawn 20% bigger like Map and Learn
+    // one bookmark, the front one of the Figma pair (.design/icons/saved-bookmarks.svg), on its own
+    // and centred in the 24 box at about the height the pair stood; drawn 20% bigger like Map and Learn
     big: true,
     icon: (
-      <g transform="translate(4.135 2.28) scale(0.08837)" fill="none" stroke="currentColor" strokeLinejoin="round">
-        <path
-          strokeWidth="16"
-          d="M36.5 34.6154V27.9615C36.5154 22.6721 38.6221 17.6038 42.3602 13.8636C46.0982 10.1234 51.1637 8.01536 56.45 8H149.55C154.836 8.01536 159.902 10.1234 163.64 13.8636C167.378 17.6038 169.485 22.6721 169.5 27.9615V181L145.5 157"
-        />
+      <g transform="translate(12 12) scale(0.0985) translate(-77 -121)" fill="none" stroke="currentColor" strokeLinejoin="round">
         <path
           className="tab-fill"
           strokeWidth="19"
