@@ -27,7 +27,10 @@
 .screen-enter .a1-map { animation: layer-in 380ms var(--ease-out) both; }
 .screen-enter .a1-pin,
 .screen-enter .a1-here { animation: fade-in 380ms var(--ease-out) 40ms both; }
-.screen-enter .ms-bar > *,
+/* the search bar rises by its glass, not by the form around it: a transform left on the form by the
+   fill would make it the field's backdrop root and switch the frost off */
+.screen-enter .ms-bar > :not(:has(.glass)):not(.glass),
+.screen-enter .ms-bar .glass,
 .screen-enter .ms-tools > * { animation: sheet-in 320ms var(--ease-out) 40ms both; }
 @media (max-width: 63.99rem) {
   .screen-enter .ms-sheet { animation: sheet-in 360ms var(--ease-out) 60ms both; }
@@ -89,7 +92,8 @@
   .screen-enter .a1-map,
   .screen-enter .a1-pin,
   .screen-enter .a1-here,
-  .screen-enter .ms-bar > *,
+  .screen-enter .ms-bar > :not(:has(.glass)):not(.glass),
+  .screen-enter .ms-bar .glass,
   .screen-enter .ms-tools > *,
   .screen-enter .ms-sheet,
   .screen-enter .search .ms-sheet > *,
