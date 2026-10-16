@@ -393,4 +393,5 @@
     left: var(--spacing-inset-screen); /* the same inset as the tablet, 2rem from 64rem */
     height: 2.125rem;
   }
+  .a0-mark-corner { height: 2.44375rem; } /* the corner symbol 15% larger than the tablet's */
 }
