@@ -200,7 +200,7 @@ body:has(.cp-dialog) .tabbar { display: none; }
 .cp-veil { position: fixed; inset: 0; background: rgb(6 18 9 / 0.55); }
 .cp-dialog-sheet {
   min-height: calc(100% - 7.5rem);
-  margin-top: 7.5rem;
+  margin: 7.5rem 1.5vw 0;
   padding: 1.5rem 1.5rem calc(3.5rem + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
   display: flex;

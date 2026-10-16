@@ -59,6 +59,12 @@
   .org-sheet,
   .saved-sheet,
   .cp-dialog-sheet { padding-left: var(--spacing-sheet-tablet); padding-right: var(--spacing-sheet-tablet); }
+  /* every sheet stands 3vw in from each side, as on the desktop (app/organism.css); 1.5vw on the phone */
+  .org-sheet,
+  .saved-sheet,
+  .cp-dialog-sheet { margin-left: 3vw; margin-right: 3vw; }
+  .ms-sheet,
+  .ms-sheet.is-short { left: 3vw; right: 3vw; }
   /* reading text at the measure, left-aligned; photographs, stat tiles and maps keep the width */
   :is(.org-main, .org-side, .saved-sheet, .cp-dialog-sheet) > :not(.org-photo, .cp-photo, .dc-hero, .cp-aerial, .cp-stats, .org-credit) {
     max-width: var(--spacing-measure);
