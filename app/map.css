@@ -333,10 +333,10 @@ button.float-pill,
 .card-save {
   transition:
     transform 160ms var(--ease-out),
-    box-shadow 200ms ease,
-    background-color 200ms ease,
-    border-color 200ms ease,
-    filter 200ms ease;
+    box-shadow var(--hover-fade) var(--ease-hover),
+    background-color var(--hover-fade) var(--ease-hover),
+    border-color var(--hover-fade) var(--ease-hover),
+    filter var(--hover-fade) var(--ease-hover);
 }
 @media (hover: hover) and (pointer: fine) {
   .btn-primary:not([aria-disabled="true"]):hover { filter: brightness(1.1); }
@@ -414,7 +414,7 @@ button.float-pill,
   border: 0.5px solid rgb(255 255 255 / 0.22);
   color: var(--color-on-ground);
   cursor: pointer;
-  transition: transform 160ms var(--ease-out), background-color 200ms ease;
+  transition: transform 160ms var(--ease-out), background-color var(--hover-fade) var(--ease-hover);
 }
 .card-save:active { transform: scale(0.94); }
 
@@ -486,42 +486,32 @@ button.float-pill,
 
 /* the screen is its own layer over the layout's photograph, and the map runs edge to edge */
 .ms { position: fixed; inset: 0; overflow: hidden; --sheet-top: 12.25rem; }
-.a1-map { position: absolute; inset: 0; }
+.a1-map {
+  position: absolute;
+  inset: 0;
+  /* a layer of its own: Leaflet's panes carry z-index 200 to 700, and without this they would come up
+     through the panel and the labels laid over the map */
+  isolation: isolate;
+}
 .a1-map.leaflet-container { font: inherit; background: var(--color-basemap-land); }
 
-/* From 64rem the search field leaves the panel for the top of the screen: centred on the window, its
-   top edge level with the nav pill's (nav-top-desktop, app/tabbar.css), with the nav at the right. On
-   search its back control comes with it. Rendered there by SuggestionsScreen and SearchScreen. */
+/* Desktop search: the field sits over the panel's left column, as on the tablet, its top level with
+   the nav pill's (nav-top-desktop, app/tabbar.css), and the panel starts a control-stack gap under
+   it (app/flow-a.css). Rendered there by SuggestionsScreen and SearchScreen; search's back control
+   comes into the row in front of the field. */
 .ms-search-top {
   position: absolute;
   z-index: 3;
   top: var(--spacing-nav-top-desktop);
-  left: 50%;
-  translate: -50% 0;
-  /* as wide as it can be while clearing the panel (its right edge at 30rem) by 1rem on both sides of
-     the centre, between 14rem and 26rem */
-  width: clamp(14rem, 100% - 62rem, 26rem);
+  left: 2.5rem;
+  width: 27.5rem;
   display: flex;
 }
-/* search also carries its back control (3.25rem and a 0.75rem gap) to the field's left, 4rem more
-   on each side; the input gives up its own width so the field can shrink to fit */
-.sr .ms-search-top { width: clamp(14rem, 100% - 70rem, 26rem); }
 .ms-search-top .field input { width: 0; }
 .ms-search-top > form,
 .ms-search-top > .ms-bar-row { flex: 1 1 auto; }
 .ms-search-top .ms-bar-row { position: relative; align-items: center; }
-/* search's back control hangs off the field's left, so the field itself stays centred */
-.ms-search-top .ms-bar-row > .round { position: absolute; right: calc(100% + 0.75rem); }
-/* Too narrow for even 14rem centred (under 76rem, 84rem on search): the field fills the gap between
-   the panel and the nav instead, 1rem from each (the nav is 17.5rem at 2.5rem from the right), and
-   search's back control comes back into the row. */
-@media (max-width: 75.99rem) {
-  .ms-search-top { left: 31rem; right: 21rem; width: auto; translate: none; }
-}
-@media (max-width: 83.99rem) {
-  .sr .ms-search-top { left: 31rem; right: 21rem; width: auto; translate: none; }
-  .sr .ms-search-top .ms-bar-row > .round { position: static; flex-shrink: 0; }
-}
+.ms-search-top .ms-bar-row > .round { flex-shrink: 0; }
 
 /* the panel is only a box on the desktop; on the phone its parts lay themselves out */
 .ms-panel { display: contents; }
@@ -593,7 +583,7 @@ button.float-pill,
   touch-action: none;
 }
 .ms-grab:active { cursor: grabbing; }
-.ms-grab .ms-handle { margin: 0; transition: background-color 160ms var(--ease-out); }
+.ms-grab .ms-handle { margin: 0; transition: background-color var(--hover-fade) var(--ease-hover); }
 .ms-grab:hover .ms-handle,
 .ms-grab:focus-visible .ms-handle { background: rgb(255 255 255 / 0.7); }
 .ms-grab:focus-visible { outline: 2px solid var(--color-mist); outline-offset: -2px; }
@@ -661,14 +651,13 @@ button.float-pill,
   pointer-events: none;
 }
 .a1 .ms-lead { margin-top: 1.0125rem; }
-.a1 .ms-stack { width: 100%; margin-top: 1.5rem; align-items: center; }
+.a1 .ms-stack { width: 100%; margin-top: 1.5rem; align-items: center; gap: calc(var(--spacing-control-stack) * 2); } /* a wider gap between the field and the two ways in */
 .a1 .ms-stack > form { width: 100%; }
 .a1 .ms-stack .btn { align-self: center; }
 /* the two ways in share one row under the field, side by side, and wrap only when there is no room */
 .a1-ways { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--spacing-control-stack); width: 100%; }
 /* off the panel the secondary button stands on the map, so it frosts like the field above it */
 .a1 .btn-secondary { backdrop-filter: blur(1.875rem) saturate(1.4); }
-.a1 .btn-browse,
 .a1 .ms-note-desk { display: none; }
 
 /* ── A2, A3: search ────────────────────────────────────────────────────────────────────────── */
@@ -996,7 +985,7 @@ button.float-pill,
   background: linear-gradient(180deg, rgb(6 16 8 / 0.3) 0%, rgb(6 16 8 / 0.58) 100%);
   backdrop-filter: blur(1.875rem) saturate(1.8);
   cursor: default;
-  animation: fade-in 200ms var(--ease-out) both;
+  animation: fade-in var(--enter) var(--ease-enter) backwards;
 }
 .dialog {
   position: fixed;
@@ -1219,7 +1208,6 @@ button.float-pill,
   .a1 .ms-title { font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
   .a1 .ms-lead { font-size: var(--text-body); line-height: var(--text-body--line-height); }
   .a1 .ms-stack { margin-top: 2.5rem; }
-  .a1 .btn-browse { display: flex; }
   .a1 .ms-note-phone { display: none; }
   .a1 .ms-note-desk { display: block; margin-top: 1.5rem; }
 
@@ -1271,7 +1259,7 @@ button.float-pill,
   .a1-pin,
   button.float-pill { transition: none; }
   .dialog,
-  .dialog-scrim { animation: fade-in 160ms var(--ease-out) both; }
+  .dialog-scrim { animation: fade-in 160ms var(--ease-out) backwards; }
 }
 
 @media (min-width: 64rem) {
