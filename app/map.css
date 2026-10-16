@@ -486,7 +486,13 @@ button.float-pill,
 
 /* the screen is its own layer over the layout's photograph, and the map runs edge to edge */
 .ms { position: fixed; inset: 0; overflow: hidden; --sheet-top: 12.25rem; }
-.a1-map { position: absolute; inset: 0; }
+.a1-map {
+  position: absolute;
+  inset: 0;
+  /* a layer of its own: Leaflet's panes carry z-index 200 to 700, and without this they would come up
+     through the panel and the labels laid over the map */
+  isolation: isolate;
+}
 .a1-map.leaflet-container { font: inherit; background: var(--color-basemap-land); }
 
 /* Desktop search: the field sits over the panel's left column, as on the tablet, its top level with
