@@ -308,8 +308,8 @@
   .a02-br { display: inline; }
   .a02-lead {
     margin-top: 1.125rem;
-    /* half the screen wide, past the heading's column */
-    width: 50vw;
+    /* ends at the middle of the screen: the block starts 7.5rem in (.a02-main) */
+    width: calc(50vw - 7.5rem);
     max-width: none;
     font-size: 1.71rem;
     line-height: 2.16rem;
