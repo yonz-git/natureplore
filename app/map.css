@@ -661,14 +661,13 @@ button.float-pill,
   pointer-events: none;
 }
 .a1 .ms-lead { margin-top: 1.0125rem; }
-.a1 .ms-stack { width: 100%; margin-top: 1.5rem; align-items: center; }
+.a1 .ms-stack { width: 100%; margin-top: 1.5rem; align-items: center; gap: calc(var(--spacing-control-stack) * 2); } /* a wider gap between the field and the two ways in */
 .a1 .ms-stack > form { width: 100%; }
 .a1 .ms-stack .btn { align-self: center; }
 /* the two ways in share one row under the field, side by side, and wrap only when there is no room */
 .a1-ways { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--spacing-control-stack); width: 100%; }
 /* off the panel the secondary button stands on the map, so it frosts like the field above it */
 .a1 .btn-secondary { backdrop-filter: blur(1.875rem) saturate(1.4); }
-.a1 .btn-browse,
 .a1 .ms-note-desk { display: none; }
 
 /* ── A2, A3: search ────────────────────────────────────────────────────────────────────────── */
@@ -1219,7 +1218,6 @@ button.float-pill,
   .a1 .ms-title { font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
   .a1 .ms-lead { font-size: var(--text-body); line-height: var(--text-body--line-height); }
   .a1 .ms-stack { margin-top: 2.5rem; }
-  .a1 .btn-browse { display: flex; }
   .a1 .ms-note-phone { display: none; }
   .a1 .ms-note-desk { display: block; margin-top: 1.5rem; }
 
