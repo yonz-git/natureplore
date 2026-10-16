@@ -333,10 +333,10 @@ button.float-pill,
 .card-save {
   transition:
     transform 160ms var(--ease-out),
-    box-shadow 200ms ease,
-    background-color 200ms ease,
-    border-color 200ms ease,
-    filter 200ms ease;
+    box-shadow var(--hover-fade) var(--ease-hover),
+    background-color var(--hover-fade) var(--ease-hover),
+    border-color var(--hover-fade) var(--ease-hover),
+    filter var(--hover-fade) var(--ease-hover);
 }
 @media (hover: hover) and (pointer: fine) {
   .btn-primary:not([aria-disabled="true"]):hover { filter: brightness(1.1); }
@@ -414,7 +414,7 @@ button.float-pill,
   border: 0.5px solid rgb(255 255 255 / 0.22);
   color: var(--color-on-ground);
   cursor: pointer;
-  transition: transform 160ms var(--ease-out), background-color 200ms ease;
+  transition: transform 160ms var(--ease-out), background-color var(--hover-fade) var(--ease-hover);
 }
 .card-save:active { transform: scale(0.94); }
 
@@ -593,7 +593,7 @@ button.float-pill,
   touch-action: none;
 }
 .ms-grab:active { cursor: grabbing; }
-.ms-grab .ms-handle { margin: 0; transition: background-color 160ms var(--ease-out); }
+.ms-grab .ms-handle { margin: 0; transition: background-color var(--hover-fade) var(--ease-hover); }
 .ms-grab:hover .ms-handle,
 .ms-grab:focus-visible .ms-handle { background: rgb(255 255 255 / 0.7); }
 .ms-grab:focus-visible { outline: 2px solid var(--color-mist); outline-offset: -2px; }

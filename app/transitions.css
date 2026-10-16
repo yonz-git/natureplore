@@ -12,6 +12,10 @@
 
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  /* every hover wash, lift and glow on a control fades in and out on this one soft curve, slow
+     enough to read as a fade and not a switch */
+  --hover-fade: 320ms;
+  --ease-hover: cubic-bezier(0.25, 0.1, 0.25, 1);
   /* for something already on screen moving from A to B, like the logo flying into the welcome's
      corner. Not --ease-in-out, that name is Tailwind's own and is used by the ease-in-out utility */
   --ease-move: cubic-bezier(0.77, 0, 0.175, 1);

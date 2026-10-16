@@ -58,7 +58,7 @@
   letter-spacing: var(--text-tab--letter-spacing);
   text-decoration: none;
   background-color: rgb(255 255 255 / 0);
-  transition: transform 160ms var(--ease-out), color 280ms var(--ease-out), background-color 220ms var(--ease-out);
+  transition: transform 160ms var(--ease-out), color 280ms var(--ease-out), background-color var(--hover-fade) var(--ease-hover);
 }
 .tabbar-tab:active { transform: scale(0.97); }
 /* the Map and Learn icons, detailed drawings, read at the others' size only 20% bigger */
