@@ -75,6 +75,8 @@ const GRUMSIN_SPOTS: Spot[] = [
       3: [{ name: "Great crested grebe", what: "displaying on the water", last: "11 Apr" }],
       4: [{ name: "Great crested grebe", what: "nesting at the reed edge", last: "9 May" }],
       5: [{ name: "Great crested grebe", what: "carrying chicks on its back", last: "7 Jun" }],
+      6: [{ name: "Great crested grebe", what: "with well-grown young on the open water", last: "10 Jul" }],
+      7: [{ name: "Great crested grebe", what: "young feeding alone on the open water", last: "8 Aug" }],
     },
     kind: "dont",
     line: "Don’t go down to the reed edge.",
@@ -158,6 +160,8 @@ export const spotOf = (routeId: string, n: number) => DETAILS[routeId]?.spots.fi
 export function spotLine(s: Spot) {
   if (s.out) return `Not in season in ${MONTH}`;
   if (s.look.length > 1) return s.look.map((l) => l.name).join(" and ");
+  // in season with no entry for this month: say what is recorded here rather than read look[0]
+  if (!s.look.length) return s.outText ?? s.name;
   const [l] = s.look;
   return l.what ? `${l.name}, ${l.what}` : l.name;
 }
