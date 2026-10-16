@@ -12,7 +12,7 @@ const TABS = [
     label: "Map",
     // a folded map with a pin and a dashed trail on it, set in Figma on a 22 by 20 grid, centred in
     // the 24 box at 0.99; its outline is a 1.75-unit line, closed where Figma left three stray stubs at
-    // the foot of the left fold; when the tab is open the outline stays as it is, the pin and trail gain
+    // the foot of the left fold; the outline is thinner at rest and heavier when the tab is open, the pin and trail gain
     // a thin line of their own and the pin grows from its middle (app/tabbar.css)
     big: true,
     icon: (
