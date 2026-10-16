@@ -14,7 +14,7 @@ export type Organism = {
   kind: string;
   latin: string;
   credit: string;
-  /** where the page was opened from when nothing else is known: spot 2 for the crane */
+  /** where the page was opened from when nothing else is known: spot 4 for the crane */
   back: { href: string; label: string };
   /** the spot and route it was recorded at, under the name */
   scope?: string;
@@ -46,7 +46,7 @@ export const ORGANISMS: Organism[] = [
     kind: "Bird",
     latin: "Grus grus",
     credit: "M. Keller, CC BY",
-    back: { href: "/map/route/linum?spot=2", label: "Back to Linum wet meadows loop" },
+    back: { href: "/map/route/linum?spot=4", label: "Back to Linum wet meadows loop" },
     scope: "Recorded at The dam between the ponds, Linum wet meadows loop",
     record: {
       title: "Recorded here, last 11 Sep 2026",
@@ -56,11 +56,11 @@ export const ORGANISMS: Organism[] = [
     season: [8, 9, 10],
     when: "Most records at dawn and dusk, late September to early November",
     where: [
-      { n: 2, name: "The dam between the ponds", line: "Linum wet meadows loop. Sep to Nov, last recorded 11 Sep" },
+      { n: 4, name: "The dam between the ponds", line: "Linum wet meadows loop. Sep to Nov, last recorded 11 Sep" },
       { n: 1, name: "The flooded ditch", line: "Linum wet meadows loop. Sep to Oct, last recorded 11 Sep" },
     ],
     claim: CLAIMS.c1a,
-    rule: spotOf("linum", 2),
+    rule: spotOf("linum", 4),
     docs: ["migration"],
   },
   {

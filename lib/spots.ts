@@ -1,7 +1,8 @@
 // The spots of a route and what B1 says about it beyond its card: the five spots of Grumsin beech
-// forest loop, the spots in season per month, getting there, and which claims are along it. Content is the
-// sample content of the flow and IA redesign (§3), as on the boards B1, L3-1 to L3-6, L4 and B4.
-// Only Grumsin has it; the other routes are sample cards and open nothing.
+// forest loop and the six of Linum wet meadows loop, the spots in season per month, getting there, and
+// which claims are along it. Content is the sample content of the flow and IA redesign (§3), as on the
+// boards B1, L3-1 to L3-6, L4 and B4. Only Grumsin and Linum have it; the other routes are sample cards
+// and open nothing.
 
 import { CLAIMS, type Claim } from "@/lib/claims";
 import { CAPTURE, MONTH, NOW } from "@/lib/now";
@@ -120,6 +121,92 @@ const GRUMSIN_SPOTS: Spot[] = [
   },
 ];
 
+// Linum: the order the line walks them (.design/linum-route/line.py), out along the canal, round the
+// fish ponds and back across the meadows to the storks
+const LINUM_SPOTS: Spot[] = [
+  {
+    n: 1,
+    name: "The flooded ditch",
+    months: [8, 9],
+    when: "Sep to Oct",
+    look: [{ name: "Common crane", what: "feeding in the wet field at dusk", last: "11 Sep", organism: "common-crane" }],
+    outText: "Common cranes recorded here September and October.",
+    kind: "dont",
+    line: "Don’t leave the track at dusk.",
+    why: "Cranes feeding in the wet field fly off when people walk out towards them, and they need the food before the night on the ponds.",
+  },
+  {
+    n: 2,
+    name: "Reed edge of the fish ponds",
+    months: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    when: "All year",
+    look: [{ name: "Bearded tit", what: "calling in the reed tops", last: "9 Sep" }],
+    captureLook: {
+      4: [{ name: "Reed warbler", what: "singing low in the reed", last: "14 May" }],
+      5: [{ name: "Reed warbler", what: "feeding young in the reed", last: "9 Jun" }],
+    },
+    kind: "dont",
+    line: "Don’t push into the reeds.",
+    why: "Reed warblers and bearded tits nest low in the reed stems, and trodden reed takes a season to stand again.",
+  },
+  {
+    n: 3,
+    name: "Far corner of the ponds",
+    months: [2, 3, 4, 5, 6, 7, 8, 9],
+    when: "Mar to Oct",
+    look: [
+      { name: "Greylag goose", what: "grazing on the pond banks", last: "10 Sep" },
+      { name: "Northern lapwing", last: "5 Sep" },
+    ],
+    outText: "Greylag geese and lapwings recorded here March to October.",
+    kind: "do",
+    line: "Watch from the bird hide, not from the bank.",
+    why: "Geese and lapwings rest on the open banks, and one person on the skyline puts the whole flock up.",
+  },
+  {
+    n: 4,
+    name: "The dam between the ponds",
+    months: [8, 9, 10],
+    when: "Sep to Nov",
+    look: [{ name: "Common crane", what: "flying in to roost at dusk", last: "11 Sep", organism: "common-crane" }],
+    outText: "Common cranes recorded roosting here September to November.",
+    kind: "dont",
+    line: "Don’t walk the dam after sunset.",
+    why: "Cranes roost standing in the shallow ponds, and a roost that lifts in the dark loses the rest it needs for migration.",
+  },
+  {
+    n: 5,
+    name: "Wet meadow track",
+    months: [3, 4],
+    when: "Apr to May",
+    look: [],
+    outText: "Marsh marigold recorded here April and May.",
+    captureLook: {
+      3: [{ name: "Marsh marigold", what: "in flower along the wet ditch edge", last: "21 Apr" }],
+      4: [{ name: "Marsh marigold", what: "in flower in the wet meadow", last: "6 May" }],
+    },
+    kind: "dont",
+    line: "Don’t walk out onto the meadow.",
+    why: "The wet soil holds a footprint for months, and the meadow is mown late so ground-nesting birds can raise their young.",
+  },
+  {
+    n: 6,
+    name: "Stork nests at the village edge",
+    months: [3, 4, 5, 6, 7],
+    when: "Apr to Aug",
+    look: [],
+    outText: "White storks recorded here April to August.",
+    captureLook: {
+      3: [{ name: "White stork", what: "back on the nest", last: "8 Apr" }],
+      5: [{ name: "White stork", what: "feeding chicks on the nest", last: "12 Jun" }],
+      6: [{ name: "White stork", what: "young standing on the nest", last: "9 Jul" }],
+    },
+    kind: "do",
+    line: "Watch the nest from the street.",
+    why: "Storks come back to the same nest each year, on the poles and roofs the village keeps for them.",
+  },
+];
+
 /** A spot as it reads in the prototype's month: what to look for when it is in season, or that it is not. */
 const asOfNow = (s: Spot): Spot =>
   s.months.includes(NOW)
@@ -127,6 +214,7 @@ const asOfNow = (s: Spot): Spot =>
     : { ...s, look: [], out: `Not in season in ${MONTH}. ${s.outText}` };
 
 const GRUMSIN_SEASON = [1, 1, 1, 2, 2, 3, 3, 3, 4, 3, 3, 1];
+const LINUM_SEASON = Array.from({ length: 12 }, (_, m) => LINUM_SPOTS.filter((s) => s.months.includes(m)).length);
 const COUNT_WORDS = ["None", "One", "Two", "Three", "Four", "Five", "Six"];
 
 const DETAILS: Record<string, RouteDetail> = {
@@ -149,6 +237,26 @@ const DETAILS: Record<string, RouteDetail> = {
     foot: CAPTURE
       ? "Route last checked 23 September 2026. 120 records within 250 m of the line."
       : "Route last checked 23 September 2026. 120 records within 250 m of the line, last recorded 10 Sep.",
+  },
+  linum: {
+    spots: LINUM_SPOTS.map(asOfNow),
+    season: LINUM_SEASON,
+    seasonNote: `${COUNT_WORDS[LINUM_SEASON[NOW]]} of the six spots ${LINUM_SEASON[NOW] === 1 ? "is" : "are"} in season in ${MONTH}. Nothing here promises a sighting.`,
+    axis: [0.271, 0.486, 0.603, 0.657, 0.815, 0.881],
+    ticks: ["0 km", "1.6", "3.2", "4.8", "6.3 km"],
+    getting: [
+      ["Length", "6.3 km, loop"],
+      ["Time", "1 h 50 at a looking pace"],
+      ["Surface", "Village street, farm track and grass path on the pond dams"],
+      ["Getting round", "Flat. The dam paths are grass and soft after rain, so not for wheelchairs"],
+      ["Ascent", "Flat"],
+      ["Start", "Dorfkirche Linum"],
+    ],
+    gettingNote: "No difficulty grade and no estimated speed. The figures say whether the route is reachable, not how fit the walker is.",
+    claims: [CLAIMS.c1a, CLAIMS.c1b],
+    foot: CAPTURE
+      ? "Route last checked 23 September 2026. 138 records within 250 m of the line."
+      : "Route last checked 23 September 2026. 138 records within 250 m of the line, last recorded 11 Sep.",
   },
 };
 
