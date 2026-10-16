@@ -604,6 +604,9 @@ export function Credits() {
     who: `${p.by}, Unsplash`,
     href: p.page,
   }));
+  // the welcome's mist and waterfall and the forest behind the app, all from Unsplash, photographers
+  // not recorded when they were downloaded
+  photos.push({ what: "Mist, waterfall and forest behind the app", who: "Unsplash", href: "https://unsplash.com" });
   return (
     <Page id="credits-title" pre="Thanks and" close="credits" back="/learn" intro="The icons, photographs, map and type this app is made with, and the people and projects behind them.">
       <h2 className="org-h2">Icons</h2>
