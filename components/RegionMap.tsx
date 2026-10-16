@@ -507,6 +507,8 @@ export default function RegionMap({
           };
 
       map.on("move zoomend", placePins);
+      // drawn: the map fades up from here (app/transitions.css), not from when the page mounted
+      requestAnimationFrame(() => host.classList.add("is-ready"));
       map.on("zoomstart", () => setZooming(true));
       map.on("zoomend", () => setZooming(false));
       map.on("zoomend", showLabels);
@@ -607,10 +609,13 @@ export default function RegionMap({
     <>
       <div ref={hostRef} className={className} />
       {!still &&
-        pins.map((pin) => {
+        pins.map((pin, i) => {
           const style = {
             left: `${pin.x}px`,
             top: `${pin.y}px`,
+            // its place in the line of labels arriving one by one (app/transitions.css), capped so
+            // a crowded map does not keep the last ones waiting
+            "--i": Math.min(i, 8),
             // the enter animation keeps opacity applied, and an animation beats an inline style,
             // so a pin that is off the free space or mid-zoom hides with visibility instead
             visibility: zooming || !pin.free ? ("hidden" as const) : undefined,

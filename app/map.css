@@ -979,7 +979,7 @@ button.float-pill,
   background: linear-gradient(180deg, rgb(6 16 8 / 0.3) 0%, rgb(6 16 8 / 0.58) 100%);
   backdrop-filter: blur(1.875rem) saturate(1.8);
   cursor: default;
-  animation: fade-in 200ms var(--ease-out) both;
+  animation: fade-in var(--enter) var(--ease-enter) backwards;
 }
 .dialog {
   position: fixed;
@@ -1253,7 +1253,7 @@ button.float-pill,
   .a1-pin,
   button.float-pill { transition: none; }
   .dialog,
-  .dialog-scrim { animation: fade-in 160ms var(--ease-out) both; }
+  .dialog-scrim { animation: fade-in 160ms var(--ease-out) backwards; }
 }
 
 @media (min-width: 64rem) {
