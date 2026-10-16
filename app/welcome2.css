@@ -172,7 +172,7 @@
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
   color: var(--color-on-primary);
   font-family: var(--text-button--font-family);
-  font-size: 1.125rem; /* the front door's button reads a step larger than a standard button, at every size */
+  font-size: var(--text-body); /* the front door's button reads two steps larger than a standard button, at every size */
   font-weight: var(--text-button--font-weight);
   letter-spacing: var(--text-button--letter-spacing);
   text-decoration: none;
@@ -308,11 +308,11 @@
   .a02-br { display: inline; }
   .a02-lead {
     margin-top: 1.125rem;
-    /* one line on the desktop */
+    /* half the screen wide, past the heading's column, a step under the lead size */
+    width: 50vw;
     max-width: none;
-    white-space: nowrap;
-    font-size: 1.71rem;
-    line-height: 2.16rem;
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
   }
   .a02-cta { align-self: flex-start; width: auto; margin-top: 2.5rem; }
 }
