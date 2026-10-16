@@ -88,6 +88,10 @@ export default function LearnScreen() {
             </SectionHead>
             <DocList docs={docs} as="cards" />
           </section>
+
+          <p className="ln-credits">
+            <Link href="/learn/credits">Credits</Link>
+          </p>
         </div>
       </div>
     </section>
