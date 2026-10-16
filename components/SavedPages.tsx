@@ -15,7 +15,7 @@ import { ACTION_ROWS } from "@/lib/actions";
 import { leaveFor } from "@/lib/back";
 import { docById, docLine } from "@/lib/docs";
 import { ORGANISMS } from "@/lib/organisms";
-import { organismPhoto } from "@/lib/photos";
+import { organismPhoto, PHOTOS } from "@/lib/photos";
 import { useRecent } from "@/lib/recent";
 import { useSaved } from "@/lib/saved";
 import { SUGGESTIONS } from "@/lib/suggestions";
@@ -39,7 +39,7 @@ function Page({
   action?: React.ReactNode;
   children: React.ReactNode;
 }) {
-  const label = back === "/saved" ? "Back to Saved" : "Back to downloaded routes";
+  const label = back === "/saved" ? "Back to Saved" : back === "/learn" ? "Back to Learn" : "Back to downloaded routes";
   return (
     <section className="org ln se" aria-labelledby={id}>
       <BackTop href={back} label={label} />
@@ -552,6 +552,68 @@ export function Notifications() {
       <p className="fb-small se-note">
         <InfoIcon size={16} /> No streaks, no reminders, no come back and explore. When nothing you started has changed, this page stays empty.
       </p>
+    </Page>
+  );
+}
+
+/* ── Credits: who made the icons, photographs, map and type the app uses ──────────────────────── */
+
+type Credit = { what: string; who: string; href: string };
+
+// Lordicon's free icons are used on the condition that Lordicon is credited with a link. Each line
+// names the icon as Lordicon lists it.
+const ICON_CREDITS: Credit[] = [
+  { what: "Squirrel on the welcome button", who: "Lordicon, wired outline 1208 squirrel", href: "https://lordicon.com" },
+  { what: "Herbs, the plants group", who: "Lordicon, wired 585 herbs, with its hover-pinch motion", href: "https://lordicon.com" },
+  { what: "Location pin", who: "Lordicon, wired lineal 18 location pin", href: "https://lordicon.com" },
+];
+
+const MAP_CREDITS: Credit[] = [
+  { what: "Map data", who: "© OpenStreetMap contributors, Open Database License", href: "https://www.openstreetmap.org/copyright" },
+  { what: "Map library", who: "Leaflet, BSD 2-Clause License", href: "https://leafletjs.com" },
+];
+
+const TYPE_CREDITS: Credit[] = [
+  { what: "Alpino", who: "Indian Type Foundry, from Fontshare", href: "https://www.fontshare.com/fonts/alpino" },
+  { what: "Comfortaa", who: "Johan Aakerlund, SIL Open Font License", href: "https://fonts.google.com/specimen/Comfortaa" },
+  { what: "Motion", who: "GSAP by GreenSock", href: "https://gsap.com" },
+];
+
+function CreditRows({ rows }: { rows: Credit[] }) {
+  return (
+    <ul className="fb-card fb-rows">
+      {rows.map((c) => (
+        <li key={c.what + c.who}>
+          <a href={c.href} className="fb-row" target="_blank" rel="noreferrer">
+            <span className="fb-row-text">
+              <b>{c.what}</b>
+              <span>{c.who}</span>
+            </span>
+            <ChevronIcon size={18} />
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function Credits() {
+  // every photograph with a known photographer (lib/photos.ts), named after what it shows
+  const photos = Object.entries(PHOTOS).map(([key, p]) => ({
+    what: key.split("/")[1].replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase()),
+    who: `${p.by}, Unsplash`,
+    href: p.page,
+  }));
+  return (
+    <Page id="credits-title" pre="Thanks and" close="credits" back="/learn" intro="The icons, photographs, map and type this app is made with, and the people and projects behind them.">
+      <h2 className="org-h2">Icons</h2>
+      <CreditRows rows={ICON_CREDITS} />
+      <h2 className="org-h2">Map</h2>
+      <CreditRows rows={MAP_CREDITS} />
+      <h2 className="org-h2">Type and motion</h2>
+      <CreditRows rows={TYPE_CREDITS} />
+      <h2 className="org-h2">Photographs</h2>
+      <CreditRows rows={photos} />
     </Page>
   );
 }
