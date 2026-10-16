@@ -164,11 +164,14 @@ const PIN_EDGE = 24;
 // `points` replaces the region's count pins with whatever a screen puts on the map: the recorded
 // places near the person on A4, the saved ones on A7. Pass a value that does not change between
 // renders, a module constant or a memo: a new array tears the map down and builds it again.
+// `fixedZoom` keeps the map at the zoom it opens on: it still drags, but pinch, wheel, double click,
+// the keyboard and the pins no longer zoom it. A1 uses it until zooming is ready.
 // `maxZoom` is how far the fit may go in, so a handful of places in one city fills the space
 // instead of stopping at the whole region's zoom.
 export default function RegionMap({
   className,
   still = false,
+  fixedZoom = false,
   points,
   maxZoom = REGION_ZOOM_MAX,
   line,
@@ -180,6 +183,7 @@ export default function RegionMap({
 }: {
   className?: string;
   still?: boolean;
+  fixedZoom?: boolean;
   points?: MapPoint[];
   maxZoom?: number;
   /** a route's line, [lat, lon] in walking order, drawn in lime over the map. Pass a constant. */
@@ -229,6 +233,13 @@ export default function RegionMap({
           doubleClickZoom: false,
           boxZoom: false,
           keyboard: false,
+        }),
+        ...(fixedZoom && {
+          touchZoom: false,
+          scrollWheelZoom: false,
+          doubleClickZoom: false,
+          boxZoom: false,
+          keyboardZoomOffset: 0,
         }),
         zoomControl: false,
         attributionControl: false,
@@ -539,7 +550,7 @@ export default function RegionMap({
       mapRef.current = null;
       centreRef.current = null;
     };
-  }, [still, points, maxZoom, line, detail, mapLabel]);
+  }, [still, fixedZoom, points, maxZoom, line, detail, mapLabel]);
 
   // A spot's name goes on the side its route data prefers, unless that side runs into another
   // marker, a name already placed, the panel or the edge of the map; then it takes the other side.
@@ -677,12 +688,12 @@ export default function RegionMap({
               className={`a1-pin glass glass-pin${pin.count === undefined ? " a1-pin-place" : ""}${pin.current ? " is-current" : ""}`}
               aria-current={pin.current ? "true" : undefined}
               style={style}
-              aria-label={pin.label}
+              aria-label={fixedZoom ? pin.label.replace(", zoom in", "") : pin.label}
               onClick={() =>
                 pin.href ? router.push(pin.href) : centreRef.current?.(
                   pin.lat,
                   pin.lon,
-                  pin.count === undefined ? 12 : 10.5,
+                  fixedZoom ? mapRef.current?.getZoom() ?? 10 : pin.count === undefined ? 12 : 10.5,
                   !matchMedia("(prefers-reduced-motion: reduce)").matches,
                 )
               }

@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Where to start" };
 export default function Start() {
   return (
     <section className="ms a1">
-      <RegionMap className="a1-map" />
+      <RegionMap className="a1-map" fixedZoom />
       <StartSheet />
     </section>
   );
