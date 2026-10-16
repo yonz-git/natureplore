@@ -308,11 +308,11 @@
   .a02-br { display: inline; }
   .a02-lead {
     margin-top: 1.125rem;
-    /* half the screen wide, past the heading's column, a step under the lead size */
+    /* half the screen wide, past the heading's column */
     width: 50vw;
     max-width: none;
-    font-size: var(--text-body);
-    line-height: var(--text-body--line-height);
+    font-size: 1.71rem;
+    line-height: 2.16rem;
   }
   .a02-cta { align-self: flex-start; width: auto; margin-top: 2.5rem; }
 }
