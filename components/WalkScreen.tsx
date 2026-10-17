@@ -38,7 +38,7 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
   const points = useMemo<MapPoint[]>(() => {
     const two = marks[1];
     return [
-      { id: "start", lat: route.lat, lon: route.lon, label: `Start and finish, ${route.from}`, start: true },
+      { id: "start", lat: route.lat, lon: route.lon, label: `${route.oneWay ? "Start" : "Start and finish"}, ${route.from}`, start: true, startText: route.oneWay ? "Start" : undefined },
       ...marks.map((s, i) => ({
         id: `s${s.n}`,
         lat: s.lat,

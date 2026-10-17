@@ -84,6 +84,8 @@ export type MapPoint = {
   current?: boolean;
   /** a spot on a route, numbered in walking order */
   n?: number;
+  /** the start flag's words, when they are not "Start and finish" (a point-to-point route) */
+  startText?: string;
   /** a spot with nothing in season this month, drawn muted */
   out?: boolean;
   /** where a route starts and finishes */
@@ -651,7 +653,7 @@ export default function RegionMap({
                   <path d="M6 4h11l-2 4 2 4H6" />
                 </svg>
                 <span className="map-start-label" aria-hidden="true">
-                  Start and finish
+                  {pin.startText ?? "Start and finish"}
                 </span>
               </div>
             );
