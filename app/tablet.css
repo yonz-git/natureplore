@@ -23,12 +23,16 @@
   .sg .ms-sheet {
     inset: calc(var(--top-chrome) + 4.5rem) auto 6.25rem var(--spacing-screen-phone);
     width: var(--spacing-panel-tablet);
+    /* top as the sides, 1.5rem */
+    padding-top: 1.5rem;
     padding-bottom: 1.5rem;
     scroll-padding-bottom: 1.5rem;
     border-bottom: 0.5px solid var(--color-glass-edge);
     border-radius: var(--radius-card);
   }
   /* the map is always beside the list, so there is nothing to open or switch to */
+  /* the region line to the first card is the side padding too */
+  .sg .sg-list { margin-top: calc(1.5rem - 1.6875rem); }
   .sg .ms-grab,
   .sg .ms-handle,
   .sg .sg-toggle { display: none; }
