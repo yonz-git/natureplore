@@ -89,7 +89,7 @@
 .sug-save.glass::after { content: none; }
 /* downloaded: a second frost left of the bookmark, shown once saved, not a control */
 .sug-save.sug-dl {
-  right: calc(1rem + 2.25rem + 0.25rem);
+  right: calc(1rem + 2.25rem + 0.125rem);
   cursor: default;
   animation: sheet-in var(--enter) var(--ease-enter) backwards;
 }
