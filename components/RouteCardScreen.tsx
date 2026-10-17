@@ -167,12 +167,78 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
     sheet.onScroll();
     const strip = e.currentTarget.querySelector(".fb-strip");
     if (!strip) return;
-    const line = strip.getBoundingClientRect().bottom + 1;
+    const stripBottom = strip.getBoundingClientRect().bottom;
+    const line = stripBottom + 1;
+    // what scrolls under the chips is cut away and fades in below them, like the suggestions list; each
+    // block after the strip is masked on its own, since a mask on the sheet would cut the chips too
+    for (let el = strip.nextElementSibling as HTMLElement | null; el; el = el.nextElementSibling as HTMLElement | null) {
+      el.style.setProperty("--cut", `${stripBottom - el.getBoundingClientRect().top}px`);
+    }
     let id: string = SECTIONS[0][0];
     for (const [s] of SECTIONS) {
       const el = document.getElementById(`sec-${s}`);
       if (el && el.getBoundingClientRect().top <= line) id = s;
     }
+    setCurrent(id);
+  };
+  // the chips scroll sideways with a mouse too: the wheel turns sideways over them until they reach
+  // an end, and a drag pulls them (a drag is not a click). The current chip slides into view.
+  useEffect(() => {
+    const strip = sheetEl.current?.querySelector<HTMLElement>(".fb-strip");
+    if (!strip) return;
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      const max = strip.scrollWidth - strip.clientWidth;
+      if ((e.deltaY > 0 && strip.scrollLeft >= max - 1) || (e.deltaY < 0 && strip.scrollLeft <= 0)) return;
+      e.preventDefault();
+      strip.scrollLeft += e.deltaY;
+    };
+    let drag: { x: number; left: number; moved: boolean } | null = null;
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType === "mouse" && e.button === 0) drag = { x: e.clientX, left: strip.scrollLeft, moved: false };
+    };
+    const onMove = (e: PointerEvent) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x;
+      if (Math.abs(dx) > 4) drag.moved = true;
+      if (drag.moved) strip.scrollLeft = drag.left - dx;
+    };
+    const onUp = () => {
+      if (drag?.moved) strip.addEventListener("click", (e) => e.preventDefault(), { capture: true, once: true });
+      drag = null;
+    };
+    strip.addEventListener("wheel", onWheel, { passive: false });
+    strip.addEventListener("pointerdown", onDown);
+    addEventListener("pointermove", onMove);
+    addEventListener("pointerup", onUp);
+    return () => {
+      strip.removeEventListener("wheel", onWheel);
+      strip.removeEventListener("pointerdown", onDown);
+      removeEventListener("pointermove", onMove);
+      removeEventListener("pointerup", onUp);
+    };
+  }, [route.id]);
+  useEffect(() => {
+    const strip = sheetEl.current?.querySelector<HTMLElement>(".fb-strip");
+    const chip = strip?.querySelector<HTMLElement>("a[aria-current]");
+    if (!strip || !chip) return;
+    const pad = parseFloat(getComputedStyle(strip).paddingLeft);
+    const left = chip.offsetLeft - strip.offsetLeft;
+    if (left < strip.scrollLeft + pad || left + chip.offsetWidth > strip.scrollLeft + strip.clientWidth - pad)
+      strip.scrollTo({ left: left - pad, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }, [current]);
+  // a chip scrolls the sheet alone: the link's own jump also scrolls the panel and the page around
+  // it, which lifts the whole panel out of its frame. The section lands just under the stuck chips.
+  const jumpTo = (e: React.MouseEvent, id: string) => {
+    const box = sheetEl.current;
+    const target = document.getElementById(`sec-${id}`);
+    const strip = box?.querySelector<HTMLElement>(".fb-strip");
+    if (!box || !target || !strip) return;
+    e.preventDefault();
+    const stuckBottom = strip.offsetHeight + parseFloat(getComputedStyle(strip).top);
+    const top = target.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop - stuckBottom;
+    box.scrollTo({ top, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    history.replaceState(null, "", `#sec-${id}`);
     setCurrent(id);
   };
   const detail = routeDetail(route.id);
@@ -224,11 +290,20 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
       const row = document.getElementById(`spot-${n}`);
       el?.closest(".ms")?.scrollTo({ top: 0 });
       if (!el || !row) return;
-      const top = el.scrollTop + row.getBoundingClientRect().top - el.getBoundingClientRect().top - 16;
+      // the row lands just under the stuck section chips
+      const strip = el.querySelector<HTMLElement>(".fb-strip");
+      const under = strip ? strip.offsetHeight + parseFloat(getComputedStyle(strip).top) : 16;
+      const top = el.scrollTop + row.getBoundingClientRect().top - el.getBoundingClientRect().top - under;
       el.scrollTo({ top, behavior });
     };
-    // arriving with a spot open (back from its organism) lands on it at once
-    if (openSpot) requestAnimationFrame(() => reveal(openSpot, "auto"));
+    // arriving with a spot open (back from its organism) lands on it at once. A page loaded or reloaded
+    // straight at ?spot=n starts at the top instead, all spots folded
+    const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+    const fresh = nav && nav.type !== "back_forward" && nav.name === location.href;
+    if (openSpot && fresh) {
+      setOpenSpot(null);
+      history.replaceState(history.state, "", location.pathname);
+    } else if (openSpot) requestAnimationFrame(() => reveal(openSpot, "auto"));
     const onHash = () => {
       const m = /^#spot-(\d+)$/.exec(location.hash);
       if (!m || !detail) return;
@@ -321,7 +396,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           {detail && (
             <nav aria-label="Jump to a section" className="fb-strip">
               {SECTIONS.map(([id, label]) => (
-                <a key={id} href={`#sec-${id}`} data-text={label} aria-current={current === id ? "location" : undefined}>
+                <a key={id} href={`#sec-${id}`} data-text={label} aria-current={current === id ? "location" : undefined} onClick={(e) => jumpTo(e, id)} draggable={false}>
                   {label}
                 </a>
               ))}

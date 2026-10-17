@@ -344,6 +344,9 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-strip a[aria-current] { font-weight: 500; }
 @media (prefers-reduced-transparency: reduce) { .fb-strip a { background: var(--color-glass-solid); backdrop-filter: none; } }
 .fb-sec { scroll-margin-top: 4.5rem; }
+/* hidden behind the chips, fading in over the strip's bottom padding and 1rem below it; --cut is how
+   far the strip's foot runs into the block (components/RouteCardScreen.tsx) */
+.fb-strip ~ * { mask-image: linear-gradient(to bottom, transparent calc(var(--cut, -100px) - 1rem), #000 calc(var(--cut, -100px) + 1rem)); }
 .b1 .ms-sheet { scroll-behavior: smooth; }
 
 /* the route drawn flat: the spots along its length, with the same numbers as the map */
