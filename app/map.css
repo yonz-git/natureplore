@@ -266,10 +266,10 @@ button.float-pill:active { transform: scale(0.97); }
   cursor: pointer;
 }
 
-/* 52 round glass control: back, locate */
+/* 44 round glass control at every size, the search circle's: back, locate */
 .round {
-  width: 3.25rem;
-  height: 3.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
   flex-shrink: 0;
   padding: 0;
   display: flex;
@@ -281,6 +281,15 @@ button.float-pill:active { transform: scale(0.97); }
   transition: transform 160ms var(--ease-out);
 }
 .round:active { transform: scale(0.94); }
+/* the small circles keep one even 1px edge, as the Routes and Organisms switch does: the glass
+   border, its rim of light and the 1px top highlight stack into rings that read off centre */
+.round.glass,
+.sg-search.glass {
+  border: 1px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0), inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 0.25rem 0.75rem rgb(6 18 9 / 0.25);
+}
+.round.glass::after,
+.sg-search.glass::after { content: none; }
 
 /* The organism counts: a row of pills, an icon in mist and a count, the name kept for screen
    readers. Never written out as text. The row takes the full card width so five fit. */
@@ -293,13 +302,14 @@ button.float-pill:active { transform: scale(0.97); }
   align-items: center;
   gap: 0.25rem;
   border-radius: var(--radius-pill);
-  background: var(--color-pill-fill);
-  border: 0.5px solid var(--color-inner-edge);
+  /* not a control: an outline only, no fill, as every pill that cannot be pressed */
+  border: 1px solid var(--color-inner-edge);
   color: var(--color-mist);
 }
+/* the count in the Spots tag's size */
 .pill-org b {
   color: var(--color-on-ground);
-  font-size: var(--text-pill-count);
+  font-size: var(--text-stat-label);
   font-weight: var(--text-pill-count--font-weight);
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -317,8 +327,8 @@ button.float-pill:active { transform: scale(0.97); }
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-pill);
-  background: var(--color-pill-fill);
-  border: 0.5px solid var(--color-inner-edge);
+  /* not a control: an outline only */
+  border: 1px solid var(--color-inner-edge);
   font-size: var(--text-stat-label);
   font-weight: 500;
   line-height: 1;
@@ -354,7 +364,7 @@ button.float-pill,
   .org-row:not([aria-disabled="true"]):hover {
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0.08);
   }
-  .round:hover,
+  .round.glass:hover { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0), inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 0.25rem 0.75rem rgb(6 18 9 / 0.25); }
   .tool-pill:not([aria-current]):hover,
   button.float-pill:hover {
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.11), inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
@@ -432,6 +442,9 @@ button.float-pill,
   padding: 0.875rem 0.75rem;
   display: flex;
   flex-direction: column;
+  /* label and value centred in the tile */
+  align-items: center;
+  text-align: center;
   gap: 0.625rem;
   border-radius: var(--radius-tile);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
@@ -439,7 +452,7 @@ button.float-pill,
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
 }
 .card-stat dt { font-size: var(--text-stat-label); line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
-.card-stat dd { margin: 0; display: flex; align-items: baseline; gap: 0.25rem; }
+.card-stat dd { margin: 0; display: flex; justify-content: center; align-items: baseline; gap: 0.25rem; }
 .card-stat dd b { font-family: var(--text-stat-sm--font-family); font-size: var(--text-stat-sm); font-weight: var(--text-stat-sm--font-weight); line-height: 1; font-variant-numeric: tabular-nums; }
 .card-stat dd > span { font-size: var(--text-caption); line-height: 1; font-weight: 400; color: var(--color-on-ground); }
 /* the figures in a stat value sit a weight above its words and units, here and on the impact tiles */
@@ -493,7 +506,9 @@ button.float-pill,
 /* ── the screen ────────────────────────────────────────────────────────────────────────────── */
 
 /* the screen is its own layer over the layout's photograph, and the map runs edge to edge */
-.ms { position: fixed; inset: 0; overflow: hidden; --sheet-top: 12.25rem; }
+/* clip, not hidden: hidden is still a scroll container, and iOS Safari lets the screen drift sideways
+   by the few pixels the map bleeds past its edges */
+.ms { position: fixed; inset: 0; overflow: clip; --sheet-top: 12.25rem; }
 .a1-map {
   position: absolute;
   inset: 0;
@@ -552,6 +567,8 @@ button.float-pill,
   flex-direction: column;
   gap: 1.25rem;
   overflow-y: auto;
+  /* the sheet only scrolls up and down, however wide something inside it gets */
+  overflow-x: hidden;
   overscroll-behavior: contain;
   scrollbar-width: none;
   border-bottom: 0;
@@ -623,9 +640,6 @@ button.float-pill,
 .ms-note { margin: 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
 .ms-list { display: flex; flex-direction: column; gap: 1.25rem; }
 .ms-stack { display: flex; flex-direction: column; gap: var(--spacing-control-stack); }
-
-/* the controls in the map's top right on the desktop, the Saved pill and locate */
-.ms-tools { display: none; }
 
 /* ── A1 ────────────────────────────────────────────────────────────────────────────────────── */
 
@@ -802,7 +816,8 @@ button.float-pill,
 .b1 { --sheet-top: max(min(26rem, 100dvh - 27.5rem), var(--top-chrome) + 4rem); }
 .b1-top {
   position: absolute;
-  top: calc(var(--top-chrome) + 0.5rem);
+  /* the 44 back circle centred on the 3.25rem control line, where the suggestions' search sits */
+  top: calc(var(--top-chrome) + 0.5rem + (3.25rem - 2.75rem) / 2);
   left: var(--spacing-screen-phone);
   right: var(--spacing-screen-phone);
   z-index: 2;
@@ -989,9 +1004,12 @@ button.float-pill,
   opacity: 0.7;
   pointer-events: none;
 }
-/* on the phone the sheet or the tab bar covers the corner, so the credit moves to the top */
+/* on the phone the sheet or the tab bar covers the corner, so the credit moves up, to the right
+   just under the top controls (their row is 3.25rem) */
 @media (max-width: 63.99rem) {
-  .a1-credit { right: auto; left: 0.5rem; bottom: auto; top: calc(0.25rem + env(safe-area-inset-top, 0px)); }
+  .a1-credit { bottom: auto; top: calc(var(--top-chrome) + 0.5rem + 3.25rem + 0.375rem); }
+  /* the walk's title can run to two lines, 4rem */
+  .walk .a1-credit { top: calc(var(--top-chrome) + 0.5rem + 4rem + 0.375rem); }
 }
 
 /* ── the location prompt, drawn the way the phone and the browser draw their own ───────────── */
@@ -1196,22 +1214,6 @@ button.float-pill,
   .b1 .ms-sheet::-webkit-scrollbar { display: none; }
   .b1-photos { height: 12.5rem; }
 
-  /* the map's own controls, top right under the nav pill (3.25rem tall at nav-top-desktop, app/tabbar.css),
-     lined up with its right edge; absolute to the screen, not to the map */
-  .ms-tools {
-    position: absolute;
-    top: calc(var(--spacing-nav-top-desktop) + 3.25rem + 0.75rem);
-    right: 2.5rem;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.75rem;
-  }
-  .ms-tools { pointer-events: none; }
-  .ms-tools > * { pointer-events: auto; }
-  /* desktop: back and locate match the 44 save control */
-  .round { width: 2.75rem; height: 2.75rem; }
   .tool-pill {
     height: 2.75rem;
     padding: 0 1.25rem 0 1rem;

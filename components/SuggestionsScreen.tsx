@@ -11,8 +11,8 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
-import { ChevronIcon, GroupIcon, ListIcon, MapIcon, OrganismsIcon, PinIcon, RoutesIcon } from "@/components/Icons";
-import { MapTools, SearchField } from "@/components/MapParts";
+import { ChevronIcon, GroupIcon, ListIcon, MapIcon, OrganismsIcon, PinIcon, RoutesIcon, SearchIcon } from "@/components/Icons";
+import { SearchField } from "@/components/MapParts";
 import { useSheet } from "@/components/SheetGrab";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
@@ -53,26 +53,12 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   const has = (g: Group) => organisms.some(({ organism }) => organism.group === g);
   const shown = picked.length ? organisms.filter(({ organism }) => picked.includes(organism.group)) : organisms;
   const pick = (g: Group) => setPicked((now) => (now.includes(g) ? now.filter((x) => x !== g) : [...now, g]));
-  // the toggles line up under the Organisms option they filter: its left edge, measured, is their indent
-  const switchRow = useRef<HTMLDivElement>(null);
   const groupRow = useRef<HTMLDivElement>(null);
   // as the toggles appear the moving icons play once, a beat after they grow in, dimmed or not
   useEffect(() => {
     if (show !== "organisms") return;
     groupRow.current?.querySelectorAll<HTMLElement>("[data-group]").forEach((b, i) => playGroup(b, b.dataset.group as Group, 160 + i * 60));
   }, [show]);
-  const orgOpt = useRef<HTMLButtonElement>(null);
-  useLayoutEffect(() => {
-    const row = switchRow.current;
-    const opt = orgOpt.current;
-    if (!row || !opt) return;
-    const place = () => row.style.setProperty("--org-x", `${opt.getBoundingClientRect().left - row.getBoundingClientRect().left}px`);
-    const watch = new ResizeObserver(place);
-    watch.observe(row);
-    watch.observe(opt);
-    place();
-    return () => watch.disconnect();
-  }, []);
   // The lime under the picked option is one pill that slides between the two (.seg-thumb in
   // app/flow-a.css): placed on the picked option's box, measured, and moved again whenever the option
   // changes or a width changes. Its first placement is not animated; from then on it glides.
@@ -145,20 +131,89 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
     </button>
   );
 
+  const row = useRef<HTMLDivElement>(null);
+  const [searching, setSearching] = useState(false);
+  // Routes or Organisms, outside the sheet, after the search circle
+  const segment = (
+    <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill" ref={seg} inert={searching}>
+      <span className="seg-thumb" ref={thumb} aria-hidden="true" />
+      <button type="button" className="seg-opt" aria-pressed={show === "routes"} onClick={() => setShow("routes")}>
+        <RoutesIcon size={25} className="seg-routes" />
+        <span className="seg-label" data-text="Routes">Routes</span>
+      </button>
+      <button type="button" className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
+        <OrganismsIcon size={21} className="seg-orgs" />
+        <span className="seg-label" data-text="Organisms">Organisms</span>
+      </button>
+    </div>
+  );
+  // on Organisms, the group filters fan out in the sheet above the list; inert, not removed, while
+  // on Routes, so the toggles can fade out as well as in
+  const groups = (
+    <div role="group" aria-label="Filter by group" ref={groupRow} className={`sg-groups${show === "organisms" ? " is-on" : ""}`} inert={show !== "organisms"}>
+      <button type="button" className="sg-group sg-all glass glass-pill" aria-pressed={picked.length === 0} onClick={() => setPicked([])}>
+        All
+      </button>
+      {GROUPS.map((g) => (
+        <button
+          key={g.id}
+          type="button"
+          className={`sg-group glass glass-pill is-${g.id}`}
+          aria-pressed={picked.includes(g.id)}
+          aria-disabled={!has(g.id) || undefined}
+          aria-label={has(g.id) ? g.label : `${g.label}, none in season here`}
+          title={has(g.id) ? g.label : `${g.label}: none in season here`}
+          data-group={g.id}
+          onClick={() => has(g.id) && pick(g.id)}
+          // again under a mouse or on keyboard focus, when the group can be picked
+          onPointerEnter={(e) => e.pointerType === "mouse" && has(g.id) && playGroup(e.currentTarget, g.id)}
+          onFocus={(e) => e.currentTarget.matches(":focus-visible") && has(g.id) && playGroup(e.currentTarget, g.id)}
+        >
+          <GroupIcon group={g.id} size={18.2} />
+        </button>
+      ))}
+    </div>
+  );
+  // Search is a circle at the row's start. Opened, the switch and the filters slide out and the field
+  // slides in over the row, its icon now a way back; Escape or Back slides the switch in again.
+  const opened = useRef(false);
+  const openSearch = () => {
+    row.current?.scrollTo({ left: 0 });
+    setSearching(true);
+  };
+  const closeSearch = () => setSearching(false);
+  // focus follows: into the field as it opens, back to the circle as it closes (not on arrival)
+  useEffect(() => {
+    if (searching) row.current?.querySelector<HTMLInputElement>(".sg-find input")?.focus();
+    else if (opened.current) row.current?.querySelector<HTMLElement>(".sg-search")?.focus();
+    opened.current ||= searching;
+  }, [searching]);
+  const topRow = (
+    <div className={`ms-bar-row${searching ? " is-searching" : ""}`} ref={row}>
+      <button type="button" className="sg-search glass glass-pin" aria-label="Search a region or an organism" onClick={openSearch} inert={searching}>
+        <SearchIcon size={18} />
+      </button>
+      {segment}
+            <div className="sg-find" inert={!searching} onKeyDown={(e) => e.key === "Escape" && closeSearch()}>
+        <SearchField onBack={closeSearch} />
+      </div>
+    </div>
+  );
+
   return (
     <section className={`ms sg ${near ? "a4" : "a5"}${onMap ? " is-map" : ""}`}>
       <RegionMap className="a1-map" behind={!onMap} hot={hot} ref={map} points={points} maxZoom={home ? 9.5 : 11} />
 
       {desk && (
         <div className="ms-search-top">
-          <SearchField />
+          {topRow}
         </div>
       )}
 
       <div className="ms-panel glass-desk">
         {!desk && (
           <div className="ms-bar">
-            <SearchField />
+            {topRow}
           </div>
         )}
 
@@ -169,46 +224,9 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           onScroll={grab.onScroll}
         >
           {grab.grab("list")}
-          {/* Routes or Organisms, and on Organisms the group filters, at the top of the sheet */}
-          <div className="sg-switch" ref={switchRow}>
-          <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill" ref={seg}>
-            <span className="seg-thumb" ref={thumb} aria-hidden="true" />
-            <button type="button" className="seg-opt" aria-pressed={show === "routes"} onClick={() => setShow("routes")}>
-              <RoutesIcon size={25} className="seg-routes" />
-              <span className="seg-label" data-text="Routes">Routes</span>
-            </button>
-            <button type="button" ref={orgOpt} className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
-              <OrganismsIcon size={18} />
-              <span className="seg-label" data-text="Organisms">Organisms</span>
-            </button>
-          </div>
-          {/* inert, not removed, while on Routes, so the toggles can fade out as well as in */}
-          <div role="group" aria-label="Filter by group" ref={groupRow} className={`sg-groups${show === "organisms" ? " is-on" : ""}`} inert={show !== "organisms"}>
-            {GROUPS.map((g) => (
-              <button
-                key={g.id}
-                type="button"
-                className={`sg-group glass glass-pill is-${g.id}`}
-                aria-pressed={picked.includes(g.id)}
-                aria-disabled={!has(g.id) || undefined}
-                aria-label={has(g.id) ? g.label : `${g.label}, none in season here`}
-                title={has(g.id) ? g.label : `${g.label}: none in season here`}
-                data-group={g.id}
-                onClick={() => has(g.id) && pick(g.id)}
-                // again under a mouse or on keyboard focus, when the group can be picked
-                onPointerEnter={(e) => e.pointerType === "mouse" && has(g.id) && playGroup(e.currentTarget, g.id)}
-                onFocus={(e) => e.currentTarget.matches(":focus-visible") && has(g.id) && playGroup(e.currentTarget, g.id)}
-              >
-                <GroupIcon group={g.id} size={18.2} />
-              </button>
-            ))}
-          </div>
-          </div>
+          {/* on Organisms, the group filters at the top of the sheet */}
           <div className="sg-head">
             <div>
-              <h1 id="sg-title" className="ms-title">
-                In season in <em>{MONTH}</em>
-              </h1>
               <p className="sg-scope">
                 {/* keyed so the pin rolls in again for each region */}
                 <span className="sg-pin" key={region.id}>
@@ -220,6 +238,9 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                 </span>
                 {near ? `Near you, in ${region.name}` : region.name}
               </p>
+              <h1 id="sg-title" className="ms-title">
+                In season in <em>{MONTH}</em>
+              </h1>
               {show === "organisms" && (
                 <p className="ms-lead">
                   {`${shown.length} in season along ${routes.length} route${routes.length > 1 ? "s" : ""}`}
@@ -228,6 +249,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             </div>
             {toggle}
           </div>
+          {groups}
 
           {near && (
             <p className="sg-where">
@@ -260,45 +282,59 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           ) : (
             <div className="sg-list" key="organisms">
               <div className="saved-card a8-group">
-                <ul className="a8-rows">
-                  {shown.map(({ organism: o, routes: on, href }) => {
-                    const photo = organismPhoto(o.name);
-                    const body = (
-                      <>
-                        {photo ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img className="a8-thumb" src={photo.src} alt="" loading="lazy" />
-                        ) : (
-                          <span className="a8-thumb" aria-hidden="true" />
-                        )}
-                        <span>
-                          <b>
-                            {o.name}
-                            {o.note && <span className="sug-org-note">, {o.note}</span>}
-                          </b>
-                          <small>
-                            {groupWord(o.group)}, <i>{o.latin}</i>
-                          </small>
-                          <small>
-                            Along {on} route{on > 1 ? "s" : ""}, last recorded {o.last}
-                          </small>
-                        </span>
-                      </>
-                    );
-                    return (
-                      <li key={o.name}>
-                        {href ? (
-                          <Link href={href} className="sg-org-link">
-                            {body}
-                            <ChevronIcon size={18} />
-                          </Link>
-                        ) : (
-                          body
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
+                {/* one section per group, in the filters' order, headed by its icon, name and species count */}
+                {GROUPS.map((g) => {
+                  const inGroup = shown.filter(({ organism }) => organism.group === g.id);
+                  if (!inGroup.length) return null;
+                  return (
+                    <section key={g.id} className="sg-org-sec" aria-labelledby={`sg-sec-${g.id}`}>
+                      <h2 id={`sg-sec-${g.id}`} className="sg-org-sec-head">
+                        <GroupIcon group={g.id} size={20} className={`is-${g.id}`} />
+                        <span className="sg-org-name">{g.label}</span>
+                        <span className="sg-org-count">{inGroup.length} Species</span>
+                      </h2>
+                      <ul className="a8-rows">
+                        {inGroup.map(({ organism: o, routes: on, href }) => {
+                          const photo = organismPhoto(o.name);
+                          const body = (
+                            <>
+                              {photo ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img className="a8-thumb" src={photo.src} alt="" loading="lazy" />
+                              ) : (
+                                <span className="a8-thumb" aria-hidden="true" />
+                              )}
+                              <span>
+                                <b>
+                                  {o.name}
+                                  {o.note && <span className="sug-org-note">, {o.note}</span>}
+                                </b>
+                                <small>
+                                  {groupWord(o.group)}, <i>{o.latin}</i>
+                                </small>
+                                <small>
+                                  Along {on} route{on > 1 ? "s" : ""}, last recorded {o.last}
+                                </small>
+                              </span>
+                            </>
+                          );
+                          return (
+                            <li key={o.name}>
+                              {href ? (
+                                <Link href={href} className="sg-org-link">
+                                  {body}
+                                  <ChevronIcon size={18} />
+                                </Link>
+                              ) : (
+                                body
+                              )}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </section>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -307,14 +343,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           </p>
         </div>
       </div>
-
-      <MapTools
-        locate={
-          near
-            ? () => map.current?.centre(HERE.lat, HERE.lon, 10, !matchMedia("(prefers-reduced-motion: reduce)").matches)
-            : undefined
-        }
-      />
     </section>
   );
 }

@@ -11,9 +11,8 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, DownloadIcon, GroupIcon, LocationIcon, WalkIcon } from "@/components/Icons";
+import { BackIcon, BookmarkIcon, CalendarIcon, ChevronIcon, DownloadIcon, GroupIcon, WalkIcon } from "@/components/Icons";
 import { useSheet } from "@/components/SheetGrab";
-import { MapTools } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { StatValue } from "@/components/CParts";
 import { ActionRow, ClaimCard, MonthGrid, RecordedToo, SpotLook, SpotMark } from "@/components/SpotParts";
@@ -48,25 +47,22 @@ function SectionHead({ id, lead, close, note }: { id: string; lead: string; clos
 }
 
 /**
- * Saving lives in one place, the bookmark on the photograph's top right (SaveToggle). The pinned bar
- * only appears once there is something to do next: Walk the route when the route is saved, and Undo for
- * the rest of the visit after it is removed. Saved on this visit, the bar also says the route was
- * downloaded and where to find it.
+ * Saving lives in one place, the bookmark on the photograph's top right (SaveToggle). Saved, Walk the
+ * route appears under the stats (WalkButton); removed, a pinned bar offers Undo for the rest of the visit.
  */
 function useRouteSave(id: string) {
   const { isSaved, toggle } = useSaved();
   const saved = isSaved(id);
   const [removed, setRemoved] = useState(false);
-  // saved on this visit: the bar shows where the route went; a route already saved says nothing
-  const [justSaved, setJustSaved] = useState(false);
+  // Undo brings Walk the route back, so focus follows it there
+  const undone = useRef(false);
   return {
     saved,
     removed,
-    justSaved,
+    undone,
     toggle: () => {
       toggle(id);
       setRemoved(saved);
-      setJustSaved(!saved);
     },
   };
 }
@@ -97,61 +93,51 @@ function DownloadedMark({ saved }: { saved: boolean }) {
   );
 }
 
-function Pin({ route, walkable, save }: { route: Route; walkable: boolean; save: RouteSave }) {
-  const { saved, removed, justSaved } = save;
-  // Undo puts Walk the route back where Undo was, so focus follows it there
-  const moved = useRef(false);
-  const focusIfMoved = (el: HTMLElement | null) => {
-    if (el && moved.current) {
-      moved.current = false;
+/** Walk the route, under the stats once the route is saved. */
+function WalkButton({ route, walkable, save }: { route: Route; walkable: boolean; save: RouteSave }) {
+  if (!save.saved) return null;
+  const focusIfUndone = (el: HTMLElement | null) => {
+    if (el && save.undone.current) {
+      save.undone.current = false;
       el.focus();
     }
   };
+  return walkable ? (
+    <Link ref={focusIfUndone} href={`/walk/${route.id}`} className="btn btn-primary b1-walk">
+      <WalkIcon size={19} />
+      Walk the route
+    </Link>
+  ) : (
+    <button ref={focusIfUndone} type="button" className="btn btn-primary b1-walk" aria-disabled="true">
+      <WalkIcon size={19} />
+      Walk the route
+      <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
+    </button>
+  );
+}
 
-  const note = saved && justSaved;
+/** Pinned over the tab bar after a removal: Undo. The live region says what saving did. */
+function Pin({ save }: { save: RouteSave }) {
+  const { saved, removed } = save;
   const live = (
     <p className="sr-only" aria-live="polite">
       {saved ? "Saved and downloaded. Find it in Saved." : removed ? "Removed from Saved, and its download deleted." : ""}
     </p>
   );
-  if (!saved && !removed) return live;
+  if (saved || !removed) return live;
   return (
-    <div className={`b1-pin glass-phone${note ? " has-note" : ""}`}>
-      {/* on screen for sighted people; the live region below says the same to screen readers */}
-      {note && (
-        <p className="b1-note" aria-hidden="true">
-          <CheckCircleIcon size={16} />
-          Saved and downloaded. Find it in Saved.
-        </p>
-      )}
-      {saved ? (
-        walkable ? (
-          <Link ref={focusIfMoved} href={`/walk/${route.id}`} className="btn btn-primary b1-walk">
-            <WalkIcon size={19} />
-            Walk the route
-          </Link>
-        ) : (
-          <button ref={focusIfMoved} type="button" className="btn btn-primary b1-walk" aria-disabled="true">
-            <WalkIcon size={19} />
-            Walk the route
-            <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
-          </button>
-        )
-      ) : (
-        <>
-          <p className="b1-removed">Removed from Saved</p>
-          <button
-            type="button"
-            className="btn btn-secondary b1-undo"
-            onClick={() => {
-              moved.current = true;
-              save.toggle();
-            }}
-          >
-            Undo
-          </button>
-        </>
-      )}
+    <div className="b1-pin glass-phone">
+      <p className="b1-removed">Removed from Saved</p>
+      <button
+        type="button"
+        className="btn btn-secondary b1-undo"
+        onClick={() => {
+          save.undone.current = true;
+          save.toggle();
+        }}
+      >
+        Undo
+      </button>
       {live}
     </div>
   );
@@ -324,8 +310,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   const total = recordsOf(route.counts);
   const [name, ...rest] = route.name.split(" ").reverse();
   const lead = rest.reverse().join(" ");
-  const locate = () =>
-    map.current?.centre(route.lat, route.lon, 14, !matchMedia("(prefers-reduced-motion: reduce)").matches);
   const most = detail ? Math.max(...detail.season) : 1;
 
   return (
@@ -336,9 +320,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
         <Link href={back} className="round glass glass-pin" aria-label={backLabel}>
           <BackIcon size={20} />
         </Link>
-        <button type="button" className="round glass glass-pin" aria-label="Show the start on the map" onClick={locate}>
-          <LocationIcon size={20} />
-        </button>
       </div>
 
       <div className="ms-panel glass-desk">
@@ -392,6 +373,10 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
               </dd>
             </div>
           </dl>
+
+          <WalkButton route={route} walkable={!!detail} save={save} />
+
+          {detail && <hr className="b1-rule" />}
 
           {detail && (
             <nav aria-label="Jump to a section" className="fb-strip">
@@ -579,10 +564,8 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
             </>
           )}
         </div>
-        <Pin route={route} walkable={!!detail} save={save} />
+        <Pin save={save} />
       </div>
-
-      <MapTools locate={locate} />
     </section>
   );
 }

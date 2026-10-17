@@ -160,10 +160,7 @@ function freeBox(host: HTMLElement, sheet: HTMLElement | null, band: HTMLElement
   // sit under the sheet and still count as free
   if (!desktop) return { x: 0, y: top, w, h: Math.max(1, sheet.offsetTop - top) };
   const right = sheet.offsetLeft + sheet.offsetWidth;
-  // the map's own controls down the right edge are not free either
-  const tools = host.parentElement?.querySelector<HTMLElement>(".ms-tools");
-  const end = tools && tools.offsetWidth ? tools.offsetLeft - 8 : w;
-  return { x: right, y: top, w: Math.max(1, end - right), h: Math.max(1, h - top) };
+  return { x: right, y: top, w: Math.max(1, w - right), h: Math.max(1, h - top) };
 }
 
 // half a pin, so one is hidden before it slides under the edge of the glass
