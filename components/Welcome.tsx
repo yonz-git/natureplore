@@ -63,7 +63,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
             <span className="a02-close">all the corners of <span className="a02-nature">Nature</span></span>
           </h1>
           <p className="a02-lead">What nests and grows there, and learn about what is happening to them.</p>
-          <Link href="/map" className="a02-cta">
+          <Link href="/start" className="a02-cta">
             <LetterWave text="Start Natureploring" />
             <CtaSquirrel />
           </Link>

@@ -65,7 +65,7 @@ export const CLAIMS: Record<string, Claim> = {
       paywall: true,
     },
     actions: ["clean-up", "peat-free"],
-    route: { name: "Linum wet meadows loop", line: "6.0 km loop, 6 spots", href: "/map/route/linum" },
+    route: { name: "Linum wet meadows loop", line: "6.3 km loop, 6 spots", href: "/map/route/linum" },
   },
   c1b: {
     id: "c1b",
@@ -91,7 +91,7 @@ export const CLAIMS: Record<string, Claim> = {
       covers: "NSG and FFH-Gebiet Oberes Rhinluch, the whole designated site",
     },
     actions: ["clean-up", "rewet"],
-    route: { name: "Linum wet meadows loop", line: "6.0 km loop, 6 spots", href: "/map/route/linum" },
+    route: { name: "Linum wet meadows loop", line: "6.3 km loop, 6 spots", href: "/map/route/linum" },
   },
   c6: {
     id: "c6",

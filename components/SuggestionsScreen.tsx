@@ -44,6 +44,8 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   const region = regionById(regionId);
   const home = region.id === HOME_REGION;
   const routes = routesIn(region);
+  // the routes that are built open from their labels on the map; the others are sample cards
+  const opens = routes.filter((r) => r.href).map((r) => r.name);
   const organisms = organismsIn(region);
   // On Organisms, all five groups sit beside the switch as filters, the ones with nothing in season
   // here dimmed and unpickable. None picked shows all; each one picked narrows the list to those.
@@ -285,7 +287,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             </div>
           )}
           <p className="sg-map-note">
-            Every route on the map has spots in season in {MONTH}.{region.routes.includes("grumsin") && " Grumsin beech forest loop opens from its label."}
+            Every route on the map has spots in season in {MONTH}.{opens.length > 0 && ` ${opens.join(" and ")} ${opens.length === 1 ? "opens" : "open"} from ${opens.length === 1 ? "its label" : "their labels"}.`}
           </p>
         </div>
       </div>

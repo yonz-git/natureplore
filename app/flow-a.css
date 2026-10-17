@@ -19,7 +19,7 @@
 }
 .sug-photo {
   width: 100%;
-  height: 6rem;
+  height: 7.75rem;
   display: block;
   box-sizing: border-box;
   border-radius: var(--radius-tile);
@@ -407,7 +407,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 .saved { position: fixed; inset: 0; overflow-x: hidden; overflow-y: auto; scroll-padding-bottom: var(--spacing-tabbar-clearance); }
 .saved-sheet {
   min-height: calc(100% - 4.75rem);
-  margin-top: 4.75rem;
+  margin: 4.75rem 1.5vw 0;
   padding: 1.5rem 1.5rem var(--spacing-tabbar-clearance);
   box-sizing: border-box;
   display: flex;
@@ -564,8 +564,10 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   /* one panel frame for every Routes screen: it stays in place from the suggestions into search,
      and ends as far above the bottom edge as the nav sits below the top */
   .ms-panel { inset: 2.5rem auto var(--spacing-nav-top-desktop) 2.5rem; }
-  /* where the search field sits over the panel, the panel starts under it: the field is 3.25rem */
-  .ms:has(.ms-search-top) .ms-panel { top: calc(var(--spacing-nav-top-desktop) + 3.25rem + var(--spacing-control-stack)); }
+  /* where the search field or B1's back sits over the panel, on the nav pill's line, the panel
+     starts under it: both are 3.25rem */
+  .b1 .ms-panel,
+  .ms:has(.ms-search-top) .ms-panel { top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2 + 3.25rem + var(--spacing-control-stack)); }
 
   .sg-toggle,
   .sg-map-note,

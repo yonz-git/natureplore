@@ -1,4 +1,4 @@
-import { GRUMSIN_LINE } from "@/lib/route-lines";
+import { GRUMSIN_LINE, LINUM_LINE } from "@/lib/route-lines";
 
 // The routes and their spots, for B1, the route page. The suggestion cards on A5 and A4 and search
 // read lib/suggestions.ts, which follows the flow and IA redesign.
@@ -115,14 +115,14 @@ export const ROUTES: Route[] = [
     id: "linum",
     name: "Linum wet meadows loop",
     where: "Loop in Linum, Brandenburg",
-    line: "6.0 km loop, 1 h 45 at a looking pace",
-    km: "6.0",
-    time: "1:45",
+    line: "6.3 km loop, 1 h 50 at a looking pace",
+    km: "6.3",
+    time: "1:50",
     spots: 6,
     counts: { plants: 19, herbs: 48, birds: 64, mammals: 7 },
     season: ["meadow"],
-    lat: 52.75963,
-    lon: 12.87651,
+    lat: 52.75773,
+    lon: 12.88274,
     image: "/img/routes/linum.jpg",
     summary: "Wetland, 6 spots, 138 records within 250 m of the line, last recorded 2 days ago",
     notable: { text: "Notable now: cranes gathering, September to November", organism: "common-crane" },
@@ -131,12 +131,15 @@ export const ROUTES: Route[] = [
       "An easy loop from the village church out along the fish ponds of the Linumer Teichland and back across the wet meadows. Flat, and mostly on farm tracks, so it suits any fitness level. In autumn thousands of cranes gather on the ponds at dusk.",
     stops: [
       { name: "The flooded ditch", note: "Cranes feed here at dusk" },
-      { left: true, name: "The dam between the ponds", note: "Crane roost view, September to November" },
-      { name: "Far corner of the ponds", note: "Greylag geese and lapwings" },
       { name: "Reed edge of the fish ponds", note: "Reed warblers and bearded tits" },
+      { name: "Far corner of the ponds", note: "Greylag geese and lapwings" },
+      { left: true, name: "The dam between the ponds", note: "Crane roost view, September to November" },
       { left: true, name: "Wet meadow track", note: "Marsh marigold in April and May" },
       { left: true, name: "Stork nests at the village edge", note: "White storks, April to August" },
     ],
+    path: LINUM_LINE,
+    detail: "/geo/linum.json",
+    marks: [0.271, 0.486, 0.603, 0.657, 0.815, 0.881],
   },
   {
     id: "grumsin",

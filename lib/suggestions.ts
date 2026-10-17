@@ -62,13 +62,14 @@ export const SUGGESTIONS: Suggestion[] = [
   {
     id: "linum",
     name: "Linum wet meadows loop",
-    meta: "6.0 km loop, 1 h 45 at a looking pace, 6 spots",
-    place: "6.0 km loop in Linum, Brandenburg",
+    meta: "6.3 km loop, 1 h 50 at a looking pace, 6 spots",
+    place: "6.3 km loop in Linum, Brandenburg",
     spots: 6,
     lit: [1, 2, 3, 4],
     image: "/img/routes/linum.jpg",
-    lat: 52.75963,
-    lon: 12.87651,
+    href: "/map/route/linum",
+    lat: 52.75773,
+    lon: 12.88274,
     inSeason: [
       { name: "Common crane", latin: "Grus grus", group: "birds", note: "gathering at dusk", last: "11 Sep" },
       { name: "Greylag goose", latin: "Anser anser", group: "birds", last: "10 Sep" },
