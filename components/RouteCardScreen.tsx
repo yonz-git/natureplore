@@ -27,9 +27,9 @@ import { suggestionById } from "@/lib/suggestions";
 const noop = () => () => {};
 
 const SECTIONS = [
-  ["recorded", "Recorded organisms"],
+  ["recorded", "Organisms"],
   ["spots", "Spots"],
-  ["drawn", "The route"],
+  ["drawn", "Route"],
   ["season", "When to walk the route"],
   ["happening", "What is happening"],
   ["getting", "Getting there"],
@@ -161,6 +161,24 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   const map = useRef<MapHandle>(null);
   const sheetEl = useRef<HTMLDivElement>(null);
   const sheet = useSheet(sheetEl);
+  // the jump strip stays at the top of the sheet; its pill for the section under it is the current one
+  const [current, setCurrent] = useState<string>(SECTIONS[0][0]);
+  // its band only shows once a section runs under the chips, so at rest the chips sit on the sheet
+  const [under, setUnder] = useState(false);
+  const onSheetScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    sheet.onScroll();
+    const strip = e.currentTarget.querySelector(".fb-strip");
+    if (!strip) return;
+    const line = strip.getBoundingClientRect().bottom + 1;
+    let id: string = SECTIONS[0][0];
+    for (const [s] of SECTIONS) {
+      const el = document.getElementById(`sec-${s}`);
+      if (el && el.getBoundingClientRect().top <= line) id = s;
+    }
+    setCurrent(id);
+    const first = document.getElementById(`sec-${SECTIONS[0][0]}`);
+    setUnder(!!first && first.getBoundingClientRect().top < line);
+  };
   const detail = routeDetail(route.id);
   const spots = useMemo(() => spotsOf(route), [route]);
   const save = useRouteSave(route.id);
@@ -257,7 +275,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           ref={sheetEl}
           className={`ms-sheet glass-phone${sheet.open ? " is-open" : ""}`}
           aria-labelledby="route-title"
-          onScroll={sheet.onScroll}
+          onScroll={onSheetScroll}
         >
           {sheet.grab("route")}
 
@@ -305,9 +323,9 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           </dl>
 
           {detail && (
-            <nav aria-label="Jump to a section" className="fb-strip">
+            <nav aria-label="Jump to a section" className={`fb-strip${under ? " is-under" : ""}`}>
               {SECTIONS.map(([id, label]) => (
-                <a key={id} href={`#sec-${id}`}>
+                <a key={id} href={`#sec-${id}`} data-text={label} aria-current={current === id ? "location" : undefined}>
                   {label}
                 </a>
               ))}

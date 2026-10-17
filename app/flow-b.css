@@ -301,17 +301,28 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .b1 .ms-sheet { padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); scroll-padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); }
 .b1 .ms-sheet > section { flex-shrink: 0; display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
 
-/* jump to a section: chips that scroll sideways, bleeding to the sheet's edges */
+/* jump to a section: chips that scroll sideways, bleeding to the sheet's edges. It stays at the top
+   of the sheet as the sections scroll under it. At rest the chips sit on the sheet itself; once a
+   section runs under them, a band of the sheet's own colour fades in behind them, fading out below.
+   A section it jumps to lands just under it */
 .fb-strip {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   flex-shrink: 0;
   margin: 0 -1.5rem;
-  padding: 0 1.5rem;
+  padding: 0.75rem 1.5rem 1rem;
+  background: linear-gradient(to bottom, var(--fb-band) 75%, rgb(from var(--fb-band) r g b / 0));
+  transition: --fb-band 200ms var(--ease-out);
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
   scrollbar-width: none;
 }
 .fb-strip::-webkit-scrollbar { display: none; }
+/* the band's colour is a registered property, so the gradient can fade */
+@property --fb-band { syntax: "<color>"; inherits: false; initial-value: transparent; }
+.fb-strip.is-under { --fb-band: var(--color-glass-solid); }
 .fb-strip a {
   flex-shrink: 0;
   height: 2.75rem;
@@ -328,6 +339,13 @@ a.fb-claim-act:active { transform: scale(0.985); }
   transition: transform 160ms var(--ease-out);
 }
 .fb-strip a:active { transform: scale(0.97); }
+/* the current section's chip in the heavier weight; each chip holds that width so none nudges */
+.fb-strip a { flex-direction: column; justify-content: center; }
+.fb-strip a::after { content: attr(data-text); height: 0; overflow: hidden; visibility: hidden; font-weight: 600; }
+.fb-strip a[aria-current] { font-weight: 600; }
+.fb-sec { scroll-margin-top: 4.5rem; }
+/* the phone and tablet sheet has 0.75rem padding at its top: the band covers it */
+@media (max-width: 63.99rem) { .fb-strip { top: -0.75rem; } }
 .b1 .ms-sheet { scroll-behavior: smooth; }
 
 /* the route drawn flat: the spots along its length, with the same numbers as the map */
@@ -549,7 +567,7 @@ button.fb-row:active { transform: scale(0.985); }
     font-size: var(--text-chip);
     text-decoration: none;
   }
-  .fb-strip { margin: 0 -2rem; padding: 0 2rem; }
+  .fb-strip { margin: 0 -2rem; padding: 0.75rem 2rem 1rem; }
   .b1-pin {
     position: static;
     width: auto;
@@ -575,6 +593,7 @@ button.fb-row:active { transform: scale(0.985); }
   a.fb-claim-act,
   .fb-nav-prev,
   .fb-nav-next,
+  .fb-strip,
   .fb-strip a,
   .fb-look-link,
   .walk-end { transition: none; }
