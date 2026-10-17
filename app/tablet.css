@@ -23,12 +23,18 @@
   .sg .ms-sheet {
     inset: calc(var(--top-chrome) + 4.5rem) auto 6.25rem var(--spacing-screen-phone);
     width: var(--spacing-panel-tablet);
+    /* top as the sides, 1.5rem */
+    padding-top: 1.5rem;
     padding-bottom: 1.5rem;
     scroll-padding-bottom: 1.5rem;
     border-bottom: 0.5px solid var(--color-glass-edge);
     border-radius: var(--radius-card);
   }
   /* the map is always beside the list, so there is nothing to open or switch to */
+  /* tighter head: switch to title 1.35rem, title to region 0.4725rem, region to first card 1.2rem */
+  .sg .ms-sheet { gap: 1.35rem; }
+  .sg-scope { margin-top: 0.4725rem; }
+  .sg .sg-list { margin-top: calc(1.2rem - 1.35rem); }
   .sg .ms-grab,
   .sg .ms-handle,
   .sg .sg-toggle { display: none; }

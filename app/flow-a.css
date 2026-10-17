@@ -5,21 +5,25 @@
 
 /* ── the suggestion card ───────────────────────────────────────────────────────────────────── */
 
+/* a row: the square photograph on the left, the text on the right, Save at the top right; what is
+   in season runs the full width under both */
 .sug {
   position: relative;
   flex-shrink: 0;
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.35rem;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  column-gap: 1rem;
+  row-gap: 0.75rem;
   border-radius: var(--radius-inner);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
   border: 0.5px solid var(--color-inner-edge);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
 }
 .sug-photo {
+  align-self: start;
   width: 100%;
-  height: 9.5rem;
+  aspect-ratio: 1;
   display: block;
   box-sizing: border-box;
   border-radius: var(--radius-tile);
@@ -28,14 +32,18 @@
     linear-gradient(170deg, var(--color-field-mid) 0%, var(--color-field-shade) 100%);
   border: 0.5px solid var(--color-inner-edge);
 }
-.sug-head { display: flex; flex-direction: column; gap: 0.3375rem; }
+/* the name and its line sit under the Save circles, the full width of the column */
+.sug-head { display: flex; flex-direction: column; gap: 0.3375rem; padding-top: calc(2.25rem + 0.5rem); }
 .sug-name {
   margin: 0;
   font-family: var(--font-text);
-  font-size: 1.35rem;
-  line-height: 1.8rem;
+  font-size: var(--text-title);
+  line-height: var(--text-title--line-height);
   font-weight: 400;
 }
+/* the spot count closes the pills row, on its right, on the last line where the pills wrap (phone) */
+.sug-pills-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 0.25rem; }
+.sug-spots { height: 2rem; margin: 0; }
 .sug-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 
 /* the name opens the route: its link covers the card, Save sits above it */
@@ -48,10 +56,10 @@
 .sug-save {
   position: absolute;
   z-index: 1;
-  top: 1.75rem;
-  right: 1.75rem;
-  width: 2.75rem;
-  height: 2.75rem;
+  top: 1rem;
+  right: 1rem;
+  width: 2.25rem;
+  height: 2.25rem;
   padding: 0;
   display: flex;
   align-items: center;
@@ -62,6 +70,8 @@
   transition: transform 160ms var(--ease-out);
 }
 .sug-save:active { transform: scale(0.94); }
+/* the circle is 36, the tap area stays 44 */
+.sug-save:not(.sug-dl)::before { content: ""; position: absolute; inset: -0.25rem; border-radius: inherit; }
 .sug-save svg { transition: transform 200ms var(--ease-out); }
 /* inside a glass card it would turn inner glass; it sits on a photograph, so it keeps the full
    recipe from glass.css, its blur reaching only the photograph under it */
@@ -73,40 +83,21 @@
     var(--color-glass-fill);
   backdrop-filter: blur(1.875rem) saturate(1.4);
   border: 0.5px solid var(--color-glass-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.11), inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
+  /* small circles: an even edge, no top highlight or 150 degree rim, which read as off centre */
+  box-shadow: 0 0.25rem 0.75rem rgb(6 18 9 / 0.25);
+}
+.sug-save.glass::after { content: none; }
+/* downloaded: a second frost left of the bookmark, shown once saved, not a control */
+.sug-save.sug-dl {
+  right: calc(1rem + 2.25rem + 0.25rem);
+  cursor: default;
+  animation: sheet-in var(--enter) var(--ease-enter) backwards;
 }
 .sug-save[aria-pressed="true"] svg { animation: save-pop 280ms var(--ease-out); }
 @keyframes save-pop {
   from { transform: scale(0.7); }
   to { transform: scale(1); }
 }
-/* the confirmation sits on the photograph beside the bookmark, where the tap was, not at the card's
-   foot below the fold */
-.sug-saved {
-  position: absolute;
-  z-index: 1;
-  top: 2.125rem;
-  left: 1.75rem;
-  margin: 0;
-  width: max-content;
-  max-width: calc(100% - 6.75rem);
-  box-sizing: border-box;
-  min-height: 2rem;
-  padding: 0.3125rem 0.75rem 0.3125rem 0.625rem;
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  border-radius: var(--radius-pill);
-  background: var(--color-glass-solid);
-  border: 0.5px solid var(--color-inner-edge);
-  color: var(--color-on-ground);
-  font-size: var(--text-caption);
-  line-height: 1.25;
-  font-weight: 400;
-}
-.sug-saved svg { flex-shrink: 0; color: var(--color-mist); }
-.sug-saved:empty { display: none; }
-.sug-saved:not(:empty) { animation: sheet-in var(--enter) var(--ease-enter) backwards; }
 
 /* the spots in season: numbered dots, the lit ones filled with mist */
 .dots { display: flex; flex-wrap: wrap; align-items: center; gap: 0.84375rem; }
@@ -146,11 +137,10 @@
 .dots-line { font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); font-weight: 400; }
 
 /* what is in season along it, each with its group first */
-.sug-season { display: flex; flex-direction: column; gap: 0.675rem; }
+.sug-season { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 0.675rem; }
 .sug-season-label { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .sug-orgs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.84375rem; }
 /* a built route's card ends on View route, a button inside a card, so it hugs its label at every size */
-.sug .sug-view { align-self: flex-start; width: auto; margin-top: 0.5rem; }
 .sug-orgs li { display: flex; align-items: center; gap: 0.75rem; }
 .sug-org { min-width: 0; display: flex; flex-direction: column; gap: 0.16875rem; }
 .sug-org-name { font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
@@ -188,7 +178,8 @@
 .sg { --sheet-top: max(min(17rem, 100dvh - 27rem), var(--top-chrome) + 4.5rem); --sheet-open: calc(var(--top-chrome) + 4.5rem); }
 /* the switch is the sheet's first row; on the phone it clears the grab handle above it */
 @media (max-width: 47.99rem), (max-width: 63.99rem) and (max-height: 35.99rem) {
-  .sg .ms-sheet > .sg-switch { margin-top: 0.75rem; }
+  /* from the handle's foot to the switch is the sheet's 1.5rem side padding */
+  .sg .ms-sheet > .sg-switch { margin-top: 0.0625rem; }
 }
 .sg .ms-sheet { gap: 1.6875rem; }
 .sg-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
@@ -574,6 +565,9 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 
 /* ── from 64rem ────────────────────────────────────────────────────────────────────────────── */
 
+@media (min-width: 48rem) {
+  .sug { grid-template-columns: 7.5rem minmax(0, 1fr); }
+}
 @media (min-width: 64rem) {
   /* one panel frame for every Routes screen: it stays in place from the suggestions into search,
      and ends as far above the bottom edge as the nav sits below the top */
@@ -581,17 +575,19 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   /* where the search field or B1's back sits over the panel, on the nav pill's line, the panel
      starts under it: both are 3.25rem */
   .b1 .ms-panel,
-  .ms:has(.ms-search-top) .ms-panel { top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2 + 3.25rem + var(--spacing-control-stack)); }
+  .ms:has(.ms-search-top) .ms-panel { top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 3.25rem) / 2 + 3.25rem + var(--spacing-control-stack)); }
 
   .sg-toggle,
   .sg-map-note,
   .sg .ms-handle { display: none; }
   /* the search field sits over the panel, outside it, so the sheet starts at the panel's top */
-  .sg .ms-sheet { margin-top: 0; gap: 1.6875rem; }
+  .sg .ms-sheet { margin-top: 0; gap: 1.35rem; }
+  .sg-scope { margin-top: 0.4725rem; }
   .sg-list {
     flex: 1 1 auto;
     min-height: 0;
-    margin: 0 -0.5rem;
+    /* the region line to the first card: 1.12rem */
+    margin: calc(1.12rem - 1.35rem) -0.5rem 0;
     padding: 0 0.5rem 0.5rem;
     overflow-y: auto;
     scrollbar-width: none;
@@ -634,8 +630,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
     border-radius: var(--radius-card);
   }
   .saved-card .btn { align-self: flex-start; }
-  /* the back control sits on the nav pill's line, centred on its 3.625rem height (app/tabbar.css) */
-  .a8-top { top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2); left: 2.5rem; }
+  /* the back control sits on the nav pill's line, centred on its 3.25rem height (app/tabbar.css) */
+  .a8-top { top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 2.75rem) / 2); left: 2.5rem; }
   .a8 .saved-sheet { margin-top: 7.5rem; min-height: 0; }
   .a8-more { justify-content: flex-start; }
   .a8-more .btn { flex-grow: 0; }
@@ -648,7 +644,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   /* no press scale, but the lit veil still fades, shorter: a fade is not movement */
   .map-route { transition: box-shadow 160ms ease, border-color 160ms ease; }
   .sug-save[aria-pressed="true"] svg,
-  .sug-saved:not(:empty),
+  .sug-save.sug-dl,
   .sg.is-map .sg-map-note,
   .sg:not(.is-map) .sg-list,
   .a8-rows li.is-new,

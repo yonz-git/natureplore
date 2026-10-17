@@ -214,7 +214,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
 }
 
 /* The phone's round controls on the desktop too, rather than a text back link. Back leaves the sheet
-   for the nav pill's line (3.625rem tall at 2rem, app/tabbar.css), at the top left, fixed with the
+   for the nav pill's line (3.25rem tall at 2rem, app/tabbar.css), at the top left, fixed with the
    nav. Save and share stay in the sheet, at the top right of its content, lined up with its columns,
    and the content starts below them. B4, the claim, action and documentary pages, and the pages
    under Saved. */
@@ -223,7 +223,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
   .org > .org-top > a {
     position: fixed;
     z-index: 2;
-    top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2);
+    top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 2.75rem) / 2);
     left: 2.5rem;
   }
   .org > .org-top > .org-actions {

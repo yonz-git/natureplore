@@ -58,7 +58,7 @@ export default function SavedScreen() {
                   )}
                   <span>
                     <b>{r.name}</b>
-                    <small>{r.meta.replace(/, [^,]* at a looking pace/, "")}</small>
+                    <small>{r.meta.replace(/ · .*$/, "")}</small>
                     <em>
                       <CheckCircleIcon size={16} />
                       Downloaded
