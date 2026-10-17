@@ -556,12 +556,16 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 .sg-org-sec-head .is-mushrooms { color: var(--color-group-mushrooms); }
 .sg-org-sec-head .is-birds { color: var(--color-group-birds); }
 .sg-org-sec-head .is-mammals { color: var(--color-group-mammals); }
+/* Alpino's line box carries a tall ascent, so a line-height box sits its figures and capitals high.
+   The text box is trimmed to the cap height and the padding splits the rest: "19 Species" lands on
+   the pill's middle */
 .sg-org-count {
   margin-left: auto;
-  height: 1.75rem;
-  padding: 0 0.625rem;
-  display: inline-flex;
-  align-items: center;
+  /* 1.75rem in all, its 1px edges included; Alpino's cap metric stands 1px above its figures' ink,
+     so half a pixel moves from the bottom padding to the top */
+  padding: calc((1.75rem - 2px - 1cap) / 2 + 0.5px) 0.625rem calc((1.75rem - 2px - 1cap) / 2 - 0.5px);
+  display: block;
+  text-box: trim-both cap alphabetic;
   /* the edge in the count's own colour, at 70% of its strength */
   border: 1px solid rgb(from currentColor r g b / calc(alpha * 0.7));
   border-radius: var(--radius-pill);
