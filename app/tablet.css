@@ -31,8 +31,10 @@
     border-radius: var(--radius-card);
   }
   /* the map is always beside the list, so there is nothing to open or switch to */
-  /* the region line to the first card is the side padding too */
-  .sg .sg-list { margin-top: calc(1.5rem - 1.6875rem); }
+  /* tighter head: switch to title 1.35rem, title to region 0.4725rem, region to first card 1.2rem */
+  .sg .ms-sheet { gap: 1.35rem; }
+  .sg-scope { margin-top: 0.4725rem; }
+  .sg .sg-list { margin-top: calc(1.2rem - 1.35rem); }
   .sg .ms-grab,
   .sg .ms-handle,
   .sg .sg-toggle { display: none; }

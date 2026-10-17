@@ -598,12 +598,13 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg-map-note,
   .sg .ms-handle { display: none; }
   /* the search field sits over the panel, outside it, so the sheet starts at the panel's top */
-  .sg .ms-sheet { margin-top: 0; gap: 1.6875rem; }
+  .sg .ms-sheet { margin-top: 0; gap: 1.35rem; }
+  .sg-scope { margin-top: 0.4725rem; }
   .sg-list {
     flex: 1 1 auto;
     min-height: 0;
-    /* the region line to the first card is the panel's 1.4rem padding */
-    margin: calc(1.4rem - 1.6875rem) -0.5rem 0;
+    /* the region line to the first card: 1.12rem */
+    margin: calc(1.12rem - 1.35rem) -0.5rem 0;
     padding: 0 0.5rem 0.5rem;
     overflow-y: auto;
     scrollbar-width: none;
