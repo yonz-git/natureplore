@@ -21,7 +21,7 @@ import { playGroup } from "@/lib/group-motion";
 import { GROUPS, HERE, type Group } from "@/lib/routes";
 import { rememberList } from "@/lib/saved";
 import { organismPhoto } from "@/lib/photos";
-import { groupWord, HOME_REGION, MONTH, organismsIn, regionById, ROUTE_POINTS, ROUTE_TOTAL, routesIn } from "@/lib/suggestions";
+import { groupWord, HOME_REGION, MONTH, organismsIn, regionById, ROUTE_POINTS, routesIn } from "@/lib/suggestions";
 
 const HERE_POINT: MapPoint = { id: "here", lat: HERE.lat, lon: HERE.lon, label: "You are here", here: true };
 
@@ -251,7 +251,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
               {/* the full list is not built in the prototype, the button says what it would open */}
               {home && (
                 <button type="button" className="btn btn-secondary btn-chev is-closing" aria-disabled="true">
-                  Show all {ROUTE_TOTAL} routes
+                  Show more routes
                   <span className="sr-only">, not built in the prototype yet</span>
                   <ChevronIcon size={18} />
                 </button>
