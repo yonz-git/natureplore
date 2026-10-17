@@ -32,7 +32,7 @@
   }
   /* the map is always beside the list, so there is nothing to open or switch to */
   /* tighter head: switch to title 1.35rem, title to region 0.4725rem, region to first card 1.2rem */
-  .sg .ms-sheet { gap: 1.35rem; }
+  .sg .ms-sheet { --sg-gap: 1.35rem; }
   .sg-scope { margin-top: 0.4725rem; }
   .sg .sg-list { margin-top: calc(1.2rem - 1.35rem); }
   .sg .ms-grab,

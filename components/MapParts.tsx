@@ -7,7 +7,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { ClearIcon, GroupIcon, SearchIcon } from "@/components/Icons";
+import { BackIcon, ClearIcon, GroupIcon, SearchIcon } from "@/components/Icons";
 import { playGroup } from "@/lib/group-motion";
 import { GROUPS, type Counts } from "@/lib/routes";
 
@@ -21,6 +21,7 @@ export function SearchField({
   autoFocus = false,
   inner = false,
   onChange,
+  onBack,
 }: {
   label?: string;
   defaultValue?: string;
@@ -28,6 +29,8 @@ export function SearchField({
   /** resting on a glass sheet it is inner glass; floating over the map it is glass */
   inner?: boolean;
   onChange?: (value: string) => void;
+  /** a back control in the search icon's place, to leave the field (the suggestions' top row) */
+  onBack?: () => void;
 }) {
   const router = useRouter();
   const [value, setValue] = useState(defaultValue);
@@ -62,7 +65,13 @@ export function SearchField({
         {label}
       </label>
       <div className={`field${inner ? " is-inner" : " glass glass-pill"}`}>
-        <SearchIcon />
+        {onBack ? (
+          <button type="button" className="field-back" aria-label="Back" onClick={onBack}>
+            <BackIcon size={20} />
+          </button>
+        ) : (
+          <SearchIcon />
+        )}
         <input
           id="map-q"
           type="search"
