@@ -142,7 +142,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
         <span className="seg-label" data-text="Routes">Routes</span>
       </button>
       <button type="button" className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
-        <OrganismsIcon size={18} />
+        <OrganismsIcon size={21} className="seg-orgs" />
         <span className="seg-label" data-text="Organisms">Organisms</span>
       </button>
     </div>
@@ -225,9 +225,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           {/* on Organisms, the group filters at the top of the sheet */}
           <div className="sg-head">
             <div>
-              <h1 id="sg-title" className="ms-title">
-                In season in <em>{MONTH}</em>
-              </h1>
               <p className="sg-scope">
                 {/* keyed so the pin rolls in again for each region */}
                 <span className="sg-pin" key={region.id}>
@@ -239,6 +236,9 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                 </span>
                 {near ? `Near you, in ${region.name}` : region.name}
               </p>
+              <h1 id="sg-title" className="ms-title">
+                In season in <em>{MONTH}</em>
+              </h1>
               {show === "organisms" && (
                 <p className="ms-lead">
                   {`${shown.length} in season along ${routes.length} route${routes.length > 1 ? "s" : ""}`}

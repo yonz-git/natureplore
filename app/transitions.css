@@ -41,7 +41,9 @@
 .a1-map:not(.is-ready) { opacity: 0; scale: 1.04; }
 .screen-enter .ms-search-top,
 .screen-enter .ms-bar > :not(:has(.glass)):not(.glass),
-.screen-enter .ms-bar .glass { animation: sheet-in var(--enter) var(--ease-enter) 150ms backwards; }
+/* not the Organisms filters: they are shown and hidden later, and each showing would replay this
+   rise; they slide out sideways on their own (app/flow-a.css) */
+.screen-enter .ms-bar .glass:not(.sg-group) { animation: sheet-in var(--enter) var(--ease-enter) 150ms backwards; }
 /* the labels on the map wait for the map, then come one by one (--i, set by RegionMap) */
 .screen-enter .a1-pin,
 .screen-enter .a1-here,
@@ -130,7 +132,7 @@
   .a1-map:not(.is-ready) { scale: none; }
   .screen-enter .ms-search-top,
   .screen-enter .ms-bar > :not(:has(.glass)):not(.glass),
-  .screen-enter .ms-bar .glass,
+  .screen-enter .ms-bar .glass:not(.sg-group),
   .screen-enter .a1-pin,
   .screen-enter .a1-here,
   .screen-enter .map-route,

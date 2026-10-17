@@ -186,7 +186,7 @@
 .sg-head > div { flex: 1 1 11rem; min-width: 0; }
 /* the suggestions title takes the h2 step at every size, as a route's own title does on B1; it stays the page's h1 */
 .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
-.sg-scope { margin: 0.675rem 0 0; font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
+.sg-scope { margin: 0 0 0.675rem; font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
 /* phone: the switch, the title and the place a step smaller, so the title and its map button share a line */
 @media (max-width: 47.99rem) {
   .sg .seg-opt { font-size: 1.025rem; }
@@ -582,7 +582,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg .ms-handle { display: none; }
   /* the search field sits over the panel, outside it, so the sheet starts at the panel's top */
   .sg .ms-sheet { margin-top: 0; --sg-gap: 1.35rem; }
-  .sg-scope { margin-top: 0.4725rem; }
+  .sg-scope { margin-bottom: 0.4725rem; }
   .sg-list {
     flex: 1 1 auto;
     min-height: 0;
@@ -690,6 +690,32 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 /* Alpino sits low in its line box: lifted 0.7px so the middle of its caps and x-height lands on the
    middle of the icon and the pill */
 .seg-label { display: inline-flex; flex-direction: column; position: relative; top: -0.04375rem; }
+/* tablet and phone: the picked option is its icon alone in the lime circle, its name folding away
+   (still read out); the other keeps its name. Padding, gap and the name's width glide, so the lime
+   and the other option slide rather than jump */
+@media (max-width: 63.99rem) {
+  /* the lime is the picked option's own fill here, not the sliding pill, so it never chases an
+     option that is changing width: it fades across while the names fold and unfold */
+  .sg .seg-thumb { display: none; }
+  .sg .seg-opt {
+    transition:
+      transform 160ms var(--ease-out),
+      background-color 540ms var(--ease-move),
+      color 540ms var(--ease-move),
+      padding 540ms var(--ease-move),
+      gap 540ms var(--ease-move);
+  }
+  .sg .seg-label { max-width: 8rem; overflow: hidden; white-space: nowrap; transition: max-width 540ms var(--ease-move), opacity 360ms var(--ease-move); }
+  /* a true circle, the 40 option's own height */
+  .sg .seg-opt[aria-pressed="true"] {
+    min-width: 2.5rem;
+    padding: 0;
+    gap: 0;
+    justify-content: center;
+    background-color: var(--color-primary);
+  }
+  .sg .seg-opt[aria-pressed="true"] .seg-label { max-width: 0; opacity: 0; }
+}
 .seg-label::after {
   content: attr(data-text);
   height: 0;
@@ -713,14 +739,18 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg .seg-opt:first-of-type > svg { margin: 0 calc(-0.0800rem - 0.21875rem + 0.125rem) 0 calc(-0.0350rem - 0.21875rem); }
 .sg .seg-opt > svg.seg-routes { stroke-width: 1.07; }
 .sg .seg-opt[aria-pressed="true"] > svg.seg-routes { stroke-width: 1.5; }
-.sg .seg-opt:last-of-type > svg { margin: 0 -0.0663rem 0 -0.0185rem; }
+/* the tree is narrower than Routes' loop, so it is drawn at 21 to read as the same size; its line
+   kept at the 18 icon's weight (x 18/21) and the extra box taken back in the margins */
+.sg .seg-opt:last-of-type > svg { margin: 0 calc(-0.0663rem - 0.09375rem) 0 calc(-0.0185rem - 0.09375rem); }
 /* the open option's icon gets heavier, its line 40% thicker as on the nav's Map, and the two ends of
    Routes' line fill in */
 .sg .seg-opt > svg,
-.sg .seg-opt > svg g { transition: stroke-width 220ms var(--ease-out); }
-.sg .seg-opt > svg circle { fill: rgb(from currentColor r g b / 0); transition: fill 220ms var(--ease-out), stroke-width 220ms var(--ease-out); }
+.sg .seg-opt > svg g { transition: stroke-width 540ms var(--ease-move); }
+.sg .seg-opt > svg circle { fill: rgb(from currentColor r g b / 0); transition: fill 540ms var(--ease-move), stroke-width 540ms var(--ease-move); }
 .sg .seg-opt[aria-pressed="true"] > svg { stroke-width: 2.1; }
 .sg .seg-opt[aria-pressed="true"] > svg g { stroke-width: 3.64; }
+.sg .seg-opt > svg.seg-orgs g { stroke-width: 2.23; }
+.sg .seg-opt[aria-pressed="true"] > svg.seg-orgs g { stroke-width: 3.12; }
 .sg .seg-opt[aria-pressed="true"] > svg circle { fill: currentColor; }
 /* the top row, outside the sheet: Routes or Organisms, on Organisms its group filters sliding out to
    the right, after a search circle. The switch matches the search field's 3.25rem and sits above the
@@ -744,13 +774,13 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
    own (an animated ancestor would switch the frost off). The field's layer stays shown until the
    field has gone. */
 .sg-search,
-.sg .ms-bar-row > .seg { transition: opacity 200ms var(--ease-out), translate 300ms var(--ease-out); }
+.sg .ms-bar-row > .seg { transition: opacity 360ms var(--ease-move), translate 540ms var(--ease-move); }
 .sg .ms-bar-row.is-searching > .sg-search,
 .sg .ms-bar-row.is-searching > .seg { opacity: 0; translate: 1.5rem 0; pointer-events: none; }
 .sg .ms-bar-row.is-searching .sg-group { opacity: 0; translate: 1.5rem 0; pointer-events: none; --d: 0ms; }
-.sg-find { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; visibility: hidden; transition: visibility 0s 300ms; }
+.sg-find { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; visibility: hidden; transition: visibility 0s 540ms; }
 .sg-find > form { flex: 1 1 auto; }
-.sg-find .field { opacity: 0; translate: -1.5rem 0; transition: opacity 200ms var(--ease-out), translate 300ms var(--ease-out); }
+.sg-find .field { opacity: 0; translate: -1.5rem 0; transition: opacity 360ms var(--ease-move), translate 540ms var(--ease-move); }
 .is-searching > .sg-find { visibility: visible; transition: visibility 0s; }
 .is-searching > .sg-find .field { opacity: 1; translate: 0 0; }
 /* the field's Back, in the search icon's place: a 44 target round the 20 arrow */
@@ -787,7 +817,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   flex-shrink: 0;
   align-items: center;
   gap: 0.25rem; /* about a third of 0.6875rem, a whole pixel */
-  transition: display 480ms allow-discrete;
+  transition: display 660ms allow-discrete;
 }
 .sg-groups.is-on { display: flex; transition: display 0ms allow-discrete; }
 /* each toggle slides out on its own from behind the switch to its place, never its row (the toggles
@@ -806,14 +836,14 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   border-radius: var(--radius-pill);
   cursor: pointer;
   --d: 0ms;
-  --in: 340ms;
+  --in: 540ms;
   opacity: 0;
   /* tucked behind the switch: each one starts its own place plus one switch-edge further left */
   --i: 1;
   translate: calc(-1 * var(--i) * 2.375rem) 0;
   transition:
-    opacity var(--in) var(--ease-out) var(--d),
-    translate var(--in) var(--ease-out) var(--d),
+    opacity var(--in) var(--ease-move) var(--d),
+    translate var(--in) var(--ease-move) var(--d),
     transform 160ms var(--ease-out),
     background-color var(--hover-fade) var(--ease-hover),
     box-shadow var(--hover-fade) var(--ease-hover);
@@ -825,7 +855,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-group:nth-child(5) { --i: 5; }
 /* and out again, the dimmed ones too: the site-wide 45% for a disabled control would otherwise hold
    them there until the row is gone, and they would vanish instead of fading with the rest */
-.sg-groups:not(.is-on) .sg-group { opacity: 0; translate: calc(-1 * var(--i) * 2.375rem) 0; --in: 260ms; }
+.sg-groups:not(.is-on) .sg-group { opacity: 0; translate: calc(-1 * var(--i) * 2.375rem) 0; --in: 440ms; }
 @starting-style {
   /* the dimmed ones as well: their own 40% rule, further down and as specific, would otherwise win
      here too and skip their fade, so this one is a step more specific */
