@@ -109,6 +109,10 @@
   font-weight: 400;
   text-shadow: 0 1px 0.5rem rgb(0 0 0 / 0.45);
 }
+/* phone: the stop labels a fifth smaller than on the tablet */
+@media (max-width: 47.99rem) {
+  .a02-label { font-size: calc(var(--text-secondary) * 1.04); line-height: calc(var(--text-secondary--line-height) * 1.04); }
+}
 /* odd stops label to the left of the dot, even stops to the right */
 .a02-stop-1 .a02-label, .a02-stop-3 .a02-label { right: calc(100% + var(--a0-gap)); }
 .a02-stop-2 .a02-label, .a02-stop-4 .a02-label { left: calc(100% + var(--a0-gap)); }
