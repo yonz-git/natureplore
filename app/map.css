@@ -116,6 +116,14 @@
   pointer-events: none;
 }
 .field-hint-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* on the phone the field is too narrow for a centred hint beside a search icon pinned to the left, so
+   while the field is empty the icon joins the hint and the three are centred together */
+.field-hint-search { display: none; }
+@media (max-width: 47.99rem) {
+  .field:has(> .field-hint) > svg { display: none; }
+  .field-hint { inset: 0 1.25rem; }
+  .field-hint-search { display: block; color: var(--color-on-ground); }
+}
 .field-hint-icons { display: grid; flex-shrink: 0; }
 /* the next icon rises in from below as the last one drifts up and out, overlapping, so the swap
    reads as one soft motion; the waiting icons sit below, unseen */
@@ -657,6 +665,10 @@ button.float-pill,
 .a1 .ms-stack .btn { align-self: center; }
 /* the two ways in share one row under the field, side by side, and wrap only when there is no room */
 .a1-ways { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--spacing-control-stack); width: 100%; }
+/* on the phone the two ways in are as wide as the field, so "Browse Berlin and Brandenburg" keeps one line */
+@media (max-width: 47.99rem) {
+  .a1-ways .btn { width: 100%; }
+}
 /* off the panel the secondary button stands on the map, so it frosts like the field above it */
 .a1 .btn-secondary { backdrop-filter: blur(1.875rem) saturate(1.4); }
 .a1 .ms-note-desk { display: none; }
