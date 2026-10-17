@@ -561,9 +561,9 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
    the pill's middle */
 .sg-org-count {
   margin-left: auto;
-  /* 1.75rem in all, its 1px edges included; Alpino's cap metric stands 1px above its figures' ink,
-     so half a pixel moves from the bottom padding to the top */
-  padding: calc((1.75rem - 2px - 1cap) / 2 + 0.5px) 0.625rem calc((1.75rem - 2px - 1cap) / 2 - 0.5px);
+  /* 1.75rem in all, its 1px edges included. Even padding round the cap box still left the ink 0.375px
+     low in a 4x render, so 0.375px moves from the top padding to the bottom */
+  padding: calc((1.75rem - 2px - 1cap) / 2 - 0.375px) 0.625rem calc((1.75rem - 2px - 1cap) / 2 + 0.375px);
   display: block;
   text-box: trim-both cap alphabetic;
   /* the edge in the count's own colour, at 70% of its strength */
