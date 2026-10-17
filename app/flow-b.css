@@ -301,6 +301,10 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .b1 .ms-sheet { padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); scroll-padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); }
 .b1 .ms-sheet > section { flex-shrink: 0; display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
 
+/* a hairline between the route's head and the section chips: 2.5rem over it, 1.25rem from it to the
+   chips (the sheet's gap plus the strip's 0.75rem top padding, taken back here) */
+.b1-rule { flex-shrink: 0; width: 100%; margin: 1.25rem 0 -0.75rem; border: 0; border-top: 1px solid var(--color-divider); }
+
 /* jump to a section: chips that scroll sideways, bleeding to the sheet's edges. It stays at the top
    of the sheet as the sections scroll under it, with no band behind the chips; a section it jumps to
    lands just under it */

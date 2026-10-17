@@ -376,6 +376,8 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
 
           <WalkButton route={route} walkable={!!detail} save={save} />
 
+          {detail && <hr className="b1-rule" />}
+
           {detail && (
             <nav aria-label="Jump to a section" className="fb-strip">
               {SECTIONS.map(([id, label]) => (
