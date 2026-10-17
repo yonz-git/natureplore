@@ -186,6 +186,8 @@ export default function RegionMap({
   mapLabel = "Map of Berlin and Brandenburg",
   behind = false,
   hot,
+  current,
+  focus,
   ref,
 }: {
   className?: string;
@@ -207,6 +209,10 @@ export default function RegionMap({
   behind?: boolean;
   /** the route whose card is under the pointer or focus in the list: its label on the map lightens */
   hot?: string;
+  /** the spot marker the screen is showing, by point id: drawn larger, with a wider halo */
+  current?: string;
+  /** where the map opens instead of its fit, read once when the map is built: the walk's spot */
+  focus?: { lat: number; lon: number; zoom: number };
   /** a screen holds this to move the map from a control of its own */
   ref?: React.Ref<MapHandle>;
 }) {
@@ -221,6 +227,11 @@ export default function RegionMap({
   const tabStopRef = useRef<() => void>(() => {});
   // read at the moment it is called, so the handle survives the map being rebuilt
   const flyRef = useRef<Fly>(null);
+  // read when the map is built, not a dependency: a new focus moves the map through `centre` instead
+  const focusRef = useRef(focus);
+  useLayoutEffect(() => {
+    focusRef.current = focus;
+  });
   useImperativeHandle(
     ref,
     () => ({
@@ -556,6 +567,12 @@ export default function RegionMap({
       };
 
       refit();
+      // a screen that opens on one place starts there, and the map is then the person's to move
+      const f = focusRef.current;
+      if (f && !still) {
+        taken = true;
+        centreOn(f.lat, f.lon, f.zoom, false);
+      }
       showLabels();
       placePins();
 
@@ -678,7 +695,8 @@ export default function RegionMap({
                 </span>
               </>
             );
-            const cls = `map-spot${pin.left ? " is-left" : ""}${pin.current ? " is-current" : ""}${pin.out ? " is-out" : ""}`;
+            const now = pin.current || pin.id === current;
+            const cls = `map-spot${pin.left ? " is-left" : ""}${now ? " is-current" : ""}${pin.out ? " is-out" : ""}`;
             return pin.href ? (
               <Link key={pin.id} href={pin.href} className={cls} style={style} aria-label={`Spot ${pin.n}, ${pin.label}`}>
                 {body}
