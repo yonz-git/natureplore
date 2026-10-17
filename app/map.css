@@ -493,7 +493,9 @@ button.float-pill,
 /* ── the screen ────────────────────────────────────────────────────────────────────────────── */
 
 /* the screen is its own layer over the layout's photograph, and the map runs edge to edge */
-.ms { position: fixed; inset: 0; overflow: hidden; --sheet-top: 12.25rem; }
+/* clip, not hidden: hidden is still a scroll container, and iOS Safari lets the screen drift sideways
+   by the few pixels the map bleeds past its edges */
+.ms { position: fixed; inset: 0; overflow: clip; --sheet-top: 12.25rem; }
 .a1-map {
   position: absolute;
   inset: 0;
@@ -552,6 +554,8 @@ button.float-pill,
   flex-direction: column;
   gap: 1.25rem;
   overflow-y: auto;
+  /* the sheet only scrolls up and down, however wide something inside it gets */
+  overflow-x: hidden;
   overscroll-behavior: contain;
   scrollbar-width: none;
   border-bottom: 0;
