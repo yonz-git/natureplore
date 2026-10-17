@@ -691,7 +691,9 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 }
 .sg .seg-opt { transition: transform 160ms var(--ease-out), background-color var(--hover-fade) var(--ease-hover), color 400ms var(--ease-move); }
 /* each label holds the width of its heavier picked weight, so picking one never nudges the pill */
-.seg-label { display: inline-flex; flex-direction: column; }
+/* Alpino sits low in its line box: lifted 0.7px so the middle of its caps and x-height lands on the
+   middle of the icon and the pill */
+.seg-label { display: inline-flex; flex-direction: column; position: relative; top: -0.04375rem; }
 .seg-label::after {
   content: attr(data-text);
   height: 0;
@@ -710,7 +712,11 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 /* the icons sit as far from the edge and from the ink of their label's first letter as the nav's
    (app/tabbar.css): each icon's own empty margin cancelled, and the room R and O leave before
    their first stroke, measured at 18 */
-.sg .seg-opt:first-of-type > svg { margin: 0 -0.0800rem 0 -0.0350rem; }
+/* the Routes drawing fills less of its box than Organisms: drawn at 25 so its ink matches Organisms'
+   16.8, its line kept at the 18 icon's weight (x 18/25), the extra box taken back in the margins */
+.sg .seg-opt:first-of-type > svg { margin: 0 calc(-0.0800rem - 0.21875rem + 0.125rem) 0 calc(-0.0350rem - 0.21875rem); }
+.sg .seg-opt > svg.seg-routes { stroke-width: 1.07; }
+.sg .seg-opt[aria-pressed="true"] > svg.seg-routes { stroke-width: 1.5; }
 .sg .seg-opt:last-of-type > svg { margin: 0 -0.0663rem 0 -0.0185rem; }
 /* the open option's icon gets heavier, its line 40% thicker as on the nav's Map, and the two ends of
    Routes' line fill in */
