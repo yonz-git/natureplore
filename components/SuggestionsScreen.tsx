@@ -290,8 +290,8 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                     <section key={g.id} className="sg-org-sec" aria-labelledby={`sg-sec-${g.id}`}>
                       <h2 id={`sg-sec-${g.id}`} className="sg-org-sec-head">
                         <GroupIcon group={g.id} size={20} className={`is-${g.id}`} />
-                        {g.label}
-                        <span className="sg-org-count">{inGroup.length} species</span>
+                        <span className="sg-org-name">{g.label}</span>
+                        <span className="sg-org-count">{inGroup.length} Species</span>
                       </h2>
                       <ul className="a8-rows">
                         {inGroup.map(({ organism: o, routes: on, href }) => {
