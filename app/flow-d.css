@@ -24,6 +24,24 @@
   scroll-padding-bottom: var(--spacing-tabbar-clearance);
 }
 .ln-home .org-sheet::-webkit-scrollbar { display: none; }
+/* the jump chips glide to their section rather than cut to it, on every size */
+@media (prefers-reduced-motion: no-preference) {
+  .ln-home,
+  .ln-home .org-sheet { scroll-behavior: smooth; }
+  /* and what a section holds fades up as it scrolls into view, so nothing arrives with a snap. Only
+     opacity and translate, on items with no frosted glass inside, so no frost is switched off */
+  @supports (animation-timeline: view()) {
+    .ln-part > * {
+      animation: ln-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+}
+@keyframes ln-rise {
+  from { opacity: 0; translate: 0 1.5rem; }
+  to { opacity: 1; translate: 0 0; }
+}
 /* with the head above the sheet, the first section starts at the sheet's top */
 .ln-head-desk + .ln-part > .ln-sec { margin-top: 0.5rem; }
 .ln-title { margin-top: 0; }
