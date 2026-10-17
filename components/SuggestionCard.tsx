@@ -1,38 +1,37 @@
 "use client";
 
 // The suggestion card, one route in season this month, as on A5 and A4 (the redesign's section 2):
-// the photograph with Save over its top right, the name, its line, the spots in season as numbered
-// dots, and what is in season along it, each with its group icon first and a last-recorded date.
+// the photograph with Save over its top right, the name, its line, and what is in season along it. A
+// built route has too much recorded along it to list, so it shows the organism pills, how many species
+// of each group are recorded there this month, and a View route details button under them; a
+// sample card lists its few organisms, each with its group icon first and a last-recorded date.
 // Save works in place and says where the route went, on the photograph beside the bookmark, where
 // the eye already is. Only a route whose page is built opens.
 // Layout: app/suggestions.css.
 
 import Link from "next/link";
 
-import { BookmarkIcon, CheckCircleIcon, GroupIcon } from "@/components/Icons";
-import { groupWord, inSeasonLine, MONTH, type Suggestion } from "@/lib/suggestions";
+import {
+  BookmarkIcon,
+  CheckCircleIcon,
+  ChevronIcon,
+  GroupIcon,
+} from "@/components/Icons";
+import { OrganismPills } from "@/components/MapParts";
+import {
+  countsOf,
+  groupWord,
+  MONTH,
+  type Suggestion,
+} from "@/lib/suggestions";
 import { useSaved } from "@/lib/saved";
 
-export function SpotDots({ route }: { route: Suggestion }) {
-  const line = inSeasonLine(route);
-  return (
-    <div className="dots" role="img" aria-label={line}>
-      <span className="dots-row" aria-hidden="true">
-        {Array.from({ length: route.spots }, (_, i) => (
-          <span key={i} className={`dot${route.lit.includes(i + 1) ? " is-lit" : ""}`}>
-            {i + 1}
-          </span>
-        ))}
-      </span>
-      <span className="dots-line" aria-hidden="true">
-        {line}
-      </span>
-    </div>
-  );
-}
-
 /** A group icon in its own colour in a round tile, the same icon as the count pills, the group named for screen readers. */
-export function GroupTile({ group }: { group: Suggestion["inSeason"][number]["group"] }) {
+export function GroupTile({
+  group,
+}: {
+  group: Suggestion["inSeason"][number]["group"];
+}) {
   return (
     <span className="group-tile">
       <GroupIcon group={group} size={17} className={`is-${group}`} />
@@ -44,6 +43,7 @@ export function GroupTile({ group }: { group: Suggestion["inSeason"][number]["gr
 export function SuggestionCard({ route }: { route: Suggestion }) {
   const { isSaved, toggle } = useSaved();
   const saved = isSaved(route.id);
+  const counts = countsOf(route);
 
   return (
     <article className="sug" aria-label={route.name} data-route={route.id}>
@@ -66,29 +66,47 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
         </h2>
         <p className="sug-meta">{route.meta}</p>
       </div>
-      <SpotDots route={route} />
-      <div className="sug-season">
-        <p className="sug-season-label">In season in {MONTH}</p>
-        <ul className="sug-orgs">
-          {route.inSeason.map((o) => (
-            <li key={o.name}>
-              <GroupTile group={o.group} />
-              <span className="sug-org">
-                <span className="sug-org-name">
-                  {o.name}
-                  {o.note && <span className="sug-org-note">, {o.note}</span>}
+      {counts ? (
+        <div className="sug-season">
+          <p className="sug-season-label">Recorded here in {MONTH}</p>
+          <OrganismPills counts={counts} />
+          {route.href && (
+            <Link
+              href={route.href}
+              className="btn btn-secondary btn-chev sug-view"
+              aria-label={`View route details, ${route.name}`}
+            >
+              View route details
+              <ChevronIcon size={18} />
+            </Link>
+          )}
+        </div>
+      ) : (
+        <div className="sug-season">
+          <p className="sug-season-label">In season in {MONTH}</p>
+          <ul className="sug-orgs">
+            {route.inSeason.map((o) => (
+              <li key={o.name}>
+                <GroupTile group={o.group} />
+                <span className="sug-org">
+                  <span className="sug-org-name">
+                    {o.name}
+                    {o.note && <span className="sug-org-note">, {o.note}</span>}
+                  </span>
+                  <span className="sug-org-last">Last recorded {o.last}</span>
                 </span>
-                <span className="sug-org-last">Last recorded {o.last}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <button
         type="button"
         className="sug-save glass glass-pin"
         aria-pressed={saved}
-        aria-label={saved ? `Saved, ${route.name}, tap to remove` : `Save ${route.name}`}
+        aria-label={
+          saved ? `Saved, ${route.name}, tap to remove` : `Save ${route.name}`
+        }
         onClick={() => toggle(route.id)}
       >
         <BookmarkIcon size={20} filled={saved} />
@@ -97,7 +115,8 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
         {saved && (
           <>
             <CheckCircleIcon size={16} />
-            Saved and downloaded<span className="sr-only">. Find it in Saved.</span>
+            Saved and downloaded
+            <span className="sr-only">. Find it in Saved.</span>
           </>
         )}
       </p>
