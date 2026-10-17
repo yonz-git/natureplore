@@ -299,7 +299,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
 
 .b1 .ms-sheet { padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); scroll-padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); }
 .b1 .ms-sheet > section { flex-shrink: 0; display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
-.b1-back-desk { display: none; }
 
 /* jump to a section: chips that scroll sideways, bleeding to the sheet's edges */
 .fb-strip {
@@ -537,7 +536,6 @@ button.fb-row:active { transform: scale(0.985); }
 
 @media (min-width: 64rem) {
   .b1 .ms-sheet { padding-bottom: 1.5rem; scroll-padding-top: 1rem; }
-  .b1-back-desk { display: inline-flex; flex-shrink: 0; align-self: flex-start; }
   .fb-backlink {
     align-self: flex-start;
     align-items: center;

@@ -249,9 +249,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           onScroll={sheet.onScroll}
         >
           {sheet.grab("route")}
-          <Link href={back} className="round glass glass-pin b1-back-desk" aria-label={backLabel}>
-            <BackIcon size={20} />
-          </Link>
 
           <div className="b1-photos">
             {/* the route, then two of what is in season along it; a frame stays blank where there is no photo */}

@@ -495,14 +495,14 @@ button.float-pill,
 }
 .a1-map.leaflet-container { font: inherit; background: var(--color-basemap-land); }
 
-/* Desktop search: the field sits over the panel's left column, as on the tablet, its top level with
-   the nav pill's (nav-top-desktop, app/tabbar.css), and the panel starts a control-stack gap under
+/* Desktop search: the field sits over the panel's left column, as on the tablet, centred on the nav
+   pill's 3.625rem line (app/tabbar.css) like every back control, and the panel starts a control-stack gap under
    it (app/flow-a.css). Rendered there by SuggestionsScreen and SearchScreen; search's back control
    comes into the row in front of the field. */
 .ms-search-top {
   position: absolute;
   z-index: 3;
-  top: var(--spacing-nav-top-desktop);
+  top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2);
   left: 2.5rem;
   width: 27.5rem;
   display: flex;
@@ -1153,8 +1153,16 @@ button.float-pill,
     border-color: var(--color-inner-edge);
   }
 
-  /* B1: the panel scrolls, save, share and navigate stay at its foot */
-  .b1-top { display: none; }
+  /* B1: the panel scrolls, save, share and navigate stay at its foot. Back stays outside the panel,
+     on the nav pill's line at the top left, as on every page (app/organism.css) */
+  .b1-top { display: contents; }
+  .b1-top > a {
+    position: fixed;
+    z-index: 3;
+    top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2);
+    left: 2.5rem;
+  }
+  .b1-top > button { display: none; }
   .b1 .ms-panel { padding: 1.5rem 0 0; }
   .b1 .ms-sheet {
     flex: 1 1 auto;

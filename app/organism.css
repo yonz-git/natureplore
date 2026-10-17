@@ -15,7 +15,7 @@
 
 .org-top {
   position: absolute;
-  top: calc(var(--top-chrome) + 0.25rem);
+  top: calc(var(--top-chrome) + 0.5rem);
   left: var(--spacing-screen-phone);
   right: var(--spacing-screen-phone);
   z-index: 2;
