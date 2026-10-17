@@ -98,11 +98,12 @@ a.fb-row:active { transform: scale(0.985); }
 .fb-pill svg { color: var(--color-mist); }
 .fb-pill.is-none { color: var(--color-on-ground-soft); }
 /* the legend under the proportion bar: each group's own icon in its bar colour, then its count */
-.fb-legend .group-icon.is-plants { color: var(--color-group-plants); }
-.fb-legend .group-icon.is-herbs { color: var(--color-group-herbs); }
-.fb-legend .group-icon.is-mushrooms { color: var(--color-group-mushrooms); }
-.fb-legend .group-icon.is-birds { color: var(--color-group-birds); }
-.fb-legend .group-icon.is-mammals { color: var(--color-group-mammals); }
+/* the group icons in every pill row take their group's colour: B1's legend, its in-season list and the organism pills on the cards */
+:is(.fb-legend, .pill-org, .fb-in-season-tile) .group-icon.is-plants { color: var(--color-group-plants); }
+:is(.fb-legend, .pill-org, .fb-in-season-tile) .group-icon.is-herbs { color: var(--color-group-herbs); }
+:is(.fb-legend, .pill-org, .fb-in-season-tile) .group-icon.is-mushrooms { color: var(--color-group-mushrooms); }
+:is(.fb-legend, .pill-org, .fb-in-season-tile) .group-icon.is-birds { color: var(--color-group-birds); }
+:is(.fb-legend, .pill-org, .fb-in-season-tile) .group-icon.is-mammals { color: var(--color-group-mammals); }
 /* centred on the ink, not the boxes: 10 from the pill's edge to the icon's drawing on the left and
    to the last figure on the right, the figures trimmed to their cap height so they sit on the
    pill's middle, and each icon's own empty margin inside its 24 box cancelled, measured per icon */
@@ -586,3 +587,9 @@ button.fb-row:active { transform: scale(0.985); }
   .fb-spot-detail,
   .fb-spot-row .fb-row > svg:last-child { transition: none; }
 }
+
+/* B1: what is in season along the route, under the group pills, in the Organisms list's rows */
+.fb-in-season { display: flex; flex-direction: column; }
+.fb-in-season .a8-rows { margin-top: 0.25rem; }
+.fb-in-season-tile { display: grid; place-items: center; }
+.fb-in-season .cp-link { align-self: flex-start; }

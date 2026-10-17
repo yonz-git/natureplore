@@ -37,7 +37,7 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
   // a memo so the map is built once; the spot shown is marked by `current`, not by a new set of points
   const points = useMemo<MapPoint[]>(() => {
     return [
-      { id: "start", lat: route.lat, lon: route.lon, label: `Start and finish, ${route.from}`, start: true },
+      { id: "start", lat: route.lat, lon: route.lon, label: `${route.oneWay ? "Start" : "Start and finish"}, ${route.from}`, start: true, startText: route.oneWay ? "Start" : undefined },
       ...marks.map((s, i) => ({
         id: `s${s.n}`,
         lat: s.lat,

@@ -99,7 +99,7 @@ export function OrganismPills({ counts, all = false }: { counts: Counts; all?: b
     <ul className="pills" aria-label="Organisms recorded along it">
       {GROUPS.filter((g) => all || counts[g.id]).map((g) => (
         <li key={g.id} className={`pill-org${counts[g.id] ? "" : " is-none"}`}>
-          <GroupIcon group={g.id} />
+          <GroupIcon group={g.id} className={`is-${g.id}`} />
           <b>{counts[g.id] ?? 0}</b>
           <span className="sr-only">{counts[g.id] ? g.label.toLowerCase() : `${g.label.toLowerCase()}, none recorded yet`}</span>
         </li>
