@@ -389,7 +389,9 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-facts dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.5rem; }
 .b1-foot { margin-top: 0.5rem; }
 
-/* pinned over the tab bar on the phone, once saved: Walk the route; after a removal, Undo */
+/* Walk the route, under the stats once saved */
+.b1-walk { animation: fade-in var(--enter) var(--ease-enter) backwards; }
+/* pinned over the tab bar on the phone after a removal: Undo */
 .b1-pin {
   position: absolute;
   left: 0.75rem;
@@ -406,22 +408,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
   border-radius: var(--radius-pill);
 }
 .b1-pin .btn { animation: fade-in var(--enter) var(--ease-enter) backwards; }
-/* saved on this visit: where the route went, on screen, above the two buttons */
-.b1-pin.has-note { flex-wrap: wrap; justify-content: center; border-radius: var(--radius-card); }
-.b1-note {
-  flex-basis: 100%;
-  margin: 0;
-  padding: 0.25rem 0.75rem 0.125rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.375rem;
-  text-align: center;
-  font-size: var(--text-caption);
-  line-height: 1.5rem;
-  animation: fade-in var(--enter) var(--ease-enter) backwards;
-}
-.b1-note svg { flex-shrink: 0; color: var(--color-mist); }
 /* with large text a label wraps inside its button rather than running out of the bar */
 .b1-pin .btn { min-width: 0; flex-shrink: 1; height: auto; min-height: var(--spacing-button-height); padding-top: 0.5rem; padding-bottom: 0.5rem; white-space: normal; text-align: center; }
 .b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-sm); line-height: 1.65rem; animation: fade-in var(--enter) var(--ease-enter) backwards; }
@@ -582,7 +568,6 @@ button.fb-row:active { transform: scale(0.985); }
     border-top: 1px solid var(--color-divider);
     border-radius: 0;
   }
-  .b1-pin .b1-walk { flex-grow: 0; }
 
   .walk .walk-top { top: 2.5rem; left: 31.5rem; right: 5.5rem; justify-content: flex-start; }
   .walk-locate { display: none; }
@@ -603,6 +588,7 @@ button.fb-row:active { transform: scale(0.985); }
   .walk-end { transition: none; }
   .b1 .ms-sheet { scroll-behavior: auto; }
   .b1-pin .btn,
+  .b1-walk,
   .walk-spot,
   .walk-more,
   .walk .a1-map,
