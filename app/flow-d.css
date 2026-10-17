@@ -11,7 +11,8 @@
 /* D0 under 64rem: the head stays on the photograph at the top and only the sheet scrolls, under it */
 .ln-home { display: flex; flex-direction: column; overflow: hidden; }
 .ln-top { flex: none; padding: calc(var(--top-chrome) + 0.5rem) calc(1.5vw + 1.5rem) 1.25rem; text-shadow: 0 1px 0.5rem rgb(0 0 0 / 0.35); }
-.ln-top .chip { text-shadow: none; }
+/* off the sheet the chips stand on the photograph, so they frost like the map's floating controls */
+.ln-top .chip { text-shadow: none; backdrop-filter: blur(1.875rem) saturate(1.4); }
 .ln-head-desk { display: none; }
 .ln-home .org-sheet {
   flex: 1 1 auto;
