@@ -690,32 +690,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 /* Alpino sits low in its line box: lifted 0.7px so the middle of its caps and x-height lands on the
    middle of the icon and the pill */
 .seg-label { display: inline-flex; flex-direction: column; position: relative; top: -0.04375rem; }
-/* tablet and phone: the picked option is its icon alone in the lime circle, its name folding away
-   (still read out); the other keeps its name. Padding, gap and the name's width glide, so the lime
-   and the other option slide rather than jump */
-@media (max-width: 63.99rem) {
-  /* the lime is the picked option's own fill here, not the sliding pill, so it never chases an
-     option that is changing width: it fades across while the names fold and unfold */
-  .sg .seg-thumb { display: none; }
-  .sg .seg-opt {
-    transition:
-      transform 160ms var(--ease-out),
-      background-color 540ms var(--ease-move),
-      color 540ms var(--ease-move),
-      padding 540ms var(--ease-move),
-      gap 540ms var(--ease-move);
-  }
-  .sg .seg-label { max-width: 8rem; overflow: hidden; white-space: nowrap; transition: max-width 540ms var(--ease-move), opacity 360ms var(--ease-move); }
-  /* a true circle, the 40 option's own height */
-  .sg .seg-opt[aria-pressed="true"] {
-    min-width: 2.5rem;
-    padding: 0;
-    gap: 0;
-    justify-content: center;
-    background-color: var(--color-primary);
-  }
-  .sg .seg-opt[aria-pressed="true"] .seg-label { max-width: 0; opacity: 0; }
-}
 .seg-label::after {
   content: attr(data-text);
   height: 0;
@@ -752,9 +726,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg .seg-opt > svg.seg-orgs g { stroke-width: 2.23; }
 .sg .seg-opt[aria-pressed="true"] > svg.seg-orgs g { stroke-width: 3.12; }
 .sg .seg-opt[aria-pressed="true"] > svg circle { fill: currentColor; }
-/* the top row, outside the sheet: Routes or Organisms, on Organisms its group filters sliding out to
-   the right, after a search circle. The switch matches the search field's 3.25rem and sits above the
-   filters, which slide out from behind it */
+/* the top row, outside the sheet: a search circle, then Routes or Organisms, matching the search
+   field's 3.25rem */
 /* half the usual control gap between the circle, the switch and the filters */
 .sg .ms-bar-row { position: relative; align-items: center; gap: calc(var(--spacing-control-stack) / 2); }
 .sg .ms-bar-row > .seg { position: relative; z-index: 1; flex-shrink: 0; min-height: 3.25rem; align-items: center; }
@@ -769,7 +742,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   border-radius: var(--radius-pill);
   color: var(--color-on-ground);
 }
-/* Search opened: the circle, the switch and the filters slide out to the left and fade, and the field
+/* Search opened: the circle and the switch slide out to the left and fade, and the field
    slides in over the whole row from the circle's side, its icon now Back. Each glass part moves on its
    own (an animated ancestor would switch the frost off). The field's layer stays shown until the
    field has gone. */
@@ -777,7 +750,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg .ms-bar-row > .seg { transition: opacity 360ms var(--ease-move), translate 540ms var(--ease-move); }
 .sg .ms-bar-row.is-searching > .sg-search,
 .sg .ms-bar-row.is-searching > .seg { opacity: 0; translate: 1.5rem 0; pointer-events: none; }
-.sg .ms-bar-row.is-searching .sg-group { opacity: 0; translate: 1.5rem 0; pointer-events: none; --d: 0ms; }
 .sg-find { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; visibility: hidden; transition: visibility 0s 540ms; }
 .sg-find > form { flex: 1 1 auto; }
 .sg-find .field { opacity: 0; translate: -1.5rem 0; transition: opacity 360ms var(--ease-move), translate 540ms var(--ease-move); }
@@ -804,23 +776,29 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .field:has(> .field-back) .field-hint { inset: 0 calc(1.25rem + 1.1875rem + 0.75rem); }
   .field:has(> .field-back) .field-hint-search { display: none; }
 }
-/* the phone row swipes sideways where the switch and the filters run past the screen; the field
-   covers the row inside its side padding */
-@media (max-width: 47.99rem) {
-  .sg-find { inset: 0.5rem var(--spacing-screen-phone); }
-  .sg .ms-bar-row { overflow-x: auto; scrollbar-width: none; margin: -0.5rem calc(-1 * var(--spacing-screen-phone)); padding: 0.5rem var(--spacing-screen-phone); }
-  .sg .ms-bar-row::-webkit-scrollbar { display: none; }
-}
-/* the filters' row comes and goes with them: it stays until the last one has faded out */
+/* On Organisms the filters are a row in the sheet, between the heading and the list. The row opens
+   its own height, so the list glides down and back up instead of jumping; while it is closed it also
+   takes back the sheet's gap under it. It stays until the last filter has gone. */
 .sg-groups {
   display: none;
   flex-shrink: 0;
   align-items: center;
+  height: 0;
+  margin-bottom: calc(-1 * var(--sg-gap));
   gap: 0.25rem; /* about a third of 0.6875rem, a whole pixel */
-  transition: display 660ms allow-discrete;
+  transition:
+    display 660ms allow-discrete,
+    height 540ms var(--ease-move) 120ms,
+    margin-bottom 540ms var(--ease-move) 120ms;
 }
-.sg-groups.is-on { display: flex; transition: display 0ms allow-discrete; }
-/* each toggle slides out on its own from behind the switch to its place, never its row (the toggles
+.sg-groups.is-on {
+  display: flex;
+  height: 2.125rem;
+  margin-bottom: 0;
+  transition: display 0ms allow-discrete, height 540ms var(--ease-move), margin-bottom 540ms var(--ease-move);
+}
+@starting-style { .sg-groups.is-on { height: 0; margin-bottom: calc(-1 * var(--sg-gap)); } }
+/* each toggle slides out on its own from the first one's place to its own, never its row (the toggles
    are glass, and animating anything above glass switches the frost off): one after another from the
    left, and back in again the other way, the last first. --d is each one's beat, and only the coming
    and going wait for it, never a hover or a press */
@@ -838,9 +816,9 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   --d: 0ms;
   --in: 540ms;
   opacity: 0;
-  /* tucked behind the switch: each one starts its own place plus one switch-edge further left */
+  /* stacked on the first filter's place, each fans out to its own */
   --i: 1;
-  translate: calc(-1 * var(--i) * 2.375rem) 0;
+  translate: calc(-1 * (var(--i) - 1) * 2.375rem) 0;
   transition:
     opacity var(--in) var(--ease-move) var(--d),
     translate var(--in) var(--ease-move) var(--d),
@@ -855,12 +833,12 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-group:nth-child(5) { --i: 5; }
 /* and out again, the dimmed ones too: the site-wide 45% for a disabled control would otherwise hold
    them there until the row is gone, and they would vanish instead of fading with the rest */
-.sg-groups:not(.is-on) .sg-group { opacity: 0; translate: calc(-1 * var(--i) * 2.375rem) 0; --in: 440ms; }
+.sg-groups:not(.is-on) .sg-group { opacity: 0; translate: calc(-1 * (var(--i) - 1) * 2.375rem) 0; --in: 440ms; }
 @starting-style {
   /* the dimmed ones as well: their own 40% rule, further down and as specific, would otherwise win
      here too and skip their fade, so this one is a step more specific */
   .sg-groups.is-on .sg-group,
-  .sg-groups.is-on .sg-group.sg-group[aria-disabled="true"] { opacity: 0; translate: calc(-1 * var(--i) * 2.375rem) 0; }
+  .sg-groups.is-on .sg-group.sg-group[aria-disabled="true"] { opacity: 0; translate: calc(-1 * (var(--i) - 1) * 2.375rem) 0; }
 }
 .sg-groups.is-on .sg-group:nth-child(2) { --d: 60ms; }
 .sg-groups.is-on .sg-group:nth-child(3) { --d: 120ms; }

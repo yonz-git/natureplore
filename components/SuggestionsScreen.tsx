@@ -147,10 +147,10 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
       </button>
     </div>
   );
-  // on Organisms, the group filters slide out to the right of the switch; inert, not removed, while
+  // on Organisms, the group filters fan out in the sheet above the list; inert, not removed, while
   // on Routes, so the toggles can fade out as well as in
   const groups = (
-    <div role="group" aria-label="Filter by group" ref={groupRow} className={`sg-groups${show === "organisms" ? " is-on" : ""}`} inert={show !== "organisms" || searching}>
+    <div role="group" aria-label="Filter by group" ref={groupRow} className={`sg-groups${show === "organisms" ? " is-on" : ""}`} inert={show !== "organisms"}>
       {GROUPS.map((g) => (
         <button
           key={g.id}
@@ -191,8 +191,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
         <SearchIcon size={18} />
       </button>
       {segment}
-      {groups}
-      <div className="sg-find" inert={!searching} onKeyDown={(e) => e.key === "Escape" && closeSearch()}>
+            <div className="sg-find" inert={!searching} onKeyDown={(e) => e.key === "Escape" && closeSearch()}>
         <SearchField onBack={closeSearch} />
       </div>
     </div>
@@ -247,6 +246,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             </div>
             {toggle}
           </div>
+          {groups}
 
           {near && (
             <p className="sg-where">
