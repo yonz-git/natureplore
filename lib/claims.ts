@@ -65,7 +65,7 @@ export const CLAIMS: Record<string, Claim> = {
       paywall: true,
     },
     actions: ["clean-up", "peat-free"],
-    route: { name: "Linum wet meadows loop", line: "6.0 km loop, 6 spots", href: "/map/route/linum" },
+    route: { name: "Linum wet meadows loop", line: "6.3 km loop, 6 spots", href: "/map/route/linum" },
   },
   c1b: {
     id: "c1b",
@@ -91,7 +91,7 @@ export const CLAIMS: Record<string, Claim> = {
       covers: "NSG and FFH-Gebiet Oberes Rhinluch, the whole designated site",
     },
     actions: ["clean-up", "rewet"],
-    route: { name: "Linum wet meadows loop", line: "6.0 km loop, 6 spots", href: "/map/route/linum" },
+    route: { name: "Linum wet meadows loop", line: "6.3 km loop, 6 spots", href: "/map/route/linum" },
   },
   c6: {
     id: "c6",
@@ -117,8 +117,7 @@ export const CLAIMS: Record<string, Claim> = {
     },
     done: ["Ditches blocked by the state nature agency, 2013 to 2016", "Late mowing agreed with local farmers"],
     keep: { line: "Stay on the boardwalk April to July", why: "Ground-nesting birds breed in the open meadow." },
-    // the route is not built in the prototype, so it is named, not linked
-    route: { name: "Tegeler Fließ valley path", line: "8.4 km, point to point, 7 spots" },
+    route: { name: "Tegeler Fließ valley path", line: "4.9 km, point to point, 7 spots", href: "/map/route/tegel" },
   },
 };
 

@@ -123,7 +123,8 @@ export default function TabBar() {
           }
         />
         {TABS.map((tab) => {
-          const current = pathname.startsWith(tab.href);
+          // the start sheet at /start belongs to the Map tab
+          const current = pathname.startsWith(tab.href) || (tab.href === "/map" && pathname === "/start");
           return (
             <li key={tab.href}>
               <Link

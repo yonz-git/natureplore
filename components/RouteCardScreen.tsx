@@ -167,7 +167,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   // a spot's marker opens the spot in the list below (its #spot-n anchor)
   const points = useMemo<MapPoint[]>(
     () => [
-      { id: "start", lat: route.lat, lon: route.lon, label: `Start and finish, ${route.from}`, start: true },
+      { id: "start", lat: route.lat, lon: route.lon, label: `${route.oneWay ? "Start" : "Start and finish"}, ${route.from}`, start: true, startText: route.oneWay ? "Start" : undefined },
       ...spots.map((s, i) => ({
         id: `s${s.n}`,
         lat: s.lat,
@@ -249,9 +249,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           onScroll={sheet.onScroll}
         >
           {sheet.grab("route")}
-          <Link href={back} className="round glass glass-pin b1-back-desk" aria-label={backLabel}>
-            <BackIcon size={20} />
-          </Link>
 
           <div className="b1-photos">
             {/* the route, then two of what is in season along it; a frame stays blank where there is no photo */}
