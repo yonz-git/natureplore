@@ -125,8 +125,6 @@ export const ROUTE_POINTS: MapPoint[] = SUGGESTIONS.map((s) => ({
 
 export const suggestionById = (id: string) => SUGGESTIONS.find((s) => s.id === id);
 
-/** How many routes the region holds in all, for "Show all". */
-export const ROUTE_TOTAL = 48;
 
 /** "4 of 6 spots in season in September" */
 export const inSeasonLine = (s: Suggestion) => `${s.lit.length} of ${s.spots} spots in season in ${MONTH}`;
