@@ -5,21 +5,25 @@
 
 /* ── the suggestion card ───────────────────────────────────────────────────────────────────── */
 
+/* a row: the square photograph on the left, the text on the right, Save at the top right; what is
+   in season runs the full width under both */
 .sug {
   position: relative;
   flex-shrink: 0;
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.35rem;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  column-gap: 1rem;
+  row-gap: 0.75rem;
   border-radius: var(--radius-inner);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
   border: 0.5px solid var(--color-inner-edge);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
 }
 .sug-photo {
+  align-self: start;
   width: 100%;
-  height: 9.5rem;
+  aspect-ratio: 1;
   display: block;
   box-sizing: border-box;
   border-radius: var(--radius-tile);
@@ -28,14 +32,18 @@
     linear-gradient(170deg, var(--color-field-mid) 0%, var(--color-field-shade) 100%);
   border: 0.5px solid var(--color-inner-edge);
 }
-.sug-head { display: flex; flex-direction: column; gap: 0.3375rem; }
+/* the name and its line sit under the Save circles, the full width of the column */
+.sug-head { display: flex; flex-direction: column; gap: 0.3375rem; padding-top: calc(2.25rem + 0.5rem); }
 .sug-name {
   margin: 0;
   font-family: var(--font-text);
-  font-size: 1.35rem;
-  line-height: 1.8rem;
+  font-size: var(--text-title);
+  line-height: var(--text-title--line-height);
   font-weight: 400;
 }
+/* the spot count closes the pills row, on its right, on the last line where the pills wrap (phone) */
+.sug-pills-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 0.25rem; }
+.sug-spots { height: 2rem; margin: 0; }
 .sug-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 
 /* the name opens the route: its link covers the card, Save sits above it */
@@ -48,8 +56,8 @@
 .sug-save {
   position: absolute;
   z-index: 1;
-  top: 1.75rem;
-  right: 1.75rem;
+  top: 1rem;
+  right: 1rem;
   width: 2.25rem;
   height: 2.25rem;
   padding: 0;
@@ -81,7 +89,7 @@
 .sug-save.glass::after { content: none; }
 /* downloaded: a second frost left of the bookmark, shown once saved, not a control */
 .sug-save.sug-dl {
-  right: calc(1.75rem + 2.25rem + 0.25rem);
+  right: calc(1rem + 2.25rem + 0.25rem);
   cursor: default;
   animation: sheet-in var(--enter) var(--ease-enter) backwards;
 }
@@ -90,33 +98,6 @@
   from { transform: scale(0.7); }
   to { transform: scale(1); }
 }
-/* the confirmation sits on the photograph beside the bookmark, where the tap was, not at the card's
-   foot below the fold */
-.sug-saved {
-  position: absolute;
-  z-index: 1;
-  top: 1.875rem;
-  left: 1.75rem;
-  margin: 0;
-  width: max-content;
-  max-width: calc(100% - 9rem);
-  box-sizing: border-box;
-  min-height: 2rem;
-  padding: 0.3125rem 0.75rem 0.3125rem 0.625rem;
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  border-radius: var(--radius-pill);
-  background: var(--color-glass-solid);
-  border: 0.5px solid var(--color-inner-edge);
-  color: var(--color-on-ground);
-  font-size: var(--text-caption);
-  line-height: 1.25;
-  font-weight: 400;
-}
-.sug-saved svg { flex-shrink: 0; color: var(--color-mist); }
-.sug-saved:empty { display: none; }
-.sug-saved:not(:empty) { animation: sheet-in var(--enter) var(--ease-enter) backwards; }
 
 /* the spots in season: numbered dots, the lit ones filled with mist */
 .dots { display: flex; flex-wrap: wrap; align-items: center; gap: 0.84375rem; }
@@ -156,11 +137,10 @@
 .dots-line { font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); font-weight: 400; }
 
 /* what is in season along it, each with its group first */
-.sug-season { display: flex; flex-direction: column; gap: 0.675rem; }
+.sug-season { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 0.675rem; }
 .sug-season-label { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .sug-orgs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.84375rem; }
 /* a built route's card ends on View route, a button inside a card, so it hugs its label at every size */
-.sug .sug-view { align-self: flex-start; width: auto; margin-top: 0.5rem; }
 .sug-orgs li { display: flex; align-items: center; gap: 0.75rem; }
 .sug-org { min-width: 0; display: flex; flex-direction: column; gap: 0.16875rem; }
 .sug-org-name { font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
@@ -585,6 +565,9 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 
 /* ── from 64rem ────────────────────────────────────────────────────────────────────────────── */
 
+@media (min-width: 48rem) {
+  .sug { grid-template-columns: 7.5rem minmax(0, 1fr); }
+}
 @media (min-width: 64rem) {
   /* one panel frame for every Routes screen: it stays in place from the suggestions into search,
      and ends as far above the bottom edge as the nav sits below the top */
@@ -661,7 +644,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   /* no press scale, but the lit veil still fades, shorter: a fade is not movement */
   .map-route { transition: box-shadow 160ms ease, border-color 160ms ease; }
   .sug-save[aria-pressed="true"] svg,
-  .sug-saved:not(:empty),
   .sug-save.sug-dl,
   .sg.is-map .sg-map-note,
   .sg:not(.is-map) .sg-list,

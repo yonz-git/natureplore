@@ -1,21 +1,18 @@
 "use client";
 
-// The suggestion card, one route in season this month, as on A5 and A4 (the redesign's section 2):
-// the photograph with Save over its top right, the name, its line, and what is in season along it. A
-// built route has too much recorded along it to list, so it shows the organism pills, how many species
-// of each group are recorded there this month, and a View route details button under them; a
-// sample card lists its few organisms, each with its group icon first and a last-recorded date.
-// Save works in place and says where the route went, on the photograph beside the bookmark, where
-// the eye already is. Only a route whose page is built opens.
+// The suggestion card, one route in season this month, as on A5 and A4, laid out as a row: a square
+// photograph on the left; the name, its line and what is in season along it on the right, with Save
+// at the top right. A built route shows the organism pills, how many species of each group are
+// recorded there this month; a sample card lists its few organisms, each with its group icon first
+// and a last-recorded date. Once saved, a download circle joins the bookmark. The whole card opens
+// the route, where its page is built.
 // Layout: app/suggestions.css.
 
 import Link from "next/link";
 
 import {
   BookmarkIcon,
-  CheckCircleIcon,
   DownloadIcon,
-  ChevronIcon,
   GroupIcon,
 } from "@/components/Icons";
 import { OrganismPills } from "@/components/MapParts";
@@ -69,18 +66,10 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
       </div>
       {counts ? (
         <div className="sug-season">
-          <p className="sug-season-label">Recorded here in {MONTH}</p>
-          <OrganismPills counts={counts} />
-          {route.href && (
-            <Link
-              href={route.href}
-              className="btn btn-secondary btn-chev sug-view"
-              aria-label={`View route details, ${route.name}`}
-            >
-              View route details
-              <ChevronIcon size={18} />
-            </Link>
-          )}
+          <div className="sug-pills-row">
+            <OrganismPills counts={counts} />
+            <p className="tag sug-spots">{route.spots} Spots</p>
+          </div>
         </div>
       ) : (
         <div className="sug-season">
@@ -117,14 +106,8 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
           <DownloadIcon size={16} />
         </span>
       )}
-      <p className="sug-saved" role="status">
-        {saved && (
-          <>
-            <CheckCircleIcon size={16} />
-            Saved
-            <span className="sr-only"> and downloaded. Find it in Saved.</span>
-          </>
-        )}
+      <p className="sr-only" role="status">
+        {saved && "Saved and downloaded. Find it in Saved."}
       </p>
     </article>
   );
