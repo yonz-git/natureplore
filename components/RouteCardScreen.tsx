@@ -27,9 +27,9 @@ import { suggestionById } from "@/lib/suggestions";
 const noop = () => () => {};
 
 const SECTIONS = [
+  ["recorded", "Recorded organisms"],
   ["spots", "Spots"],
   ["drawn", "The route"],
-  ["recorded", "What is recorded"],
   ["season", "When to walk the route"],
   ["happening", "What is happening"],
   ["getting", "Getting there"],
@@ -303,6 +303,43 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
             </nav>
           )}
 
+          <section aria-labelledby="sec-recorded-title">
+            <SectionHead id="recorded" lead="Recorded " close="organisms" note="Within 250 m of the line" />
+            <div className="fb-card fb-recorded">
+              <div
+                className="b1-bar"
+                role="img"
+                aria-label={`${total} species recorded: ${GROUPS.map((g) => `${route.counts[g.id] ?? 0} ${g.label.toLowerCase()}`).join(", ")}`}
+              >
+                {GROUPS.filter((g) => route.counts[g.id]).map((g) => (
+                  <span key={g.id} className={`is-${g.id}`} style={{ flexGrow: route.counts[g.id] }} />
+                ))}
+              </div>
+              <ul className="fb-legend" aria-hidden="true">
+                {GROUPS.map((g) => (
+                  <li key={g.id} className={`fb-pill${route.counts[g.id] ? "" : " is-none"}`} title={g.label}>
+                    <GroupIcon group={g.id} size={17} className={`is-${g.id}`} />
+                    <span className="fb-legend-num" data-last={String(route.counts[g.id] ?? 0).slice(-1)}>{route.counts[g.id] ?? 0}</span>
+                  </li>
+                ))}
+              </ul>
+              <InSeasonList routeId={route.id} />
+              {/* A8 has the records of Grumsin beech forest loop only */}
+              {route.id === "grumsin" ? (
+                <Link href={`/map/route/${route.id}/recorded`} className="btn btn-secondary btn-chev">
+                  See everything recorded
+                  <ChevronIcon size={18} />
+                </Link>
+              ) : (
+                <button type="button" className="btn btn-secondary btn-chev" aria-disabled="true">
+                  See everything recorded
+                  <span className="sr-only">, not built in the prototype yet</span>
+                  <ChevronIcon size={18} />
+                </button>
+              )}
+            </div>
+          </section>
+
           <section aria-labelledby="sec-spots-title">
             <SectionHead id="spots" lead="Spots along " close="this route" note="In walking order" />
             <ol className="fb-card fb-rows">
@@ -391,43 +428,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
               </div>
             </section>
           )}
-
-          <section aria-labelledby="sec-recorded-title">
-            <SectionHead id="recorded" lead="What is recorded " close="along this route" note="Within 250 m of the line" />
-            <div className="fb-card fb-recorded">
-              <div
-                className="b1-bar"
-                role="img"
-                aria-label={`${total} species recorded: ${GROUPS.map((g) => `${route.counts[g.id] ?? 0} ${g.label.toLowerCase()}`).join(", ")}`}
-              >
-                {GROUPS.filter((g) => route.counts[g.id]).map((g) => (
-                  <span key={g.id} className={`is-${g.id}`} style={{ flexGrow: route.counts[g.id] }} />
-                ))}
-              </div>
-              <ul className="fb-legend" aria-hidden="true">
-                {GROUPS.map((g) => (
-                  <li key={g.id} className={`fb-pill${route.counts[g.id] ? "" : " is-none"}`} title={g.label}>
-                    <GroupIcon group={g.id} size={17} className={`is-${g.id}`} />
-                    <span className="fb-legend-num" data-last={String(route.counts[g.id] ?? 0).slice(-1)}>{route.counts[g.id] ?? 0}</span>
-                  </li>
-                ))}
-              </ul>
-              <InSeasonList routeId={route.id} />
-              {/* A8 has the records of Grumsin beech forest loop only */}
-              {route.id === "grumsin" ? (
-                <Link href={`/map/route/${route.id}/recorded`} className="btn btn-secondary btn-chev">
-                  See everything recorded
-                  <ChevronIcon size={18} />
-                </Link>
-              ) : (
-                <button type="button" className="btn btn-secondary btn-chev" aria-disabled="true">
-                  See everything recorded
-                  <span className="sr-only">, not built in the prototype yet</span>
-                  <ChevronIcon size={18} />
-                </button>
-              )}
-            </div>
-          </section>
 
           {detail && (
             <>

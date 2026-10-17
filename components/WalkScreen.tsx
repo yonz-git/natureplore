@@ -3,9 +3,9 @@
 // L4 · Walk: where am I, and what is at this spot? A map strip with the route line, the numbered
 // spots and the person's position (no directions), over a solid sheet that is the spot block.
 // "More about this spot" opens the rest of the spot page in place. Previous and next are buttons,
-// not swipes, and the markers on the map open their spot too. End walk goes to Saved. This is the
-// location-on walk: it opens on spot 2, the nearest, with the position dot beside it. The sheet is
-// solid, not glass, so it reads outdoors. From 64rem the sheet is a solid panel down the left.
+// not swipes, and the markers on the map open their spot too. End walk goes to Saved. It opens on
+// spot 1, with the map on that spot and its marker drawn larger, and the map follows the sheet from
+// spot to spot. The sheet is solid, not glass, so it reads outdoors. From 64rem the sheet is a solid panel down the left.
 // Board: L4 · Walk, phone.
 
 import Link from "next/link";
@@ -34,9 +34,8 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
   const open = openOn === n;
 
   const marks = useMemo(() => spotsOf(route), [route]);
-  // the person stands by spot 2, as on the board; a memo so the map is built once
+  // a memo so the map is built once; the spot shown is marked by `current`, not by a new set of points
   const points = useMemo<MapPoint[]>(() => {
-    const two = marks[1];
     return [
       { id: "start", lat: route.lat, lon: route.lon, label: `${route.oneWay ? "Start" : "Start and finish"}, ${route.from}`, start: true, startText: route.oneWay ? "Start" : undefined },
       ...marks.map((s, i) => ({
@@ -49,21 +48,21 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
         left: route.stops[i]?.left,
         href: `${here}?spot=${s.n}`,
       })),
-      { id: "here", lat: two.lat - 0.0004, lon: two.lon + 0.0022, label: "You are here, at spot 2", here: true },
     ];
   }, [marks, route, here]);
   const line = useMemo(() => route.path ?? marks.map((s) => [s.lat, s.lon] as [number, number]), [route, marks]);
 
-  // the map follows the sheet to the spot it shows
+  // the map opens on the spot the sheet shows (`focus`, read once it is built) and follows it after
+  const at = marks[n - 1];
+  const focus = { lat: at.lat, lon: at.lon, zoom: 15 };
   const first = useRef(true);
   useEffect(() => {
     if (first.current) {
       first.current = false;
       return;
     }
-    const m = marks[n - 1];
-    map.current?.centre(m.lat, m.lon, 14, !matchMedia("(prefers-reduced-motion: reduce)").matches);
-  }, [n, marks]);
+    map.current?.centre(at.lat, at.lon, 15, !matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, [at]);
 
   const go = (to: number) => router.replace(`${here}?spot=${to}`, { scroll: false });
   // Previous and next stay the same two buttons from spot to spot, so keyboard focus stays on the
@@ -94,7 +93,17 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
     // the walk sits outside the tabbed layout, so the whole screen is the page's main landmark:
     // the map's spot markers and the top controls belong to it too
     <main className="ms walk" aria-labelledby="walk-route">
-      <RegionMap className="a1-map" ref={map} points={points} line={line} detail={route.detail} maxZoom={15} mapLabel={`Map of ${route.name}`} />
+      <RegionMap
+        className="a1-map"
+        ref={map}
+        points={points}
+        line={line}
+        detail={route.detail}
+        maxZoom={15}
+        mapLabel={`Map of ${route.name}`}
+        current={`s${n}`}
+        focus={focus}
+      />
 
       <div className="walk-top">
         <p id="walk-route" className="walk-title glass glass-pill">Walking {route.name}</p>

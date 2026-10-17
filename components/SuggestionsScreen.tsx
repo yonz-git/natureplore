@@ -121,6 +121,22 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
     from.current = sheet.current?.offsetTop ?? null;
     setOnMap(!onMap);
   };
+  // "Show on map" flies the map in, as a map app would: with the location on, to the person and the
+  // routes near them; with it off, to the route at the top of the list. "Show as a list" flies back
+  // to the overview. A layout effect, so the map measures the sheet's new top before it refits.
+  const flipped = useRef(false);
+  useLayoutEffect(() => {
+    if (!flipped.current) {
+      flipped.current = true;
+      return;
+    }
+    if (!onMap) return map.current?.reset();
+    const own = points.filter((p) => !p.here);
+    const close = own.filter((p) => Math.hypot((p.lat - HERE.lat) * 111, (p.lon - HERE.lon) * 68) < 15);
+    const top = own.find((p) => p.id === routes[0]?.id) ?? own[0];
+    if (near) map.current?.show([HERE, ...close], 12);
+    else if (top) map.current?.show([top], 11);
+  }, [onMap]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggle = (
     <button type="button" className="sg-toggle" aria-pressed={onMap} onClick={flip}>

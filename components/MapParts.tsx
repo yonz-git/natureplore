@@ -73,6 +73,7 @@ export function SearchField({
         />
         {!value && (
           <span className="field-hint" aria-hidden="true">
+            <SearchIcon className="field-hint-search" />
             <span className="field-hint-text">{label}</span>
             <span className="field-hint-icons" ref={hintIcons}>
               {GROUPS.map((g, i) => (
