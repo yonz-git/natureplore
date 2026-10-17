@@ -537,20 +537,38 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 .saved-sheet .a8-group-head h2 { margin: 0; }
 .a8-group { margin-top: 0.75rem; padding: 0.125rem 1.25rem; }
 .a8-rows { margin: 0; padding: 0; list-style: none; }
-/* the organisms list: its title, then one section per group in the filters' order, each with its name
-   and count */
-.sg-org-title { margin: 1.125rem 0 0.25rem; font-family: var(--font-text); font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: 400; }
+/* the organisms list: one section per group in the filters' order, headed by the group's icon in its
+   colour, its name, and the species count as an outlined pill on the right */
 .sg-org-sec-head {
-  margin: 1.25rem 0 0;
+  margin: 1.25rem 0 0.25rem;
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  font-size: var(--text-caption);
-  line-height: var(--text-caption--line-height);
-  font-weight: 500;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-text);
+  font-size: var(--text-title);
+  line-height: var(--text-title--line-height);
+  font-weight: 400;
+}
+.sg-org-sec-head .is-plants { color: var(--color-group-plants); }
+.sg-org-sec-head .is-herbs { color: var(--color-group-herbs); }
+.sg-org-sec-head .is-mushrooms { color: var(--color-group-mushrooms); }
+.sg-org-sec-head .is-birds { color: var(--color-group-birds); }
+.sg-org-sec-head .is-mammals { color: var(--color-group-mammals); }
+.sg-org-count {
+  margin-left: auto;
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  display: inline-flex;
+  align-items: center;
+  /* the edge in the count's own colour */
+  border: 1px solid currentColor;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-stat-label);
+  line-height: 1;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
   color: var(--color-on-ground-soft);
 }
-.sg-org-sec-head span { font-weight: 400; font-variant-numeric: tabular-nums; }
 .a8-rows li { padding: 0.875rem 0; display: flex; align-items: center; gap: 0.875rem; }
 .a8-rows li + li { border-top: 1px solid var(--color-divider); }
 .a8-rows li.is-new { animation: sheet-in var(--enter) var(--ease-enter) backwards; }

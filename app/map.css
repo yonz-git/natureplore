@@ -302,13 +302,14 @@ button.float-pill:active { transform: scale(0.97); }
   align-items: center;
   gap: 0.25rem;
   border-radius: var(--radius-pill);
-  background: var(--color-pill-fill);
+  /* not a control: an outline only, no fill, as every pill that cannot be pressed */
   border: 0.5px solid var(--color-inner-edge);
   color: var(--color-mist);
 }
+/* the count in the Spots tag's size */
 .pill-org b {
   color: var(--color-on-ground);
-  font-size: var(--text-pill-count);
+  font-size: var(--text-stat-label);
   font-weight: var(--text-pill-count--font-weight);
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -326,7 +327,7 @@ button.float-pill:active { transform: scale(0.97); }
   display: inline-flex;
   align-items: center;
   border-radius: var(--radius-pill);
-  background: var(--color-pill-fill);
+  /* not a control: an outline only */
   border: 0.5px solid var(--color-inner-edge);
   font-size: var(--text-stat-label);
   font-weight: 500;
