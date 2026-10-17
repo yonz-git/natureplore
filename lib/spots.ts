@@ -376,9 +376,7 @@ const DETAILS: Record<string, RouteDetail> = {
     ],
     gettingNote: "No difficulty grade and no estimated speed. The figures say whether the route is reachable, not how fit the walker is.",
     claims: [],
-    foot: CAPTURE
-      ? "Route last checked 23 September 2026. 120 records within 250 m of the line."
-      : "Route last checked 23 September 2026. 120 records within 250 m of the line, last recorded 10 Sep.",
+    foot: "Route last checked 23 September 2026. 1,060 records within 250 m of the line.",
   },
   linum: {
     spots: LINUM_SPOTS.map(asOfNow),
@@ -396,9 +394,7 @@ const DETAILS: Record<string, RouteDetail> = {
     ],
     gettingNote: "No difficulty grade and no estimated speed. The figures say whether the route is reachable, not how fit the walker is.",
     claims: [CLAIMS.c1a, CLAIMS.c1b],
-    foot: CAPTURE
-      ? "Route last checked 23 September 2026. 138 records within 250 m of the line."
-      : "Route last checked 23 September 2026. 138 records within 250 m of the line, last recorded 11 Sep.",
+    foot: "Route last checked 23 September 2026. 14,769 records within 250 m of the line.",
   },
   tegel: {
     spots: TEGEL_SPOTS.map(asOfNow),
@@ -416,9 +412,7 @@ const DETAILS: Record<string, RouteDetail> = {
     ],
     gettingNote: "No difficulty grade and no estimated speed. The figures say whether the route is reachable, not how fit the walker is.",
     claims: [CLAIMS.c6],
-    foot: CAPTURE
-      ? "Route last checked 23 September 2026. 164 records within 250 m of the line."
-      : "Route last checked 23 September 2026. 164 records within 250 m of the line, last recorded 18 Sep.",
+    foot: "Route last checked 23 September 2026. 6,865 records within 250 m of the line.",
   },
   tempelhof: {
     spots: TEMPELHOF_SPOTS.map(asOfNow),
@@ -437,9 +431,7 @@ const DETAILS: Record<string, RouteDetail> = {
     ],
     gettingNote: "No difficulty grade and no estimated speed. The figures say whether the route is reachable, not how fit the walker is.",
     claims: [],
-    foot: CAPTURE
-      ? "Route last checked 23 September 2026. 96 records within 250 m of the line."
-      : "Route last checked 23 September 2026. 96 records within 250 m of the line, last recorded 20 Sep.",
+    foot: "Route last checked 23 September 2026. 31,671 records within 250 m of the line.",
   },
 };
 

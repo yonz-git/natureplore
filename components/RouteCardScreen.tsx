@@ -17,6 +17,7 @@ import { MapTools } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { StatValue } from "@/components/CParts";
 import { ActionRow, ClaimCard, MonthGrid, RecordedToo, SpotLook, SpotMark } from "@/components/SpotParts";
+import { InSeasonList } from "@/components/InSeasonList";
 import { organismPhoto } from "@/lib/photos";
 import { GROUPS, recordsOf, spotsOf, type Route } from "@/lib/routes";
 import { lastList, useSaved } from "@/lib/saved";
@@ -397,7 +398,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
               <div
                 className="b1-bar"
                 role="img"
-                aria-label={`${total} records: ${GROUPS.map((g) => `${route.counts[g.id] ?? 0} ${g.label.toLowerCase()}`).join(", ")}`}
+                aria-label={`${total} species recorded: ${GROUPS.map((g) => `${route.counts[g.id] ?? 0} ${g.label.toLowerCase()}`).join(", ")}`}
               >
                 {GROUPS.filter((g) => route.counts[g.id]).map((g) => (
                   <span key={g.id} className={`is-${g.id}`} style={{ flexGrow: route.counts[g.id] }} />
@@ -411,6 +412,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                   </li>
                 ))}
               </ul>
+              <InSeasonList routeId={route.id} />
               {/* A8 has the records of Grumsin beech forest loop only */}
               {route.id === "grumsin" ? (
                 <Link href={`/map/route/${route.id}/recorded`} className="btn btn-secondary btn-chev">
