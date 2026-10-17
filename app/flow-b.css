@@ -108,7 +108,8 @@ a.fb-row:active { transform: scale(0.985); }
    to the last figure on the right, the figures trimmed to their cap height so they sit on the
    pill's middle, and each icon's own empty margin inside its 24 box cancelled, measured per icon */
 .fb-legend .fb-pill { padding: 0 0.625rem; }
-.fb-legend-num { display: block; text-box: trim-both cap alphabetic; }
+/* the count in the organism pills' size and weight (.pill-org b, app/map.css) */
+.fb-legend-num { display: block; text-box: trim-both cap alphabetic; font-size: var(--text-stat-label); font-weight: var(--text-pill-count--font-weight); font-variant-numeric: tabular-nums; }
 /* the last figure's own right side bearing, so the ink, not the advance, ends 10 from the edge */
 .fb-legend-num[data-last="0"] { margin-right: -0.0577em; }
 .fb-legend-num[data-last="1"] { margin-right: -0.0891em; }
