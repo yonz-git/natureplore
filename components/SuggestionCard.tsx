@@ -14,6 +14,7 @@ import Link from "next/link";
 import {
   BookmarkIcon,
   CheckCircleIcon,
+  DownloadIcon,
   ChevronIcon,
   GroupIcon,
 } from "@/components/Icons";
@@ -109,14 +110,19 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
         }
         onClick={() => toggle(route.id)}
       >
-        <BookmarkIcon size={20} filled={saved} />
+        <BookmarkIcon size={16} filled={saved} />
       </button>
+      {saved && (
+        <span className="sug-save sug-dl glass glass-pin" aria-hidden="true">
+          <DownloadIcon size={16} />
+        </span>
+      )}
       <p className="sug-saved" role="status">
         {saved && (
           <>
             <CheckCircleIcon size={16} />
-            Saved and downloaded
-            <span className="sr-only">. Find it in Saved.</span>
+            Saved
+            <span className="sr-only"> and downloaded. Find it in Saved.</span>
           </>
         )}
       </p>

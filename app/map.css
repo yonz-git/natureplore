@@ -514,6 +514,7 @@ button.float-pill,
   left: 2.5rem;
   width: 27.5rem;
   display: flex;
+  align-items: center;
 }
 .ms-search-top .field input { width: 0; }
 .ms-search-top > form,
@@ -1175,7 +1176,7 @@ button.float-pill,
   .b1-top > a {
     position: fixed;
     z-index: 3;
-    top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2);
+    top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 2.75rem) / 2);
     left: 2.5rem;
   }
   .b1-top > button { display: none; }
@@ -1206,7 +1207,8 @@ button.float-pill,
   }
   .ms-tools { pointer-events: none; }
   .ms-tools > * { pointer-events: auto; }
-  .ms-tools .round { width: 2.75rem; height: 2.75rem; }
+  /* desktop: back and locate match the 44 save control */
+  .round { width: 2.75rem; height: 2.75rem; }
   .tool-pill {
     height: 2.75rem;
     padding: 0 1.25rem 0 1rem;

@@ -247,6 +247,12 @@ export const CheckCircleIcon = (p: P) => (
   </Svg>
 );
 
+export const DownloadIcon = ({ size = 24, className }: P) => (
+  <svg width={size} height={size} viewBox="0 0 1024 1024" className={className} aria-hidden="true" focusable="false">
+    <path fill="currentColor" d="M160 832h704a32 32 0 1 1 0 64H160a32 32 0 1 1 0-64m384-253.7L780.3 342l45.2 45.2L508.8 704L192 387.2l45.2-45.2L480 584.7V128h64z" />
+  </svg>
+);
+
 export const WalkIcon = (p: P) => (
   <Svg {...p}>
     <path d="M6 4h6v7l7 3v5H4V4h2z" />

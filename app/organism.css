@@ -223,7 +223,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
   .org > .org-top > a {
     position: fixed;
     z-index: 2;
-    top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2);
+    top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 2.75rem) / 2);
     left: 2.5rem;
   }
   .org > .org-top > .org-actions {
