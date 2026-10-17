@@ -266,10 +266,10 @@ button.float-pill:active { transform: scale(0.97); }
   cursor: pointer;
 }
 
-/* 52 round glass control: back, locate */
+/* 44 round glass control at every size, the search circle's: back, locate */
 .round {
-  width: 3.25rem;
-  height: 3.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
   flex-shrink: 0;
   padding: 0;
   display: flex;
@@ -281,6 +281,15 @@ button.float-pill:active { transform: scale(0.97); }
   transition: transform 160ms var(--ease-out);
 }
 .round:active { transform: scale(0.94); }
+/* the small circles keep one even 1px edge, as the Routes and Organisms switch does: the glass
+   border, its rim of light and the 1px top highlight stack into rings that read off centre */
+.round.glass,
+.sg-search.glass {
+  border: 1px solid var(--color-inner-edge);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0), inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 0.25rem 0.75rem rgb(6 18 9 / 0.25);
+}
+.round.glass::after,
+.sg-search.glass::after { content: none; }
 
 /* The organism counts: a row of pills, an icon in mist and a count, the name kept for screen
    readers. Never written out as text. The row takes the full card width so five fit. */
@@ -354,7 +363,7 @@ button.float-pill,
   .org-row:not([aria-disabled="true"]):hover {
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0.08);
   }
-  .round:hover,
+  .round.glass:hover { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0), inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 0.25rem 0.75rem rgb(6 18 9 / 0.25); }
   .tool-pill:not([aria-current]):hover,
   button.float-pill:hover {
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.11), inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
@@ -806,7 +815,8 @@ button.float-pill,
 .b1 { --sheet-top: max(min(26rem, 100dvh - 27.5rem), var(--top-chrome) + 4rem); }
 .b1-top {
   position: absolute;
-  top: calc(var(--top-chrome) + 0.5rem);
+  /* the 44 back circle centred on the 3.25rem control line, where the suggestions' search sits */
+  top: calc(var(--top-chrome) + 0.5rem + (3.25rem - 2.75rem) / 2);
   left: var(--spacing-screen-phone);
   right: var(--spacing-screen-phone);
   z-index: 2;
@@ -993,9 +1003,12 @@ button.float-pill,
   opacity: 0.7;
   pointer-events: none;
 }
-/* on the phone the sheet or the tab bar covers the corner, so the credit moves to the top */
+/* on the phone the sheet or the tab bar covers the corner, so the credit moves up, to the right
+   just under the top controls (their row is 3.25rem) */
 @media (max-width: 63.99rem) {
-  .a1-credit { right: auto; left: 0.5rem; bottom: auto; top: calc(0.25rem + env(safe-area-inset-top, 0px)); }
+  .a1-credit { bottom: auto; top: calc(var(--top-chrome) + 0.5rem + 3.25rem + 0.375rem); }
+  /* the walk's title can run to two lines, 4rem */
+  .walk .a1-credit { top: calc(var(--top-chrome) + 0.5rem + 4rem + 0.375rem); }
 }
 
 /* ── the location prompt, drawn the way the phone and the browser draw their own ───────────── */
@@ -1200,8 +1213,6 @@ button.float-pill,
   .b1 .ms-sheet::-webkit-scrollbar { display: none; }
   .b1-photos { height: 12.5rem; }
 
-  /* desktop: back and locate match the 44 save control */
-  .round { width: 2.75rem; height: 2.75rem; }
   .tool-pill {
     height: 2.75rem;
     padding: 0 1.25rem 0 1rem;

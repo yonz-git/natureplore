@@ -151,6 +151,9 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   // on Routes, so the toggles can fade out as well as in
   const groups = (
     <div role="group" aria-label="Filter by group" ref={groupRow} className={`sg-groups${show === "organisms" ? " is-on" : ""}`} inert={show !== "organisms"}>
+      <button type="button" className="sg-group sg-all glass glass-pill" aria-pressed={picked.length === 0} onClick={() => setPicked([])}>
+        All
+      </button>
       {GROUPS.map((g) => (
         <button
           key={g.id}
@@ -279,45 +282,62 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           ) : (
             <div className="sg-list" key="organisms">
               <div className="saved-card a8-group">
-                <ul className="a8-rows">
-                  {shown.map(({ organism: o, routes: on, href }) => {
-                    const photo = organismPhoto(o.name);
-                    const body = (
-                      <>
-                        {photo ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img className="a8-thumb" src={photo.src} alt="" loading="lazy" />
-                        ) : (
-                          <span className="a8-thumb" aria-hidden="true" />
-                        )}
-                        <span>
-                          <b>
-                            {o.name}
-                            {o.note && <span className="sug-org-note">, {o.note}</span>}
-                          </b>
-                          <small>
-                            {groupWord(o.group)}, <i>{o.latin}</i>
-                          </small>
-                          <small>
-                            Along {on} route{on > 1 ? "s" : ""}, last recorded {o.last}
-                          </small>
-                        </span>
-                      </>
-                    );
-                    return (
-                      <li key={o.name}>
-                        {href ? (
-                          <Link href={href} className="sg-org-link">
-                            {body}
-                            <ChevronIcon size={18} />
-                          </Link>
-                        ) : (
-                          body
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
+                <h2 className="sg-org-title">{picked.length ? GROUPS.filter((g) => picked.includes(g.id)).map((g) => g.label).join(", ") : "All organisms"}</h2>
+                {/* one section per group, in the filters' order; a lone group needs no heading of its own */}
+                {GROUPS.map((g) => {
+                  const inGroup = shown.filter(({ organism }) => organism.group === g.id);
+                  if (!inGroup.length) return null;
+                  const one = new Set(shown.map(({ organism }) => organism.group)).size === 1;
+                  return (
+                    <section key={g.id} className="sg-org-sec" aria-labelledby={one ? undefined : `sg-sec-${g.id}`}>
+                      {!one && (
+                        <h3 id={`sg-sec-${g.id}`} className="sg-org-sec-head">
+                          {g.label}
+                          <span>{inGroup.length}</span>
+                        </h3>
+                      )}
+                      <ul className="a8-rows">
+                        {inGroup.map(({ organism: o, routes: on, href }) => {
+                          const photo = organismPhoto(o.name);
+                          const body = (
+                            <>
+                              {photo ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img className="a8-thumb" src={photo.src} alt="" loading="lazy" />
+                              ) : (
+                                <span className="a8-thumb" aria-hidden="true" />
+                              )}
+                              <span>
+                                <b>
+                                  {o.name}
+                                  {o.note && <span className="sug-org-note">, {o.note}</span>}
+                                </b>
+                                <small>
+                                  {groupWord(o.group)}, <i>{o.latin}</i>
+                                </small>
+                                <small>
+                                  Along {on} route{on > 1 ? "s" : ""}, last recorded {o.last}
+                                </small>
+                              </span>
+                            </>
+                          );
+                          return (
+                            <li key={o.name}>
+                              {href ? (
+                                <Link href={href} className="sg-org-link">
+                                  {body}
+                                  <ChevronIcon size={18} />
+                                </Link>
+                              ) : (
+                                body
+                              )}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </section>
+                  );
+                })}
               </div>
             </div>
           )}
