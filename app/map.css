@@ -504,13 +504,13 @@ button.float-pill,
 .a1-map.leaflet-container { font: inherit; background: var(--color-basemap-land); }
 
 /* Desktop search: the field sits over the panel's left column, as on the tablet, centred on the nav
-   pill's 3.625rem line (app/tabbar.css) like every back control, and the panel starts a control-stack gap under
+   pill's 3.25rem line (app/tabbar.css) like every back control, and the panel starts a control-stack gap under
    it (app/flow-a.css). Rendered there by SuggestionsScreen and SearchScreen; search's back control
    comes into the row in front of the field. */
 .ms-search-top {
   position: absolute;
   z-index: 3;
-  top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2);
+  top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 3.25rem) / 2);
   left: 2.5rem;
   width: 27.5rem;
   display: flex;
@@ -1176,7 +1176,7 @@ button.float-pill,
   .b1-top > a {
     position: fixed;
     z-index: 3;
-    top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 2.75rem) / 2);
+    top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 2.75rem) / 2);
     left: 2.5rem;
   }
   .b1-top > button { display: none; }
@@ -1193,11 +1193,11 @@ button.float-pill,
   .b1 .ms-sheet::-webkit-scrollbar { display: none; }
   .b1-photos { height: 12.5rem; }
 
-  /* the map's own controls, top right under the nav pill (3.625rem tall at nav-top-desktop, app/tabbar.css),
+  /* the map's own controls, top right under the nav pill (3.25rem tall at nav-top-desktop, app/tabbar.css),
      lined up with its right edge; absolute to the screen, not to the map */
   .ms-tools {
     position: absolute;
-    top: calc(var(--spacing-nav-top-desktop) + 3.625rem + 0.75rem);
+    top: calc(var(--spacing-nav-top-desktop) + 3.25rem + 0.75rem);
     right: 2.5rem;
     z-index: 2;
     display: flex;

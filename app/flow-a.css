@@ -591,7 +591,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   /* where the search field or B1's back sits over the panel, on the nav pill's line, the panel
      starts under it: both are 3.25rem */
   .b1 .ms-panel,
-  .ms:has(.ms-search-top) .ms-panel { top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2 + 3.25rem + var(--spacing-control-stack)); }
+  .ms:has(.ms-search-top) .ms-panel { top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 3.25rem) / 2 + 3.25rem + var(--spacing-control-stack)); }
 
   .sg-toggle,
   .sg-map-note,
@@ -644,8 +644,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
     border-radius: var(--radius-card);
   }
   .saved-card .btn { align-self: flex-start; }
-  /* the back control sits on the nav pill's line, centred on its 3.625rem height (app/tabbar.css) */
-  .a8-top { top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 2.75rem) / 2); left: 2.5rem; }
+  /* the back control sits on the nav pill's line, centred on its 3.25rem height (app/tabbar.css) */
+  .a8-top { top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 2.75rem) / 2); left: 2.5rem; }
   .a8 .saved-sheet { margin-top: 7.5rem; min-height: 0; }
   .a8-more { justify-content: flex-start; }
   .a8-more .btn { flex-grow: 0; }
