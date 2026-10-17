@@ -500,6 +500,9 @@ button.fb-row:active { transform: scale(0.985); }
   font-size: var(--text-caption);
   line-height: 1;
 }
+/* End walk and locate sit together on the right, the title takes the left */
+.walk-end { margin-left: auto; }
+.walk-locate { flex-shrink: 0; }
 /* wraps rather than cutting the route name off, with large text */
 .walk-title { min-width: 0; height: auto; min-height: 2.75rem; padding-block: 0.625rem; line-height: 1.2; }
 .walk-end { flex-shrink: 0; padding: 0 1.125rem; font-size: var(--text-body-sm); font-weight: 500; text-decoration: none; transition: transform 160ms var(--ease-out); }
@@ -582,6 +585,7 @@ button.fb-row:active { transform: scale(0.985); }
   .b1-pin .b1-walk { flex-grow: 0; }
 
   .walk .walk-top { top: 2.5rem; left: 31.5rem; right: 5.5rem; justify-content: flex-start; }
+  .walk-locate { display: none; }
   .walk-panel { overflow: hidden; background: var(--color-ground); border: 1px solid var(--color-glass-edge); padding: 0; }
   .walk .walk-sheet { flex: 1 1 auto; min-height: 0; margin: 0; padding: 1.5rem; overflow-y: auto; background: none; border: 0; box-shadow: none; scroll-padding-bottom: 1.5rem; }
   .walk-panel { display: flex; flex-direction: column; }

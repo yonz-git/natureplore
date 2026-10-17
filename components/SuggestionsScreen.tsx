@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { ChevronIcon, GroupIcon, ListIcon, MapIcon, OrganismsIcon, PinIcon, RoutesIcon } from "@/components/Icons";
-import { MapTools, SearchField } from "@/components/MapParts";
+import { SearchField } from "@/components/MapParts";
 import { useSheet } from "@/components/SheetGrab";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
@@ -308,13 +308,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
         </div>
       </div>
 
-      <MapTools
-        locate={
-          near
-            ? () => map.current?.centre(HERE.lat, HERE.lon, 10, !matchMedia("(prefers-reduced-motion: reduce)").matches)
-            : undefined
-        }
-      />
     </section>
   );
 }

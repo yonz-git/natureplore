@@ -12,8 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { BackIcon, ChevronIcon } from "@/components/Icons";
-import { MapTools } from "@/components/MapParts";
+import { BackIcon, ChevronIcon, LocationIcon } from "@/components/Icons";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { ClaimCard, MonthGrid, RecordedToo, SpotBlock } from "@/components/SpotParts";
 import { routeById, spotsOf } from "@/lib/routes";
@@ -110,6 +109,18 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
         <Link href="/saved" className="walk-end glass glass-pill">
           End walk
         </Link>
+        {/* locate, on the phone and tablet only: the desktop map shows the whole route beside the panel */}
+        <button
+          type="button"
+          className="walk-locate round glass glass-pin"
+          aria-label="Show where I am"
+          onClick={() => {
+            const two = marks[1];
+            map.current?.centre(two.lat, two.lon, 14, !matchMedia("(prefers-reduced-motion: reduce)").matches);
+          }}
+        >
+          <LocationIcon size={20} />
+        </button>
       </div>
 
       <div className="ms-panel walk-panel">
@@ -148,12 +159,6 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
         </p>
       </div>
 
-      <MapTools
-        locate={() => {
-          const two = marks[1];
-          map.current?.centre(two.lat, two.lon, 14, !matchMedia("(prefers-reduced-motion: reduce)").matches);
-        }}
-      />
     </main>
   );
 }

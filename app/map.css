@@ -624,9 +624,6 @@ button.float-pill,
 .ms-list { display: flex; flex-direction: column; gap: 1.25rem; }
 .ms-stack { display: flex; flex-direction: column; gap: var(--spacing-control-stack); }
 
-/* the controls in the map's top right on the desktop, the Saved pill and locate */
-.ms-tools { display: none; }
-
 /* ── A1 ────────────────────────────────────────────────────────────────────────────────────── */
 
 /* no sheet at any size: the heading, the line and the ways in stand in the middle of the map, between
@@ -1196,20 +1193,6 @@ button.float-pill,
   .b1 .ms-sheet::-webkit-scrollbar { display: none; }
   .b1-photos { height: 12.5rem; }
 
-  /* the map's own controls, top right under the nav pill (3.25rem tall at nav-top-desktop, app/tabbar.css),
-     lined up with its right edge; absolute to the screen, not to the map */
-  .ms-tools {
-    position: absolute;
-    top: calc(var(--spacing-nav-top-desktop) + 3.25rem + 0.75rem);
-    right: 2.5rem;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.75rem;
-  }
-  .ms-tools { pointer-events: none; }
-  .ms-tools > * { pointer-events: auto; }
   /* desktop: back and locate match the 44 save control */
   .round { width: 2.75rem; height: 2.75rem; }
   .tool-pill {

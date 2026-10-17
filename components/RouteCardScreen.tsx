@@ -11,9 +11,8 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, DownloadIcon, GroupIcon, LocationIcon, WalkIcon } from "@/components/Icons";
+import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, DownloadIcon, GroupIcon, WalkIcon } from "@/components/Icons";
 import { useSheet } from "@/components/SheetGrab";
-import { MapTools } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { StatValue } from "@/components/CParts";
 import { ActionRow, ClaimCard, MonthGrid, RecordedToo, SpotLook, SpotMark } from "@/components/SpotParts";
@@ -324,8 +323,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   const total = recordsOf(route.counts);
   const [name, ...rest] = route.name.split(" ").reverse();
   const lead = rest.reverse().join(" ");
-  const locate = () =>
-    map.current?.centre(route.lat, route.lon, 14, !matchMedia("(prefers-reduced-motion: reduce)").matches);
   const most = detail ? Math.max(...detail.season) : 1;
 
   return (
@@ -336,9 +333,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
         <Link href={back} className="round glass glass-pin" aria-label={backLabel}>
           <BackIcon size={20} />
         </Link>
-        <button type="button" className="round glass glass-pin" aria-label="Show the start on the map" onClick={locate}>
-          <LocationIcon size={20} />
-        </button>
       </div>
 
       <div className="ms-panel glass-desk">
@@ -581,8 +575,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
         </div>
         <Pin route={route} walkable={!!detail} save={save} />
       </div>
-
-      <MapTools locate={locate} />
     </section>
   );
 }

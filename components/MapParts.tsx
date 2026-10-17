@@ -7,7 +7,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { ClearIcon, GroupIcon, LocationIcon, SearchIcon } from "@/components/Icons";
+import { ClearIcon, GroupIcon, SearchIcon } from "@/components/Icons";
 import { playGroup } from "@/lib/group-motion";
 import { GROUPS, type Counts } from "@/lib/routes";
 
@@ -105,17 +105,5 @@ export function OrganismPills({ counts, all = false }: { counts: Counts; all?: b
         </li>
       ))}
     </ul>
-  );
-}
-
-/** The map's own control on the desktop, in the top right: locate, where the location is on. */
-export function MapTools({ locate }: { locate?: () => void }) {
-  if (!locate) return null;
-  return (
-    <div className="ms-tools">
-      <button type="button" className="round glass glass-pin" aria-label="Show where I am" onClick={locate}>
-        <LocationIcon size={20} />
-      </button>
-    </div>
   );
 }

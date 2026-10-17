@@ -42,7 +42,6 @@
 .screen-enter .ms-search-top,
 .screen-enter .ms-bar > :not(:has(.glass)):not(.glass),
 .screen-enter .ms-bar .glass { animation: sheet-in var(--enter) var(--ease-enter) 150ms backwards; }
-.screen-enter .ms-tools > * { animation: sheet-in var(--enter) var(--ease-enter) 300ms backwards; }
 /* the labels on the map wait for the map, then come one by one (--i, set by RegionMap) */
 .screen-enter .a1-pin,
 .screen-enter .a1-here,
@@ -132,7 +131,6 @@
   .screen-enter .ms-search-top,
   .screen-enter .ms-bar > :not(:has(.glass)):not(.glass),
   .screen-enter .ms-bar .glass,
-  .screen-enter .ms-tools > *,
   .screen-enter .a1-pin,
   .screen-enter .a1-here,
   .screen-enter .map-route,
