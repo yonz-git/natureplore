@@ -66,8 +66,10 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
                 aria-pressed={picked.includes(g.group)}
                 onClick={() => pick(g.group)}
               >
+                {/* the icon and the count, as on the route page; the group's name is for screen readers */}
                 <GroupIcon group={g.group} size={17} className={`is-${g.group}`} />
-                {label(g.group)} {g.total}
+                <span className="sr-only">{label(g.group)} </span>
+                {g.total}
               </button>
             ))}
           </div>
