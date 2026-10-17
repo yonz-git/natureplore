@@ -302,27 +302,22 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .b1 .ms-sheet > section { flex-shrink: 0; display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
 
 /* jump to a section: chips that scroll sideways, bleeding to the sheet's edges. It stays at the top
-   of the sheet as the sections scroll under it. At rest the chips sit on the sheet itself; once a
-   section runs under them, a band of the sheet's own colour fades in behind them, fading out below.
-   A section it jumps to lands just under it */
+   of the sheet as the sections scroll under it, with no band behind the chips; a section it jumps to
+   lands just under it */
 .fb-strip {
   position: sticky;
-  top: 0;
+  /* stuck, the chips sit at the top edge of the sheet's scroll area, the strip's top padding above it */
+  top: -0.75rem;
   z-index: 2;
   flex-shrink: 0;
   margin: 0 -1.5rem;
   padding: 0.75rem 1.5rem 1rem;
-  background: linear-gradient(to bottom, var(--fb-band) 75%, rgb(from var(--fb-band) r g b / 0));
-  transition: --fb-band 200ms var(--ease-out);
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
   scrollbar-width: none;
 }
 .fb-strip::-webkit-scrollbar { display: none; }
-/* the band's colour is a registered property, so the gradient can fade */
-@property --fb-band { syntax: "<color>"; inherits: false; initial-value: transparent; }
-.fb-strip.is-under { --fb-band: var(--color-glass-solid); }
 .fb-strip a {
   flex-shrink: 0;
   height: 2.75rem;
@@ -330,8 +325,12 @@ a.fb-claim-act:active { transform: scale(0.985); }
   display: flex;
   align-items: center;
   border-radius: var(--radius-pill);
-  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%),
+    var(--color-glass-fill);
   border: 0.5px solid var(--color-inner-edge);
+  /* the sections scroll under the chips with no band behind them, so each chip blurs what passes */
+  backdrop-filter: blur(1.875rem) saturate(1.4);
   color: var(--color-on-ground);
   font-size: var(--text-caption);
   line-height: 1;
@@ -341,11 +340,10 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-strip a:active { transform: scale(0.97); }
 /* the current section's chip in the heavier weight; each chip holds that width so none nudges */
 .fb-strip a { flex-direction: column; justify-content: center; }
-.fb-strip a::after { content: attr(data-text); height: 0; overflow: hidden; visibility: hidden; font-weight: 600; }
-.fb-strip a[aria-current] { font-weight: 600; }
+.fb-strip a::after { content: attr(data-text); height: 0; overflow: hidden; visibility: hidden; font-weight: 500; }
+.fb-strip a[aria-current] { font-weight: 500; }
+@media (prefers-reduced-transparency: reduce) { .fb-strip a { background: var(--color-glass-solid); backdrop-filter: none; } }
 .fb-sec { scroll-margin-top: 4.5rem; }
-/* the phone and tablet sheet has 0.75rem padding at its top: the band covers it */
-@media (max-width: 63.99rem) { .fb-strip { top: -0.75rem; } }
 .b1 .ms-sheet { scroll-behavior: smooth; }
 
 /* the route drawn flat: the spots along its length, with the same numbers as the map */
@@ -593,7 +591,6 @@ button.fb-row:active { transform: scale(0.985); }
   a.fb-claim-act,
   .fb-nav-prev,
   .fb-nav-next,
-  .fb-strip,
   .fb-strip a,
   .fb-look-link,
   .walk-end { transition: none; }

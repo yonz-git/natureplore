@@ -89,7 +89,7 @@
 .sug-save.glass::after { content: none; }
 /* downloaded: a second frost left of the bookmark, shown once saved, not a control */
 .sug-save.sug-dl {
-  right: calc(1rem + 2.25rem + 0.125rem);
+  right: calc(1rem + 2.25rem + 0.25rem);
   cursor: default;
   animation: sheet-in var(--enter) var(--ease-enter) backwards;
 }
@@ -603,14 +603,10 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
     --fade-bottom: 2.5rem;
     mask-image: linear-gradient(to bottom, transparent, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent);
   }
-  /* B1's panel scrolls the same way, so its edges fade the same way */
-  .b1 .ms-sheet {
-    --fade-top: 0rem;
-    --fade-bottom: 2.5rem;
-    mask-image: linear-gradient(to bottom, transparent, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent);
-  }
+  /* B1's panel has no fade: its section chips stay at the top, and a mask there would fade them and
+     stop their backdrop blur, since a masked ancestor becomes the blur's backdrop root */
   @supports (animation-timeline: scroll()) {
-    .sg-list, .b1 .ms-sheet { animation: sg-fade linear both; animation-timeline: scroll(self); }
+    .sg-list { animation: sg-fade linear both; animation-timeline: scroll(self); }
   }
 
   .sr-veil { display: none; }
