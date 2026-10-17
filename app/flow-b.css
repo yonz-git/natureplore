@@ -337,7 +337,10 @@ a.fb-claim-act:active { transform: scale(0.985); }
   background:
     linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%),
     var(--color-glass-fill);
-  border: 0.5px solid var(--color-inner-edge);
+  /* a 1px edge with the fill stopped inside it, the same rim as the current chip's, so every chip
+     reads the same height */
+  border: 1px solid var(--color-inner-edge);
+  background-clip: padding-box;
   /* the sections scroll under the chips with no band behind them, so each chip blurs what passes */
   backdrop-filter: blur(1.875rem) saturate(1.4);
   color: var(--color-on-ground);
