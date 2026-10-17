@@ -11,7 +11,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, GroupIcon, LocationIcon, WalkIcon } from "@/components/Icons";
+import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, DownloadIcon, GroupIcon, LocationIcon, WalkIcon } from "@/components/Icons";
 import { useSheet } from "@/components/SheetGrab";
 import { MapTools } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
@@ -84,6 +84,16 @@ function SaveToggle({ route, save }: { route: Route; save: RouteSave }) {
     >
       <BookmarkIcon size={20} filled={save.saved} />
     </button>
+  );
+}
+
+/** Downloaded: the suggestion card's second frost, left of the bookmark once saved, not a control. */
+function DownloadedMark({ saved }: { saved: boolean }) {
+  if (!saved) return null;
+  return (
+    <span className="sug-save sug-dl b1-dl glass glass-pin" aria-hidden="true">
+      <DownloadIcon size={20} />
+    </span>
   );
 }
 
@@ -262,6 +272,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
               ),
             )}
             <SaveToggle route={route} save={save} />
+            <DownloadedMark saved={save.saved} />
           </div>
 
           <div className="b1-head">
