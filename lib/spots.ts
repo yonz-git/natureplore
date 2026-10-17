@@ -2,6 +2,9 @@
 // Grumsin beech forest loop, Linum wet meadows loop, Tegeler Fließ valley path and Tempelhofer Feld
 // loop. The spots in season per month, getting there, and which claims are along it. Content is the
 // sample content of the flow and IA redesign (§3), as on the boards B1, L3-1 to L3-6, L4 and B4.
+// Each spot is about a species GBIF has recorded at that spot, with its months and last record from GBIF
+// (.design/gbif/spots_gbif.py and season.py; spots_ts.py writes the spot arrays): the months it is recorded
+// within 15 km of the route and at the spot itself. The words around it are written for the prototype.
 
 import { CLAIMS, type Claim } from "@/lib/claims";
 import { CAPTURE, MONTH, NOW } from "@/lib/now";
@@ -52,71 +55,62 @@ const GRUMSIN_SPOTS: Spot[] = [
   {
     n: 1,
     name: "The forest gate",
-    months: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    // GBIF: 1 record of Garrulus glandarius within 300 m of the spot, 2010 to 2025
+    months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
-    look: [{ name: "Black woodpecker", what: "calling from the old beeches", last: "9 Sep" }],
-    captureLook: {
-      3: [{ name: "Black woodpecker", what: "drumming on the old beeches", last: "4 Apr" }],
-      4: [{ name: "Black woodpecker", what: "feeding young in a nest hole", last: "12 May" }],
-      5: [{ name: "Black woodpecker", what: "calling from the old beeches", last: "6 Jun" }],
-    },
+    look: [{ name: "Eurasian jay", what: "in the old beeches", last: "24 Aug 2016" }],
+    outText: "Eurasian jay recorded here all year.",
     kind: "do",
-    line: "Look up from the path, not into the holes.",
-    why: "Black woodpeckers nest high in old beech trunks, and the holes are used again by owls and bats.",
+    line: "Listen before you look.",
+    why: "A jay screeches a warning to the whole wood when someone comes, so a quiet walker hears more than a quick one sees.",
   },
   {
     n: 2,
     name: "Buckow-See",
-    months: [3, 4, 5, 6, 7],
-    when: "Apr to Aug",
-    look: [],
-    outText: "Great crested grebes recorded here April to August.",
-    captureLook: {
-      3: [{ name: "Great crested grebe", what: "displaying on the water", last: "11 Apr" }],
-      4: [{ name: "Great crested grebe", what: "nesting at the reed edge", last: "9 May" }],
-      5: [{ name: "Great crested grebe", what: "carrying chicks on its back", last: "7 Jun" }],
-      6: [{ name: "Great crested grebe", what: "with well-grown young on the open water", last: "10 Jul" }],
-      7: [{ name: "Great crested grebe", what: "young feeding alone on the open water", last: "8 Aug" }],
-    },
-    kind: "dont",
-    line: "Don’t go down to the reed edge.",
-    why: "Grebes nest on floating platforms in the reeds and leave them when people come close.",
+    // GBIF: 4 records of Sitta europaea within 300 m of the spot, 2010 to 2025
+    months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
+    when: "All year",
+    look: [{ name: "Eurasian nuthatch", what: "on the old beech trunks by the lake", last: "26 Aug 2024" }],
+    outText: "Eurasian nuthatch recorded here all year.",
+    kind: "do",
+    line: "Look along the trunks, head height and up.",
+    why: "Nuthatches climb down the trunks head first and find the insects in the bark that a bird climbing up passes over.",
   },
   {
     n: 3,
     name: "Schwarzer See",
-    months: [5, 6, 7, 8],
-    when: "Jun to Sep",
-    look: [{ name: "Round-leaved sundew", what: "on the bog moss at the edge", last: "6 Sep" }],
-    outText: "Round-leaved sundew recorded here June to September.",
-    captureLook: {
-      5: [{ name: "Round-leaved sundew", what: "on the bog moss at the edge", last: "10 Jun" }],
-    },
+    // GBIF: 9 records of Calla palustris within 300 m of the spot, 2010 to 2025
+    months: [3,  4,  5,  6,  7,  8],
+    when: "Apr to Sep",
+    look: [{ name: "Bog arum", what: "in the wet edge of the bog", last: "5 Sep 2024" }],
+    outText: "Bog arum recorded here April to September.",
     kind: "dont",
     line: "Don’t step onto the bog.",
-    why: "Bog moss takes years to grow back where it is trodden.",
+    why: "Bog arum grows in the floating mat at the edge, which gives way underfoot and takes years to close again.",
   },
   {
     n: 4,
     name: "Fungi on the fallen beech",
-    months: [8, 9, 10],
-    when: "Sep to Nov",
-    look: [{ name: "Porcelain fungus", what: "on the fallen beech trunks", last: "8 Sep" }],
-    outText: "Porcelain fungus recorded here September to November.",
+    // GBIF: 1 record of Mycena rosea within 300 m of the spot, 2010 to 2025
+    months: [9],
+    when: "Oct",
+    look: [{ name: "Rosy bonnet", what: "in the beech leaf litter", last: "16 Oct 2022" }],
+    outText: "Rosy bonnet recorded here in October.",
     kind: "dont",
     line: "Don’t pick or kick the fungi.",
-    why: "They break down the fallen trunk, and everyone after you comes to see them.",
+    why: "They break down the fallen leaves and wood, and everyone after you comes to see them.",
   },
   {
     n: 5,
     name: "Wolletzsee",
-    months: [8, 9, 10],
-    when: "Sep to Nov",
-    look: [{ name: "Common crane", what: "on the lake at dusk", last: "10 Sep" }],
-    outText: "Common cranes recorded here September to November.",
+    // GBIF: 1 record of Bucephala clangula within 300 m of the spot, 2010 to 2025
+    months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
+    when: "All year",
+    look: [{ name: "Common goldeneye", what: "on the open water", last: "17 Nov 2018" }],
+    outText: "Common goldeneye recorded here all year.",
     kind: "dont",
-    line: "Don’t walk down to the shore at dusk.",
-    why: "Cranes resting on the lake take off when people come close.",
+    line: "Don’t walk down to the shore.",
+    why: "Goldeneyes nest in tree holes by the lake and lead their young straight onto the water, where a walker on the shore scatters them.",
   },
 ];
 
@@ -126,10 +120,11 @@ const LINUM_SPOTS: Spot[] = [
   {
     n: 1,
     name: "The flooded ditch",
-    months: [8, 9],
-    when: "Sep to Oct",
-    look: [{ name: "Common crane", what: "feeding in the wet field at dusk", last: "11 Sep", organism: "common-crane" }],
-    outText: "Common cranes recorded here September and October.",
+    // GBIF: 13 records of Grus grus within 300 m of the spot, 2010 to 2025
+    months: [2,  3,  4,  5,  9,  10],
+    when: "Mar to Jun, Oct to Nov",
+    look: [{ name: "Common crane", what: "feeding in the wet field", last: "4 Oct 2025", organism: "common-crane" }],
+    outText: "Common crane recorded here March to June, October to November.",
     kind: "dont",
     line: "Don’t leave the track at dusk.",
     why: "Cranes feeding in the wet field fly off when people walk out towards them, and they need the food before the night on the ponds.",
@@ -137,38 +132,35 @@ const LINUM_SPOTS: Spot[] = [
   {
     n: 2,
     name: "Reed edge of the fish ponds",
-    months: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    when: "All year",
-    look: [{ name: "Bearded reedling", what: "calling in the reed tops", last: "9 Sep" }],
-    captureLook: {
-      4: [{ name: "Reed warbler", what: "singing low in the reed", last: "14 May" }],
-      5: [{ name: "Reed warbler", what: "feeding young in the reed", last: "9 Jun" }],
-    },
+    // GBIF: 12 records of Panurus biarmicus within 300 m of the spot, 2010 to 2025
+    months: [2,  3,  4,  5,  6,  7,  8,  9,  10],
+    when: "Mar to Nov",
+    look: [{ name: "Bearded reedling", what: "calling in the reed tops", last: "22 Nov 2025" }],
+    outText: "Bearded reedling recorded here March to November.",
     kind: "dont",
     line: "Don’t push into the reeds.",
-    why: "Reed warblers and bearded tits nest low in the reed stems, and trodden reed takes a season to stand again.",
+    why: "Bearded reedlings nest low in the reed stems, and trodden reed takes a season to stand again.",
   },
   {
     n: 3,
     name: "Far corner of the ponds",
-    months: [2, 3, 4, 5, 6, 7, 8, 9],
-    when: "Mar to Oct",
-    look: [
-      { name: "Greylag goose", what: "grazing on the pond banks", last: "10 Sep" },
-      { name: "Northern lapwing", last: "5 Sep" },
-    ],
-    outText: "Greylag geese and lapwings recorded here March to October.",
+    // GBIF: 89 records of Anser anser within 300 m of the spot, 2010 to 2025
+    months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
+    when: "All year",
+    look: [{ name: "Greylag goose", what: "grazing on the pond banks", last: "3 Oct 2025" }],
+    outText: "Greylag goose recorded here all year.",
     kind: "do",
     line: "Watch from the bird hide, not from the bank.",
-    why: "Geese and lapwings rest on the open banks, and one person on the skyline puts the whole flock up.",
+    why: "Geese rest on the open banks, and one person on the skyline puts the whole flock up.",
   },
   {
     n: 4,
     name: "The dam between the ponds",
-    months: [8, 9, 10],
-    when: "Sep to Nov",
-    look: [{ name: "Common crane", what: "flying in to roost at dusk", last: "11 Sep", organism: "common-crane" }],
-    outText: "Common cranes recorded roosting here September to November.",
+    // GBIF: 68 records of Grus grus within 300 m of the spot, 2010 to 2025
+    months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
+    when: "All year",
+    look: [{ name: "Common crane", what: "flying in to roost at dusk", last: "17 Oct 2025", organism: "common-crane" }],
+    outText: "Common crane recorded here all year.",
     kind: "dont",
     line: "Don’t walk the dam after sunset.",
     why: "Cranes roost standing in the shallow ponds, and a roost that lifts in the dark loses the rest it needs for migration.",
@@ -176,14 +168,11 @@ const LINUM_SPOTS: Spot[] = [
   {
     n: 5,
     name: "Wet meadow track",
-    months: [3, 4],
+    // GBIF: 1 record of Caltha palustris within 300 m of the spot, 2010 to 2025
+    months: [3,  4],
     when: "Apr to May",
-    look: [],
-    outText: "Marsh marigold recorded here April and May.",
-    captureLook: {
-      3: [{ name: "Marsh marigold", what: "in flower along the wet ditch edge", last: "21 Apr" }],
-      4: [{ name: "Marsh marigold", what: "in flower in the wet meadow", last: "6 May" }],
-    },
+    look: [{ name: "Marsh marigold", what: "in flower in the wet meadow", last: "5 May 2019" }],
+    outText: "Marsh marigold recorded here April to May.",
     kind: "dont",
     line: "Don’t walk out onto the meadow.",
     why: "The wet soil holds a footprint for months, and the meadow is mown late so ground-nesting birds can raise their young.",
@@ -191,15 +180,11 @@ const LINUM_SPOTS: Spot[] = [
   {
     n: 6,
     name: "Stork nests at the village edge",
-    months: [3, 4, 5, 6, 7],
-    when: "Apr to Aug",
-    look: [],
-    outText: "White storks recorded here April to August.",
-    captureLook: {
-      3: [{ name: "White stork", what: "back on the nest", last: "8 Apr" }],
-      5: [{ name: "White stork", what: "feeding chicks on the nest", last: "12 Jun" }],
-      6: [{ name: "White stork", what: "young standing on the nest", last: "9 Jul" }],
-    },
+    // GBIF: 13 records of Ciconia ciconia within 300 m of the spot, 2010 to 2025
+    months: [2,  3,  4,  5,  6,  7],
+    when: "Mar to Aug",
+    look: [{ name: "White stork", what: "on the nest", last: "3 Jun 2025" }],
+    outText: "White stork recorded here March to August.",
     kind: "do",
     line: "Watch the nest from the street.",
     why: "Storks come back to the same nest each year, on the poles and roofs the village keeps for them.",
@@ -212,14 +197,11 @@ const TEGEL_SPOTS: Spot[] = [
   {
     n: 1,
     name: "The beaver lodge",
-    months: [9, 10, 11, 0, 1, 2],
-    when: "Oct to Mar",
-    look: [],
-    outText: "Fresh beaver gnawing recorded here October to March.",
-    captureLook: {
-      9: [{ name: "Eurasian beaver", what: "fresh gnawing on the willows by the bank", last: "11 Oct" }],
-      10: [{ name: "Eurasian beaver", what: "a felled willow across the Fließ", last: "8 Nov" }],
-    },
+    // GBIF: 1 record of Castor fiber within 300 m of the spot, 2010 to 2025
+    months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
+    when: "All year",
+    look: [{ name: "Eurasian beaver", what: "gnawed trunks along the bank", last: "5 Jun 2025" }],
+    outText: "Eurasian beaver recorded here all year.",
     kind: "dont",
     line: "Don’t climb onto the lodge or the dam.",
     why: "Beavers sleep in the lodge by day, and a dam that is trodden lets the water out of the pools they keep.",
@@ -227,19 +209,23 @@ const TEGEL_SPOTS: Spot[] = [
   {
     n: 2,
     name: "Hermsdorf lake shore",
-    months: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    // GBIF: 14 records of Ardea cinerea within 300 m of the spot, 2010 to 2025
+    months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
-    look: [{ name: "Grey heron", what: "fishing at the reed edge", last: "18 Sep" }],
+    look: [{ name: "Grey heron", what: "fishing at the reed edge", last: "11 Dec 2025" }],
+    outText: "Grey heron recorded here all year.",
     kind: "dont",
     line: "Don’t feed the birds on the lake.",
-    why: "Bread swells in a bird's stomach and rots in the shallow water, and the lake has little flow to clear it.",
+    why: "Bread swells in a bird’s stomach and rots in the shallow water, and the lake has little flow to clear it.",
   },
   {
     n: 3,
     name: "The Fließ bridge",
-    months: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    // GBIF: 6 records of Alcedo atthis within 300 m of the spot, 2010 to 2025
+    months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
-    look: [{ name: "Common kingfisher", what: "on the dead branch over the water", last: "14 Sep" }],
+    look: [{ name: "Common kingfisher", what: "on a branch over the water", last: "28 Jul 2025" }],
+    outText: "Common kingfisher recorded here all year.",
     kind: "do",
     line: "Stand still on the bridge and wait.",
     why: "A kingfisher hunts from the same perch again and again, and leaves it for the day when people stop below it.",
@@ -247,54 +233,50 @@ const TEGEL_SPOTS: Spot[] = [
   {
     n: 4,
     name: "Alder carr boardwalk",
-    months: [8, 9, 10],
-    when: "Sep to Nov",
-    look: [{ name: "Black alder", what: "with autumn fungi on the fallen trunks", last: "12 Sep" }],
-    outText: "Fungi on the fallen alder recorded here September to November.",
+    // GBIF: 6 records of Caltha palustris within 300 m of the spot, 2010 to 2025
+    months: [3,  4,  5],
+    when: "Apr to Jun",
+    look: [{ name: "Marsh marigold", what: "in flower under the alders", last: "27 Apr 2025" }],
+    outText: "Marsh marigold recorded here April to June.",
     kind: "dont",
     line: "Don’t step off the boardwalk.",
-    why: "The carr floor is wet peat, and a footprint in it stays open long after the walker has gone.",
+    why: "The carr floor is wet peat, and the marsh marigold grows only where it is not trodden.",
   },
   {
     n: 5,
     name: "Wet meadow bend",
-    months: [3, 4],
-    when: "Apr to May",
-    look: [],
-    outText: "Marsh marigold recorded here April and May.",
-    captureLook: {
-      3: [{ name: "Marsh marigold", what: "in flower along the Fließ", last: "19 Apr" }],
-      4: [{ name: "Marsh marigold", what: "in flower in the wet meadow", last: "5 May" }],
-    },
+    // GBIF: 2 records of Symphytum officinale within 300 m of the spot, 2010 to 2025
+    months: [3,  4,  5,  6,  7,  8],
+    when: "Apr to Sep",
+    look: [{ name: "Common comfrey", what: "in flower along the track", last: "20 Jul 2020" }],
+    outText: "Common comfrey recorded here April to September.",
     kind: "dont",
     line: "Don’t walk out onto the meadow.",
-    why: "The meadow is wet all spring, and the plants that flower in it grow only where the ground is not trodden.",
+    why: "The meadow stays wet into summer, and the flowers along it grow only where the ground is not trodden.",
   },
   {
     n: 6,
     name: "Old sheep pasture",
-    months: [5, 6, 7],
-    when: "Jun to Aug",
-    look: [],
-    outText: "Meadowsweet recorded here June to August.",
-    captureLook: {
-      5: [{ name: "Meadowsweet", what: "in flower along the pasture ditch", last: "21 Jun" }],
-      6: [{ name: "Meadowsweet", what: "in flower along the pasture ditch", last: "12 Jul" }],
-    },
+    // GBIF: 4 records of Saponaria officinalis within 300 m of the spot, 2010 to 2025
+    months: [3,  4,  5,  6,  7,  8],
+    when: "Apr to Sep",
+    look: [{ name: "Soapwort", what: "in flower by the pasture fence", last: "31 May 2024" }],
+    outText: "Soapwort recorded here April to September.",
     kind: "do",
     line: "Close the gate behind you.",
-    why: "The pasture is grazed to keep it open, and the flowers that grow here need the grazing as much as the meadow needs the gate.",
+    why: "The pasture is grazed to keep it open, and the flowers along it need the grazing as much as the meadow needs the gate.",
   },
   {
     n: 7,
     name: "Lübars village pond",
-    months: [6, 7, 8],
-    when: "Jul to Sep",
-    look: [{ name: "Purple loosestrife", what: "in flower at the pond edge", last: "10 Sep" }],
-    outText: "Purple loosestrife recorded here July to September.",
+    // GBIF: 3 records of Corydalis solida within 300 m of the spot, 2010 to 2025
+    months: [2,  3],
+    when: "Mar to Apr",
+    look: [{ name: "Fumewort", what: "in flower under the trees by the pond", last: "22 Mar 2025" }],
+    outText: "Fumewort recorded here March to April.",
     kind: "dont",
-    line: "Don’t pick the flowers at the edge.",
-    why: "The pond edge is the only wet ground in the village, and the bees and hoverflies of the gardens around it feed there.",
+    line: "Don’t pick the spring flowers.",
+    why: "Fumewort flowers for a few weeks before the trees come into leaf, and the first bees of the year feed on it.",
   },
 ];
 
@@ -304,29 +286,23 @@ const TEMPELHOF_SPOTS: Spot[] = [
   {
     n: 1,
     name: "The community gardens",
-    months: [4, 8, 9],
-    when: "May, Sep to Oct",
-    look: [{ name: "Hawthorn", what: "red berries on the garden hedge", last: "16 Sep" }],
-    outText: "Hawthorn recorded in flower in May and in berry September and October.",
-    captureLook: {
-      4: [{ name: "Hawthorn", what: "in flower on the garden hedge", last: "14 May" }],
-    },
+    // GBIF: 3 records of Buddleja davidii within 300 m of the spot, 2010 to 2025
+    months: [1,  2,  3,  4,  5,  6,  7,  8,  9,  10],
+    when: "Feb to Nov",
+    look: [{ name: "Butterfly bush", what: "in flower by the garden beds", last: "10 Oct 2023" }],
+    outText: "Butterfly bush recorded here February to November.",
     kind: "do",
     line: "Walk round the beds, not through them.",
-    why: "The gardens are tended by neighbours, and the hedges round them are where the field's small birds feed and shelter.",
+    why: "The gardens are tended by neighbours, and the flowers along them feed butterflies and bees late into the autumn.",
   },
   {
     n: 2,
     name: "The skylark meadow",
-    months: [2, 3, 4, 5, 6, 7, 8, 9],
-    when: "Mar to Oct",
-    look: [{ name: "Eurasian skylark", what: "in small flocks on the short grass", last: "20 Sep" }],
-    outText: "Skylarks recorded here March to October.",
-    captureLook: {
-      3: [{ name: "Eurasian skylark", what: "singing high over the meadow", last: "9 Apr" }],
-      4: [{ name: "Eurasian skylark", what: "singing high over the meadow", last: "12 May" }],
-      5: [{ name: "Eurasian skylark", what: "feeding young in the long grass", last: "8 Jun" }],
-    },
+    // GBIF: 8 records of Alauda arvensis within 300 m of the spot, 2010 to 2025
+    months: [1,  2,  3,  4,  5,  6,  7,  8,  9],
+    when: "Feb to Oct",
+    look: [{ name: "Eurasian skylark", what: "singing high over the meadow", last: "20 Apr 2025" }],
+    outText: "Eurasian skylark recorded here February to October.",
     kind: "dont",
     line: "Don’t cross the fence into the meadow.",
     why: "Skylarks nest on the ground in the long grass, and the fenced meadows are where they are left alone.",
@@ -334,24 +310,23 @@ const TEMPELHOF_SPOTS: Spot[] = [
   {
     n: 3,
     name: "Old runway edge",
-    months: [3, 4, 7, 8],
-    when: "Apr to May, Aug to Sep",
-    look: [{ name: "Northern wheatear", what: "passing through on the runway edge", last: "15 Sep" }],
-    outText: "Northern wheatears recorded here on passage, April and May, August and September.",
-    captureLook: {
-      3: [{ name: "Northern wheatear", what: "resting on the runway edge", last: "22 Apr" }],
-      4: [{ name: "Northern wheatear", what: "resting on the runway edge", last: "3 May" }],
-    },
+    // GBIF: 14 records of Corvus frugilegus within 300 m of the spot, 2010 to 2025
+    months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
+    when: "All year",
+    look: [{ name: "Rook", what: "feeding in a flock on the grass", last: "13 Aug 2025" }],
+    outText: "Rook recorded here all year.",
     kind: "do",
-    line: "Give a resting bird a wide berth on the tarmac.",
-    why: "Wheatears stop here to feed on their way north or south, and every time they are flushed they lose the time they came to feed.",
+    line: "Give a feeding flock a wide berth.",
+    why: "Rooks feed together on the open grass, and each time they are put up they lose the time they came to feed.",
   },
   {
     n: 4,
     name: "The windsock hill",
-    months: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    // GBIF: 7 records of Vulpes vulpes within 600 m of the spot, 2010 to 2025
+    months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
-    look: [{ name: "Red fox", what: "crossing the field at dusk", last: "19 Sep" }],
+    look: [{ name: "Red fox", what: "crossing the field at dusk", last: "11 Oct 2018" }],
+    outText: "Red fox recorded here all year.",
     kind: "do",
     line: "Keep dogs on the lead here.",
     why: "Foxes and hares cross the open field at dusk, and a dog off the lead chases them into the fenced meadows.",
@@ -359,9 +334,11 @@ const TEMPELHOF_SPOTS: Spot[] = [
   {
     n: 5,
     name: "North meadow fence",
-    months: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    // GBIF: 40 records of Falco tinnunculus within 300 m of the spot, 2010 to 2025
+    months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
-    look: [{ name: "Common kestrel", what: "hovering over the long grass", last: "20 Sep" }],
+    look: [{ name: "Common kestrel", what: "hovering over the long grass", last: "10 Dec 2025" }],
+    outText: "Common kestrel recorded here all year.",
     kind: "dont",
     line: "Don’t fly a drone over the meadow.",
     why: "Kestrels and skylarks read anything hovering above them as a hunting bird, and leave the meadow.",
@@ -374,13 +351,13 @@ const asOfNow = (s: Spot): Spot =>
     ? { ...s, look: (CAPTURE && s.captureLook?.[NOW]) || s.look, out: undefined }
     : { ...s, look: [], out: `Not in season in ${MONTH}. ${s.outText}` };
 
-const GRUMSIN_SEASON = [1, 1, 1, 2, 2, 3, 3, 3, 4, 3, 3, 1];
 // how many of a route's spots are in season in each month, January first
 const seasonOf = (spots: Spot[]) => Array.from({ length: 12 }, (_, m) => spots.filter((s) => s.months.includes(m)).length);
+const GRUMSIN_SEASON = seasonOf(GRUMSIN_SPOTS);
 const LINUM_SEASON = seasonOf(LINUM_SPOTS);
 const TEGEL_SEASON = seasonOf(TEGEL_SPOTS);
 const TEMPELHOF_SEASON = seasonOf(TEMPELHOF_SPOTS);
-const COUNT_WORDS = ["None", "One", "Two", "Three", "Four", "Five", "Six"];
+const COUNT_WORDS = ["None", "One", "Two", "Three", "Four", "Five", "Six", "Seven"];
 
 const DETAILS: Record<string, RouteDetail> = {
   grumsin: {

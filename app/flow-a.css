@@ -149,6 +149,8 @@
 .sug-season { display: flex; flex-direction: column; gap: 0.675rem; }
 .sug-season-label { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .sug-orgs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.84375rem; }
+/* a built route's card ends on View route, a button inside a card, so it hugs its label at every size */
+.sug .sug-view { align-self: flex-start; width: auto; margin-top: 0.5rem; }
 .sug-orgs li { display: flex; align-items: center; gap: 0.75rem; }
 .sug-org { min-width: 0; display: flex; flex-direction: column; gap: 0.16875rem; }
 .sug-org-name { font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }

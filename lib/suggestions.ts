@@ -7,6 +7,7 @@ import type { MapPoint } from "@/components/RegionMap";
 import type { Group } from "@/lib/routes";
 
 import { MONTH } from "@/lib/now";
+import { RECORDED, RECORDED_COUNTS } from "@/lib/records";
 
 export { MONTH };
 
@@ -45,10 +46,10 @@ export const SUGGESTIONS: Suggestion[] = [
   {
     id: "grumsin",
     name: "Grumsin beech forest loop",
-    meta: "10.2 km loop, 3 h at a looking pace, 5 spots",
+    meta: "10.2 km loop, 3 h at a looking pace",
     place: "10.2 km loop in Grumsin, Brandenburg",
     spots: 5,
-    lit: [1, 3, 4, 5],
+    lit: [1, 2, 3, 5],
     image: "/img/routes/grumsin.jpg",
     href: "/map/route/grumsin",
     lat: 53.01237,
@@ -62,10 +63,10 @@ export const SUGGESTIONS: Suggestion[] = [
   {
     id: "linum",
     name: "Linum wet meadows loop",
-    meta: "6.3 km loop, 1 h 50 at a looking pace, 6 spots",
+    meta: "6.3 km loop, 1 h 50 at a looking pace",
     place: "6.3 km loop in Linum, Brandenburg",
     spots: 6,
-    lit: [1, 2, 3, 4],
+    lit: [2, 3, 4],
     image: "/img/routes/linum.jpg",
     href: "/map/route/linum",
     lat: 52.75773,
@@ -79,10 +80,10 @@ export const SUGGESTIONS: Suggestion[] = [
   {
     id: "tegel",
     name: "Tegeler Fließ valley path",
-    meta: "4.9 km, point to point, 1 h 25 at a looking pace, 7 spots",
+    meta: "4.9 km, point to point, 1 h 25 at a looking pace",
     place: "4.9 km in Reinickendorf, Berlin",
     spots: 7,
-    lit: [2, 3, 4, 7],
+    lit: [1, 2, 3, 5, 6],
     image: "/img/routes/tegel.jpg",
     href: "/map/route/tegel",
     lat: 52.61804,
@@ -96,7 +97,7 @@ export const SUGGESTIONS: Suggestion[] = [
   {
     id: "tempelhof",
     name: "Tempelhofer Feld loop",
-    meta: "5.7 km loop, 1 h 40 at a looking pace, 5 spots",
+    meta: "5.7 km loop, 1 h 40 at a looking pace",
     place: "5.7 km loop in Tempelhof, Berlin",
     spots: 5,
     lit: [1, 2, 3, 4, 5],
@@ -181,10 +182,16 @@ export const routesIn = (r: Region) => SUGGESTIONS.filter((s) => r.routes.includ
 export type RegionOrganism = { organism: InSeason; routes: number; href?: string };
 
 /** What is in season in a region this month: each organism once, with the routes it is along. */
+// What is recorded in September along a region's routes: the GBIF records along each built route
+// (lib/records.ts), or the few organisms a sample card names. Counted once per route.
+export const inSeasonOf = (s: Suggestion): InSeason[] => RECORDED[s.id] ?? s.inSeason;
+/** How many species of each group are recorded along a built route this month, for its pills. */
+export const countsOf = (s: Suggestion) => RECORDED_COUNTS[s.id];
+
 export function organismsIn(r: Region): RegionOrganism[] {
   const found = new Map<string, RegionOrganism>();
   for (const s of routesIn(r))
-    for (const o of s.inSeason) {
+    for (const o of inSeasonOf(s)) {
       const seen = found.get(o.name);
       found.set(o.name, { organism: o, routes: (seen?.routes ?? 0) + 1, href: o.name === "Common crane" ? "/map/organism/common-crane" : undefined });
     }
