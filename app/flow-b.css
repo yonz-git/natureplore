@@ -414,6 +414,10 @@ a.fb-claim-act:active { transform: scale(0.985); }
 
 /* Walk the route, under the stats once saved */
 .b1-walk { animation: fade-in var(--enter) var(--ease-enter) backwards; }
+/* full width on a phone; wider screens hug the label, as every button does */
+@media (max-width: 29.99rem) { /* phone-max */
+  .btn.b1-walk { width: 100%; }
+}
 /* pinned over the tab bar on the phone after a removal: Undo */
 .b1-pin {
   position: absolute;
