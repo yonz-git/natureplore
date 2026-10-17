@@ -560,8 +560,8 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   padding: 0 0.625rem;
   display: inline-flex;
   align-items: center;
-  /* the edge in the count's own colour */
-  border: 1px solid currentColor;
+  /* the edge in the count's own colour, at 70% of its strength */
+  border: 1px solid rgb(from currentColor r g b / calc(alpha * 0.7));
   border-radius: var(--radius-pill);
   font-size: var(--text-stat-label);
   line-height: 1;
