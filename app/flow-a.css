@@ -504,15 +504,21 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 .a8-filter:active { transform: scale(0.97); }
 /* nothing recorded: full white for contrast, the dashed edge says it is empty */
 .a8-filter.is-none { border-style: dashed; }
-.a8-filter i { width: 0.5rem; height: 0.5rem; border-radius: var(--radius-pill); }
-/* a picked group takes the lime, as every selected control does; its dot keeps its colour on a ring */
+/* each group by its icon in its own colour, as on the route page's legend */
+.a8-filter .group-icon { transition: color var(--hover-fade) var(--ease-hover); }
+.a8-filter .group-icon.is-plants { color: var(--color-group-plants); }
+.a8-filter .group-icon.is-herbs { color: var(--color-group-herbs); }
+.a8-filter .group-icon.is-mushrooms { color: var(--color-group-mushrooms); }
+.a8-filter .group-icon.is-birds { color: var(--color-group-birds); }
+.a8-filter .group-icon.is-mammals { color: var(--color-group-mammals); }
+/* a picked group takes the lime, as every selected control does, its icon in the label colour */
 .a8-filter[aria-pressed="true"] {
   border-color: transparent;
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
   color: var(--color-on-primary);
   font-weight: 500;
 }
-.a8-filter[aria-pressed="true"] i { box-shadow: 0 0 0 1.5px var(--color-on-primary); }
+.a8-filter[aria-pressed="true"] .group-icon { color: var(--color-on-primary); }
 .a8-clear {
   align-self: flex-start;
   min-height: 2.75rem;

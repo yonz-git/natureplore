@@ -9,7 +9,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { BackIcon, ChevronIcon } from "@/components/Icons";
+import { BackIcon, ChevronIcon, GroupIcon } from "@/components/Icons";
 import { organismPhoto } from "@/lib/photos";
 import { GRUMSIN_RECORDED } from "@/lib/recorded";
 import { GROUPS, type Group } from "@/lib/routes";
@@ -66,7 +66,7 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
                 aria-pressed={picked.includes(g.group)}
                 onClick={() => pick(g.group)}
               >
-                <i style={{ background: TINT[g.group] }} />
+                <GroupIcon group={g.group} size={17} className={`is-${g.group}`} />
                 {label(g.group)} {g.total}
               </button>
             ))}
