@@ -37,28 +37,41 @@ function SectionHead({ id, title, close, line, children }: { id: string; title?:
   );
 }
 
+// The title, the place and the jump chips. Under 64rem they sit above the sheet on the photograph,
+// always in view while the sheet scrolls under them; from 64rem they are the top of the wide sheet.
+// Drawn in both places, one hidden at each size, because inside the glass a fixed header would be
+// held by the sheet's backdrop filter rather than the screen.
+function LearnHead({ className }: { className: string }) {
+  return (
+    <div className={className}>
+      <h1 className="org-title ln-title">
+        <em>Learn</em>
+      </h1>
+      <p className="org-small ln-sub">Berlin and Brandenburg</p>
+      <nav className="chips ln-jump" aria-label="Jump to a section">
+        <a href="#sec-impact" className="chip">
+          Impact
+        </a>
+        <a href="#sec-act" className="chip">
+          What you can do
+        </a>
+        <a href="#sec-docs" className="chip">
+          Documentaries
+        </a>
+      </nav>
+    </div>
+  );
+}
+
 export default function LearnScreen() {
   const docs = LEARN_DOCS.map((id) => docById(id)!);
 
   return (
-    <section className="org ln ln-home" aria-labelledby="d0-title">
+    <section className="org ln ln-home" aria-label="Learn">
+      <LearnHead className="ln-top" />
       <div className="org-sheet glass glass-top">
         <div className="org-main">
-          <h1 id="d0-title" className="org-title ln-title">
-            <em>Learn</em>
-          </h1>
-          <p className="org-small ln-sub">Berlin and Brandenburg</p>
-          <nav className="chips ln-jump" aria-label="Jump to a section">
-            <a href="#sec-impact" className="chip">
-              Impact
-            </a>
-            <a href="#sec-act" className="chip">
-              What you can do
-            </a>
-            <a href="#sec-docs" className="chip">
-              Documentaries
-            </a>
-          </nav>
+          <LearnHead className="ln-head-desk" />
 
           <section className="ln-part" aria-labelledby="sec-impact">
             <SectionHead id="sec-impact" close="Impact" line="Sourced claims about protected sites, each with what you can do" />

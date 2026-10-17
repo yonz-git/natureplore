@@ -8,7 +8,23 @@
 
 /* ── D0 and D2, the one-column pages ───────────────────────────────────────────────────────── */
 
-.ln-home .org-sheet { margin-top: 4.75rem; min-height: calc(100% - 4.75rem); }
+/* D0 under 64rem: the head stays on the photograph at the top and only the sheet scrolls, under it */
+.ln-home { display: flex; flex-direction: column; overflow: hidden; }
+.ln-top { flex: none; padding: calc(var(--top-chrome) + 0.5rem) calc(1.5vw + 1.5rem) 1.25rem; text-shadow: 0 1px 0.5rem rgb(0 0 0 / 0.35); }
+.ln-top .chip { text-shadow: none; }
+.ln-head-desk { display: none; }
+.ln-home .org-sheet {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  scroll-padding-bottom: var(--spacing-tabbar-clearance);
+}
+.ln-home .org-sheet::-webkit-scrollbar { display: none; }
+/* with the head above the sheet, the first section starts at the sheet's top */
+.ln-head-desk + .ln-part > .ln-sec { margin-top: 0.5rem; }
 .ln-title { margin-top: 0; }
 .ln-sub { margin-top: 0.675rem; }
 .ln-intro { margin-top: 1.0125rem; max-width: 40rem; color: var(--color-on-ground-soft); }
@@ -185,7 +201,11 @@ img.cp-icon { padding: 0; object-fit: cover; }
     padding-right: max(6rem, calc((100% - 6vw - 78rem) / 2));
     display: flex;
   }
-  .ln-home .org-sheet { margin-top: 7.625rem; min-height: calc(100% - 7.625rem); }
+  .ln-home { display: block; overflow-y: auto; }
+  .ln-top { display: none; }
+  .ln-head-desk { display: block; }
+  .ln-head-desk + .ln-part > .ln-sec { margin-top: 3rem; }
+  .ln-home .org-sheet { flex: none; overflow: visible; margin-top: 7.625rem; min-height: calc(100% - 7.625rem); }
   .ln-home .ln-title { margin-top: 0.675rem; }
   .ln-claims { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
