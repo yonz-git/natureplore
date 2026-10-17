@@ -111,7 +111,14 @@ type Pin = MapPoint & { x: number; y: number; free: boolean };
 type Centre = ((lat: number, lon: number, zoom: number, animate: boolean) => void) | null;
 
 /** What a screen can ask the map to do: put a point in the middle of the space it has. */
-export type MapHandle = { centre: (lat: number, lon: number, zoom: number, animate: boolean) => void };
+export type MapHandle = {
+  centre: (lat: number, lon: number, zoom: number, animate: boolean) => void;
+  /** fly to these places, as close as `cap` allows, in the space the sheet leaves free */
+  show: (to: { lat: number; lon: number }[], cap: number) => void;
+  /** fly back to the screen's own view, and let a resize refit it again */
+  reset: () => void;
+};
+type Fly = { show: MapHandle["show"]; reset: MapHandle["reset"] } | null;
 
 const token = (name: string) =>
   getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -213,7 +220,16 @@ export default function RegionMap({
   // set by the tab stop effect below, called again once Leaflet has made the map focusable
   const tabStopRef = useRef<() => void>(() => {});
   // read at the moment it is called, so the handle survives the map being rebuilt
-  useImperativeHandle(ref, () => ({ centre: (...args) => centreRef.current?.(...args) }), []);
+  const flyRef = useRef<Fly>(null);
+  useImperativeHandle(
+    ref,
+    () => ({
+      centre: (...args) => centreRef.current?.(...args),
+      show: (...args) => flyRef.current?.show(...args),
+      reset: () => flyRef.current?.reset(),
+    }),
+    [],
+  );
 
   useEffect(() => {
     let live = true;
@@ -482,9 +498,9 @@ export default function RegionMap({
       // the welcome card has no sheet over it, so the whole region fits inside it
       const cluster = L.latLngBounds([...pts.map((pt) => [pt.lat, pt.lon] as [number, number]), ...(line ?? [])]);
       // the zoom at which every point fits the box, on whichever axis runs out first
-      const zoomForBox = (box: { w: number; h: number }) => {
-        const nw = map.project(cluster.getNorthWest(), 0);
-        const se = map.project(cluster.getSouthEast(), 0);
+      const zoomForBox = (box: { w: number; h: number }, bounds = cluster, cap = maxZoom) => {
+        const nw = map.project(bounds.getNorthWest(), 0);
+        const se = map.project(bounds.getSouthEast(), 0);
         const w = Math.max(80, box.w - REGION_PAD * 2);
         const h = Math.max(80, box.h - REGION_PAD * 2);
         // down to the zoomSnap step, so the view is the same on every reload
@@ -492,19 +508,30 @@ export default function RegionMap({
         // the same line has to be smaller than any real span, not a whole pixel
         const span = (a: number, b: number) => Math.max(1e-9, b - a);
         const z = Math.log2(Math.min(w / span(nw.x, se.x), h / span(nw.y, se.y)));
-        return Math.min(maxZoom, Math.floor(z * 4) / 4);
+        return Math.min(cap, Math.floor(z * 4) / 4);
+      };
+      const fitView = () => {
+        const box = freeBox(host, sheetEl(), bandEl(), side());
+        const z = zoomForBox(box);
+        // a box that cannot hold the whole region keeps the anchor the phone was drawn around,
+        // rather than centring on clusters half of which would be off the band anyway. A
+        // screen that brought its own points has no such anchor: they are all there is to show.
+        const anchor = points || z >= REGION_ZOOM_MIN ? cluster.getCenter() : L.latLng(REGION[0], REGION[1]);
+        return { lat: anchor.lat, lon: anchor.lng, zoom: points ? z : Math.max(REGION_ZOOM_MIN, z) };
       };
       const fit = still
         ? () => map.fitBounds(cluster, { animate: false, padding: L.point(28, 28) })
         : () => {
-            const box = freeBox(host, sheetEl(), bandEl(), side());
-            const z = zoomForBox(box);
-            // a box that cannot hold the whole region keeps the anchor the phone was drawn around,
-            // rather than centring on clusters half of which would be off the band anyway. A
-            // screen that brought its own points has no such anchor: they are all there is to show.
-            const anchor = points || z >= REGION_ZOOM_MIN ? cluster.getCenter() : L.latLng(REGION[0], REGION[1]);
-            centreOn(anchor.lat, anchor.lng, points ? z : Math.max(REGION_ZOOM_MIN, z), false);
+            const v = fitView();
+            centreOn(v.lat, v.lon, v.zoom, false);
           };
+      // a flight rather than a jump, centred in the free space like centreOn; reduced motion jumps
+      const flyTo = (lat: number, lon: number, zoom: number) => {
+        if (calm) return centreOn(lat, lon, zoom, false);
+        const box = freeBox(host, sheetEl(), bandEl(), side());
+        const off = L.point(host.offsetWidth / 2 - (box.x + box.w / 2), host.offsetHeight / 2 - (box.y + box.h / 2));
+        map.flyTo(map.unproject(map.project([lat, lon], zoom).add(off), zoom), zoom, { duration: 0.9 });
+      };
 
       map.on("move zoomend", placePins);
       // drawn: the map fades up from here (app/transitions.css), not from when the page mounted
@@ -532,6 +559,24 @@ export default function RegionMap({
       showLabels();
       placePins();
 
+      flyRef.current = still
+        ? null
+        : {
+            show: (to, cap) => {
+              if (!to.length) return;
+              taken = true;
+              const bounds = L.latLngBounds(to.map((t) => [t.lat, t.lon] as [number, number]));
+              const c = bounds.getCenter();
+              flyTo(c.lat, c.lng, zoomForBox(freeBox(host, sheetEl(), bandEl(), side()), bounds, cap));
+            },
+            reset: () => {
+              taken = false;
+              const v = fitView();
+              flyTo(v.lat, v.lon, v.zoom);
+              fitted = boxKey();
+            },
+          };
+
       const onResize = () => {
         map.invalidateSize({ animate: false });
         if (!taken && boxKey() !== fitted) refit();
@@ -551,6 +596,7 @@ export default function RegionMap({
       mapRef.current?.remove();
       mapRef.current = null;
       centreRef.current = null;
+      flyRef.current = null;
     };
   }, [still, fixedZoom, points, maxZoom, line, detail, mapLabel]);
 
