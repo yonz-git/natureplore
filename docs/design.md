@@ -125,14 +125,14 @@ typography:
     lineHeight: 1.65rem
   secondary:
     fontFamily: Alpino
-    fontSize: 1.05rem
+    fontSize: 1.2rem
     fontWeight: 300
-    lineHeight: 1.5rem
+    lineHeight: 1.8rem
   caption:
     fontFamily: Alpino
-    fontSize: 0.975rem
+    fontSize: 1.125rem
     fontWeight: 300
-    lineHeight: 1.35rem
+    lineHeight: 1.65rem
   title:
     fontFamily: Alpino
     fontSize: 1.275rem
@@ -145,14 +145,14 @@ typography:
     lineHeight: 1.65rem
   meta:
     fontFamily: Alpino
-    fontSize: 1.05rem
+    fontSize: 1.2rem
     fontWeight: 400
-    lineHeight: 1.5rem
+    lineHeight: 1.8rem
   label:
     fontFamily: Alpino
-    fontSize: 0.975rem
+    fontSize: 1.125rem
     fontWeight: 400
-    lineHeight: 1.35rem
+    lineHeight: 1.65rem
   field:
     fontFamily: Alpino
     fontSize: 1.2rem
@@ -160,13 +160,13 @@ typography:
     lineHeight: 1.56
   button:
     fontFamily: Alpino
-    fontSize: 1.05rem
+    fontSize: 1.2rem
     fontWeight: 400
     lineHeight: 1
     letterSpacing: 0.01em
   button-secondary:
     fontFamily: Alpino
-    fontSize: 1.05rem
+    fontSize: 1.2rem
     fontWeight: 400
     lineHeight: 1
   button-small:
@@ -176,22 +176,22 @@ typography:
     lineHeight: 1
   chip:
     fontFamily: Alpino
-    fontSize: 1.05rem
+    fontSize: 1.2rem
     fontWeight: 400
     lineHeight: 1.2
   chip-active:
     fontFamily: Alpino
-    fontSize: 1.05rem
+    fontSize: 1.2rem
     fontWeight: 500
     lineHeight: 1.2
   pill:
     fontFamily: Alpino
-    fontSize: 0.975rem
+    fontSize: 1.125rem
     fontWeight: 400
     lineHeight: 1.2
   pill-count:
     fontFamily: Alpino
-    fontSize: 0.975rem
+    fontSize: 1.125rem
     fontWeight: 500
     lineHeight: 1.2
   stat-label:
@@ -491,7 +491,7 @@ The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group
 
 Two faces with separate jobs. Comfortaa 300 is the voice: headings, stat numbers and map counts, round and light so large sizes stay friendly rather than loud. Alpino (Fontshare) carries everything you read or tap, in 300 for running text and 400 for titles, labels and controls, stepping to 500 only on the active tab or segment, and counts in pills. Nothing is heavier than 500 and nothing is set in capitals.
 
-Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, the figures themselves at weight 400 and any word between them (the h in 3 h 00) left at 300, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 27.6/40.8 for the one desktop subline, `body` 19.2/28.8, `body-sm` 18/26.4 for notes under a section, `secondary` 16.8/24, `caption` 15.6/21.6. `title` 20.4/26.4 names a route, spot or organism; `title-sm` 19.2/26.4 names a search result or a fact. Reading text was raised a fifth over the headings, with line heights a fifth taller to match: headings, stats, spot numbers and buttons kept their size. Controls follow: `field` 19.2, `chip` 16.8, `tab` 14.4, `pill` 15.6, `stat-label` 14.4. `button-small` 14 is a small inner glass button on a sheet, such as Show on map. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
+Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, the figures themselves at weight 400 and any word between them (the h in 3 h 00) left at 300, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 27.6/40.8 for the one desktop subline, `body` 19.2/28.8, `body-sm` 18/26.4 for notes under a section, `secondary` 19.2/28.8, `caption` 18/26.4, raised two steps on 17 Oct 2026 so no reading text is under 18. `title` 20.4/26.4 names a route, spot or organism; `title-sm` 19.2/26.4 names a search result or a fact. Reading text was raised a fifth over the headings, with line heights a fifth taller to match: headings, stats, spot numbers and buttons kept their size. Controls follow: `field` 19.2, `chip` 19.2, `tab` 14.4, `pill` 18, `stat-label` 14.4. `button-small` 14 is a small inner glass button on a sheet, such as Show on map. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
 
 ## Layout
 
@@ -523,7 +523,7 @@ Motion shows what changed and nothing else. Every movement uses one strong ease-
 
 ## Components
 
-`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule, and no button is ever full width: on a phone, up to 480 wide (`phone-max`), they are 80% of the column and centred (`button-phone`); wider than that, tablet and desktop alike, they hug their label. A button inside a section, a bar or a card (the route's pinned bar with Walk the route, See all in a group card, See everything recorded), hugs its label on the phone too, as on the desktop; 80% is only for the buttons that close a page. There they are centred when they close a full-width grid or list ("Show all", "See all", "Open the route") and start-aligned when they follow a text block or sit in a stack with a field. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in Alpino 400 16.8, the same size and weight as the primary's `button` label, the same 50 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so a button that ends in a chevron takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
+`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule, and no button is ever full width: on a phone, up to 480 wide (`phone-max`), they are 80% of the column and centred (`button-phone`); wider than that, tablet and desktop alike, they hug their label. A button inside a section, a bar or a card (the route's pinned bar with Walk the route, See all in a group card, See everything recorded), hugs its label on the phone too, as on the desktop; 80% is only for the buttons that close a page. There they are centred when they close a full-width grid or list ("Show all", "See all", "Open the route") and start-aligned when they follow a text block or sit in a stack with a field. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in Alpino 400 19.2, the same size and weight as the primary's `button` label, the same 50 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so a button that ends in a chevron takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
 
 States, for every control. Hover (mouse and pen only): the lime primary lightens to brightness 1.1, glass and inner glass controls take a white 8% wash, and every hover fades in and out over 200ms `ease`, never snaps. The wash is an inset shadow layer that every resting shadow already carries at 0%, so the two shadow lists match and interpolate. Focus: a 2px `mist` outline 3 outside the shape, following its radius, never removed. Pressed: scale 0.97. Disabled: 45% opacity, no press, and the reason said next to it. Loading: the primary keeps its width, its label gives way to an 18 spinner in `on-primary`, and it is marked busy. A field with a problem keeps its shape, its edge rises to white 40%, and a `caption` line with an alert icon under it says what to do; there is no red, the words carry it.
 
