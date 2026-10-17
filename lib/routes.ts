@@ -51,6 +51,8 @@ export type Route = {
   stops: { name: string; note: string; left?: boolean }[];
   /** where each spot sits along the line, 0 at the start and 1 at the finish, when it is not evenly spaced */
   marks?: number[];
+  /** counts: how many species of each group GBIF has recorded within 250 m of the line, 2016 to 2025
+      (.design/gbif/counts.py), for the built routes; the sample cards keep their sample counts */
   /** the real line, when it is mapped (lib/route-lines.ts), and the detail map drawn under it */
   path?: [number, number][];
   detail?: string;
@@ -67,12 +69,12 @@ export const ROUTES: Route[] = [
     km: "5.7",
     time: "1:40",
     spots: 5,
-    counts: { plants: 24, herbs: 72, birds: 41, mammals: 6 },
+    counts: { plants: 82, herbs: 267, mushrooms: 15, birds: 163, mammals: 6 },
     season: ["meadow"],
     lat: 52.48228,
     lon: 13.40724,
     image: "/img/routes/tempelhof.jpg",
-    summary: "Grassland, 5 spots, 96 records within 250 m of the line, last recorded yesterday",
+    summary: "Grassland, 5 spots, 31,671 records within 250 m of the line",
     notable: { text: "Notable now: skylarks on the open meadow, until October" },
     from: "Loop from the Columbiadamm main entrance, Tempelhof, Berlin",
     description:
@@ -96,12 +98,12 @@ export const ROUTES: Route[] = [
     km: "4.9",
     time: "1:25",
     spots: 7,
-    counts: { plants: 22, herbs: 66, mushrooms: 12, birds: 57, mammals: 9 },
+    counts: { plants: 76, herbs: 120, mushrooms: 34, birds: 140, mammals: 18 },
     season: ["fungi", "meadow"],
     lat: 52.61804,
     lon: 13.3075,
     image: "/img/routes/tegel.jpg",
-    summary: "River meadow, 7 spots, 164 records within 250 m of the line, last recorded 3 days ago",
+    summary: "River meadow, 7 spots, 6,865 records within 250 m of the line",
     notable: { text: "Notable now: kingfishers on the Fließ, all year" },
     from: "From S-Bahn Hermsdorf to Alt-Lübars, Reinickendorf, Berlin",
     description:
@@ -128,12 +130,12 @@ export const ROUTES: Route[] = [
     km: "6.3",
     time: "1:50",
     spots: 6,
-    counts: { plants: 19, herbs: 48, birds: 64, mammals: 7 },
+    counts: { plants: 19, herbs: 81, mushrooms: 3, birds: 199, mammals: 13 },
     season: ["meadow"],
     lat: 52.75773,
     lon: 12.88274,
     image: "/img/routes/linum.jpg",
-    summary: "Wetland, 6 spots, 138 records within 250 m of the line, last recorded 2 days ago",
+    summary: "Wetland, 6 spots, 14,769 records within 250 m of the line",
     notable: { text: "Notable now: cranes gathering, September to November", organism: "common-crane" },
     from: "Loop from the village church in Linum, Brandenburg",
     description:
@@ -158,12 +160,12 @@ export const ROUTES: Route[] = [
     km: "10.2",
     time: "3:00",
     spots: 5,
-    counts: { plants: 31, herbs: 18, mushrooms: 26, birds: 38, mammals: 7 },
+    counts: { plants: 16, herbs: 66, mushrooms: 22, birds: 102, mammals: 9 },
     season: ["fungi"],
     lat: 53.01237,
     lon: 13.87510,
     image: "/img/routes/grumsin.jpg",
-    summary: "Beech forest, 5 spots, 120 records within 250 m of the line, last recorded 4 days ago",
+    summary: "Beech forest, 5 spots, 1,060 records within 250 m of the line",
     notable: { text: "Notable now: bog arum at Schwarzer See, until the end of September" },
     from: "Loop from the Altkünkendorf car park, Uckermark, Brandenburg",
     description:
