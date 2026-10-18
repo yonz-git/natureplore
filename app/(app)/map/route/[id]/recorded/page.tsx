@@ -16,5 +16,5 @@ export async function generateMetadata({ params }: PageProps<"/map/route/[id]/re
 export default async function Recorded({ params }: PageProps<"/map/route/[id]/recorded">) {
   const { id } = await params;
   if (id !== "grumsin") notFound();
-  return <RecordedScreen routeName="Grumsin beech forest loop" routeHref="/map/route/grumsin" />;
+  return <RecordedScreen routeName="Grumsin beech forest" routeHref="/map/route/grumsin" />;
 }

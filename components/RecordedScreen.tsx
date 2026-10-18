@@ -39,9 +39,8 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
       </Link>
       <div className="saved-sheet glass">
         <h1 id="a8-title">
-          Recorded along <em>{routeName}</em>
+          <em>{routeName}</em>
         </h1>
-        <p>Within 250 m of the line. One fixed order, and a group with nothing recorded keeps its place.</p>
 
         <div className="b1-box a8-box">
           <div
@@ -92,7 +91,7 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
             <section key={g.group} className="a8-section" aria-labelledby={`a8-${g.group}`}>
               <div className="a8-group-head">
                 <h2 id={`a8-${g.group}`}>{name}</h2>
-                <span>{g.total} recorded</span>
+                <span className="tag sug-spots sg-org-count">{g.total} Species</span>
               </div>
               <div className="saved-card a8-group">
                 {g.rows.length === 0 ? (

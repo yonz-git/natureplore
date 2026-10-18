@@ -111,6 +111,8 @@
   .org-sheet,
   .saved-sheet,
   .cp-dialog-sheet { margin-left: 3vw; margin-right: 3vw; }
+  /* A8: the sheet is only as wide as its content, centred as on the desktop, so no empty strip on the right */
+  .a8 .saved-sheet { max-width: min(var(--spacing-measure) + 2 * var(--spacing-sheet-tablet), 100% - 6vw); margin-left: auto; margin-right: auto; }
   .ms-sheet,
   .ms-sheet.is-short { left: 3vw; right: 3vw; }
   /* reading text at the measure, left-aligned; photographs, stat tiles and maps keep the width */
