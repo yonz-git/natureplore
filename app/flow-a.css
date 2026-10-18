@@ -142,7 +142,7 @@
   /* the meta line shares its row with the photo dots on the right */
   .sug-meta { color: rgb(255 255 255 / 0.85); font-weight: 400; }
   /* the Spots pill moves into the photograph, under the distance and time */
-  .sug-head { align-items: flex-start; }
+  .sug-head { align-items: flex-start; gap: calc(0.3375rem - 3px); }
   .sug-spots-photo { margin-top: 0.25rem; }
   .sug-spots-row { display: none; }
   .sug-open { pointer-events: auto; }
