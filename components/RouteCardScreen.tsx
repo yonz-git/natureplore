@@ -28,10 +28,8 @@ const noop = () => () => {};
 const SECTIONS = [
   ["recorded", "Organisms"],
   ["spots", "Spots"],
-  ["drawn", "Route"],
-  ["season", "When to walk the route"],
-  ["happening", "What is happening"],
-  ["getting", "Getting there"],
+  ["season", "Seasons"],
+  ["happening", "Environment"],
 ] as const;
 
 function SectionHead({ id, lead, close, note }: { id: string; lead: string; close: string; note?: string }) {
@@ -193,11 +191,32 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
       if (drag?.moved) strip.addEventListener("click", (e) => e.preventDefault(), { capture: true, once: true });
       drag = null;
     };
+    // the chips fade out at a side that has more of them past it; each chip is masked on its own, since a
+    // mask on the strip would make it a backdrop root and take the frost off every chip
+    const fade = () => {
+      const S = strip.getBoundingClientRect();
+      const w = parseFloat(getComputedStyle(strip).paddingLeft) * 1.5;
+      const max = strip.scrollWidth - strip.clientWidth;
+      const fl = strip.scrollLeft > 1 ? w : 0;
+      const fr = strip.scrollLeft < max - 1 ? w : 0;
+      for (const chip of strip.querySelectorAll<HTMLElement>("a")) {
+        const x = chip.getBoundingClientRect().left;
+        const l = S.left - x;
+        const r = S.right - x;
+        chip.style.maskImage = `linear-gradient(to right, transparent ${l}px, #000 ${l + fl}px, #000 ${r - fr}px, transparent ${r}px)`;
+      }
+    };
+    fade();
+    const ro = new ResizeObserver(fade);
+    ro.observe(strip);
+    strip.addEventListener("scroll", fade, { passive: true });
     strip.addEventListener("wheel", onWheel, { passive: false });
     strip.addEventListener("pointerdown", onDown);
     addEventListener("pointermove", onMove);
     addEventListener("pointerup", onUp);
     return () => {
+      ro.disconnect();
+      strip.removeEventListener("scroll", fade);
       strip.removeEventListener("wheel", onWheel);
       strip.removeEventListener("pointerdown", onDown);
       removeEventListener("pointermove", onMove);
@@ -374,6 +393,17 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
             </div>
           </dl>
 
+          {detail && (
+            <dl className="fb-card fb-facts">
+              {detail.getting.map(([k, v]) => (
+                <div key={k}>
+                  <dt>{k}</dt>
+                  <dd>{v}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
           <WalkButton route={route} walkable={!!detail} save={save} />
 
           {detail && <hr className="b1-rule" />}
@@ -491,30 +521,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           </section>
 
           {detail && (
-            <section aria-labelledby="sec-drawn-title">
-              <SectionHead id="drawn" lead="The route, and where its " close="spots are" />
-              <div className="fb-card">
-                <div className="fb-axis" role="img" aria-label={`Spots along the ${route.km} km line, in walking order`}>
-                  <span className="fb-axis-line" />
-                  {detail.axis.map((f, i) => (
-                    <span key={i} className={`fb-axis-mark${detail.spots[i]?.out ? " is-out" : ""}`} style={{ left: `${f * 100}%` }}>
-                      <SpotMark n={i + 1} />
-                    </span>
-                  ))}
-                </div>
-                <div className="fb-axis-ticks" aria-hidden="true">
-                  {detail.ticks.map((t) => (
-                    <span key={t}>{t}</span>
-                  ))}
-                </div>
-                <p className="fb-small">
-                  The line is drawn on the map, with the same numbers. {route.time.replace(":", " h ")} at a looking pace.
-                </p>
-              </div>
-            </section>
-          )}
-
-          {detail && (
             <>
               <section aria-labelledby="sec-season-title">
                 <SectionHead id="season" lead="When to " close="walk the route" note="Spots in season" />
@@ -546,19 +552,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                   </div>
                 </section>
               )}
-
-              <section aria-labelledby="sec-getting-title">
-                <SectionHead id="getting" lead="Getting there, and " close="getting along it" />
-                <dl className="fb-card fb-facts">
-                  {detail.getting.map(([k, v]) => (
-                    <div key={k}>
-                      <dt>{k}</dt>
-                      <dd>{v}</dd>
-                    </div>
-                  ))}
-                </dl>
-                <p className="fb-small">{detail.gettingNote}</p>
-              </section>
 
               <p className="fb-small b1-foot">{detail.foot}</p>
             </>
