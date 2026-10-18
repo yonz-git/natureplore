@@ -32,6 +32,17 @@
     linear-gradient(170deg, var(--color-field-mid) 0%, var(--color-field-shade) 100%);
   border: 0.5px solid var(--color-inner-edge);
 }
+/* the photographs: one on show, the rest a swipe away on the phone (scroll snap), only the first from 37.5rem */
+.sug-media { position: relative; min-width: 0; align-self: start; }
+.sug-track {
+  display: flex;
+  overflow: hidden;
+  border-radius: var(--radius-tile);
+  cursor: pointer;
+}
+.sug-track .sug-photo { flex: 0 0 100%; }
+.sug-dots { display: none; }
+
 /* the name and its line sit under the Save circles, the full width of the column */
 .sug-head { display: flex; flex-direction: column; gap: 0.3375rem; padding-top: calc(2.25rem + 0.5rem); }
 .sug-name {
@@ -71,9 +82,94 @@
 }
 .sug-save:active { transform: scale(0.94); }
 /* on the phone the card's padding is a quarter less, the save buttons the same distance in from the top and side */
-@media (max-width: 47.99rem) {
-  .sug { padding: 0.75rem; }
-  .sug-save { top: 0.75rem; right: 0.75rem; }
+@media (max-width: 37.49rem) {
+  .sug { padding: 0.75rem; grid-template-columns: minmax(0, 1fr); }
+  .sug-save { top: 1.5rem; right: 1.5rem; }
+
+  /* a big photograph, the full card width, that swipes */
+  .sug-media { grid-area: 1 / 1; }
+  .sug-track {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 5 / 4;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .sug-track::-webkit-scrollbar { display: none; }
+  .sug-track .sug-photo {
+    height: 100%;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
+    scroll-snap-align: start;
+    user-select: none;
+  }
+  /* a scrim under the name, so white text holds 4.5:1 on any photograph */
+  .sug-media::after {
+    content: "";
+    position: absolute;
+    inset: 40% 0 0;
+    z-index: 2;
+    border-radius: 0 0 var(--radius-tile) var(--radius-tile);
+    background: linear-gradient(to top, rgb(6 18 9 / 0.78) 0%, rgb(6 18 9 / 0.45) 50%, transparent 100%);
+    pointer-events: none;
+  }
+
+  /* the name, distance and time on the photograph's bottom left */
+  .sug-head {
+    grid-area: 1 / 1;
+    align-self: end;
+    justify-self: start;
+    z-index: 3;
+    max-width: 85%;
+    padding: 0 1rem 1.75rem;
+    text-align: left;
+    pointer-events: none;
+    color: #fff;
+    text-shadow: 0 1px 0.5rem rgb(6 18 9 / 0.5);
+  }
+  .sug-name { font-size: var(--text-h2); line-height: 1.2; }
+  .sug-meta { color: rgb(255 255 255 / 0.85); font-weight: 400; }
+  .sug-open { pointer-events: auto; }
+  /* the photograph opens the route here; the link stays on the name and does not cover the swipe */
+  .sug-open::after { content: none; }
+
+  /* where the photographs are: small dots, each a button */
+  .sug-dots {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    right: 0;
+    bottom: 0.25rem;
+    display: flex;
+    justify-content: center;
+  }
+  .sug-dot {
+    width: 1.25rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .sug-dot::before {
+    content: "";
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 0.5);
+    transition: background-color 200ms var(--ease-out), transform 200ms var(--ease-out);
+  }
+  .sug-dot[aria-current="true"]::before { background: #fff; transform: scale(1.25); }
+
+  /* the pills in one line under the photograph, the spot count on the right */
+  .sug-pills-row { align-items: center; }
+  .sug-pills-row .pills { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .sug-spots { flex-shrink: 0; }
 }
 /* the circle is 36, the tap area stays 44 */
 .sug-save:not(.sug-dl)::before { content: ""; position: absolute; inset: -0.25rem; border-radius: inherit; }
@@ -182,7 +278,7 @@
    Opened, it stops under the search field, the only thing left over the map. */
 .sg { --sheet-top: max(min(17rem, 100dvh - 27rem), var(--top-chrome) + 4.5rem); --sheet-open: calc(var(--top-chrome) + 4.5rem); }
 /* the switch is the sheet's first row; on the phone it clears the grab handle above it */
-@media (max-width: 47.99rem), (max-width: 63.99rem) and (max-height: 35.99rem) {
+@media (max-width: 37.49rem), (max-width: 63.99rem) and (max-height: 35.99rem) {
   /* from the handle's foot to the switch is the sheet's 1.5rem side padding */
 }
 .sg .ms-sheet { --sg-gap: 1.6875rem; gap: var(--sg-gap); }
@@ -193,7 +289,7 @@
 .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
 .sg-scope { margin: 0 0 0.675rem; font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
 /* phone: the switch, the title and the place a step smaller, so the title and its map button share a line */
-@media (max-width: 47.99rem) {
+@media (max-width: 37.49rem) {
   .sg .seg-opt { font-size: 1.025rem; }
   .sg .ms-title { font-size: 1.275rem; line-height: 1.7rem; }
   .sg-scope { font-size: 1rem; line-height: 1.4rem; }
@@ -607,7 +703,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 
 /* ── from 64rem ────────────────────────────────────────────────────────────────────────────── */
 
-@media (min-width: 48rem) {
+@media (min-width: 37.5rem) {
   .sug { grid-template-columns: 7.5rem minmax(0, 1fr); }
 }
 @media (min-width: 64rem) {
@@ -774,7 +870,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 /* half the usual control gap between the circle, the switch and the filters */
 .sg .ms-bar-row { position: relative; align-items: center; gap: calc(var(--spacing-control-stack) / 2); }
 .sg .ms-bar-row > .seg { position: relative; z-index: 1; flex-shrink: 0; min-height: 3.25rem; align-items: center; }
-/* the options as tall as the tab bar's, 44 inside the 52 pill */
+/* the options as tall as the tab bar's, 44 inside the 52 pill: the padding gives up the switch's 1px border */
+.sg .ms-bar-row > .seg { padding: calc(0.25rem - 1px); }
 .sg .ms-bar-row > .seg .seg-opt { min-height: 2.75rem; }
 .sg-search {
   flex-shrink: 0;
@@ -817,7 +914,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   cursor: pointer;
 }
 /* on the phone the hint keeps clear of Back instead of taking the search icon into its middle */
-@media (max-width: 47.99rem) {
+@media (max-width: 37.49rem) {
   .field:has(> .field-back) .field-hint { inset: 0 calc(1.25rem + 1.1875rem + 0.75rem); }
   .field:has(> .field-back) .field-hint-search { display: none; }
 }
