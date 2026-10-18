@@ -382,7 +382,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
             <nav aria-label="Jump to a section" className="fb-strip">
               {SECTIONS.map(([id, label]) => (
                 <a key={id} href={`#sec-${id}`} data-text={label} aria-current={current === id ? "location" : undefined} onClick={(e) => jumpTo(e, id)} draggable={false}>
-                  {label}
+                  <span>{label}</span>
                 </a>
               ))}
             </nav>
