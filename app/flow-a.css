@@ -142,7 +142,9 @@
     position: absolute;
     z-index: 3;
     right: 0.75rem;
-    bottom: calc(1rem - 4px);
+    /* the visible dot sits as far from the bottom edge as from the right (0.9375rem): the button is
+       1.5rem tall round a 0.375rem dot, 0.75rem wide */
+    bottom: 0.375rem;
     display: flex;
   }
   .sug-dot {

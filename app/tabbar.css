@@ -100,9 +100,10 @@
    pin's own middle 8.74), and grows from that middle so it stays there when the tab is open */
 .tabbar-tab .tab-pin { transform-box: fill-box; transform-origin: 50% 50%; transition: scale 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-pin { scale: 1.2; }
+/* the current tab in 600, as the picked switch option (Alpino has no 600, so it draws its 700) */
 .tabbar-tab.is-current {
   color: rgb(from var(--color-picked) r g b / 0.78);
-  font-weight: var(--text-tab-active--font-weight);
+  font-weight: 600;
 }
 /* a see-through colour would darken wherever an icon's line and fill overlap: the icon takes the solid
    green and fades as a whole to the label's 78% */
@@ -131,7 +132,7 @@
   .tabbar-icon-learn { margin: 0 calc(-0.0113rem - 0.0119rem) 0 calc(0.0263rem - 0.0050rem); }
   .tabbar-icon-saved { margin: 0 -0.0488rem 0 -0.0638rem; }
   .tabbar-icon-you { margin: 0 0 0 -0.0631rem; }
-  .tabbar-tab.is-current { font-weight: var(--text-chip-active--font-weight); }
+  .tabbar-tab.is-current { font-weight: 600; }
 }
 
 @media (hover: hover) and (pointer: fine) {
