@@ -104,6 +104,9 @@
   color: rgb(from var(--color-picked) r g b / 0.78);
   font-weight: var(--text-tab-active--font-weight);
 }
+/* a see-through colour would darken wherever an icon's line and fill overlap: the icon takes the solid
+   green and fades as a whole to the label's 78% */
+.tabbar-tab.is-current svg { color: var(--color-picked); opacity: 0.78; }
 
 @media (min-width: 64rem) {
   /* at the top right, with the search field centred on the same line (app/map.css) */
