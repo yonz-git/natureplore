@@ -5,7 +5,7 @@
 .tabbar {
   position: fixed;
   inset: auto 0 calc(0.5rem + env(safe-area-inset-bottom, 0px));
-  @media (max-width: 37.49rem) { bottom: calc(0.34375rem - 1.5px + env(safe-area-inset-bottom, 0px)); }
+  @media (max-width: 37.49rem) { bottom: env(safe-area-inset-bottom, 0px); }
   z-index: 20;
   display: flex;
   justify-content: center;

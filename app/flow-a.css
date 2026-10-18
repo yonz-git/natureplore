@@ -292,6 +292,9 @@
 /* phone: the switch, the title and the place a step smaller, so the title and its map button share a line */
 @media (max-width: 37.49rem) {
   .sg .seg-opt { font-size: 1.025rem; }
+  /* the search circle stands in from the left edge as far as it stands down from the top */
+  .sg .ms-bar { left: 0.65rem; }
+  .sg-head { padding-left: 0.8rem; }
   .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
   .sg-scope { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); }
   /* the map shows above the sheet already: no map button, so the title keeps one line */
