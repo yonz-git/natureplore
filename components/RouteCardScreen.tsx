@@ -162,6 +162,8 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   const sheet = useSheet(sheetEl);
   // the jump strip stays at the top of the sheet; its pill for the section under it is the current one
   const [current, setCurrent] = useState<string>(SECTIONS[0][0]);
+  // tablet: the docked panel slides away to the left to give the map the whole screen, and back
+  const [tucked, setTucked] = useState(false);
   const onSheetScroll = (e: React.UIEvent<HTMLDivElement>) => {
     sheet.onScroll();
     const strip = e.currentTarget.querySelector(".fb-strip");
@@ -347,7 +349,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   const most = detail ? Math.max(...detail.season) : 1;
 
   return (
-    <section className="ms b1">
+    <section className={`ms b1${tucked ? " is-tucked" : ""}`}>
       <RegionMap className="a1-map" behind ref={map} points={points} line={line} detail={route.detail} maxZoom={15} mapLabel={`Map of ${route.name}`} />
 
       <div className="b1-top">
@@ -355,6 +357,16 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           <BackIcon size={20} />
         </Link>
       </div>
+
+      <button
+        type="button"
+        className="b1-dock round glass glass-pin"
+        aria-expanded={!tucked}
+        aria-label={tucked ? "Show the route again" : "Hide the route, show the whole map"}
+        onClick={() => setTucked((t) => !t)}
+      >
+        <ChevronIcon size={18} />
+      </button>
 
       <div className="ms-panel glass-desk">
         <div

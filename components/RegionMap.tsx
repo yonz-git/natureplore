@@ -417,10 +417,10 @@ export default function RegionMap({
       };
 
       const wide = matchMedia(DESKTOP);
-      // on a tablet the suggestions dock their sheet to the left (app/tablet.css), so the free
+      // on a tablet the suggestions and the route page dock their sheet to the left (app/tablet.css), so the free
       // space is beside it, as on the desktop; every other screen keeps the phone's
       const tablet = matchMedia(TABLET);
-      const docked = !!host.closest(".sg");
+      const docked = !!host.closest(".sg, .b1");
       const side = () => wide.matches || (tablet.matches && docked);
       // what covers the map: the sheet on the phone and the tablet, the panel it moves into on the desktop
       // A1 has no sheet or panel: its words stand in the middle of the map, so the whole map is free

@@ -12,7 +12,8 @@
 
 import { type RefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
 
-const phone = () => !matchMedia("(min-width: 64rem)").matches;
+// the sheet moves only where it is a sheet: from the tablet up it docks as a panel beside the map
+const phone = () => !matchMedia("(min-width: 64rem), (min-width: 54.5rem) and (min-height: 36rem)").matches;
 const still = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /** 0 down, 1 resting, 2 open */
