@@ -194,7 +194,7 @@
 }
 .seg-opt:active { transform: scale(0.97); }
 /* tablet and desktop: the switch's labels at 1rem, as the tab bar's */
-@media (min-width: 54.5rem) { .seg-opt { font-size: 1.15rem; } }
+@media (min-width: 54.5rem) { .seg-opt { font-size: 1.05rem; } }
 /* the picked option in 600, as the tab bar's current tab (Alpino has no 600, so it draws its 700); each
    label holds the width of that weight */
 .seg .seg-opt[aria-pressed="true"], .seg .seg-opt[aria-current="page"] { font-weight: 600; }

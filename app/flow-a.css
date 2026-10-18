@@ -350,7 +350,9 @@
   .sg-pin-icon,
   .sg-pin-ring { animation: fade-in var(--enter) var(--ease-enter) 120ms backwards; }
 }
-.sg .ms-lead { margin-top: 0.16875rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
+.sg .ms-lead { margin-top: 0.16875rem; font-size: calc(var(--text-caption) + 0.25rem); line-height: 1.45; font-weight: 300; }
+/* the counts in the medium weight */
+.sg .ms-lead b { font-weight: 500; }
 
 /* Show on map / Show as a list: inner glass on the sheet, the phone only */
 .sg-toggle {
@@ -664,8 +666,9 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 .sg-list .a8-group { padding: 1.25rem; }
 /* each group is its own card: its head sits flush with the card's 1.25rem padding */
 .sg-list .sg-org-sec > .sg-org-sec-head { margin-top: 0; }
-/* centred under the group's rows, as wide as its words */
-.sg-org-more { margin: 0.5rem auto 0; }
+/* centred under the group's rows, as wide as its words; the head to the tiles and the tiles to this
+   button take the card's own 1.25rem padding, as above the head and below the button */
+.sg-org-more { margin: 0.25rem auto 0; }
 /* Discover more: the secondary button 20% smaller all round, height, padding and type */
 .btn.sg-org-more {
   min-height: calc(var(--spacing-button-height) * 0.8);
@@ -1148,10 +1151,20 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg-groups, .sg-groups.is-on { transition: display 120ms allow-discrete; }
   .sg-group, .sg-groups:not(.is-on) .sg-group { scale: 1; translate: 0 0; transition: opacity 120ms ease, background-color 200ms ease; }
 }
+/* a group card fades and rises in whenever the filters change, one after another, smooth and unhurried;
+   tiles opened by Discover more come in the same way. The cards are inner glass with no blur of their
+   own, so moving them leaves the sheet's frost alone. */
+@keyframes org-in { from { opacity: 0; translate: 0 0.75rem; } }
+.sg-org-sec { animation: org-in 600ms var(--ease-move) calc(var(--n, 0) * 90ms) backwards; }
+.sg-bento li.is-new { animation: org-in 540ms var(--ease-move) calc(var(--n, 0) * 70ms) backwards; }
+@media (prefers-reduced-motion: reduce) {
+  @keyframes org-fade { from { opacity: 0; } }
+  .sg-org-sec, .sg-bento li.is-new { animation: org-fade 360ms var(--ease-move) backwards; }
+}
 /* each group's organisms as a bento: a tall photo tile, two beside it, a wide one under them, and again
    for every four; the name and Latin name sit on the photo over a dark fade, the last line only where
    a tile has the room. A lone last tile runs the full width, a lone second one the full height. */
-.sg-bento { margin-top: 0.75rem; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 7.5rem; gap: 0.5rem; }
+.sg-bento { margin-top: 0; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 7.5rem; gap: 0.5rem; }
 .sg-bento li { position: relative; padding: 0; display: block; overflow: hidden; border-radius: var(--radius-tile); }
 .sg-bento li + li { border-top: 0; }
 .sg-bento li:nth-child(4n+1) { grid-row: span 2; }

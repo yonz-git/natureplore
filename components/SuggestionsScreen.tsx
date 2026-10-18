@@ -245,7 +245,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
               </h1>
               {show === "organisms" && (
                 <p className="ms-lead">
-                  {`${shown.length} in season along ${routes.length} route${routes.length > 1 ? "s" : ""}`}
+                  <b>{shown.length}</b> in season along <b>{routes.length}</b> route{routes.length > 1 ? "s" : ""}
                 </p>
               )}
             </div>
@@ -284,18 +284,18 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           ) : (
             <div className="sg-list" key="organisms">
               {/* one card per group, in the filters' order, headed by its icon, name and species count */}
-                {GROUPS.map((g) => {
+                {GROUPS.filter((g) => shown.some(({ organism }) => organism.group === g.id)).map((g, n) => {
                   const inGroup = shown.filter(({ organism }) => organism.group === g.id);
                   if (!inGroup.length) return null;
                   return (
-                    <section key={g.id} className="saved-card a8-group sg-org-sec" aria-labelledby={`sg-sec-${g.id}`}>
+                    <section key={`${g.id}-${picked.join()}`} className="saved-card a8-group sg-org-sec" style={{ "--n": n } as React.CSSProperties} aria-labelledby={`sg-sec-${g.id}`}>
                       <h2 id={`sg-sec-${g.id}`} className="sg-org-sec-head">
                         <GroupIcon group={g.id} size={20} className={`is-${g.id}`} />
                         <span className="sg-org-name">{g.label}</span>
                         <span className="tag sug-spots sg-org-count">{inGroup.length} Species</span>
                       </h2>
                       <ul className="a8-rows sg-bento">
-                        {(more.includes(g.id) ? inGroup : inGroup.slice(0, 4)).map(({ organism: o, routes: on, href }) => {
+                        {(more.includes(g.id) ? inGroup : inGroup.slice(0, 4)).map(({ organism: o, routes: on, href }, i) => {
                           const photo = organismPhoto(o.name);
                           const body = (
                             <>
@@ -322,7 +322,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                             </>
                           );
                           return (
-                            <li key={o.name}>
+                            <li key={o.name} className={i >= 4 ? "is-new" : undefined} style={i >= 4 ? ({ "--n": i - 4 } as React.CSSProperties) : undefined}>
                               {href ? (
                                 <Link href={href} className="sg-org-link">
                                   {body}
