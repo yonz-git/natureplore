@@ -141,11 +141,11 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
     <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill" ref={seg} inert={searching}>
       <span className="seg-thumb" ref={thumb} aria-hidden="true" />
       <button type="button" className="seg-opt" aria-pressed={show === "routes"} onClick={() => setShow("routes")}>
-        <RoutesIcon size={25} className="seg-routes" />
+        <RoutesIcon size={18.23} className="seg-routes" />
         <span className="seg-label" data-text="Routes">Routes</span>
       </button>
       <button type="button" className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
-        <OrganismsIcon size={21} className="seg-orgs" />
+        <OrganismsIcon size={21.49} className="seg-orgs" />
         <span className="seg-label" data-text="Organisms">Organisms</span>
       </button>
     </div>

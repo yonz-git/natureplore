@@ -60,7 +60,7 @@
   --color-system-prompt-rule: #8E918F;
 
   --font-heading: 'Comfortaa', 'Trebuchet MS', 'Helvetica Neue', Arial, sans-serif;
-  --font-text: 'Alpino', 'Futura', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif;
+  --font-text: 'General Sans', 'Helvetica Neue', Arial, sans-serif;
 
   --text-display-desktop: 3.5rem;
   --text-display-desktop--font-family: var(--font-heading);

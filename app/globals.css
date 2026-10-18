@@ -29,7 +29,7 @@
   /* The two families from docs/design.md, with the copies Next self-hosts in front of them.
      The stacks themselves stay in tokens.css so the system reads the same outside this app. */
   --font-heading: var(--font-comfortaa), "Comfortaa", "Trebuchet MS", sans-serif;
-  --font-text: var(--font-alpino), "Alpino", "Futura", "Century Gothic", sans-serif;
+  --font-text: var(--font-general-sans), "General Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
 /* the desktop's nav, search and switch sit closer to the top than nav-top-desktop, which the phone's
@@ -85,7 +85,7 @@ button:disabled:active {
 
 /* A number alone in a circle: centred on the figures' own height, never on the font's line box, which has more
    room under the baseline than above (docs/design.md, Components). Set --disc to the circle's size; a block,
-   because the trim does not apply to flex or grid items. Alpino's files carry lining figures by default, so every
+   because the trim does not apply to flex or grid items. General Sans' figures are lining, so every
    digit spans the same baseline to cap height (.design/fonts-original/lining-figures.py). */
 .num-disc {
   --disc: 2rem;

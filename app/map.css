@@ -195,7 +195,7 @@
 .seg-opt:active { transform: scale(0.97); }
 /* tablet and desktop: the switch's labels at 1rem, as the tab bar's */
 @media (min-width: 35.75rem) { .seg-opt { font-size: 1.05rem; } }
-/* the picked option in 600, as the tab bar's current tab (Alpino has no 600, so it draws its 700); each
+/* the picked option in 600, as the tab bar's current tab; each
    label holds the width of that weight */
 .seg .seg-opt[aria-pressed="true"], .seg .seg-opt[aria-current="page"] { font-weight: 600; }
 .seg .seg-label::after { font-weight: 600; }
@@ -803,7 +803,7 @@ button.float-pill,
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
   box-shadow: 0 0 0 0.1875rem rgb(from var(--color-primary) r g b / 0.6), 0 0.375rem 1rem rgb(6 18 9 / 0.35);
   color: var(--color-on-primary);
-  /* the number in Alpino Bold, the one place that weight is used, so it reads at 11 to 15px */
+  /* the number in the text face's bold, the one place that weight is used, so it reads at 11 to 15px */
   font-family: var(--font-text);
   font-size: calc(var(--text-count) * 1.35);
   font-weight: 700;

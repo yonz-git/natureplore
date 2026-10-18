@@ -111,25 +111,29 @@ export const BookmarkIcon = ({ filled = false, ...p }: P & { filled?: boolean })
   </Svg>
 );
 
-export const RoutesIcon = (p: P) => (
-  <Svg {...p}>
+// the switch's two icons are drawn on boxes cut to their ink, the heaviest line included, so the box
+// centres on what shows and nothing invisible pushes them off centre. size is the height in px.
+export const RoutesIcon = ({ size = 18, className }: P) => (
+  <svg width={`${size / 16}rem`} height={`${size / 16}rem`} viewBox="3.25 3.25 17.5 17.5" aria-hidden="true" className={className}
+    fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
     <circle cx="6" cy="18" r="2" />
     <circle cx="18" cy="6" r="2" />
     <path d="M8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7" />
-  </Svg>
+  </svg>
 );
 
 // a round tree crown with its trunk running up into it and two branches, set in Figma on a 33 by 41
-// grid with a 2.6 line, fitted to the 24 box's height so the line comes out at 1.5 like the others
-export const OrganismsIcon = (p: P) => (
-  <Svg {...p}>
-    <g transform="translate(2.35 0) scale(0.585)" strokeWidth="2.6">
+// grid with a 2.6 line
+export const OrganismsIcon = ({ size = 21.5, className }: P) => (
+  <svg width={`${(size * 33.64) / 41.97 / 16}rem`} height={`${size / 16}rem`} viewBox="-0.32 -0.49 33.64 41.97" aria-hidden="true" className={className}
+    fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+    <g strokeWidth="2.6">
       <path d="M31.5 16.6666C31.5 25.135 24.7843 32 16.5 32C8.21573 32 1.5 25.135 1.5 16.6666C1.5 8.19828 8.21573 1.33331 16.5 1.33331C24.7843 1.33331 31.5 8.19828 31.5 16.6666Z" />
       <path d="M16.5 10.9166V32" />
       <path d="M22.5 30.7244C20.6217 31.5657 18.5734 32.0012 16.5 32C14.4268 31.9996 12.3789 31.5643 10.5 30.7244" strokeLinecap="butt" />
       <path d="M16.5 32V39.6666M16.5 18.5833L22.5 12.8333M16.5 25.2916L10.5 19.5416" />
     </g>
-  </Svg>
+  </svg>
 );
 
 export const LeafIcon = (p: P) => (

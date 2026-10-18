@@ -4,7 +4,7 @@ name: Natureplore
 description: Delicate frosted glass over a darkened forest photograph, white type in light weights, one olive lime for the thing to do next, and room around every group.
 fonts:
   heading: "'Comfortaa', 'Trebuchet MS', 'Helvetica Neue', Arial, sans-serif"
-  text: "'Alpino', 'Futura', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif"
+  text: "'General Sans', 'Helvetica Neue', Arial, sans-serif"
 colors:
   ground: "#14261A"
   picked: "#062A1C"
@@ -110,104 +110,104 @@ typography:
     fontWeight: 300
     lineHeight: 1
   lead-desktop:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.725rem
     fontWeight: 300
     lineHeight: 2.55rem
   body:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.2rem
     fontWeight: 300
     lineHeight: 1.8rem
   body-sm:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.125rem
     fontWeight: 300
     lineHeight: 1.65rem
   secondary:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.2rem
     fontWeight: 300
     lineHeight: 1.8rem
   caption:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.125rem
     fontWeight: 300
     lineHeight: 1.65rem
   title:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.275rem
     fontWeight: 400
     lineHeight: 1.65rem
   title-sm:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.2rem
     fontWeight: 400
     lineHeight: 1.65rem
   meta:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.2rem
     fontWeight: 400
     lineHeight: 1.8rem
   label:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.125rem
     fontWeight: 400
     lineHeight: 1.65rem
   field:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.2rem
     fontWeight: 300
     lineHeight: 1.56
   button:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.2rem
     fontWeight: 400
     lineHeight: 1
     letterSpacing: 0.01em
   button-secondary:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.2rem
     fontWeight: 400
     lineHeight: 1
   button-small:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 0.875rem
     fontWeight: 400
     lineHeight: 1
   chip:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.2rem
     fontWeight: 400
     lineHeight: 1.2
   chip-active:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.2rem
     fontWeight: 500
     lineHeight: 1.2
   pill:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.125rem
     fontWeight: 400
     lineHeight: 1.2
   pill-count:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 1.125rem
     fontWeight: 500
     lineHeight: 1.2
   stat-label:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 0.9rem
     fontWeight: 400
     lineHeight: 1.2
   tab:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 0.9rem
     fontWeight: 400
     lineHeight: 1.2
     letterSpacing: 0.01em
   tab-active:
-    fontFamily: Alpino
+    fontFamily: General Sans
     fontSize: 0.9rem
     fontWeight: 500
     lineHeight: 1.2
@@ -490,7 +490,7 @@ The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group
 
 ## Typography
 
-Two faces with separate jobs. Comfortaa 300 is the voice: headings, stat numbers and map counts, round and light so large sizes stay friendly rather than loud. Alpino (Fontshare) carries everything you read or tap, in 300 for running text and 400 for titles, labels and controls, stepping to 500 only on the active tab or segment, and counts in pills. Nothing is heavier than 500 and nothing is set in capitals.
+Two faces with separate jobs. Comfortaa 300 is the voice: headings, stat numbers and map counts, round and light so large sizes stay friendly rather than loud. General Sans (Indian Type Foundry, Fontshare) carries everything you read or tap, in 300 for running text and 400 for titles, labels and controls, stepping to 500 only on the active tab or segment, and counts in pills. Nothing is heavier than 500 and nothing is set in capitals.
 
 Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, the figures themselves at weight 400 and any word between them (the h in 3 h 00) left at 300, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 27.6/40.8 for the one desktop subline, `body` 19.2/28.8, `body-sm` 18/26.4 for notes under a section, `secondary` 19.2/28.8, `caption` 18/26.4, raised two steps on 17 Oct 2026 so no reading text is under 18. `title` 20.4/26.4 names a route, spot or organism; `title-sm` 19.2/26.4 names a search result or a fact. Reading text was raised a fifth over the headings, with line heights a fifth taller to match: headings, stats, spot numbers and buttons kept their size. Controls follow: `field` 19.2, `chip` 19.2, `tab` 14.4, `pill` 18, `stat-label` 14.4. `button-small` 14 is a small inner glass button on a sheet, such as Show on map. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
 
@@ -524,7 +524,7 @@ Motion shows what changed and nothing else. Every movement uses one strong ease-
 
 ## Components
 
-`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule, and no button is ever full width: on a phone, up to 480 wide (`phone-max`), they are 80% of the column and centred (`button-phone`); wider than that, tablet and desktop alike, they hug their label. A button inside a section, a bar or a card (the route's pinned bar with Walk the route, See all in a group card, See everything recorded), hugs its label on the phone too, as on the desktop; 80% is only for the buttons that close a page. There they are centred when they close a full-width grid or list ("Show all", "See all", "Open the route") and start-aligned when they follow a text block or sit in a stack with a field. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in Alpino 400 19.2, the same size and weight as the primary's `button` label, the same 50 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so a button that ends in a chevron takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
+`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule, and no button is ever full width: on a phone, up to 480 wide (`phone-max`), they are 80% of the column and centred (`button-phone`); wider than that, tablet and desktop alike, they hug their label. A button inside a section, a bar or a card (the route's pinned bar with Walk the route, See all in a group card, See everything recorded), hugs its label on the phone too, as on the desktop; 80% is only for the buttons that close a page. There they are centred when they close a full-width grid or list ("Show all", "See all", "Open the route") and start-aligned when they follow a text block or sit in a stack with a field. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in General Sans 400 19.2, the same size and weight as the primary's `button` label, the same 50 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so a button that ends in a chevron takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
 
 States, for every control. Hover (mouse and pen only): the lime primary lightens to brightness 1.1, glass and inner glass controls take a white 8% wash, and every hover fades in and out over 200ms `ease`, never snaps. The wash is an inset shadow layer that every resting shadow already carries at 0%, so the two shadow lists match and interpolate. Focus: a 2px `mist` outline 3 outside the shape, following its radius, never removed. Pressed: scale 0.97. Disabled: 45% opacity, no press, and the reason said next to it. Loading: the primary keeps its width, its label gives way to an 18 spinner in `on-primary`, and it is marked busy. A field with a problem keeps its shape, its edge rises to white 40%, and a `caption` line with an alert icon under it says what to do; there is no red, the words carry it.
 
@@ -534,7 +534,7 @@ Empty, offline and not-mapped screens share one pattern: a glass card with the p
 
 Each organism group has one line icon, drawn on a 24 grid with a 1.5 stroke and round caps: a two-leaf sprig for plants, a four-leaf stem for herbs, a cap and stem for mushrooms, a perched bird for birds and a paw print for mammals. The icon always sits next to the group's name or count and is never used alone. It is 22 in a group tile and 18 in a 40 icon disc, both in the group colour, and 16 with a 1.4 stroke in `mist` inside an organism pill. The groups always appear in this order: plants, herbs, mushrooms, birds, mammals.
 
-`pill` (30) carries a season or a spot link with a 16px icon. `pill-organism` (32, padding 8 left and 9 right, 4 between icon and count, 4 between pills) shows only a group icon in `mist` and a count; the group name is kept for screen readers but not shown. Organism counts are always a row of these pills, on every card, list and sheet at every size, never written out as "24 plants, 72 herbs". Where every group must show, as on a route card that opens the detail, a group with nothing recorded keeps its pill as `pill-organism-none`: a 0 in Alpino 400 and the icon in `on-ground-soft`, named "none recorded yet" for screen readers. The row sits at full card width so five pills fit on one line. `tag` (26) marks a state such as "Not mapped yet". `icon-disc` is a 40 inner glass circle with a `mist` icon, or a group-coloured icon beside a group heading. `cluster-orb` is a 46 glass circle with a Comfortaa count on the map. `spot-marker` is a 32 lime circle numbered in walking order in Alpino 700 at the `count` size (the only use of that weight, which reads at 11 to 15px where Comfortaa Bold stays light), with a 3px lime halo at 60%, the same on the map, in the spots list, on the route axis and in the route card's dots. A spot out of season this month keeps the same size in a muted solid olive, the lime mixed 60% into `ground`, with its halo at 60% of that. A number alone in a circle (a spot marker, a numbered dot, a count disc) is centred on the figures' own height, never on the font's line box, which has more room under the baseline than above: the box is a block with `text-box: trim-both cap alphabetic` and the rest of the circle split evenly above and below as `padding-block: calc((size - 1cap) / 2)`, the `num-disc` rule in app/globals.css. No padding nudges. This holds because Alpino's digits are lining figures (0 to cap height): the font as shipped draws old-style figures, where 3, 4, 5, 7 and 9 hang below the line and no box can centre them all, so its files carry lining figures by default (.design/fonts-original/lining-figures.py; rerun it on any new Alpino file).
+`pill` (30) carries a season or a spot link with a 16px icon. `pill-organism` (32, padding 8 left and 9 right, 4 between icon and count, 4 between pills) shows only a group icon in `mist` and a count; the group name is kept for screen readers but not shown. Organism counts are always a row of these pills, on every card, list and sheet at every size, never written out as "24 plants, 72 herbs". Where every group must show, as on a route card that opens the detail, a group with nothing recorded keeps its pill as `pill-organism-none`: a 0 in General Sans 400 and the icon in `on-ground-soft`, named "none recorded yet" for screen readers. The row sits at full card width so five pills fit on one line. `tag` (26) marks a state such as "Not mapped yet". `icon-disc` is a 40 inner glass circle with a `mist` icon, or a group-coloured icon beside a group heading. `cluster-orb` is a 46 glass circle with a Comfortaa count on the map. `spot-marker` is a 32 lime circle numbered in walking order in General Sans 700 at the `count` size (the only use of that weight, which reads at 11 to 15px where Comfortaa Bold stays light), with a 3px lime halo at 60%, the same on the map, in the spots list, on the route axis and in the route card's dots. A spot out of season this month keeps the same size in a muted solid olive, the lime mixed 60% into `ground`, with its halo at 60% of that. A number alone in a circle (a spot marker, a numbered dot, a count disc) is centred on the figures' own height, never on the font's line box, which has more room under the baseline than above: the box is a block with `text-box: trim-both cap alphabetic` and the rest of the circle split evenly above and below as `padding-block: calc((size - 1cap) / 2)`, the `num-disc` rule in app/globals.css. No padding nudges. This holds because General Sans's digits are lining figures, 0 to cap height.
 
 `card` is glass at 28 with 32 padding and a 24 gap inside; `card-compact` pads 20 for a results list. `inner-card` is 18 with 16 padding (20 for a fact or a route card). Stat tiles show a `stat-label`, then the value in `stat` with its unit; nested in a route card they become `stat-tile-nested`, 12 radius, 14 by 12 padding, `stat-sm`. A route card opens with a 168 photo at 12 radius, a save orb top right, the title and a `caption` line, three stat tiles, a divider, then organism pills. An organism card puts a 117 by 105 photo beside the name, Latin name, date and a spot pill.
 
