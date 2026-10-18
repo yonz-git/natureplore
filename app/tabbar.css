@@ -115,14 +115,14 @@
     height: 2.75rem;
     padding: 0 1.125rem 0 0.875rem;
     flex-direction: row;
-    gap: 0.5rem;
+    gap: 0.40625rem;
     color: var(--color-on-ground);
     font-size: 1rem;
     font-weight: var(--text-chip--font-weight);
     letter-spacing: 0;
   }
   .tabbar-tab svg { width: 1.125rem; height: 1.125rem; }
-  /* every icon's drawing sits 16 from the pill's edge and 11 from the ink of its label's first letter,
+  /* every icon's drawing sits 16 from the pill's edge and 9.5 from the ink of its label's first letter,
      as on the Routes and Organisms switch, measured on the render: each icon's own empty margins cancelled */
   .tabbar-icon-map { margin: 0 calc(0.18rem - 0.0694rem) 0 calc(0.165rem - 0.0175rem); }
   .tabbar-icon-learn { margin: 0 calc(-0.0113rem - 0.0119rem) 0 calc(0.0263rem - 0.0050rem); }
