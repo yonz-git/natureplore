@@ -7,6 +7,7 @@ fonts:
   text: "'Alpino', 'Futura', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif"
 colors:
   ground: "#14261A"
+  picked: "#062A1C"
   scrim: "#061209"
   glass-solid: "#23402A"
   glass-fill: "rgb(24 44 30 / 0.34)"

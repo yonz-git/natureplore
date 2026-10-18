@@ -419,7 +419,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           )}
 
           <section aria-labelledby="sec-recorded-title">
-            <SectionHead id="recorded" lead="Recorded " close="organisms" note="Within 250 m of the line" />
+            <SectionHead id="recorded" lead="Recorded " close="organisms" />
             <div className="fb-card fb-recorded">
               <div
                 className="b1-bar"

@@ -197,7 +197,7 @@
 .seg-opt::before { content: ""; position: absolute; inset: -0.125rem 0; }
 .seg-opt[aria-current="page"] {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
-  color: var(--color-on-primary);
+  color: rgb(from var(--color-picked) r g b / 0.78);
   font-weight: var(--text-chip-active--font-weight);
 }
 

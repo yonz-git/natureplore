@@ -360,7 +360,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
   font-weight: 500;
   background:
     linear-gradient(160deg, rgb(255 255 255 / 0.03) 0%, rgb(0 0 0 / 0.24) 100%),
-    rgb(from var(--color-ground) r g b / 0.55);
+    rgb(from var(--color-picked) r g b / 0.55);
   /* the same edge as the other chips, so every gap reads the same: the shading stops inside it, or
      its dark end would swallow the bottom of the edge */
   background-clip: padding-box;
