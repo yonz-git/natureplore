@@ -114,6 +114,21 @@ function WalkButton({ route, walkable, save }: { route: Route; walkable: boolean
   );
 }
 
+/** The route in a few sentences, four lines until "more" opens the rest. */
+function About({ text }: { text: string }) {
+  const [all, setAll] = useState(false);
+  return (
+    <div className={`b1-about${all ? " is-all" : ""}`}>
+      <p id="b1-about-text">{text}</p>
+      {!all && (
+        <button type="button" className="b1-about-more" aria-controls="b1-about-text" aria-expanded={all} onClick={() => setAll(true)}>
+          more
+        </button>
+      )}
+    </div>
+  );
+}
+
 /** Pinned over the tab bar after a removal: Undo. The live region says what saving did. */
 function Pin({ save }: { save: RouteSave }) {
   const { saved, removed } = save;
@@ -369,6 +384,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
               {lead} <em>{name}</em>
             </h1>
             <p className="ms-lead">{route.from}</p>
+            <About text={route.description} />
           </div>
 
           <dl className="card-stats b1-stats">

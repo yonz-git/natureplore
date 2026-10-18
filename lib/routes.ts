@@ -78,7 +78,7 @@ export const ROUTES: Route[] = [
     notable: { text: "Notable now: skylarks on the open meadow, until October" },
     from: "Loop from the Columbiadamm main entrance, Tempelhof, Berlin",
     description:
-      "A flat loop around the old airfield, on the runways and the paths beside the meadows. Skylarks sing over the fenced grassland from spring into early autumn, wheatears stop on the runway edges on passage, and the gardens on the east side are busy with insects all summer.",
+      "A flat loop around the old airfield, on the runways and the paths beside the meadows. Skylarks sing over the fenced grassland from spring into early autumn, wheatears stop on the runway edges on passage, and the gardens on the east side are busy with insects all summer. It starts at the Columbiadamm main entrance, a short walk from U-Bahn Platz der Luftbrücke. The field opens at sunrise and closes at night, and the runways are step-free all the way round, so the loop suits pushchairs and wheelchairs. Bring a hat in summer: there is almost no shade.",
     stops: [
       { name: "The community gardens", note: "Butterfly bushes, in flower into October" },
       { name: "The skylark meadow", note: "Skylarks until October" },
@@ -107,7 +107,7 @@ export const ROUTES: Route[] = [
     notable: { text: "Notable now: kingfishers on the Fließ, all year" },
     from: "From S-Bahn Hermsdorf to Alt-Lübars, Reinickendorf, Berlin",
     description:
-      "A path along the Tegeler Fließ, a small river in a wide meadow valley at the edge of the city. Down the valley past the beaver’s stretch of the Fließ and the Hermsdorfer See, over the Fließ and along a boardwalk through the alder carr, then across the wet meadows and pastures to the old village of Lübars.",
+      "A path along the Tegeler Fließ, a small river in a wide meadow valley at the edge of the city. Down the valley past the beaver’s stretch of the Fließ and the Hermsdorfer See, over the Fließ and along a boardwalk through the alder carr, then across the wet meadows and pastures to the old village of Lübars. It starts at S-Bahn Hermsdorf on the S1 and ends in Alt-Lübars, where buses run back towards the S-Bahn. The boardwalk and the meadow tracks are narrow and soft after rain, so wear boots, and look for beaver-gnawed trunks along the water.",
     stops: [
       { name: "The beaver lodge", note: "Gnawed trunks along the bank" },
       { name: "Hermsdorf lake shore", note: "Grey herons fishing all year" },
@@ -139,7 +139,7 @@ export const ROUTES: Route[] = [
     notable: { text: "Notable now: cranes gathering, September to November", organism: "common-crane" },
     from: "Loop from the village church in Linum, Brandenburg",
     description:
-      "An easy loop from the village church out along the fish ponds of the Linumer Teichland and back across the wet meadows. Flat, and mostly on farm tracks, so it suits any fitness level. In autumn thousands of cranes gather on the ponds at dusk.",
+      "An easy loop from the village church out along the fish ponds of the Linumer Teichland and back across the wet meadows. Flat, and mostly on farm tracks, so it suits any fitness level. In autumn thousands of cranes gather on the ponds at dusk. It starts at the church in Linum, about an hour by car from Berlin, with parking in the village. The dam paths between the ponds are grass and soft after rain. In crane season keep to the paths and keep your distance from the water at dusk, when the birds come in to roost.",
     stops: [
       { name: "The flooded ditch", note: "Cranes feeding, in spring and October to November" },
       { name: "Reed edge of the fish ponds", note: "Reed warblers and bearded tits" },
@@ -169,7 +169,7 @@ export const ROUTES: Route[] = [
     notable: { text: "Notable now: bog arum at Schwarzer See, until the end of September" },
     from: "Loop from the Altkünkendorf car park, Uckermark, Brandenburg",
     description:
-      "The Orange Beech Leaf, a waymarked loop along the edge of the Grumsin beech forest, part of a world heritage site. Old beeches, two quiet forest lakes and the shore of Wolletzsee, with fungi on the fallen trunks after the first autumn rain. Mostly forest path and gravel track, with gentle climbs.",
+      "The Orange Beech Leaf, a waymarked loop along the edge of the Grumsin beech forest, part of a world heritage site. Old beeches, two quiet forest lakes and the shore of Wolletzsee, with fungi on the fallen trunks after the first autumn rain. Mostly forest path and gravel track, with gentle climbs. It starts at the Altkünkendorf car park near Angermünde. The forest is a core zone of the Schorfheide-Chorin biosphere reserve, where walking is allowed only on the marked paths, so stay on the Orange Beech Leaf and leave the dead wood where it lies. Allow about three hours at a looking pace.",
     stops: [
       { name: "The forest gate", note: "Jays in the old beeches" },
       { name: "Buckow-See", note: "Nuthatches on the lakeside beeches" },
