@@ -11,7 +11,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { BackIcon, BookmarkIcon, CalendarIcon, ChevronIcon, DownloadIcon, GroupIcon, WalkIcon } from "@/components/Icons";
+import { BackIcon, BookmarkIcon, CalendarIcon, ChevronIcon, DownloadIcon, GroupIcon, LoopIcon, OneWayIcon, WalkIcon } from "@/components/Icons";
 import { useSheet } from "@/components/SheetGrab";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { StatValue } from "@/components/CParts";
@@ -22,6 +22,7 @@ import { GROUPS, recordsOf, spotsOf, type Route } from "@/lib/routes";
 import { lastList, useSaved } from "@/lib/saved";
 import { MONTH_LETTERS, MONTH_NAMES, NOW, routeDetail, spotLine } from "@/lib/spots";
 import { suggestionById } from "@/lib/suggestions";
+import { easeScroll } from "@/lib/ease-scroll";
 
 const noop = () => () => {};
 
@@ -178,6 +179,9 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   const [current, setCurrent] = useState<string>(SECTIONS[0][0]);
   // tablet: the docked panel slides away to the left to give the map the whole screen, and back
   const [tucked, setTucked] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const jumping = useRef(false);
+  const jumps = useRef(0);
   const onSheetScroll = (e: React.UIEvent<HTMLDivElement>) => {
     sheet.onScroll();
     const strip = e.currentTarget.querySelector(".fb-strip");
@@ -189,6 +193,12 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
     for (let el = strip.nextElementSibling as HTMLElement | null; el; el = el.nextElementSibling as HTMLElement | null) {
       el.style.setProperty("--cut", `${stripBottom - el.getBoundingClientRect().top}px`);
     }
+    // the chips stuck at the top take the handle's place, so the handle hides while they are
+    const box = e.currentTarget;
+    setPinned(strip.getBoundingClientRect().top <= box.getBoundingClientRect().top + 1);
+    // while a chip's jump is scrolling the sheet, the chip that was tapped stays current: following the
+    // sections it passes would light every chip on the way, one after another
+    if (jumping.current) return;
     let id: string = SECTIONS[0][0];
     for (const [s] of SECTIONS) {
       const el = document.getElementById(`sec-${s}`);
@@ -261,7 +271,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
     const pad = parseFloat(getComputedStyle(strip).paddingLeft);
     const left = chip.offsetLeft - strip.offsetLeft;
     if (left < strip.scrollLeft + pad || left + chip.offsetWidth > strip.scrollLeft + strip.clientWidth - pad)
-      strip.scrollTo({ left: left - pad, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      easeScroll(strip, { left: left - pad });
   }, [current]);
   // a chip scrolls the sheet alone: the link's own jump also scrolls the panel and the page around
   // it, which lifts the whole panel out of its frame. The section lands just under the stuck chips.
@@ -273,7 +283,12 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
     e.preventDefault();
     const stuckBottom = strip.offsetHeight + parseFloat(getComputedStyle(strip).top);
     const top = target.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop - stuckBottom;
-    box.scrollTo({ top, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    // held until the eased scroll ends, or the reader stops it
+    const jump = ++jumps.current;
+    jumping.current = true;
+    easeScroll(box, { top }).then(() => {
+      if (jumps.current === jump) jumping.current = false;
+    });
     history.replaceState(null, "", `#sec-${id}`);
     setCurrent(id);
   };
@@ -332,7 +347,8 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
       const strip = el.querySelector<HTMLElement>(".fb-strip");
       const under = strip ? strip.offsetHeight + parseFloat(getComputedStyle(strip).top) : 16;
       const top = el.scrollTop + row.getBoundingClientRect().top - el.getBoundingClientRect().top - under;
-      el.scrollTo({ top, behavior });
+      if (behavior === "smooth") easeScroll(el, { top });
+      else el.scrollTo({ top });
     };
     // arriving with a spot open (back from its organism) lands on it at once. A page loaded or reloaded
     // straight at ?spot=n starts at the top instead, all spots folded
@@ -387,7 +403,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
       <div className="ms-panel glass-desk">
         <div
           ref={sheetEl}
-          className={`ms-sheet glass-phone${sheet.open ? " is-open" : ""}${sheet.down ? " is-down" : ""}`}
+          className={`ms-sheet glass-phone${sheet.open ? " is-open" : ""}${sheet.down ? " is-down" : ""}${pinned ? " is-pinned" : ""}`}
           aria-labelledby="route-title"
           onScroll={onSheetScroll}
         >
@@ -434,6 +450,11 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
               <dd>
                 <StatValue value={String(route.spots)} />
               </dd>
+            </div>
+            {/* the route's shape: its word is the label, its icon the value, as on the route cards */}
+            <div className="card-stat b1-shape">
+              <dt>{route.oneWay ? "One way" : "Loop"}</dt>
+              <dd>{route.oneWay ? <OneWayIcon /> : <LoopIcon />}</dd>
             </div>
           </dl>
 
