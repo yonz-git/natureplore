@@ -26,7 +26,7 @@ type Control = {
 
 type Size = "phone" | "desktop" | "all";
 const MEDIA: Record<Size, string> = {
-  phone: "@media (max-width: 54.49rem)",
+  phone: "@media (max-width: 35.74rem)",
   desktop: "@media (min-width: 64rem)",
   all: "",
 };

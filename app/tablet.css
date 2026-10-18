@@ -1,4 +1,4 @@
-/* Tablet: from 54.5rem wide (where the 26.25rem panel and its margin take no more than half the width; narrower keeps the phone layout) and at least 36rem tall, up to the desktop at 64rem. The screens follow
+/* Tablet: from 35.75rem (572px) wide and at least 36rem tall (narrower keeps the phone layout), up to the desktop at 64rem. The screens follow
    the tablet boards on the redesign canvas, not the IA brief's "list left, map right everywhere":
    only the suggestions (A5, A4) and search (A2, A3) become a column down the left beside the map,
    as their boards draw them. Every other screen keeps the phone's shape, with the board's 48 side
@@ -10,7 +10,7 @@
    an ancestor of glass; the pinned bar moves by its own `translate`. Values are tokens from
    docs/design.md (sheet-tablet, measure, pin-tablet, panel-tablet). */
 
-@media (min-width: 54.5rem) and (max-width: 63.99rem) and (min-height: 36rem) {
+@media (min-width: 35.75rem) and (max-width: 63.99rem) and (min-height: 36rem) {
   /* ── buttons: hug their label as on the desktop, centred ───────────────────────────────────── */
 
   .btn,
@@ -86,10 +86,13 @@
     transition: left 600ms var(--ease-move);
   }
   .b1-dock svg { rotate: 180deg; transition: rotate 600ms var(--ease-move); }
-  .b1.is-tucked .b1-dock { left: 0.75rem; }
-  .b1.is-tucked .b1-dock svg { rotate: 0deg; }
-  .b1.is-tucked .ms-sheet,
+  .ms.is-tucked .b1-dock { left: 0.75rem; }
+  .ms.is-tucked .b1-dock svg { rotate: 0deg; }
+  .ms.is-tucked .ms-sheet,
   .b1.is-tucked .b1-pin { translate: calc(-100% - var(--spacing-screen-phone) - 1rem) 0; }
+  /* the suggestions' list slides the same way; the search and switch above it stay, since moving their
+     bar would make it a backdrop root and switch their frost off */
+  .sg .ms-sheet { transition: translate 600ms var(--ease-move); }
 
   /* ── L4: B1's shape, the spot capped, Previous and Next in a 362 pair ────────────────────── */
 

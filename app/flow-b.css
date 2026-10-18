@@ -364,6 +364,9 @@ a.fb-claim-act:active { transform: scale(0.985); }
   /* the same edge as the other chips, so every gap reads the same: the shading stops inside it, or
      its dark end would swallow the bottom of the edge */
   background-clip: padding-box;
+  /* on the dark fill the shared 14% edge all but vanishes and the chip reads a pixel or two shorter:
+     a brighter rim keeps its outline as clear as the light chips' */
+  border-color: rgb(255 255 255 / 0.3);
 }
 @media (prefers-reduced-transparency: reduce) {
   .fb-strip a { background: var(--color-glass-solid); backdrop-filter: none; }

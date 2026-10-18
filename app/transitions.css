@@ -52,6 +52,8 @@
 .screen-enter .map-start { animation: pin-in var(--enter) var(--ease-enter) calc(450ms + var(--i, 0) * 110ms) backwards; }
 @media (max-width: 63.99rem) {
   .screen-enter .ms-sheet { animation: sheet-in var(--enter) var(--ease-enter) 250ms backwards; }
+  /* the panel's slide button comes in with the panel, not before it */
+  .screen-enter .b1-dock { animation: dock-in var(--enter) var(--ease-enter) 380ms backwards; }
   .screen-enter .search .ms-sheet > * { animation: sheet-in var(--enter) var(--ease-enter) 250ms backwards; }
   .screen-enter .search .ms-sheet { animation: none; }
 }
@@ -110,6 +112,8 @@
   from { opacity: 0; scale: 1.04; }
 }
 
+/* a fade only: the slide button keeps its own translate for centring */
+@keyframes dock-in { from { opacity: 0; } }
 @keyframes sheet-in {
   from { opacity: 0; translate: 0 var(--enter-rise); }
 }

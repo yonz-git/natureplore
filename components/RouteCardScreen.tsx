@@ -114,17 +114,11 @@ function WalkButton({ route, walkable, save }: { route: Route; walkable: boolean
   );
 }
 
-/** The route in a few sentences, four lines until "more" opens the rest. */
+/** The route in a few sentences, shown in full. */
 function About({ text }: { text: string }) {
-  const [all, setAll] = useState(false);
   return (
-    <div className={`b1-about${all ? " is-all" : ""}`}>
-      <p id="b1-about-text">{text}</p>
-      {!all && (
-        <button type="button" className="b1-about-more" aria-controls="b1-about-text" aria-expanded={all} onClick={() => setAll(true)}>
-          more
-        </button>
-      )}
+    <div className="b1-about">
+      <p>{text}</p>
     </div>
   );
 }
