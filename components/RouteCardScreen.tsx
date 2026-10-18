@@ -102,12 +102,12 @@ function WalkButton({ route, walkable, save }: { route: Route; walkable: boolean
   };
   return walkable ? (
     <Link ref={focusIfUndone} href={`/walk/${route.id}`} className="btn btn-primary b1-walk">
-      <WalkIcon size={19} />
+      <WalkIcon size={20.8} />
       Walk the route
     </Link>
   ) : (
     <button ref={focusIfUndone} type="button" className="btn btn-primary b1-walk" aria-disabled="true">
-      <WalkIcon size={19} />
+      <WalkIcon size={20.8} />
       Walk the route
       <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
     </button>

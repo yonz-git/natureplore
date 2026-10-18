@@ -29,8 +29,8 @@ export default function StartSheet() {
           <div className="ms-stack">
             <SearchField />
             <div className="a1-ways">
-              <button type="button" className="btn btn-primary" onClick={ask}>
-                <LocationIcon />
+              <button type="button" className="btn btn-primary a1-locate" onClick={ask}>
+                <LocationIcon size={20.8} />
                 Use my location
               </button>
               <Link href="/map" className="btn btn-secondary btn-browse">

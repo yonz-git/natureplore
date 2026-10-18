@@ -409,6 +409,9 @@ a.fb-claim-act:active { transform: scale(0.985); }
 
 /* Walk the route, under the stats once saved */
 .b1-walk { animation: fade-in var(--enter) var(--ease-enter) backwards; }
+/* Walk the route and Use my location: the icon at 1.3rem, close to its label, in the medium weight */
+.btn.b1-walk,
+.btn.a1-locate { gap: 0.4rem; font-weight: 500; }
 /* full width on a phone; wider screens hug the label, as every button does */
 @media (max-width: 29.99rem) { /* phone-max */
   .btn.b1-walk { width: 100%; }
