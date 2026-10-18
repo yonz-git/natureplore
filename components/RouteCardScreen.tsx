@@ -432,11 +432,18 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
 
           {detail && (
             <nav aria-label="Jump to a section" className="fb-strip">
-              {SECTIONS.map(([id, label]) => (
-                <a key={id} href={`#sec-${id}`} data-text={label} aria-current={current === id ? "location" : undefined} onClick={(e) => jumpTo(e, id)} draggable={false}>
-                  <span>{label}</span>
-                </a>
-              ))}
+              {SECTIONS.map(([id, label]) =>
+                // a section the route has nothing for stays in the row, muted, so every route shows the same chips
+                id === "happening" && !detail.claims.length ? (
+                  <a key={id} data-text={label} aria-disabled="true" aria-label={`${label}, nothing recorded on this route yet`}>
+                    <span>{label}</span>
+                  </a>
+                ) : (
+                  <a key={id} href={`#sec-${id}`} data-text={label} aria-current={current === id ? "location" : undefined} onClick={(e) => jumpTo(e, id)} draggable={false}>
+                    <span>{label}</span>
+                  </a>
+                ),
+              )}
             </nav>
           )}
 

@@ -353,6 +353,9 @@ a.fb-claim-act:active { transform: scale(0.985); }
 /* the chip is 2.2rem, its tap area stays 2.75rem */
 .fb-strip a::before { content: ""; position: absolute; inset: -0.055rem 0; }
 .fb-strip a:active { transform: scale(0.97); }
+/* a section the route has nothing for: the chip stays as it is, only its label is muted */
+.fb-strip a[aria-disabled="true"] { opacity: 1; cursor: default; color: rgb(from var(--color-on-ground) r g b / 0.4); }
+.fb-strip a[aria-disabled="true"]:active { transform: none; }
 /* the current section's chip in the heavier weight; each chip holds that width so none nudges */
 .fb-strip a > span { grid-area: 1 / 1; }
 /* the ink, caps to descenders, sits on the centre: the line box puts it low, so lift the label */
