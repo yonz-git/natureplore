@@ -119,7 +119,7 @@
 /* on the phone the field is too narrow for a centred hint beside a search icon pinned to the left, so
    while the field is empty the icon joins the hint and the three are centred together */
 .field-hint-search { display: none; }
-@media (max-width: 47.99rem) {
+@media (max-width: 37.49rem) {
   .field:has(> .field-hint) > svg { display: none; }
   .field-hint { inset: 0 1.25rem; }
   .field-hint-search { display: block; color: var(--color-on-ground); }
@@ -145,7 +145,7 @@
   .field-hint-icons svg,
   .field-hint-icons svg.is-gone { transition: opacity 400ms ease; transform: none; }
 }
-.field:focus-within { outline: 2px solid var(--color-mist); outline-offset: 3px; }
+.field:focus-within { outline: 1px solid rgb(from var(--color-mist) r g b / 0.5); outline-offset: -1px; }
 .field-clear {
   width: 2.75rem;
   height: 2.75rem;
@@ -193,6 +193,8 @@
   transition: transform 160ms var(--ease-out);
 }
 .seg-opt:active { transform: scale(0.97); }
+/* tablet and desktop: the switch's labels at 1rem, as the tab bar's */
+@media (min-width: 37.5rem) { .seg-opt { font-size: 1rem; } }
 /* 44 to touch, inside the 48 pill (accessibility review #6) */
 .seg-opt::before { content: ""; position: absolute; inset: -0.125rem 0; }
 .seg-opt[aria-current="page"] {
@@ -578,7 +580,7 @@ button.float-pill,
 /* a sheet that only holds a message rests on the bottom edge at its own height */
 .ms-sheet.is-short { inset: auto 1.5vw 0; overflow: visible; }
 /* on the phone the sheet runs the full width, its sides half the tablet's 1.5rem */
-@media (max-width: 47.99rem) {
+@media (max-width: 37.49rem) {
   .ms-sheet { left: 0; right: 0; padding-left: 0.75rem; padding-right: 0.75rem; }
   .ms-sheet.is-short { inset: auto 0 0; }
 }
@@ -686,7 +688,7 @@ button.float-pill,
 /* the two ways in share one row under the field, side by side, and wrap only when there is no room */
 .a1-ways { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--spacing-control-stack); width: 100%; }
 /* on the phone the two ways in are as wide as the field, so "Browse Berlin and Brandenburg" keeps one line */
-@media (max-width: 47.99rem) {
+@media (max-width: 37.49rem) {
   .a1-ways .btn { width: 100%; }
 }
 /* off the panel the secondary button stands on the map, so it frosts like the field above it */
