@@ -743,7 +743,17 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg-map-note,
   .sg .ms-handle { display: none; }
   /* the search field sits over the panel, outside it, so the sheet starts at the panel's top */
-  .sg .ms-sheet { margin-top: 0; --sg-gap: 1.35rem; }
+  .sg .ms-sheet { margin-top: 0; --sg-gap: 1.9rem; }
+  /* the desktop panel and route card, set on /tweak */
+  .sg .ms-panel { top: 4.5625rem; padding-top: 1.0625rem; }
+  .sg-scope { font-size: 1.2rem; line-height: 1.4; }
+  .sg .ms-title { font-size: 1.675rem; line-height: 1.25; margin: 1.625rem 0 -1rem; }
+  .sug { grid-template-columns: 9.125rem minmax(0, 1fr); padding: 0.5625rem; column-gap: 0.75rem; }
+  .sug-name { font-size: 1.475rem; line-height: 1.3; }
+  .sug-meta { font-size: 1.15rem; }
+  .sg-list { gap: 0.5rem; }
+  .sug-save { top: 0.4375rem; right: 0.5rem; width: 2.1875rem; height: 2.1875rem; }
+  .sug-save svg { width: 1.3125rem; height: 1.3125rem; }
   .sg-scope { margin-bottom: 0.4725rem; }
   .sg-list {
     flex: 1 1 auto;

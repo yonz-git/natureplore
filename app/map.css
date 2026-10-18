@@ -194,7 +194,7 @@
 }
 .seg-opt:active { transform: scale(0.97); }
 /* tablet and desktop: the switch's labels at 1rem, as the tab bar's */
-@media (min-width: 37.5rem) { .seg-opt { font-size: 1rem; } }
+@media (min-width: 37.5rem) { .seg-opt { font-size: 1.15rem; } }
 /* the picked option in 600, as the tab bar's current tab (Alpino has no 600, so it draws its 700); each
    label holds the width of that weight */
 .seg .seg-opt[aria-pressed="true"], .seg .seg-opt[aria-current="page"] { font-weight: 600; }
@@ -536,7 +536,7 @@ button.float-pill,
   z-index: 3;
   top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 3.25rem) / 2);
   left: 2.5rem;
-  width: 27.5rem;
+  width: 29rem;
   display: flex;
   align-items: center;
 }
@@ -1129,8 +1129,8 @@ button.float-pill,
     position: absolute;
     inset: 1.5rem auto 1.5rem 1.5rem;
     z-index: 2;
-    width: 27.5rem;
-    padding: 1.4rem;
+    width: 29rem;
+    padding: 1.2rem;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;

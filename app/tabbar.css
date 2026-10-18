@@ -121,7 +121,7 @@
     flex-direction: row;
     gap: 0.40625rem;
     color: var(--color-on-ground);
-    font-size: 1rem;
+    font-size: 1.15rem;
     font-weight: var(--text-chip--font-weight);
     letter-spacing: 0;
   }
@@ -148,4 +148,9 @@
   .tabbar-thumb.is-placed { transition: none; }
   .tabbar-tab { transition: color 160ms ease, background-color 160ms ease; }
   .tabbar-tab:active { transform: none; }
+}
+
+/* tablet: the tab labels at the switch's 1.15rem, as on the desktop */
+@media (min-width: 37.5rem) and (max-width: 63.99rem) {
+  .tabbar-tab { font-size: 1.15rem; }
 }
