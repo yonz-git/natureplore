@@ -110,44 +110,43 @@
   .sug-media::after {
     content: "";
     position: absolute;
-    inset: 0 0 50%;
+    inset: 40% 0 0;
     z-index: 2;
-    border-radius: var(--radius-tile) var(--radius-tile) 0 0;
-    background: linear-gradient(to bottom, rgb(6 18 9 / 0.78) 0%, rgb(6 18 9 / 0.45) 50%, transparent 100%);
+    border-radius: 0 0 var(--radius-tile) var(--radius-tile);
+    background: linear-gradient(to top, rgb(6 18 9 / 0.78) 0%, rgb(6 18 9 / 0.45) 50%, transparent 100%);
     pointer-events: none;
   }
 
-  /* the name, distance and time on the photograph's top left, clear of Save */
+  /* the name, distance and time on the photograph's bottom left */
   .sug-head {
     grid-area: 1 / 1;
-    align-self: start;
+    align-self: end;
     justify-self: start;
     z-index: 3;
     max-width: 100%;
-    padding: 1rem 4rem 0 1rem;
+    padding: 0 1rem 1rem;
     text-align: left;
     pointer-events: none;
     color: #fff;
     text-shadow: 0 1px 0.5rem rgb(6 18 9 / 0.5);
   }
   .sug-name { font-size: var(--text-h2); line-height: 1.2; }
-  .sug-meta { color: rgb(255 255 255 / 0.85); font-weight: 400; }
+  /* the meta line shares its row with the photo dots on the right */
+  .sug-meta { color: rgb(255 255 255 / 0.85); font-weight: 400; padding-right: 3.5rem; }
   .sug-open { pointer-events: auto; }
   /* the photograph opens the route here; the link stays on the name and does not cover the swipe */
   .sug-open::after { content: none; }
 
-  /* where the photographs are: small dots, each a button */
+  /* where the photographs are: small tight dots at the bottom right, on the meta line, each a button */
   .sug-dots {
     position: absolute;
     z-index: 3;
-    left: 0;
-    right: 0;
-    bottom: 0.25rem;
+    right: 0.75rem;
+    bottom: 1rem;
     display: flex;
-    justify-content: center;
   }
   .sug-dot {
-    width: 1.25rem;
+    width: 0.75rem;
     height: 1.5rem;
     padding: 0;
     border: 0;
@@ -655,6 +654,18 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 }
 /* Alpino sits low in its line: the name lifts 0.7px so it shares a middle with the icon and the pill */
 .sg-org-name { position: relative; top: -0.04375rem; }
+/* phone: the group names one step up, in the heading face and the titles' white to lime, as "September" */
+@media (max-width: 37.49rem) {
+  .sg-org-sec-head { font-family: var(--font-heading); font-size: var(--text-h3); font-weight: 300; }
+  .sg-org-name {
+    top: 0;
+    background-image: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-primary) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sg-org-count { font-family: var(--font-text); }
+}
 .sg-org-sec-head .is-plants { color: var(--color-group-plants); }
 .sg-org-sec-head .is-herbs { color: var(--color-group-herbs); }
 .sg-org-sec-head .is-mushrooms { color: var(--color-group-mushrooms); }
@@ -943,6 +954,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   transition: display 0ms allow-discrete, height 540ms var(--ease-move), margin-bottom 540ms var(--ease-move);
 }
 @starting-style { .sg-groups.is-on { height: 0; margin-bottom: calc(-1 * var(--sg-gap)); } }
+/* phone: half the sheet's gap between the filters and the list */
+@media (max-width: 37.49rem) { .sg-groups.is-on { margin-bottom: calc(-0.5 * var(--sg-gap)); } }
 /* each toggle slides out on its own from the first one's place to its own, never its row (the toggles
    are glass, and animating anything above glass switches the frost off): one after another from the
    left, and back in again the other way, the last first. --d is each one's beat, and only the coming
