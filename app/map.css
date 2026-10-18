@@ -588,7 +588,7 @@ button.float-pill,
 .ms-sheet.is-short { inset: auto 1.5vw 0; overflow: visible; }
 /* on the phone the sheet runs the full width, its sides half the tablet's 1.5rem */
 @media (max-width: 37.49rem) {
-  .ms-sheet { left: 0; right: 0; padding-left: 0.75rem; padding-right: 0.75rem; }
+  .ms-sheet { left: 0; right: 0; margin: 0 0.5vw 0 0.5vw; padding-left: 0.75rem; padding-right: 0.75rem; }
   .ms-sheet.is-short { inset: auto 0 0; }
 }
 /* A1: a card floating over the map, clear of the tab bar */

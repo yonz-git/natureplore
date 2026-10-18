@@ -150,7 +150,7 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
         }
         onClick={() => toggle(route.id)}
       >
-        <BookmarkIcon size={19.2} filled={saved} />
+        <BookmarkIcon size={20} filled={saved} />
       </button>
       <p className="sr-only" role="status">
         {saved && "Saved and downloaded. Find it in Saved."}

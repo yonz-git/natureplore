@@ -133,6 +133,10 @@
   .tabbar-icon-saved { margin: 0 -0.0488rem 0 -0.0638rem; }
   .tabbar-icon-you { margin: 0 0 0 -0.0631rem; }
   .tabbar-tab.is-current { font-weight: 600; }
+  /* the labels ride 1px up: 2px more padding below lifts each centred tab 1px; the current tab's icon
+     stays where it was, only its label moves */
+  .tabbar-tab { padding-bottom: 2px; }
+  .tabbar-tab.is-current svg { translate: 0 1px; }
 }
 
 @media (hover: hover) and (pointer: fine) {
