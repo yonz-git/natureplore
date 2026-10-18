@@ -140,7 +140,7 @@
   }
   .sug-name { font-size: var(--text-h2); line-height: 1.2; }
   /* the meta line shares its row with the photo dots on the right */
-  .sug-meta { color: rgb(255 255 255 / 0.75); font-weight: 400; }
+  .sug-meta { color: rgb(255 255 255 / 0.67); font-weight: 400; }
   /* the Spots pill moves into the photograph, under the distance and time */
   .sug-head { align-items: flex-start; gap: calc(0.3375rem - 3px); }
   .sug-spots-photo { margin-top: 0.25rem; }
@@ -1268,7 +1268,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sug-head { padding-left: 0.875rem; padding-bottom: 0.875rem; }
   /* name, distance and Spots a fifth closer together, held to the bottom so the top lines move down */
   .sug-head { gap: 0.145rem; }
-  .sug-spots-photo { margin-top: 0.136rem; }
+  .sug-spots-photo { margin: 0.3rem 0; }
 }
 
 /* ── small phones, under 390 wide, set on /tweak at 320 and 375 ───────────────────────────────────────── */
@@ -1308,3 +1308,13 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+/* phones under 430 wide: the place line and title stand in from the sheet's edge */
+@media (max-width: 26.87rem) {
+  .sg-head { padding-left: 0.5rem; }
+}
+
+/* the place line on phones: 1.125rem from 375, 1.15rem from 390, 1.2rem from 430 up (the tablet and desktop's size) */
+@media (min-width: 26.875rem) and (max-width: 54.49rem) { .sg-scope { font-size: 1.2rem; } }
+@media (min-width: 24.375rem) and (max-width: 26.87rem) { .sg-scope { font-size: 1.15rem; } }
+@media (min-width: 23.4375rem) and (max-width: 24.37rem) { .sg-scope { font-size: 1.125rem; } }
