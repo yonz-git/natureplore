@@ -91,6 +91,26 @@ function DownloadedMark({ saved }: { saved: boolean }) {
   );
 }
 
+/** The spots list's left column: the spot's number, or the finish flag, with how far along the route it is
+    under it, on the dashed line that joins them. */
+function SpotAt({ n, km }: { n?: number; km: string }) {
+  return (
+    <span className="fb-at">
+      {n ? (
+        <SpotMark n={n} />
+      ) : (
+        <span className="spot-mark fb-mark fb-mark-end" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7 20.5V3.5" />
+            <path d="M7 3.5h11l-2 4 2 4H7" />
+          </svg>
+        </span>
+      )}
+      <span className="fb-at-km">{km} km</span>
+    </span>
+  );
+}
+
 /** Walk the route, under the stats once the route is saved. */
 function WalkButton({ route, walkable, save }: { route: Route; walkable: boolean; save: RouteSave }) {
   if (!save.saved) return null;
@@ -258,6 +278,8 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
     setCurrent(id);
   };
   const detail = routeDetail(route.id);
+  // how far along the line each spot is, from the start, as on the map's distance axis
+  const kmAt = (n: number) => ((route.marks?.[n - 1] ?? n / (route.spots + 1)) * parseFloat(route.km)).toFixed(1);
   const spots = useMemo(() => spotsOf(route), [route]);
   const save = useRouteSave(route.id);
   const inSeasonPhotos = (suggestionById(route.id)?.inSeason ?? []).map((o) => organismPhoto(o.name)?.src).slice(0, 2);
@@ -485,7 +507,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           </section>
 
           <section aria-labelledby="sec-spots-title">
-            <SectionHead id="spots" lead="Spots along " close="this route" note="In walking order" />
+            <SectionHead id="spots" lead="Spots along " close="this route" />
             <ol className="fb-card fb-rows">
               {detail
                 ? detail.spots.map((s) => {
@@ -499,7 +521,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                           aria-controls={`spot-${s.n}-detail`}
                           onClick={() => toggleSpot(s.n, !open)}
                         >
-                          <SpotMark n={s.n} />
+                          <SpotAt n={s.n} km={kmAt(s.n)} />
                           <span className="fb-row-text">
                             <b>{s.name}</b>
                             <span>{spotLine(s)}</span>
@@ -535,10 +557,21 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                       </li>
                     );
                   })
+                    .concat(
+                      <li key="end" className="fb-spot-end">
+                        <div className="fb-row">
+                          <SpotAt km={route.km} />
+                          <span className="fb-row-text">
+                            <b>Finish</b>
+                            <span>{route.oneWay ? "The end of the route" : "Back where you started"}</span>
+                          </span>
+                        </div>
+                      </li>,
+                    )
                 : route.stops.map((s, i) => (
                     <li key={s.name}>
                       <div className="fb-row">
-                        <SpotMark n={i + 1} />
+                        <SpotAt n={i + 1} km={kmAt(i + 1)} />
                         <span className="fb-row-text">
                           <b>{s.name}</b>
                           <span>{s.note}</span>
