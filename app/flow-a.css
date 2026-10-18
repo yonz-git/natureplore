@@ -54,7 +54,7 @@
 }
 /* the spot count closes the pills row, on its right, on the last line where the pills wrap (phone) */
 .sug-pills-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 0.25rem; }
-.sug-spots { height: 2rem; margin: 0; }
+.sug-spots { height: 2rem; margin: 0; border-color: rgb(222 224 222 / 0.39); }
 .sug-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 
 /* the name opens the route: its link covers the card, Save sits above it */
@@ -170,11 +170,14 @@
   /* the pills in one line under the photograph, the spot count on the right */
   .sug-pills-row { align-items: center; }
   .sug-pills-row .pills { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
-  .sug-spots { flex-shrink: 0; border-color: rgb(222 224 222 / 0.39); }
+  .sug-spots { flex-shrink: 0; }
 }
 /* the circle is 36, the tap area stays 44 */
 .sug-save:not(.sug-dl)::before { content: ""; position: absolute; inset: -0.25rem; border-radius: inherit; }
 .sug-save svg { transition: transform 200ms var(--ease-out); }
+/* the bookmark draws at 1.2rem, but in a 1.25rem box: 8px in from each side of the 36px circle, a whole
+   pixel, so Safari cannot snap it off centre; scale does not snap */
+.sug-save:not(.sug-dl) svg { scale: 0.96; }
 /* inside a glass card it would turn inner glass; it sits on a photograph, so it keeps the full
    recipe from glass.css, its blur reaching only the photograph under it */
 .sug-save.glass,
@@ -292,6 +295,9 @@
 /* phone: the switch, the title and the place a step smaller, so the title and its map button share a line */
 @media (max-width: 37.49rem) {
   .sg .seg-opt { font-size: 1.025rem; }
+  /* the search circle stands in from the left edge as far as it stands down from the top */
+  .sg .ms-bar { left: 0.65rem; }
+  .sg-head { padding-left: 0.8rem; }
   .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
   .sg-scope { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); }
   /* the map shows above the sheet already: no map button, so the title keeps one line */
