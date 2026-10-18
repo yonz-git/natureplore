@@ -344,7 +344,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
       <div className="ms-panel glass-desk">
         <div
           ref={sheetEl}
-          className={`ms-sheet glass-phone${sheet.open ? " is-open" : ""}`}
+          className={`ms-sheet glass-phone${sheet.open ? " is-open" : ""}${sheet.down ? " is-down" : ""}`}
           aria-labelledby="route-title"
           onScroll={onSheetScroll}
         >

@@ -1,4 +1,4 @@
-/* Tablet: from 37.5rem wide and at least 36rem tall, up to the desktop at 64rem. The screens follow
+/* Tablet: from 54.5rem wide (where the 26.25rem panel and its margin take no more than half the width; narrower keeps the phone layout) and at least 36rem tall, up to the desktop at 64rem. The screens follow
    the tablet boards on the redesign canvas, not the IA brief's "list left, map right everywhere":
    only the suggestions (A5, A4) and search (A2, A3) become a column down the left beside the map,
    as their boards draw them. Every other screen keeps the phone's shape, with the board's 48 side
@@ -10,7 +10,7 @@
    an ancestor of glass; the pinned bar moves by its own `translate`. Values are tokens from
    docs/design.md (sheet-tablet, measure, pin-tablet, panel-tablet). */
 
-@media (min-width: 37.5rem) and (max-width: 63.99rem) and (min-height: 36rem) {
+@media (min-width: 54.5rem) and (max-width: 63.99rem) and (min-height: 36rem) {
   /* ── buttons: hug their label as on the desktop, centred ───────────────────────────────────── */
 
   .btn,
@@ -21,7 +21,8 @@
 
   .sg .ms-bar { right: auto; width: var(--spacing-panel-tablet); }
   .sg .ms-sheet {
-    inset: calc(var(--top-chrome) + 4.5rem) auto 6.25rem var(--spacing-screen-phone);
+    /* as far above the nav (0.75rem) as it sits under the switch */
+    inset: calc(var(--top-chrome) + 4.5rem) auto 5.625rem var(--spacing-screen-phone);
     width: var(--spacing-panel-tablet);
     /* top as the sides, 1.5rem */
     padding-top: 1.5rem;
@@ -35,6 +36,13 @@
   .sg .ms-sheet { --sg-gap: 1.35rem; }
   .sg-scope { margin-bottom: 0.4725rem; }
   .sg .sg-list { margin-top: calc(1.2rem - 1.35rem); }
+  /* wider cards: the panel's sides and each card's padding a fifth less */
+  .sg .ms-sheet { padding-inline: 1.2rem; }
+  .sug { padding: 0.4rem; }
+  /* the title to the first card: 0.75rem, as on the desktop (its -1rem bottom margin left 3px here) */
+  .sg .ms-title { margin-bottom: -0.45rem; }
+  /* the place line and title 2px in from the panel's padding, not the desktop's 0.6vw */
+  .sg-head { margin-left: 2px; }
   .sg .ms-grab,
   .sg .ms-handle,
   .sg .sg-toggle { display: none; }

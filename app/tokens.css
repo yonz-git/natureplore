@@ -18,11 +18,11 @@
   --color-on-ground: #E8EAE0;
   --color-on-ground-soft: rgb(255 255 255 / 0.78);
   --color-mist: #DCEBD7;
-  --color-group-plants: #3FB97A;
-  --color-group-herbs: #A8E498;
-  --color-group-mushrooms: #C9A227;
-  --color-group-birds: #7FA8C9;
-  --color-group-mammals: #C58A6A;
+  --color-group-plants: #389564;
+  --color-group-herbs: #93A733;
+  --color-group-mushrooms: #CE8E55;
+  --color-group-birds: #6CB9AA;
+  --color-group-mammals: #C27E76;
   --color-marker: #2F4A30;
   --color-keyboard: #08120A;
   --color-map-road: #E8EAE0;
@@ -216,6 +216,6 @@
   --spacing-inset-screen: clamp(1rem, 0.1216rem + 3.6036vw, 2rem);
   --spacing-screen-desktop: 7.5rem;
   --spacing-chrome-desktop: 2.5rem;
-  --spacing-nav-top-desktop: 0.8rem;
+  --spacing-nav-top-desktop: 0.7rem;
   --spacing-content-max: 75rem;
 }

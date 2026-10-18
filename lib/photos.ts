@@ -1,13 +1,12 @@
 // Photographs from Unsplash (unsplash.com/license: free to use, no permission needed), downloaded
 // 29 Sep, 17 Oct and 18 Oct 2026 for the prototype and chosen by eye for the species. Each carries its
-// photographer and page, so a credit can be shown and a photo can be checked or replaced. A species
-// without a photo here shows its group's icon: no free Unsplash photo that clearly shows the species
-// was found for ragged robin, woodruff, wood melick, beech woodwart, candlesnuff fungus, the
-// red-breasted flycatcher, and 25 of the organisms recorded along the routes (bog arum, skullcap,
-// sulphur tuft, hooded crow and wood pigeon among them). A few stand in for their species at a
-// glance: the noctule bat, the early marsh orchid, the beechwood sickener, the common speedwell and
-// the bladder ketmia are a bat, a marsh orchid, a red-capped brittlegill, a speedwell and a hibiscus
-// not named to species. Beech is the same tree as common beech and shares its photo.
+// photographer and page, so a credit can be shown and a photo can be checked or replaced. Where no
+// free photo shows the species itself, a near relative or a look-alike stands in at a glance, so no
+// organism shows an empty frame: among them the noctule bat, the early marsh orchid, the beechwood
+// sickener, the common speedwell, the bladder ketmia, and most of the 18 Oct second round (buckthorn,
+// bog arum, woodruff, skullcap, blackcap, slippery jack, sulphur tuft, privet, cinquefoil, purslane,
+// fleabane, wild rocket, cursed crowfoot, frogbit, black horehound, white poplar, hoary alison, ground
+// ivy, water shrew, small balsam, aspen, tree of heaven and soapwort). Beech shares common beech's photo.
 
 export type Photo = { src: string; by: string; page: string };
 
@@ -24,14 +23,19 @@ export const PHOTOS: Record<string, Photo> = {
   "organisms/birch-polypore": { src: "/img/organisms/birch-polypore.jpg", by: "Marwan", page: "https://unsplash.com/photos/a-white-mushroom-on-a-tree-in-the-woods-90IM2algOCQ" },
   "organisms/bitter-nightshade": { src: "/img/organisms/bitter-nightshade.jpg", by: "Ksenia Pixelesse", page: "https://unsplash.com/photos/clusters-of-bright-red-berries-on-a-branch-__TGaMWc2rE" },
   "organisms/black-alder": { src: "/img/organisms/black-alder.jpg", by: "Austris Augusts", page: "https://unsplash.com/photos/a-close-up-of-some-berries-ZGwhvc9fFBw" },
+  "organisms/black-horehound": { src: "/img/organisms/black-horehound.jpg", by: "Razvan Constantinescu", page: "https://unsplash.com/photos/purple-flowers-blooming-among-green-grass-5Nzzb33GvWE" },
   "organisms/black-locust": { src: "/img/organisms/black-locust.jpg", by: "Sandra", page: "https://unsplash.com/photos/black-locust-leaves-and-white-flowers-O9kMQB2Ki4g" },
   "organisms/black-woodpecker": { src: "/img/organisms/black-woodpecker.jpg", by: "Daniil Komov", page: "https://unsplash.com/photos/a-black-bird-perched-on-a-tree-trunk-yFWYHKefLwk" },
   "organisms/blackthorn": { src: "/img/organisms/blackthorn.jpg", by: "Sanela Arsenić", page: "https://unsplash.com/photos/a-bunch-of-blue-berries-hanging-from-a-tree-ZZjyFK9Ye5w" },
   "organisms/bladder-ketmia": { src: "/img/organisms/bladder-ketmia.jpg", by: "Lisa Summerour", page: "https://unsplash.com/photos/yellow-and-red-flower-in-tilt-shift-lens-z30UeA5JJJo" },
   "organisms/blue-tit": { src: "/img/organisms/blue-tit.jpg", by: "Łukasz Rawa", page: "https://unsplash.com/photos/a-blue-and-yellow-bird-sitting-on-a-tree-branch-2T0U39x40D8" },
+  "organisms/bog-arum": { src: "/img/organisms/bog-arum.jpg", by: "Janaíne Arioli", page: "https://unsplash.com/photos/a-white-flower-with-a-yellow-center-surrounded-by-green-leaves-Ya2SH-rzAjY" },
   "organisms/bog-moss": { src: "/img/organisms/bog-moss.jpg", by: "Hanna Lazar", page: "https://unsplash.com/photos/green-moss-growing-on-forest-floor-with-twigs-QC6INZb7AyM" },
   "organisms/canada-thistle": { src: "/img/organisms/canada-thistle.jpg", by: "Anthony Camp", page: "https://unsplash.com/photos/a-close-up-of-a-plant-with-purple-flowers-bMFv_HNKYQQ" },
+  "organisms/canadian-fleabane": { src: "/img/organisms/canadian-fleabane.jpg", by: "Lasclay", page: "https://unsplash.com/photos/white-flowers-with-green-leaves-yS_S8zlCLyM" },
   "organisms/chicory": { src: "/img/organisms/chicory.jpg", by: "Mark Ashford", page: "https://unsplash.com/photos/a-close-up-of-a-blue-flower-in-a-field-1YrEYuriAC0" },
+  "organisms/chilpanunda-weed": { src: "/img/organisms/chilpanunda-weed.jpg", by: "Diego Mattevi", page: "https://unsplash.com/photos/delicate-white-flowers-bloom-in-a-lush-green-field-iJrDgxbU9EA" },
+  "organisms/china-sumac": { src: "/img/organisms/china-sumac.jpg", by: "Samuel Svec", page: "https://unsplash.com/photos/the-leaves-of-a-tree-against-a-blue-sky-eORfVNjzObc" },
   "organisms/common-beech": { src: "/img/organisms/common-beech.jpg", by: "Lutz Stallknecht", page: "https://unsplash.com/photos/beech-branch-with-green-leaves-Mxo7zQa18yQ" },
   "organisms/common-buzzard": { src: "/img/organisms/common-buzzard.jpg", by: "Vincent van Zalinge", page: "https://unsplash.com/photos/soaring-bird-JxwlF3mHcLY" },
   "organisms/common-chiffchaff": { src: "/img/organisms/common-chiffchaff.jpg", by: "Simon V", page: "https://unsplash.com/photos/a-small-bird-sitting-on-top-of-a-green-plant-FMWGAu6Mzcw" },
@@ -41,30 +45,41 @@ export const PHOTOS: Record<string, Photo> = {
   "organisms/common-kestrel": { src: "/img/organisms/common-kestrel.jpg", by: "Bob Brewer", page: "https://unsplash.com/photos/a-bird-sitting-on-a-branch-with-a-blurry-background-HsXPfq5lKHc" },
   "organisms/common-kingfisher": { src: "/img/organisms/common-kingfisher.jpg", by: "Boris Smokrovic", page: "https://unsplash.com/photos/closeup-photo-of-teal-and-orange-bird-Ori_JWlqVpc" },
   "organisms/common-moorhen": { src: "/img/organisms/common-moorhen.jpg", by: "Paul Crook", page: "https://unsplash.com/photos/a-moorhen-swims-on-the-water-its-reflection-visible-VPGxaWRzT9I" },
+  "organisms/common-purslane": { src: "/img/organisms/common-purslane.jpg", by: "Yuri Antonenko", page: "https://unsplash.com/photos/a-close-up-of-a-plant-with-yellow-flowers-iFcWmDdWU0c" },
   "organisms/common-reed": { src: "/img/organisms/common-reed.jpg", by: "Jahanzeb Ahsan", page: "https://unsplash.com/photos/reeds-wave-in-front-of-a-blue-lake-wAS_6rqApBM" },
   "organisms/common-snipe": { src: "/img/organisms/common-snipe.jpg", by: "Todd Morris", page: "https://unsplash.com/photos/a-small-bird-standing-on-a-wooden-post-250Uupeoe7o" },
   "organisms/common-speedwell": { src: "/img/organisms/common-speedwell.jpg", by: "Anton Kotov", page: "https://unsplash.com/photos/blue-speedwell-flowers-in-meadow-vt84mt_wSaM" },
   "organisms/common-starling": { src: "/img/organisms/common-starling.jpg", by: "Joshua J. Cotten", page: "https://unsplash.com/photos/blue-and-yellow-bird-on-white-rock-h_zT1GbCmx8" },
+  "organisms/common-wood-pigeon": { src: "/img/organisms/common-wood-pigeon.jpg", by: "Nik", page: "https://unsplash.com/photos/a-pigeon-stands-on-a-wall-looking-ahead-GBWVQDFA1dU" },
   "organisms/cornelian-cherry": { src: "/img/organisms/cornelian-cherry.jpg", by: "Siegfried Poepperl", page: "https://unsplash.com/photos/three-yellow-flowers-grow-along-a-green-stem-k-vk-HaENQI" },
+  "organisms/creeping-cinquefoil": { src: "/img/organisms/creeping-cinquefoil.jpg", by: "Yang JunJie", page: "https://unsplash.com/photos/yellow-daisy-in-bloom-close-up-photo-Mum9_ImH5ko" },
   "organisms/cuckooflower": { src: "/img/organisms/cuckooflower.jpg", by: "Pix Tresa", page: "https://unsplash.com/photos/a-bunch-of-white-and-purple-flowers-in-a-field-1ApakgiCm4w" },
+  "organisms/cursed-crowfoot": { src: "/img/organisms/cursed-crowfoot.jpg", by: "Loveleen Cherub", page: "https://unsplash.com/photos/bright-yellow-buttercups-growing-in-a-green-field-bUmB0yR3GjA" },
   "organisms/downy-birch": { src: "/img/organisms/downy-birch.jpg", by: "pure julia", page: "https://unsplash.com/photos/white-and-black-tree-trunks-WWOw5K-V8PU" },
   "organisms/duke-of-argyll-s-teaplant": { src: "/img/organisms/duke-of-argyll-s-teaplant.jpg", by: "Ben Kupke", page: "https://unsplash.com/photos/a-branch-of-a-tree-with-flowers-and-leaves-4rGYZcyv5MQ" },
   "organisms/early-marsh-orchid": { src: "/img/organisms/early-marsh-orchid.jpg", by: "bryan priestley", page: "https://unsplash.com/photos/a-purple-flower-is-growing-in-the-grass-56yif-F0Qr8" },
   "organisms/english-ivy": { src: "/img/organisms/english-ivy.jpg", by: "Ivana Djudic", page: "https://unsplash.com/photos/shallow-focus-of-leaves-2rDC_qGWWM4" },
   "organisms/eurasian-beaver": { src: "/img/organisms/eurasian-beaver.jpg", by: "Howard Walsh", page: "https://unsplash.com/photos/a-beaver-sits-on-muddy-ground-near-water-AV7DdezYuT4" },
   "organisms/eurasian-bittern": { src: "/img/organisms/eurasian-bittern.jpg", by: "Hongbin", page: "https://unsplash.com/photos/a-small-bird-standing-on-top-of-a-green-plant-dZfbc1DWHfA" },
+  "organisms/eurasian-blackcap": { src: "/img/organisms/eurasian-blackcap.jpg", by: "Patrice Bouchard", page: "https://unsplash.com/photos/brown-bird-perched-on-brown-tree-branch-during-daytime-zlCsw7INjlM" },
   "organisms/eurasian-jay": { src: "/img/organisms/eurasian-jay.jpg", by: "Doncoombez", page: "https://unsplash.com/photos/a-colorful-jay-perches-on-a-branch-JyuoZkMGn6g" },
   "organisms/eurasian-nuthatch": { src: "/img/organisms/eurasian-nuthatch.jpg", by: "Gerrit Stam", page: "https://unsplash.com/photos/nuthatch-clinging-to-tree-stump-V8i9ldeIHUk" },
   "organisms/eurasian-otter": { src: "/img/organisms/eurasian-otter.jpg", by: "Andy Spark", page: "https://unsplash.com/photos/a-close-up-of-a-beaver-CnyUDzhY9n4" },
   "organisms/eurasian-red-squirrel": { src: "/img/organisms/eurasian-red-squirrel.jpg", by: "Pearse O'Halloran", page: "https://unsplash.com/photos/brown-squirrel-on-brown-tree-trunk-OPEcO8M_m7U" },
   "organisms/eurasian-skylark": { src: "/img/organisms/eurasian-skylark.jpg", by: "Heather Wilde", page: "https://unsplash.com/photos/a-small-bird-sitting-on-top-of-a-wooden-post-7GwEO8JWij0" },
+  "organisms/eurasian-water-shrew": { src: "/img/organisms/eurasian-water-shrew.jpg", by: "Patrick von der Wehd", page: "https://unsplash.com/photos/a-small-brown-shrew-on-dry-earth-and-scattered-vegetation-sgPD-o1JtAs" },
   "organisms/european-ash": { src: "/img/organisms/european-ash.jpg", by: "Annie Spratt", page: "https://unsplash.com/photos/green-leaves-in-tilt-shift-lens-dCDK8mZE4As" },
+  "organisms/european-aspen": { src: "/img/organisms/european-aspen.jpg", by: "Dave Meckler", page: "https://unsplash.com/photos/close-up-of-golden-autumn-leaves-on-branches-azRiVTJ1QEE" },
   "organisms/european-bird-cherry": { src: "/img/organisms/european-bird-cherry.jpg", by: "Richard Loader", page: "https://unsplash.com/photos/a-close-up-of-a-plant-with-white-flowers-dF1rOt6aMKM" },
+  "organisms/european-buckthorn": { src: "/img/organisms/european-buckthorn.jpg", by: "Sergej *****", page: "https://unsplash.com/photos/a-cluster-of-dark-berries-on-a-branch-WRyOQr2xvX4" },
   "organisms/european-green-woodpecker": { src: "/img/organisms/european-green-woodpecker.jpg", by: "Vidar Nordli-Mathisen", page: "https://unsplash.com/photos/a-bird-sits-on-a-rock-LlM0wsVbnYw" },
   "organisms/european-hare": { src: "/img/organisms/european-hare.jpg", by: "Margo Evardson", page: "https://unsplash.com/photos/a-brown-hare-sits-in-a-green-field-J3Y4TFmbf6k" },
   "organisms/european-mole": { src: "/img/organisms/european-mole.jpg", by: "Nikola Tomašić", page: "https://unsplash.com/photos/a-small-animal-with-long-nails-on-its-head-vLNtdFQKCjI" },
+  "organisms/european-privet": { src: "/img/organisms/european-privet.jpg", by: "Katrin Hauf", page: "https://unsplash.com/photos/a-bunch-of-berries-that-are-on-a-tree-R4AbD2KvAsM" },
   "organisms/european-spindletree": { src: "/img/organisms/european-spindletree.jpg", by: "Milda Varne", page: "https://unsplash.com/photos/a-bush-with-berries-H5uHnbKq6g0" },
+  "organisms/frogbit": { src: "/img/organisms/frogbit.jpg", by: "Trac Vu", page: "https://unsplash.com/photos/a-body-of-water-filled-with-lots-of-green-leaves-mnYY60LHPOI" },
   "organisms/gadwall": { src: "/img/organisms/gadwall.jpg", by: "Meenakshi Bose", page: "https://unsplash.com/photos/a-duck-floating-on-top-of-a-body-of-water-3QMYRTDOIAs" },
+  "organisms/gill-over-the-ground": { src: "/img/organisms/gill-over-the-ground.jpg", by: "Yuri Antonenko", page: "https://unsplash.com/photos/a-close-up-of-a-purple-flower-on-a-plant-TzEH_6N8odk" },
   "organisms/golden-currant": { src: "/img/organisms/golden-currant.jpg", by: "Rebekah Hansen", page: "https://unsplash.com/photos/a-branch-with-yellow-flowers-and-green-leaves-EsmE96Idpg8" },
   "organisms/great-cormorant": { src: "/img/organisms/great-cormorant.jpg", by: "Birgitta Roos", page: "https://unsplash.com/photos/a-bird-sitting-on-top-of-a-wooden-post-next-to-a-body-of-water-4VZQHQ8cMus" },
   "organisms/great-crested-grebe": { src: "/img/organisms/great-crested-grebe.jpg", by: "Will Hulbert", page: "https://unsplash.com/photos/a-duck-floating-on-top-of-a-body-of-water-9-Jswh0n8Fc" },
@@ -76,7 +91,9 @@ export const PHOTOS: Record<string, Photo> = {
   "organisms/guelder-rose": { src: "/img/organisms/guelder-rose.jpg", by: "Marina Yalanska", page: "https://unsplash.com/photos/a-bunch-of-red-berries-hanging-from-a-tree-euC5vhLRlAc" },
   "organisms/hawthorn": { src: "/img/organisms/hawthorn.jpg", by: "Griffin Quinn", page: "https://unsplash.com/photos/a-close-up-of-some-berries-rbUkpjVd7e4" },
   "organisms/himalayan-balsam": { src: "/img/organisms/himalayan-balsam.jpg", by: "Luke Galloway", page: "https://unsplash.com/photos/pink-flower-in-tilt-shift-lens-VTVnt26s_3o" },
+  "organisms/hoary-alison": { src: "/img/organisms/hoary-alison.jpg", by: "Annie Spratt", page: "https://unsplash.com/photos/a-field-of-white-flowers-LbcCOUTyHFg" },
   "organisms/holly": { src: "/img/organisms/holly.jpg", by: "Trevor Vannoy", page: "https://unsplash.com/photos/a-branch-with-red-berries-and-green-leaves-gr4eHZxez30" },
+  "organisms/hooded-crow": { src: "/img/organisms/hooded-crow.jpg", by: "doorkeepers", page: "https://unsplash.com/photos/black-and-grey-bird-in-close-up-photography-iE6lQhAFJ10" },
   "organisms/hop": { src: "/img/organisms/hop.jpg", by: "Jan Piatkowski", page: "https://unsplash.com/photos/green-flower-buds-in-tilt-shift-lens-D6yRJ7YXf9g" },
   "organisms/hornbeam": { src: "/img/organisms/hornbeam.jpg", by: "Pix Tresa", page: "https://unsplash.com/photos/a-close-up-of-a-tree-branch-with-leaves-jCipn0o_Tsc" },
   "organisms/house-sparrow": { src: "/img/organisms/house-sparrow.jpg", by: "Jordan Heinz", page: "https://unsplash.com/photos/a-small-sparrow-perches-on-a-green-bird-feeder-xML7AaX15eg" },
@@ -108,8 +125,14 @@ export const PHOTOS: Record<string, Photo> = {
   "organisms/scots-pine": { src: "/img/organisms/scots-pine.jpg", by: "Joanna Kosinska", page: "https://unsplash.com/photos/green-christmas-tree-with-pinecones-l_QssMVzmBU" },
   "organisms/sessile-oak": { src: "/img/organisms/sessile-oak.jpg", by: "alksndra", page: "https://unsplash.com/photos/a-close-up-of-a-leaf-on-a-tree-bjIeFsqbjQ4" },
   "organisms/silver-birch": { src: "/img/organisms/silver-birch.jpg", by: "Martin Sepion", page: "https://unsplash.com/photos/brown-tree-trunk-in-tilt-shift-lens-XeuLqlq9JAA" },
+  "organisms/skullcap": { src: "/img/organisms/skullcap.jpg", by: "Annie Spratt", page: "https://unsplash.com/photos/shallow-focus-photography-of-blue-petal-flowers-mPifH1nkZVY" },
+  "organisms/slippery-jack": { src: "/img/organisms/slippery-jack.jpg", by: "Sai Kiran Belana", page: "https://unsplash.com/photos/a-yellow-mushroom-sitting-on-top-of-a-moss-covered-forest-floor-RMDNVrcv-DM" },
+  "organisms/small-balsam": { src: "/img/organisms/small-balsam.jpg", by: "Julie Blake Edison", page: "https://unsplash.com/photos/a-close-up-of-a-yellow-flower-on-a-stem-wjo2QDEZX2o" },
+  "organisms/soapwort": { src: "/img/organisms/soapwort.jpg", by: "Rebecca", page: "https://unsplash.com/photos/pink-and-white-flowers-in-tilt-shift-lens-3ZJXdqfK_mg" },
   "organisms/stinging-nettle": { src: "/img/organisms/stinging-nettle.jpg", by: "Paul Morley", page: "https://unsplash.com/photos/green-leaves-plant-DrYqMhk53dY" },
   "organisms/sulphur-polypore": { src: "/img/organisms/sulphur-polypore.jpg", by: "James Wainscoat", page: "https://unsplash.com/photos/bright-orange-shelf-fungi-growing-on-tree-bark-u0po9XzJt0A" },
+  "organisms/sulphur-tuft": { src: "/img/organisms/sulphur-tuft.jpg", by: "Aldo Houtkamp", page: "https://unsplash.com/photos/a-group-of-mushrooms-ToAky2Cc3iI" },
+  "organisms/sweet-woodruff": { src: "/img/organisms/sweet-woodruff.jpg", by: "Andreas Rasmussen", page: "https://unsplash.com/photos/white-flower-in-tilt-shift-lens-8hdCTGLBH1E" },
   "organisms/tansy": { src: "/img/organisms/tansy.jpg", by: "nina .", page: "https://unsplash.com/photos/a-bunch-of-yellow-flowers-in-a-field-AMqZ29GZWEk" },
   "organisms/thrift": { src: "/img/organisms/thrift.jpg", by: "Jay Alexander", page: "https://unsplash.com/photos/a-bunch-of-flowers-that-are-in-the-grass-ROAhD_QLQpQ" },
   "organisms/tinder-bracket": { src: "/img/organisms/tinder-bracket.jpg", by: "Haberdoedas", page: "https://unsplash.com/photos/a-group-of-mushrooms-growing-on-the-bark-of-a-tree-c8UYA1lPfoU" },
@@ -121,6 +144,7 @@ export const PHOTOS: Record<string, Photo> = {
   "organisms/west-european-hedgehog": { src: "/img/organisms/west-european-hedgehog.jpg", by: "Anton Borzenkov", page: "https://unsplash.com/photos/a-small-hedgehog-hides-under-a-car-on-paving-stones-zGecii3rnxo" },
   "organisms/western-marsh-harrier": { src: "/img/organisms/western-marsh-harrier.jpg", by: "Christoph Nolte", page: "https://unsplash.com/photos/a-hawk-with-wings-spread-flies-against-a-dark-sky-O1pcvSavbrQ" },
   "organisms/white-campion": { src: "/img/organisms/white-campion.jpg", by: "Tadeusz Zachwieja", page: "https://unsplash.com/photos/a-couple-of-white-flowers-sitting-on-top-of-a-lush-green-field-wBaemhtgz1o" },
+  "organisms/white-poplar": { src: "/img/organisms/white-poplar.jpg", by: "Yuri Antonenko", page: "https://unsplash.com/photos/a-close-up-of-a-green-leaf-on-a-tree-PC879P5_HdQ" },
   "organisms/white-stork": { src: "/img/organisms/white-stork.jpg", by: "Doncoombez", page: "https://unsplash.com/photos/a-white-bird-with-a-long-neck-standing-in-tall-grass-kYs74jpmxA4" },
   "organisms/white-willow": { src: "/img/organisms/white-willow.jpg", by: "Kevy Michaels", page: "https://unsplash.com/photos/a-large-tree-stands-beside-a-calm-lake-eaOF8ZeQmyA" },
   "organisms/wild-boar": { src: "/img/organisms/wild-boar.jpg", by: "Ed van duijn", page: "https://unsplash.com/photos/shallow-focus-photo-of-pig-414NZVxzc20" },
