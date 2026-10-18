@@ -32,6 +32,15 @@
   --font-text: var(--font-alpino), "Alpino", "Futura", "Century Gothic", sans-serif;
 }
 
+/* the desktop's nav, search and switch sit closer to the top than nav-top-desktop, which the phone's
+   top-chrome is built on; top-chrome keeps its 0.7rem-based value here */
+@media (min-width: 64rem) {
+  :root {
+    --spacing-nav-top-desktop: 0.4rem;
+    --top-chrome: calc(0.2rem + env(safe-area-inset-top, 0px));
+  }
+}
+
 html,
 body {
   height: 100%;

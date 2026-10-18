@@ -55,7 +55,7 @@ const LABELS: [string, number, number, "nature" | "water"][] = [
 
 const DESKTOP = "(min-width: 64rem)";
 // the tablet step where the suggestions dock their sheet beside the map (app/tablet.css)
-const TABLET = "(min-width: 37.5rem) and (max-width: 63.99rem) and (min-height: 36rem)";
+const TABLET = "(min-width: 54.5rem) and (max-width: 63.99rem) and (min-height: 36rem)";
 // The region is fitted to whatever space the sheet leaves free rather than shown at one fixed
 // zoom, so a wide window frames Berlin and Brandenburg instead of half of northern Europe.
 // REGION_ZOOM_MIN is the zoom the phone has always used: the band above a sheet that tall cannot

@@ -2,7 +2,7 @@
 
 // The suggestion card, one route in season this month, as on A5 and A4. On the phone: a big
 // photograph that swipes through the route and what is in season along it, the name and its line on
-// the photograph's bottom left, the pills in one line under it. From 37.5rem a row: a square
+// the photograph's bottom left, the pills in one line under it. From 54.5rem a row: a square
 // photograph on the left, the name and its line on the right. Save sits at the top right. A built route shows the organism pills, how many species of each group are
 // recorded there this month; a sample card lists its few organisms, each with its group icon first
 // and a last-recorded date. Once saved, a download circle joins the bookmark. The whole card opens

@@ -80,7 +80,7 @@ export const SUGGESTIONS: Suggestion[] = [
   {
     id: "tegel",
     name: "Tegeler Fließ valley path",
-    meta: "4.9 km, point to point · 1 h 25",
+    meta: "4.9 km one way · 1 h 25",
     place: "4.9 km in Reinickendorf, Berlin",
     spots: 7,
     lit: [1, 2, 3, 5, 6],

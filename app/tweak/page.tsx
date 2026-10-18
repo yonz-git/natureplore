@@ -12,7 +12,9 @@ type Control = {
   group: string;
   css: (v: string) => string;
   /** "range" values carry a unit; "color" and "text" are written as they are */
-  kind: "range" | "color" | "text";
+  kind: "range" | "color" | "text" | "select";
+  /** the choices of a "select" */
+  options?: string[];
   /** which layout the rule belongs to: written inside that size's media query */
   size: Size;
   value: string;
@@ -24,7 +26,7 @@ type Control = {
 
 type Size = "phone" | "desktop" | "all";
 const MEDIA: Record<Size, string> = {
-  phone: "@media (max-width: 37.49rem)",
+  phone: "@media (max-width: 54.49rem)",
   desktop: "@media (min-width: 64rem)",
   all: "",
 };
@@ -69,28 +71,32 @@ const PHONE: Control[] = at("phone", () => [
 ]);
 
 const DESKTOP: Control[] = at("desktop", () => [
-  r("dBarTop", "Search and switch", "Panel from top", 2.5, 0, 5, 0.0625, "rem", (v) => `.sg .ms-panel { top: ${v} !important; }`),
-  r("dBarPad", "Search and switch", "Space above them, inside the panel", 1.4, 0, 3, 0.0625, "rem", (v) => `.sg .ms-panel { padding-top: ${v} !important; }`),
-  r("dPanelW", "Panel", "Width", 27.5, 22, 36, 0.25, "rem", (v) => `.ms-panel { width: ${v} !important; }`),
-  r("dPanelX", "Panel", "From left", 2.5, 0.5, 5, 0.125, "rem", (v) => `.ms-panel { left: ${v} !important; }`),
-  r("dPanelP", "Panel", "Inner padding", 1.4, 0.75, 2.5, 0.05, "rem", (v) => `.ms-panel { padding: ${v} !important; }`),
-  r("dScope", "Header", "Place line size", 1.125, 0.875, 1.5, 0.025, "rem", (v) => `.sg-scope { font-size: ${v} !important; line-height: 1.4 !important; }`),
-  r("dTitle", "Header", "Title size", 1.5, 1, 2.5, 0.025, "rem", (v) => `.sg .ms-title { font-size: ${v} !important; line-height: 1.25 !important; }`),
-  r("dTitleT", "Header", "Title space above", 0, -1, 2, 0.0625, "rem", (v) => `.sg .ms-title { margin-top: ${v} !important; }`),
-  r("dTitleB", "Header", "Title space below", 0, -1, 2, 0.0625, "rem", (v) => `.sg .ms-title { margin-bottom: ${v} !important; }`),
-  r("dGap", "Header", "Gap between rows", 1.8, 0.5, 2.5, 0.05, "rem", (v) => `.sg .ms-sheet { --sg-gap: ${v} !important; }`),
-  r("dPhoto", "Route card", "Photo size", 7.75, 5, 11, 0.125, "rem", (v) => `.sug { grid-template-columns: ${v} minmax(0, 1fr) !important; }`),
-  r("dPad", "Route card", "Card padding", 0.5625, 0.5, 1.75, 0.0625, "rem", (v) => `.sug { padding: ${v} !important; }`),
-  r("dColGap", "Route card", "Photo to text", 0.6875, 0.5, 2, 0.0625, "rem", (v) => `.sug { column-gap: ${v} !important; }`),
-  r("dName", "Route card", "Route name size", 1.425, 1, 2, 0.025, "rem", (v) => `.sug-name { font-size: ${v} !important; line-height: 1.3 !important; }`),
-  r("dMeta", "Route card", "Distance and time size", 1.175, 0.75, 1.5, 0.025, "rem", (v) => `.sug-meta { font-size: ${v} !important; }`),
-  r("dCardGap", "Route card", "Space between cards", 0.6875, 0.25, 2.5, 0.0625, "rem", (v) => `.sg-list { gap: ${v} !important; }`),
-  r("dSave", "Save", "Circle size", 2.25, 1.75, 3.25, 0.0625, "rem", (v) => `.sug-save { width: ${v} !important; height: ${v} !important; }`),
-  r("dSaveIcon", "Save", "Icon size", 1, 0.75, 1.5, 0.0625, "rem", (v) => `.sug-save svg { width: ${v} !important; height: ${v} !important; }`),
-  r("dSaveTop", "Save", "From top", 1, 0, 2.5, 0.0625, "rem", (v) => `.sug-save { top: ${v} !important; }`),
-  r("dSaveRight", "Save", "From right", 1, 0, 2.5, 0.0625, "rem", (v) => `.sug-save { right: ${v} !important; }`),
+  r("dBarTop", "Search and switch", "Panel from top", 4.5625, 0, 5, 0.0625, "rem", (v) => `.sg .ms-panel { top: ${v} !important; }`),
+  r("dBarPad", "Search and switch", "Space above them, inside the panel", 1.0625, 0, 3, 0.0625, "rem", (v) => `.sg .ms-panel { padding-top: ${v} !important; }`),
+  r("dPanelW", "Panel", "Width", 27.75, 22, 36, 0.25, "rem", (v) => `:root { --panel-w: ${v} !important; }`),
+  r("dPanelX", "Panel", "From left", 1.5, 0.5, 5, 0.125, "rem", (v) => `.ms-panel { left: ${v} !important; }`),
+  r("dPanelP", "Panel", "Inner padding", 0.95, 0.75, 2.5, 0.05, "rem", (v) => `.ms-panel { padding: ${v} !important; }`),
+  r("dScope", "Header", "Place line size", 1.2, 0.875, 1.5, 0.025, "rem", (v) => `.sg-scope { font-size: ${v} !important; line-height: 1.4 !important; }`),
+  r("dTitle", "Header", "Title size", 1.65, 1, 2.5, 0.025, "rem", (v) => `.sg .ms-title { font-size: ${v} !important; line-height: 1.25 !important; }`),
+  r("dTitleT", "Header", "Title space above", 1.625, -1, 2, 0.0625, "rem", (v) => `.sg .ms-title { margin-top: ${v} !important; }`),
+  r("dTitleB", "Header", "Title space below", -1, -1, 2, 0.0625, "rem", (v) => `.sg .ms-title { margin-bottom: ${v} !important; }`),
+  r("dLead", "Header", "Organisms count line below title", 1.3375, 0, 3, 0.0625, "rem", (v) => `.sg .ms-title + .ms-lead { margin-top: ${v} !important; }`),
+  r("dGap", "Header", "Gap between rows", 1.9, 0.5, 2.5, 0.05, "rem", (v) => `.sg .ms-sheet { --sg-gap: ${v} !important; }`),
+  r("dPhoto", "Route card", "Photo size", 9.125, 5, 11, 0.125, "rem", (v) => `.sug { grid-template-columns: ${v} minmax(0, 1fr) !important; }`),
+  r("dPad", "Route card", "Card padding", 0.5, 0.5, 1.75, 0.0625, "rem", (v) => `.sug { padding: ${v} !important; }`),
+  r("dColGap", "Route card", "Photo to text", 0.9375, 0.5, 2, 0.0625, "rem", (v) => `.sug { column-gap: ${v} !important; }`),
+  { id: "dTextAlign", group: "Route card", label: "Text against photo", kind: "select", size: "desktop", value: "center", options: ["start", "center", "end"], css: (v) => `.sug-head { align-self: ${v} !important; }` },
+  r("dTextNudge", "Route card", "Text nudge down", 0, -2, 2, 0.0625, "rem", (v) => `.sug-head { position: relative; top: ${v} !important; }`),
+  r("dTextGap", "Route card", "Name to distance gap", 0.3375, 0, 1.5, 0.0625, "rem", (v) => `.sug-head { gap: ${v} !important; }`),
+  r("dName", "Route card", "Route name size", 1.375, 1, 2, 0.025, "rem", (v) => `.sug-name { font-size: ${v} !important; line-height: 1.3 !important; }`),
+  r("dMeta", "Route card", "Distance and time size", 1.15, 0.75, 1.5, 0.025, "rem", (v) => `.sug-meta { font-size: ${v} !important; }`),
+  r("dCardGap", "Route card", "Space between cards", 0.5, 0.25, 2.5, 0.0625, "rem", (v) => `.sg-list { gap: ${v} !important; }`),
+  r("dSave", "Save", "Circle size", 2.0625, 1.75, 3.25, 0.0625, "rem", (v) => `.sug-save { width: ${v} !important; height: ${v} !important; }`),
+  r("dSaveIcon", "Save", "Icon size", 1.25, 0.75, 1.5, 0.0625, "rem", (v) => `.sug-save svg { width: ${v} !important; height: ${v} !important; }`),
+  r("dSaveTop", "Save", "From top", 0.4375, 0, 2.5, 0.0625, "rem", (v) => `.sug-save { top: ${v} !important; }`),
+  r("dSaveRight", "Save", "From right", 0.5, 0, 2.5, 0.0625, "rem", (v) => `.sug-save { right: ${v} !important; }`),
   r("dPillH", "Pills", "Height", 2, 1.5, 2.75, 0.0625, "rem", (v) => `.pill-org, .sug-spots { height: ${v} !important; }`),
-  r("dTabTop", "Nav", "From top", 0.7, 0.25, 2.5, 0.05, "rem", (v) => `.tabbar { top: ${v} !important; }`),
+  r("dTabTop", "Nav", "From top", 0.4, 0.25, 2.5, 0.05, "rem", (v) => `.tabbar { top: ${v} !important; }`),
 ]);
 
 const SHARED: Control[] = [
@@ -131,7 +137,9 @@ export default function Tweak() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORE) ?? "null");
       if (saved) {
-        setVals((v) => ({ ...v, ...saved.vals }));
+        // only what was moved comes back, so new starting values show for the rest
+        const kept = Object.fromEntries(Object.entries((saved.vals ?? {}) as Record<string, string>).filter(([id]) => saved.touched?.[id]));
+        setVals((v) => ({ ...v, ...kept }));
         setTouched(saved.touched ?? {});
       }
     } catch {}
@@ -223,6 +231,10 @@ export default function Tweak() {
                 <span style={{ opacity: touched[c.id] ? 1 : 0.7 }}>{c.label}</span>
                 {c.kind === "range" ? (
                   <input type="range" min={c.min} max={c.max} step={c.step} value={vals[c.id]} onChange={(e) => set(c.id, e.target.value)} />
+                ) : c.kind === "select" ? (
+                  <select value={vals[c.id]} onChange={(e) => set(c.id, e.target.value)} style={{ background: "#1a211c", color: "inherit", border: "1px solid #2a332d", borderRadius: "0.375rem", padding: "0.25rem 0.5rem", font: "inherit" }}>
+                    {c.options?.map((o) => <option key={o} value={o}>{o}</option>)}
+                  </select>
                 ) : (
                   <input type="text" value={vals[c.id]} onChange={(e) => set(c.id, e.target.value)} style={{ background: "#1a211c", color: "inherit", border: "1px solid #2a332d", borderRadius: "0.375rem", padding: "0.25rem 0.5rem", font: "inherit" }} />
                 )}

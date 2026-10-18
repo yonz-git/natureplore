@@ -56,7 +56,7 @@ export type Route = {
   /** the real line, when it is mapped (lib/route-lines.ts), and the detail map drawn under it */
   path?: [number, number][];
   detail?: string;
-  /** point to point: the line ends somewhere else, so the flag at its start reads Start, not Start and finish */
+  /** one way: the line ends somewhere else, so the flag at its start reads Start, not Start and finish */
   oneWay?: boolean;
 };
 
@@ -93,8 +93,8 @@ export const ROUTES: Route[] = [
   {
     id: "tegel",
     name: "Tegeler Fließ valley path",
-    where: "Point to point in Reinickendorf, Berlin",
-    line: "4.9 km, point to point, 1 h 25 at a looking pace",
+    where: "One way in Reinickendorf, Berlin",
+    line: "4.9 km one way, 1 h 25 at a looking pace",
     km: "4.9",
     time: "1:25",
     spots: 7,
