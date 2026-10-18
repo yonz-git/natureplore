@@ -96,7 +96,7 @@
 .tabbar-tab .tab-pin { transform-box: fill-box; transform-origin: 50% 50%; transition: scale 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-pin { scale: 1.2; }
 .tabbar-tab.is-current {
-  color: var(--color-on-primary);
+  color: rgb(from var(--color-picked) r g b / 0.78);
   font-weight: var(--text-tab-active--font-weight);
 }
 
@@ -117,11 +117,12 @@
     letter-spacing: 0;
   }
   .tabbar-tab svg { width: 1.125rem; height: 1.125rem; }
-  /* every icon's drawing, its line included, sits the same distance from the pill's edge as Saved's
-     (15.9) and 11 from the ink of its label's first letter, as measured on the render: each icon's
-     own empty margins cancelled */
-  .tabbar-icon-map { margin: 0 0.18rem 0 0.165rem; }
-  .tabbar-icon-learn { margin: 0 -0.0113rem 0 0.0263rem; }
+  /* every icon's drawing sits 16 from the pill's edge and 11 from the ink of its label's first letter,
+     as on the Routes and Organisms switch, measured on the render: each icon's own empty margins cancelled */
+  .tabbar-icon-map { margin: 0 calc(0.18rem - 0.0694rem) 0 calc(0.165rem - 0.0175rem); }
+  .tabbar-icon-learn { margin: 0 calc(-0.0113rem - 0.0119rem) 0 calc(0.0263rem - 0.0050rem); }
+  .tabbar-icon-saved { margin: 0 -0.0488rem 0 -0.0638rem; }
+  .tabbar-icon-you { margin: 0 0 0 -0.0631rem; }
   .tabbar-tab.is-current { font-weight: var(--text-chip-active--font-weight); }
 }
 

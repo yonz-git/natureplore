@@ -197,7 +197,7 @@
 .seg-opt::before { content: ""; position: absolute; inset: -0.125rem 0; }
 .seg-opt[aria-current="page"] {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
-  color: var(--color-on-primary);
+  color: rgb(from var(--color-picked) r g b / 0.78);
   font-weight: var(--text-chip-active--font-weight);
 }
 
@@ -737,7 +737,7 @@ button.float-pill,
 /* ── B1: the route detail, on the map ─────────────────────────────────────────────────────── */
 
 /* the spot marker: a lime disc numbered in walking order with a 3px lime halo, muted when the spot
-   has nothing in season this month (flow-b.css carries the same face to the spots list and axis) */
+   has nothing in season this month (flow-b.css carries the same face to the spots list) */
 .spot-mark {
   flex-shrink: 0;
   --mark: 2rem;
