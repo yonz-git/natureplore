@@ -1268,3 +1268,10 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 
 /* a little more room above the place line, at every size */
 .sg-scope { padding-top: 0.3125rem; }
+
+/* phones from 375 to 430 wide: the suggestions title, the route name and its distance line a step larger */
+@media (min-width: 23.4375rem) and (max-width: 26.875rem) {
+  .sg .ms-title { font-size: 1.55rem; line-height: 1.25; }
+  .sug-name { font-size: 1.425rem; }
+  .sug-meta { font-size: 1.225rem; }
+}
