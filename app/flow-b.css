@@ -34,6 +34,36 @@
    60% into the forest, so nothing behind it shows through */
 .fb-spot-row.is-out .fb-row .spot-mark { background: color-mix(in srgb, var(--color-primary) 60%, var(--color-ground)); box-shadow: 0 0 0 0.1875rem color-mix(in srgb, color-mix(in srgb, var(--color-primary) 60%, var(--color-ground)) 60%, transparent), 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
 
+/* the spots list as a walk: each marker sits on a dashed line that runs from spot to spot down to the
+   finish, with how far along the route it is under it. The line does the joining, so these rows have no
+   rules between them. */
+.fb-rows:has(.fb-at) li + li { border-top: 0; }
+.fb-at {
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 3rem;
+  /* the column reaches through the row's own padding, so the line meets the next row's */
+  margin-block: -0.875rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+}
+.fb-at::before,
+.fb-at::after {
+  content: "";
+  flex: 1 1 0;
+  min-height: 0.5rem;
+  width: 1px;
+  background: repeating-linear-gradient(to bottom, rgb(from var(--color-on-ground) r g b / 0.35) 0 0.25rem, transparent 0.25rem 0.5rem);
+}
+.fb-rows > li:first-child .fb-at::before,
+.fb-spot-end .fb-at::after { visibility: hidden; }
+.fb-at-km { font-size: calc(var(--text-caption) * 0.85); line-height: 1.2; font-weight: 300; white-space: nowrap; color: var(--color-on-ground-soft); }
+/* the finish: the map's start flag, a light disc with the dark flag on it */
+.fb-row .fb-mark-end { display: grid; place-items: center; background: var(--color-on-ground); color: var(--color-ground); box-shadow: 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
+.fb-spot-end .fb-row { min-height: 0; }
+
 /* a heading with its closing words in the lime of the titles */
 .fb-sec { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem; scroll-margin-top: 1rem; }
 .fb-sec h2 {
