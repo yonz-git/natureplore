@@ -110,7 +110,7 @@
   text-shadow: 0 1px 0.5rem rgb(0 0 0 / 0.45);
 }
 /* phone: the stop labels a fifth smaller than on the tablet */
-@media (max-width: 47.99rem) {
+@media (max-width: 37.49rem) {
   .a02-label { font-size: calc(var(--text-secondary) * 1.04); line-height: calc(var(--text-secondary--line-height) * 1.04); }
 }
 /* odd stops label to the left of the dot, even stops to the right */
@@ -254,7 +254,7 @@
 /* wider than a phone: the button hugs its label as on the desktop, centred; no screen has a
    full-width button */
 /* tablet: the lead a step larger, between the phone and the desktop */
-@media (min-width: 48rem) {
+@media (min-width: 37.5rem) {
   .a02-lead { max-width: 30rem; font-size: 1.5rem; line-height: 2.025rem; }
 }
 

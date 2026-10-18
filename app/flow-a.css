@@ -84,7 +84,7 @@
 /* on the phone the card's padding is a quarter less, the save buttons the same distance in from the top and side */
 @media (max-width: 37.49rem) {
   .sug { padding: 0.75rem; grid-template-columns: minmax(0, 1fr); }
-  .sug-save { top: 1.5rem; right: 1.5rem; }
+  .sug-save { top: 1.5rem; right: 1.5rem; z-index: 4; }
 
   /* a big photograph, the full card width, that swipes */
   .sug-media { grid-area: 1 / 1; }
@@ -110,21 +110,21 @@
   .sug-media::after {
     content: "";
     position: absolute;
-    inset: 40% 0 0;
+    inset: 0 0 50%;
     z-index: 2;
-    border-radius: 0 0 var(--radius-tile) var(--radius-tile);
-    background: linear-gradient(to top, rgb(6 18 9 / 0.78) 0%, rgb(6 18 9 / 0.45) 50%, transparent 100%);
+    border-radius: var(--radius-tile) var(--radius-tile) 0 0;
+    background: linear-gradient(to bottom, rgb(6 18 9 / 0.78) 0%, rgb(6 18 9 / 0.45) 50%, transparent 100%);
     pointer-events: none;
   }
 
-  /* the name, distance and time on the photograph's bottom left */
+  /* the name, distance and time on the photograph's top left, clear of Save */
   .sug-head {
     grid-area: 1 / 1;
-    align-self: end;
+    align-self: start;
     justify-self: start;
     z-index: 3;
-    max-width: 85%;
-    padding: 0 1rem 1.75rem;
+    max-width: 100%;
+    padding: 1rem 4rem 0 1rem;
     text-align: left;
     pointer-events: none;
     color: #fff;
@@ -291,8 +291,11 @@
 /* phone: the switch, the title and the place a step smaller, so the title and its map button share a line */
 @media (max-width: 37.49rem) {
   .sg .seg-opt { font-size: 1.025rem; }
-  .sg .ms-title { font-size: 1.275rem; line-height: 1.7rem; }
-  .sg-scope { font-size: 1rem; line-height: 1.4rem; }
+  .sg .ms-title { font-size: var(--text-h3); line-height: var(--text-h3--line-height); }
+  .sg-scope { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); }
+  /* the map shows above the sheet already: no map button, so the title keeps one line */
+  .sg .sg-toggle { display: none; }
+  .sg .ms-title { white-space: nowrap; }
 }
 /* the pin before the region, its drawn edge on the title's left edge and its middle on the words' */
 .sg-scope { display: flex; align-items: center; gap: 0.125rem; }

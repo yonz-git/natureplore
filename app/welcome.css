@@ -119,7 +119,7 @@
 .a0-open .a0-mark-lit { opacity: 1; }
 .a0-mark-corner { color: var(--color-primary); }
 /* the tablet keeps the desktop's corner symbol size, 2.125rem tall */
-@media (min-width: 48rem) {
+@media (min-width: 37.5rem) {
   .a0-mark,
   .a0-mark-corner { height: 2.125rem; }
 }
@@ -283,7 +283,7 @@
     font-size: calc(var(--a0-mark-w) / 35.34);
   }
   /* tablet and desktop: 15% smaller, still centred; the phone keeps the full width */
-  @media (min-width: 48rem) {
+  @media (min-width: 37.5rem) {
     .a0s .a0-mark {
       --a0-mark-w: calc(min(max(39.27cqw, 62.83cqh), max(min(39.27cqw, 62.83cqh), 85.67cqw)) * 0.85);
     }
@@ -353,10 +353,10 @@
     white-space: nowrap;
   }
   /* on a phone it is two lines, "Natureplore" over "all around", at the full display size */
-  @media (max-width: 47.99rem) {
+  @media (max-width: 37.49rem) {
     .a0s .a0-hero { font-size: var(--text-display); line-height: var(--text-display--line-height); }
   }
-  @media (min-width: 48rem) {
+  @media (min-width: 37.5rem) {
     .a0-hero-br { display: none; }
   }
 

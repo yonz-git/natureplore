@@ -1,4 +1,4 @@
-/* Tablet: from 48rem wide and at least 36rem tall, up to the desktop at 64rem. The screens follow
+/* Tablet: from 37.5rem wide and at least 36rem tall, up to the desktop at 64rem. The screens follow
    the tablet boards on the redesign canvas, not the IA brief's "list left, map right everywhere":
    only the suggestions (A5, A4) and search (A2, A3) become a column down the left beside the map,
    as their boards draw them. Every other screen keeps the phone's shape, with the board's 48 side
@@ -10,7 +10,7 @@
    an ancestor of glass; the pinned bar moves by its own `translate`. Values are tokens from
    docs/design.md (sheet-tablet, measure, pin-tablet, panel-tablet). */
 
-@media (min-width: 48rem) and (max-width: 63.99rem) and (min-height: 36rem) {
+@media (min-width: 37.5rem) and (max-width: 63.99rem) and (min-height: 36rem) {
   /* ── buttons: hug their label as on the desktop, centred ───────────────────────────────────── */
 
   .btn,

@@ -5,7 +5,7 @@
 .tabbar {
   position: fixed;
   inset: auto 0 calc(0.5rem + env(safe-area-inset-bottom, 0px));
-  @media (max-width: 47.99rem) { bottom: calc(0.34375rem + env(safe-area-inset-bottom, 0px)); }
+  @media (max-width: 37.49rem) { bottom: calc(0.34375rem + env(safe-area-inset-bottom, 0px)); }
   z-index: 20;
   display: flex;
   justify-content: center;
@@ -113,7 +113,7 @@
     flex-direction: row;
     gap: 0.5rem;
     color: var(--color-on-ground);
-    font-size: var(--text-chip);
+    font-size: 1rem;
     font-weight: var(--text-chip--font-weight);
     letter-spacing: 0;
   }
