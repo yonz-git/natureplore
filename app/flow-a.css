@@ -84,7 +84,8 @@
 /* on the phone the card's padding is a quarter less, the save buttons the same distance in from the top and side */
 @media (max-width: 37.49rem) {
   .sug { padding: 0.75rem; grid-template-columns: minmax(0, 1fr); }
-  .sug-save { top: 1.5rem; right: 1.5rem; z-index: 4; }
+  .sug-save { top: 1.5rem; right: 1.5rem; z-index: 4; width: 2.8125rem; height: 2.8125rem; }
+  .sug-save svg { width: 1.25rem; height: 1.25rem; }
 
   /* a big photograph, the full card width, that swipes */
   .sug-media { grid-area: 1 / 1; }
@@ -142,7 +143,7 @@
     position: absolute;
     z-index: 3;
     right: 0.75rem;
-    bottom: 1rem;
+    bottom: calc(1rem - 4px);
     display: flex;
   }
   .sug-dot {
@@ -168,7 +169,7 @@
   /* the pills in one line under the photograph, the spot count on the right */
   .sug-pills-row { align-items: center; }
   .sug-pills-row .pills { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
-  .sug-spots { flex-shrink: 0; }
+  .sug-spots { flex-shrink: 0; border-color: rgb(222 224 222 / 0.39); }
 }
 /* the circle is 36, the tap area stays 44 */
 .sug-save:not(.sug-dl)::before { content: ""; position: absolute; inset: -0.25rem; border-radius: inherit; }
@@ -290,7 +291,7 @@
 /* phone: the switch, the title and the place a step smaller, so the title and its map button share a line */
 @media (max-width: 37.49rem) {
   .sg .seg-opt { font-size: 1.025rem; }
-  .sg .ms-title { font-size: var(--text-h3); line-height: var(--text-h3--line-height); }
+  .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
   .sg-scope { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); }
   /* the map shows above the sheet already: no map button, so the title keeps one line */
   .sg .sg-toggle { display: none; }
@@ -639,6 +640,12 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 .a8-group-head span { font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
 .saved-sheet .a8-group-head h2 { margin: 0; }
 .a8-group { margin-top: 0.75rem; padding: 0.125rem 1.25rem; }
+/* the organisms list: the same 1.25rem inside the card on every side, so the first group's head starts as
+   far down as its icon stands in; Discover more closes a group after its fourth row */
+.sg-list .a8-group { padding: 1.25rem; }
+/* the head's line box stands 0.25rem above its icon, so it starts that much higher */
+.sg-list .sg-org-sec:first-child .sg-org-sec-head { margin-top: -0.25rem; }
+.sg-org-more { margin-top: 0.5rem; }
 .a8-rows { margin: 0; padding: 0; list-style: none; }
 /* the organisms list: one section per group in the filters' order, headed by the group's icon in its
    colour, its name, and the species count as an outlined pill on the right */
@@ -954,8 +961,9 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   transition: display 0ms allow-discrete, height 540ms var(--ease-move), margin-bottom 540ms var(--ease-move);
 }
 @starting-style { .sg-groups.is-on { height: 0; margin-bottom: calc(-1 * var(--sg-gap)); } }
-/* phone: half the sheet's gap between the filters and the list */
-@media (max-width: 37.49rem) { .sg-groups.is-on { margin-bottom: calc(-0.5 * var(--sg-gap)); } }
+/* the filters sit close over the list: 60% of the sheet's gap from the tablet up, 30% on the phone */
+.sg-groups.is-on { margin-bottom: calc(-0.4 * var(--sg-gap)); }
+@media (max-width: 37.49rem) { .sg-groups.is-on { margin-bottom: calc(-0.7 * var(--sg-gap)); } }
 /* each toggle slides out on its own from the first one's place to its own, never its row (the toggles
    are glass, and animating anything above glass switches the frost off): one after another from the
    left, and back in again the other way, the last first. --d is each one's beat, and only the coming
