@@ -193,7 +193,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   const topRow = (
     <div className={`ms-bar-row${searching ? " is-searching" : ""}`} ref={row}>
       <button type="button" className="sg-search glass glass-pin" aria-label="Search a region or an organism" onClick={openSearch} inert={searching}>
-        <SearchIcon size={18} />
+        <SearchIcon size={19.8} />
       </button>
       {segment}
             <div className="sg-find" inert={!searching} onKeyDown={(e) => e.key === "Escape" && closeSearch()}>

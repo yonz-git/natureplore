@@ -179,7 +179,7 @@
   padding: 0 1.125rem 0 0.875rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.40625rem;
   border: 0;
   border-radius: var(--radius-pill);
   background: none;
@@ -202,6 +202,9 @@
   color: rgb(from var(--color-picked) r g b / 0.78);
   font-weight: var(--text-chip-active--font-weight);
 }
+/* a see-through colour would darken wherever an icon's line and fill overlap: the icon takes the solid
+   green and fades as a whole to the label's 78% */
+.seg-opt[aria-current="page"] > svg { color: var(--color-picked); opacity: 0.78; }
 
 /* a 36 chip inside a sheet or panel; pressed takes the lime */
 .chips { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }

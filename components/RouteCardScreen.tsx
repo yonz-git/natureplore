@@ -76,7 +76,7 @@ function SaveToggle({ route, save }: { route: Route; save: RouteSave }) {
       aria-label={save.saved ? `Saved, ${route.name}, remove it from Saved` : `Save ${route.name}`}
       onClick={save.toggle}
     >
-      <BookmarkIcon size={20} filled={save.saved} />
+      <BookmarkIcon size={19.2} filled={save.saved} />
     </button>
   );
 }
