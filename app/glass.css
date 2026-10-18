@@ -132,3 +132,12 @@
     backdrop-filter: none;
   }
 }
+
+
+/* A sheet that scrolls its own content cannot carry the rim on ::after: the pseudo-element scrolls with
+   the content, and when iOS bounced the list the rim travelled down with it, a second sheet inside the
+   first. The scrolling sheet keeps its 0.5px edge and its 1px top highlight, which do not scroll, and
+   goes without the rim. (Drawn as a background under the see-through fill, the rim lit the whole sheet.) */
+@media (max-width: 63.99rem) {
+  .ms-sheet.glass-phone::after { content: none; }
+}

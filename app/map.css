@@ -589,6 +589,8 @@ button.float-pill,
 /* on the phone the sheet runs the full width, its sides half the tablet's 1.5rem */
 @media (max-width: 37.49rem) {
   .ms-sheet { left: 0; right: 0; margin: 0 0.5vw 0 0.5vw; padding-left: 0.75rem; padding-right: 0.75rem; }
+  /* no rubber band at the ends: on iOS it pulled the content, the handle with it, down past the top */
+  .ms-sheet { overscroll-behavior-y: none; }
   .ms-sheet.is-short { inset: auto 0 0; }
 }
 /* A1: a card floating over the map, clear of the tab bar */
@@ -604,8 +606,11 @@ button.float-pill,
 /* the handle as a control (components/SheetGrab.tsx): a 44 target centred on the bar, clear of the
    head's own buttons, that drags, taps or takes Enter to open the sheet to just under the top */
 .ms-grab {
-  /* over the head's top edge, which the negative margin tucks under it */
-  position: relative;
+  /* over the head's top edge, which the negative margin tucks under it; it stays pinned to the sheet's
+     top edge while the sheet's content scrolls */
+  position: sticky;
+  /* sticky counts from inside the sheet's 0.75rem top padding: pinned where it rests, not lower */
+  top: -0.75rem;
   z-index: 1;
   flex-shrink: 0;
   align-self: center;
@@ -630,6 +635,8 @@ button.float-pill,
 .ms-grab:focus-visible { outline: 2px solid var(--color-mist); outline-offset: -2px; }
 @media (max-width: 63.99rem) {
   .ms-sheet.is-open { --sheet-top: var(--sheet-open, calc(var(--top-chrome) + 4rem)); }
+  /* down: only the sheet's head shows above the tab bar, the map has the rest of the screen */
+  .ms-sheet.is-down { --sheet-top: calc(100dvh - var(--spacing-tabbar-clearance) - 5rem); }
 }
 
 .ms-title {

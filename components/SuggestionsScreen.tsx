@@ -221,7 +221,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
 
         <div
           ref={sheet}
-          className={`ms-sheet glass-phone glass-top${grab.open ? " is-open" : ""}`}
+          className={`ms-sheet glass-phone glass-top${grab.open ? " is-open" : ""}${grab.down ? " is-down" : ""}`}
           aria-labelledby="sg-title"
           onScroll={grab.onScroll}
         >
@@ -293,7 +293,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                       <h2 id={`sg-sec-${g.id}`} className="sg-org-sec-head">
                         <GroupIcon group={g.id} size={20} className={`is-${g.id}`} />
                         <span className="sg-org-name">{g.label}</span>
-                        <span className="sg-org-count">{inGroup.length} Species</span>
+                        <span className="tag sug-spots sg-org-count">{inGroup.length} Species</span>
                       </h2>
                       <ul className="a8-rows">
                         {(more.includes(g.id) ? inGroup : inGroup.slice(0, 4)).map(({ organism: o, routes: on, href }) => {

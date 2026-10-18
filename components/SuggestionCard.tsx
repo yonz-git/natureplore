@@ -114,12 +114,13 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
           )}
         </h2>
         <p className="sug-meta">{route.meta}</p>
+        {counts && <p className="tag sug-spots sug-spots-photo">{route.spots} Spots</p>}
       </div>
       {counts ? (
         <div className="sug-season">
           <div className="sug-pills-row">
             <OrganismPills counts={counts} />
-            <p className="tag sug-spots">{route.spots} Spots</p>
+            <p className="tag sug-spots sug-spots-row">{route.spots} Spots</p>
           </div>
         </div>
       ) : (
