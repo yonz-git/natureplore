@@ -283,19 +283,18 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             </div>
           ) : (
             <div className="sg-list" key="organisms">
-              <div className="saved-card a8-group">
-                {/* one section per group, in the filters' order, headed by its icon, name and species count */}
+              {/* one card per group, in the filters' order, headed by its icon, name and species count */}
                 {GROUPS.map((g) => {
                   const inGroup = shown.filter(({ organism }) => organism.group === g.id);
                   if (!inGroup.length) return null;
                   return (
-                    <section key={g.id} className="sg-org-sec" aria-labelledby={`sg-sec-${g.id}`}>
+                    <section key={g.id} className="saved-card a8-group sg-org-sec" aria-labelledby={`sg-sec-${g.id}`}>
                       <h2 id={`sg-sec-${g.id}`} className="sg-org-sec-head">
                         <GroupIcon group={g.id} size={20} className={`is-${g.id}`} />
-                        <span className={`sg-org-name is-${g.id}`}>{g.label}</span>
+                        <span className="sg-org-name">{g.label}</span>
                         <span className="tag sug-spots sg-org-count">{inGroup.length} Species</span>
                       </h2>
-                      <ul className="a8-rows">
+                      <ul className="a8-rows sg-bento">
                         {(more.includes(g.id) ? inGroup : inGroup.slice(0, 4)).map(({ organism: o, routes: on, href }) => {
                           const photo = organismPhoto(o.name);
                           const body = (
@@ -345,7 +344,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                     </section>
                   );
                 })}
-              </div>
             </div>
           )}
           <p className="sg-map-note">
