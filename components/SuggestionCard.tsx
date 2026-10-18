@@ -12,7 +12,6 @@ import Link from "next/link";
 
 import {
   BookmarkIcon,
-  DownloadIcon,
   GroupIcon,
 } from "@/components/Icons";
 import { OrganismPills } from "@/components/MapParts";
@@ -101,11 +100,6 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
       >
         <BookmarkIcon size={16} filled={saved} />
       </button>
-      {saved && (
-        <span className="sug-save sug-dl glass glass-pin" aria-hidden="true">
-          <DownloadIcon size={16} />
-        </span>
-      )}
       <p className="sr-only" role="status">
         {saved && "Saved and downloaded. Find it in Saved."}
       </p>

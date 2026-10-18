@@ -70,6 +70,11 @@
   transition: transform 160ms var(--ease-out);
 }
 .sug-save:active { transform: scale(0.94); }
+/* on the phone the card's padding is a quarter less, the save buttons the same distance in from the top and side */
+@media (max-width: 47.99rem) {
+  .sug { padding: 0.75rem; }
+  .sug-save { top: 0.75rem; right: 0.75rem; }
+}
 /* the circle is 36, the tap area stays 44 */
 .sug-save:not(.sug-dl)::before { content: ""; position: absolute; inset: -0.25rem; border-radius: inherit; }
 .sug-save svg { transition: transform 200ms var(--ease-out); }

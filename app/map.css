@@ -577,6 +577,11 @@ button.float-pill,
 .ms-sheet::-webkit-scrollbar { display: none; }
 /* a sheet that only holds a message rests on the bottom edge at its own height */
 .ms-sheet.is-short { inset: auto 1.5vw 0; overflow: visible; }
+/* on the phone the sheet runs the full width, its sides half the tablet's 1.5rem */
+@media (max-width: 47.99rem) {
+  .ms-sheet { left: 0; right: 0; padding-left: 0.75rem; padding-right: 0.75rem; }
+  .ms-sheet.is-short { inset: auto 0 0; }
+}
 /* A1: a card floating over the map, clear of the tab bar */
 .ms-sheet.is-card {
   inset: auto var(--spacing-screen-phone) 7rem;
