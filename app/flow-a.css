@@ -55,7 +55,7 @@
 /* the spot count closes the pills row, on its right, on the last line where the pills wrap (phone) */
 .sug-pills-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 0.25rem; }
 .sug-spots-photo { display: none; }
-@media (max-width: 54.49rem) { .sug-spots-photo { display: inline-flex; } }
+@media (max-width: 35.74rem) { .sug-spots-photo { display: inline-flex; } }
 .sug-spots {
   height: 2rem;
   margin: 0;
@@ -90,7 +90,7 @@
 }
 .sug-save:active { transform: scale(0.94); }
 /* on the phone the card's padding is a quarter less, the save buttons the same distance in from the top and side */
-@media (max-width: 54.49rem) {
+@media (max-width: 35.74rem) {
   .sug { padding: 0.75rem; grid-template-columns: minmax(0, 1fr); }
   .sug-save { top: 1.5rem; right: 1.5rem; z-index: 4; }
 
@@ -294,7 +294,7 @@
    Opened, it stops under the search field, the only thing left over the map. */
 .sg { --sheet-top: max(min(17rem, 100dvh - 27rem), var(--top-chrome) + 4.5rem); --sheet-open: calc(var(--top-chrome) + 4.5rem); }
 /* the switch is the sheet's first row; on the phone it clears the grab handle above it */
-@media (max-width: 54.49rem), (max-width: 63.99rem) and (max-height: 35.99rem) {
+@media (max-width: 35.74rem), (max-width: 63.99rem) and (max-height: 35.99rem) {
   /* from the handle's foot to the switch is the sheet's 1.5rem side padding */
 }
 .sg .ms-sheet { --sg-gap: 1.6875rem; gap: var(--sg-gap); }
@@ -305,7 +305,7 @@
 .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
 .sg-scope { margin: 0 0 0.675rem; font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
 /* phone: the switch, the title and the place a step smaller, so the title and its map button share a line */
-@media (max-width: 54.49rem) {
+@media (max-width: 35.74rem) {
   .sg .seg-opt { font-size: 1.025rem; }
   /* the search circle stands in from the left edge as far as it stands down from the top */
   .sg .ms-bar { left: 0.65rem; }
@@ -731,13 +731,13 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 
 /* ── from 64rem ────────────────────────────────────────────────────────────────────────────── */
 
-@media (min-width: 54.5rem) {
+@media (min-width: 35.75rem) {
   .sug { grid-template-columns: 7.5rem minmax(0, 1fr); }
   /* the name and its line centred on the photograph's height, the card's full width beside it */
   .sug-head { align-self: center; padding: 0; }
 }
 /* the square photograph swipes too from the tablet up, with its dots centred at its foot */
-@media (min-width: 54.5rem) {
+@media (min-width: 35.75rem) {
   .sug-track {
     aspect-ratio: 1;
     overflow-x: auto;
@@ -762,7 +762,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sug-dot[aria-current="true"]::before { background: var(--color-on-ground); transform: scale(1.25); }
 }
 /* the header and route card from the tablet up, set on /tweak at 1280 */
-@media (min-width: 54.5rem) {
+@media (min-width: 35.75rem) {
   .sg-scope { font-size: 1.2rem; line-height: 1.4; }
   .sg .ms-title { font-size: 1.65rem; line-height: 1.25; margin: 1.875rem 0 -1rem; }
   /* the place line and title stand in from the panel edge, in line with the card photographs */
@@ -1008,7 +1008,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   cursor: pointer;
 }
 /* on the phone the hint keeps clear of Back instead of taking the search icon into its middle */
-@media (max-width: 54.49rem) {
+@media (max-width: 35.74rem) {
   .field:has(> .field-back) .field-hint { inset: 0 calc(1.25rem + 1.1875rem + 0.75rem); }
   .field:has(> .field-back) .field-hint-search { display: none; }
 }
@@ -1141,7 +1141,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-group.is-birds { color: var(--color-group-birds); }
 .sg-group.is-mammals { color: var(--color-group-mammals); }
 /* phone: the filters 20% larger all round, the All label 10% smaller */
-@media (max-width: 54.49rem) {
+@media (max-width: 35.74rem) {
   .sg-groups { gap: 0.3rem; }
   .sg-groups.is-on { height: 2.55rem; }
   .sg-group { width: 2.55rem; height: 2.55rem; translate: calc(-1 * (var(--i) - 1) * 2.85rem) 0; }
@@ -1249,7 +1249,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 }
 
 /* ── phone, set on /tweak at 430 wide ─────────────────────────────────────────────────────────── */
-@media (max-width: 54.49rem) {
+@media (max-width: 35.74rem) {
   .ms-handle { height: 0.2125rem; }
   .ms-grab .ms-handle { margin-top: -8.5px; }
   .ms-bar { top: calc(0.45rem + env(safe-area-inset-top, 0px)); }
@@ -1315,6 +1315,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 }
 
 /* the place line on phones: 1.125rem from 375, 1.15rem from 390, 1.2rem from 430 up (the tablet and desktop's size) */
-@media (min-width: 26.875rem) and (max-width: 54.49rem) { .sg-scope { font-size: 1.2rem; } }
+@media (min-width: 26.875rem) and (max-width: 35.74rem) { .sg-scope { font-size: 1.2rem; } }
 @media (min-width: 24.375rem) and (max-width: 26.87rem) { .sg-scope { font-size: 1.15rem; } }
 @media (min-width: 23.4375rem) and (max-width: 24.37rem) { .sg-scope { font-size: 1.125rem; } }

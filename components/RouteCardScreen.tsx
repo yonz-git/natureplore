@@ -114,17 +114,11 @@ function WalkButton({ route, walkable, save }: { route: Route; walkable: boolean
   );
 }
 
-/** The route in a few sentences, four lines until "more" opens the rest. */
+/** The route in a few sentences, shown in full. */
 function About({ text }: { text: string }) {
-  const [all, setAll] = useState(false);
   return (
-    <div className={`b1-about${all ? " is-all" : ""}`}>
-      <p id="b1-about-text">{text}</p>
-      {!all && (
-        <button type="button" className="b1-about-more" aria-controls="b1-about-text" aria-expanded={all} onClick={() => setAll(true)}>
-          more
-        </button>
-      )}
+    <div className="b1-about">
+      <p>{text}</p>
     </div>
   );
 }
@@ -438,11 +432,18 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
 
           {detail && (
             <nav aria-label="Jump to a section" className="fb-strip">
-              {SECTIONS.map(([id, label]) => (
-                <a key={id} href={`#sec-${id}`} data-text={label} aria-current={current === id ? "location" : undefined} onClick={(e) => jumpTo(e, id)} draggable={false}>
-                  <span>{label}</span>
-                </a>
-              ))}
+              {SECTIONS.map(([id, label]) =>
+                // a section the route has nothing for stays in the row, muted, so every route shows the same chips
+                id === "happening" && !detail.claims.length ? (
+                  <a key={id} data-text={label} aria-disabled="true" aria-label={`${label}, nothing recorded on this route yet`}>
+                    <span>{label}</span>
+                  </a>
+                ) : (
+                  <a key={id} href={`#sec-${id}`} data-text={label} aria-current={current === id ? "location" : undefined} onClick={(e) => jumpTo(e, id)} draggable={false}>
+                    <span>{label}</span>
+                  </a>
+                ),
+              )}
             </nav>
           )}
 

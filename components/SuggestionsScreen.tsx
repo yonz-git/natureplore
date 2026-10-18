@@ -135,6 +135,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
 
   const row = useRef<HTMLDivElement>(null);
   const [searching, setSearching] = useState(false);
+  const [tucked, setTucked] = useState(false);
   // Routes or Organisms, outside the sheet, after the search circle
   const segment = (
     <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill" ref={seg} inert={searching}>
@@ -203,8 +204,19 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   );
 
   return (
-    <section className={`ms sg ${near ? "a4" : "a5"}${onMap ? " is-map" : ""}`}>
+    <section className={`ms sg ${near ? "a4" : "a5"}${onMap ? " is-map" : ""}${tucked ? " is-tucked" : ""}`}>
       <RegionMap className="a1-map" behind={!onMap} hot={hot} ref={map} points={points} maxZoom={home ? 9.5 : 11} />
+
+      {/* on the tablet, the round button on the panel's edge slides the list off to show the whole map, as on B1 */}
+      <button
+        type="button"
+        className="b1-dock round glass glass-pin"
+        aria-expanded={!tucked}
+        aria-label={tucked ? "Show the list again" : "Hide the list, show the whole map"}
+        onClick={() => setTucked((t) => !t)}
+      >
+        <ChevronIcon size={18} />
+      </button>
 
       {desk && (
         <div className="ms-search-top">
