@@ -64,6 +64,37 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
     const el = track.current;
     if (el) setSlide(Math.round(el.scrollLeft / el.clientWidth));
   };
+  // a mouse cannot swipe a scroll box, so dragging with one moves the photographs by hand and snaps to
+  // the nearest on release; a drag never counts as the click that opens the route
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const dragged = useRef(false);
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "mouse" || !track.current) return;
+    drag.current = { x: e.clientX, left: track.current.scrollLeft, moved: false };
+    dragged.current = false;
+    // held from the start, so a quick drag that leaves the photo still moves it
+    track.current.setPointerCapture(e.pointerId);
+  };
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = drag.current, el = track.current;
+    if (!d || !el) return;
+    const dx = e.clientX - d.x;
+    if (!d.moved && Math.abs(dx) < 5) return;
+    if (!d.moved) {
+      d.moved = true;
+      el.style.scrollSnapType = "none";
+    }
+    el.scrollLeft = d.left - dx;
+  };
+  const onPointerUp = () => {
+    const d = drag.current, el = track.current;
+    drag.current = null;
+    if (!d?.moved || !el) return;
+    dragged.current = true;
+    const i = Math.round(el.scrollLeft / el.clientWidth);
+    el.style.scrollSnapType = "";
+    go(i);
+  };
   const go = (i: number) => {
     const el = track.current;
     el?.scrollTo({ left: i * el.clientWidth, behavior: "smooth" });
@@ -76,7 +107,14 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
           ref={track}
           className="sug-track"
           onScroll={onScroll}
-          onClick={() => route.href && router.push(route.href)}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          onClick={() => {
+            if (dragged.current) return void (dragged.current = false);
+            if (route.href) router.push(route.href);
+          }}
         >
           {slides.length ? (
             slides.map((sl, i) => (

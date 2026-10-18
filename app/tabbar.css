@@ -121,7 +121,7 @@
     flex-direction: row;
     gap: 0.40625rem;
     color: var(--color-on-ground);
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: var(--text-chip--font-weight);
     letter-spacing: 0;
   }
