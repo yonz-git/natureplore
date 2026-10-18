@@ -571,7 +571,9 @@ button.fb-row:active { transform: scale(0.985); }
 /* ── from 64rem ────────────────────────────────────────────────────────────────────────────── */
 
 @media (min-width: 64rem) {
-  .b1 .ms-sheet { padding-bottom: 1.5rem; scroll-padding-top: 1rem; }
+  /* the route panel's content sits 1rem in on every side: the panel adds nothing of its own */
+  .b1 .ms-panel { padding: 0; }
+  .b1 .ms-sheet { padding: 1rem; scroll-padding-top: 1rem; }
   .fb-backlink {
     align-self: flex-start;
     align-items: center;
