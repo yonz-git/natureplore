@@ -662,9 +662,17 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 /* the organisms list: the same 1.25rem inside the card on every side, so the first group's head starts as
    far down as its icon stands in; Discover more closes a group after its fourth row */
 .sg-list .a8-group { padding: 1.25rem; }
-/* the head's line box stands 0.25rem above its icon, so it starts that much higher */
-.sg-list .sg-org-sec:first-child .sg-org-sec-head { margin-top: -0.25rem; }
-.sg-org-more { margin-top: 0.5rem; }
+/* each group is its own card: its head sits flush with the card's 1.25rem padding */
+.sg-list .sg-org-sec > .sg-org-sec-head { margin-top: 0; }
+/* centred under the group's rows, as wide as its words */
+.sg-org-more { margin: 0.5rem auto 0; }
+/* Discover more: the secondary button 20% smaller all round, height, padding and type */
+.btn.sg-org-more {
+  min-height: calc(var(--spacing-button-height) * 0.8);
+  padding: 0.6rem 1.4rem;
+  font-size: calc(var(--text-button-secondary) * 0.8);
+  width: fit-content;
+}
 .a8-rows { margin: 0; padding: 0; list-style: none; }
 /* the organisms list: one section per group in the filters' order, headed by the group's icon in its
    colour, its name, and the species count as an outlined pill on the right */
@@ -680,16 +688,9 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 }
 /* Alpino sits low in its line: the name lifts 0.7px so it shares a middle with the icon and the pill */
 .sg-org-name { position: relative; top: -0.04375rem; }
-/* the group names in the heading face, 1.4rem at every size, running from the title white into the
-   group's own colour, the icon's (the name carries the group's class, so currentColor is that colour) */
-.sg-org-sec-head { font-family: var(--font-heading); font-size: 1.4rem; line-height: 1.2; font-weight: 300; }
-.sg-org-name {
-  top: 0;
-  background-image: linear-gradient(100deg, var(--color-on-ground) 0%, color-mix(in srgb, currentColor 50%, var(--color-on-ground)) 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+/* the group names in the heading face, a step under the h3, plain white at every size */
+.sg-org-sec-head { font-family: var(--font-heading); font-size: var(--text-title); line-height: 1.2; font-weight: 300; }
+.sg-org-name { top: 0; color: var(--color-on-ground); }
 .sg-org-sec-head .is-plants { color: var(--color-group-plants); }
 .sg-org-sec-head .is-herbs { color: var(--color-group-herbs); }
 .sg-org-sec-head .is-mushrooms { color: var(--color-group-mushrooms); }
@@ -1005,9 +1006,9 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   transition: display 0ms allow-discrete, height 540ms var(--ease-move), margin-bottom 540ms var(--ease-move);
 }
 @starting-style { .sg-groups.is-on { height: 0; margin-bottom: calc(-1 * var(--sg-gap)); } }
-/* the filters sit close over the list: 60% of the sheet's gap from the tablet up, 30% on the phone */
-.sg-groups.is-on { margin-bottom: calc(-0.4 * var(--sg-gap)); }
-@media (max-width: 54.49rem) { .sg-groups.is-on { margin-bottom: calc(-0.7 * var(--sg-gap)); } }
+/* the filters stand 0.975rem over the list, a touch under what the eye reads between the heading's baseline and the
+   first route card */
+.sg-groups.is-on { margin-bottom: calc(0.975rem - var(--sg-gap)); }
 /* each toggle slides out on its own from the first one's place to its own, never its row (the toggles
    are glass, and animating anything above glass switches the frost off): one after another from the
    left, and back in again the other way, the last first. --d is each one's beat, and only the coming
@@ -1147,6 +1148,34 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg-groups, .sg-groups.is-on { transition: display 120ms allow-discrete; }
   .sg-group, .sg-groups:not(.is-on) .sg-group { scale: 1; translate: 0 0; transition: opacity 120ms ease, background-color 200ms ease; }
 }
+/* each group's organisms as a bento: a tall photo tile, two beside it, a wide one under them, and again
+   for every four; the name and Latin name sit on the photo over a dark fade, the last line only where
+   a tile has the room. A lone last tile runs the full width, a lone second one the full height. */
+.sg-bento { margin-top: 0.75rem; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 7.5rem; gap: 0.5rem; }
+.sg-bento li { position: relative; padding: 0; display: block; overflow: hidden; border-radius: var(--radius-tile); }
+.sg-bento li + li { border-top: 0; }
+.sg-bento li:nth-child(4n+1) { grid-row: span 2; }
+.sg-bento li:nth-child(4n+4) { grid-column: span 2; }
+.sg-bento li:nth-child(4n+1):last-child { grid-column: span 2; grid-row: span 1; }
+.sg-bento li:nth-child(4n+2):last-child { grid-row: span 2; }
+.sg-bento .sg-org-link { position: absolute; inset: 0; display: block; }
+.sg-bento .a8-thumb { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 0; }
+/* the photographs muted towards the forest, as the Blackthorn one reads, so no tile shouts */
+.sg-bento img.a8-thumb { filter: saturate(0.7) brightness(0.82) contrast(0.95); }
+.sg-bento li span:has(> b) {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 1.5rem 0.75rem 0.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  background: linear-gradient(to top, rgb(6 18 9 / 0.85) 0%, rgb(6 18 9 / 0.5) 60%, transparent 100%);
+  text-shadow: 0 1px 0.5rem rgb(6 18 9 / 0.5);
+}
+.sg-bento b { font-size: 1rem; line-height: 1.25; }
+.sg-bento small { font-size: 0.8125rem; line-height: 1.3; color: var(--color-on-ground-soft); }
+.sg-bento li:not(:nth-child(4n+1)) small:last-of-type { display: none; }
+.sg-bento .sg-org-link > svg { display: none; }
 .sg-org-link { flex-grow: 1; min-width: 0; display: flex; align-items: center; gap: 0.875rem; color: var(--color-on-ground); text-decoration: none; }
 .sg-org-link > span:nth-child(2) { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1875rem; }
 .sg-org-link > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
