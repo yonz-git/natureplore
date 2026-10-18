@@ -28,6 +28,7 @@ import {
 } from "@/lib/suggestions";
 import { useSaved } from "@/lib/saved";
 import { organismPhoto } from "@/lib/photos";
+import { easeScroll } from "@/lib/ease-scroll";
 
 /** the photographs a card swipes through on the phone: the route first, then what is in season along it */
 function slidesOf(route: Suggestion) {
@@ -99,7 +100,10 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
   };
   const go = (i: number) => {
     const el = track.current;
-    el?.scrollTo({ left: i * el.clientWidth, behavior: "smooth" });
+    if (!el) return;
+    // snapping would pull each eased step back to a photo, so it is off while the photos move
+    el.style.scrollSnapType = "none";
+    easeScroll(el, { left: i * el.clientWidth }).then(() => (el.style.scrollSnapType = ""));
   };
 
   return (
