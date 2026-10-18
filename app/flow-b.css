@@ -403,7 +403,9 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-facts dt { flex: 0 0 7.5rem; }
 .fb-facts dd { flex: 1 1 10rem; min-width: 0; }
 .fb-facts > div + div { border-top: 1px solid var(--color-divider); }
-.fb-facts dt { font-size: var(--text-caption); line-height: 1.5rem; color: var(--color-on-ground-soft); }
+.fb-facts dt { font-size: var(--text-caption); line-height: 1.5rem; font-weight: 500; color: var(--color-on-ground-soft); }
+/* the facts sit as close under the stats as the stats sit to each other, not at the sheet's own gap */
+.b1-stats + .fb-facts { margin-top: calc(0.5rem - 1.25rem); }
 .fb-facts dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.5rem; }
 .b1-foot { margin-top: 0.5rem; }
 
@@ -412,6 +414,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 /* Walk the route and Use my location: the icon at 1.3rem, close to its label, in the medium weight */
 .btn.b1-walk,
 .btn.a1-locate { gap: 0.4rem; font-weight: 500; }
+.btn.b1-walk { align-self: center; }
 /* full width on a phone; wider screens hug the label, as every button does */
 @media (max-width: 29.99rem) { /* phone-max */
   .btn.b1-walk { width: 100%; }
