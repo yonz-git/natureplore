@@ -1101,8 +1101,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
      the rim shows all round and the picked toggle reads as tall as the others */
   background-clip: padding-box;
 }
-/* a picked group keeps its frost and takes a 2px ring in its own colour, the icon's */
-.sg-group.glass:not(.sg-all)[aria-pressed="true"] { border: 2px solid currentColor; }
+/* a picked group keeps its frost and takes a 1.4px ring in its own colour, the icon's */
+.sg-group.glass:not(.sg-all)[aria-pressed="true"] { border: 1.4px solid currentColor; }
 @media (hover: hover) and (pointer: fine) {
   .sg-group[aria-pressed="false"]:not([aria-disabled="true"]):hover { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 0 0 rgb(6 18 9 / 0); }
 }

@@ -25,7 +25,7 @@ colors:
   on-ground-soft: "rgb(255 255 255 / 0.78)"
   mist: "#DCEBD7"
   group-plants: "#389564"
-  group-herbs: "#95C660"
+  group-herbs: "#93A733"
   group-mushrooms: "#CE8E55"
   group-birds: "#6CB9AA"
   group-mammals: "#C27E76"
