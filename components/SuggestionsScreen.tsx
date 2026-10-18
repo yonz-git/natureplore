@@ -50,6 +50,8 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   // On Organisms, all five groups sit beside the switch as filters, the ones with nothing in season
   // here dimmed and unpickable. None picked shows all; each one picked narrows the list to those.
   const [picked, setPicked] = useState<Group[]>([]);
+  // the organisms list shows four of each group until Discover more opens the rest
+  const [more, setMore] = useState<Group[]>([]);
   const has = (g: Group) => organisms.some(({ organism }) => organism.group === g);
   const shown = picked.length ? organisms.filter(({ organism }) => picked.includes(organism.group)) : organisms;
   const pick = (g: Group) => setPicked((now) => (now.includes(g) ? now.filter((x) => x !== g) : [...now, g]));
@@ -294,7 +296,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                         <span className="sg-org-count">{inGroup.length} Species</span>
                       </h2>
                       <ul className="a8-rows">
-                        {inGroup.map(({ organism: o, routes: on, href }) => {
+                        {(more.includes(g.id) ? inGroup : inGroup.slice(0, 4)).map(({ organism: o, routes: on, href }) => {
                           const photo = organismPhoto(o.name);
                           const body = (
                             <>
@@ -302,7 +304,9 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img className="a8-thumb" src={photo.src} alt="" loading="lazy" />
                               ) : (
-                                <span className="a8-thumb" aria-hidden="true" />
+                                <span className="a8-thumb fb-in-season-tile" aria-hidden="true">
+                                  <GroupIcon group={o.group} size={22} className={`is-${o.group}`} />
+                                </span>
                               )}
                               <span>
                                 <b>
@@ -332,6 +336,12 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                           );
                         })}
                       </ul>
+                      {inGroup.length > 4 && !more.includes(g.id) && (
+                        <button type="button" className="btn btn-secondary sg-org-more" onClick={() => setMore((m) => [...m, g.id])}>
+                          Discover more
+                          <span className="sr-only"> {g.label.toLowerCase()}, {inGroup.length - 4} more</span>
+                        </button>
+                      )}
                     </section>
                   );
                 })}

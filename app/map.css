@@ -305,7 +305,7 @@ button.float-pill:active { transform: scale(0.97); }
   gap: 0.25rem;
   border-radius: var(--radius-pill);
   /* not a control: an outline only, no fill, as every pill that cannot be pressed */
-  border: 1px solid var(--color-inner-edge);
+  border: 1px solid rgb(222 224 222 / 0.39);
   color: var(--color-mist);
 }
 /* the count in the Spots tag's size */
@@ -593,7 +593,7 @@ button.float-pill,
   border-bottom: 0.5px solid var(--color-glass-edge);
   border-radius: var(--radius-card);
 }
-.ms-handle { flex-shrink: 0; width: 2.25rem; height: 0.3125rem; margin: 0 auto -0.25rem; border-radius: var(--radius-handle); background: rgb(255 255 255 / 0.4); }
+.ms-handle { flex-shrink: 0; width: 2.25rem; height: 0.25rem; margin: 0 auto -0.25rem; border-radius: var(--radius-handle); background: rgb(255 255 255 / 0.4); }
 /* the handle as a control (components/SheetGrab.tsx): a 44 target centred on the bar, clear of the
    head's own buttons, that drags, taps or takes Enter to open the sheet to just under the top */
 .ms-grab {
@@ -617,7 +617,7 @@ button.float-pill,
   touch-action: none;
 }
 .ms-grab:active { cursor: grabbing; }
-.ms-grab .ms-handle { margin: 0; transition: background-color var(--hover-fade) var(--ease-hover); }
+.ms-grab .ms-handle { margin: -2px 0 0; transition: background-color var(--hover-fade) var(--ease-hover); }
 .ms-grab:hover .ms-handle,
 .ms-grab:focus-visible .ms-handle { background: rgb(255 255 255 / 0.7); }
 .ms-grab:focus-visible { outline: 2px solid var(--color-mist); outline-offset: -2px; }
@@ -1308,4 +1308,9 @@ button.float-pill,
 /* desktop map panel: a lighter frost than the glass recipe (30), so the map shows through more */
 @media (min-width: 64rem) and (prefers-reduced-transparency: no-preference) {
   .ms-panel.glass-desk { backdrop-filter: blur(0.8rem) saturate(1.4); }
+}
+
+/* phone: the bar over the map sits half as far from the top as elsewhere */
+@media (max-width: 37.49rem) {
+  .ms-bar { top: calc((var(--spacing-nav-top-desktop) / 2) + env(safe-area-inset-top, 0px)); }
 }

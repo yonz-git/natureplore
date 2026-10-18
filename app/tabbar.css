@@ -5,7 +5,7 @@
 .tabbar {
   position: fixed;
   inset: auto 0 calc(0.5rem + env(safe-area-inset-bottom, 0px));
-  @media (max-width: 37.49rem) { bottom: calc(0.34375rem + env(safe-area-inset-bottom, 0px)); }
+  @media (max-width: 37.49rem) { bottom: calc(0.34375rem - 1.5px + env(safe-area-inset-bottom, 0px)); }
   z-index: 20;
   display: flex;
   justify-content: center;
@@ -71,6 +71,10 @@
 /* the bookmark's line matches the Map outline: 1.4 at rest, 2 when open, in its own 0.0985 scale */
 .tabbar-tab .tab-fill { fill: rgb(from currentColor r g b / 0); stroke-width: 14.2; transition: fill 220ms var(--ease-out), stroke-width 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-fill { fill: currentColor; stroke-width: 20.3; }
+/* opening a tab, the icon fills only once its colour has turned from white to forest, so it never
+   flashes solid white on its way to green */
+.tabbar-tab.is-current .tab-fill,
+.tabbar-tab.is-current .tab-outline.tab-you { transition-delay: 280ms; }
 /* You fills like Saved when open */
 .tabbar-tab .tab-outline.tab-you { fill: rgb(from currentColor r g b / 0); transition: fill 220ms var(--ease-out), stroke-width 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-outline.tab-you { fill: currentColor; }
