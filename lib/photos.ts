@@ -6,7 +6,9 @@
 // sickener, the common speedwell, the bladder ketmia, and most of the 18 Oct second round (buckthorn,
 // bog arum, woodruff, skullcap, blackcap, slippery jack, sulphur tuft, privet, cinquefoil, purslane,
 // fleabane, wild rocket, cursed crowfoot, frogbit, black horehound, white poplar, hoary alison, ground
-// ivy, water shrew, small balsam, aspen, tree of heaven and soapwort). Beech shares common beech's photo.
+// ivy, water shrew, small balsam, aspen, tree of heaven and soapwort) and of the 18 Oct third round (ragged
+// robin, wood melick, beech woodwart, candlesnuff fungus, red-breasted flycatcher). Beech shares common
+// beech's photo, woodruff sweet woodruff's.
 
 export type Photo = { src: string; by: string; page: string };
 
@@ -132,6 +134,12 @@ export const PHOTOS: Record<string, Photo> = {
   "organisms/stinging-nettle": { src: "/img/organisms/stinging-nettle.jpg", by: "Paul Morley", page: "https://unsplash.com/photos/green-leaves-plant-DrYqMhk53dY" },
   "organisms/sulphur-polypore": { src: "/img/organisms/sulphur-polypore.jpg", by: "James Wainscoat", page: "https://unsplash.com/photos/bright-orange-shelf-fungi-growing-on-tree-bark-u0po9XzJt0A" },
   "organisms/sulphur-tuft": { src: "/img/organisms/sulphur-tuft.jpg", by: "Aldo Houtkamp", page: "https://unsplash.com/photos/a-group-of-mushrooms-ToAky2Cc3iI" },
+  "organisms/beech-woodwart": { src: "/img/organisms/beech-woodwart.jpg", by: "Jessica McClure", page: "https://unsplash.com/photos/a-close-up-of-a-tree-branch-with-a-bunch-of-mushrooms-growing-on-it-7ZQ-_WK6EKw" },
+  "organisms/candlesnuff-fungus": { src: "/img/organisms/candlesnuff-fungus.jpg", by: "Gerrit Stam", page: "https://unsplash.com/photos/a-single-black-mushroom-grows-among-green-moss-OSVB8qNO2cc" },
+  "organisms/ragged-robin": { src: "/img/organisms/ragged-robin.jpg", by: "Doncoombez", page: "https://unsplash.com/photos/a-small-pink-flower-with-green-leaves-in-the-background-feuMS_gftH0" },
+  "organisms/red-breasted-flycatcher": { src: "/img/organisms/red-breasted-flycatcher.jpg", by: "Heye Jensen", page: "https://unsplash.com/photos/brown-and-white-bird-on-tree-branch-ec0nx-K-D3E" },
+  "organisms/wood-melick": { src: "/img/organisms/wood-melick.jpg", by: "Benjamin Cheng", page: "https://unsplash.com/photos/a-bunch-of-green-grass-blowing-in-the-wind-bxU2um8kUec" },
+  "organisms/woodruff": { src: "/img/organisms/sweet-woodruff.jpg", by: "Andreas Rasmussen", page: "https://unsplash.com/photos/white-flower-in-tilt-shift-lens-8hdCTGLBH1E" },
   "organisms/sweet-woodruff": { src: "/img/organisms/sweet-woodruff.jpg", by: "Andreas Rasmussen", page: "https://unsplash.com/photos/white-flower-in-tilt-shift-lens-8hdCTGLBH1E" },
   "organisms/tansy": { src: "/img/organisms/tansy.jpg", by: "nina .", page: "https://unsplash.com/photos/a-bunch-of-yellow-flowers-in-a-field-AMqZ29GZWEk" },
   "organisms/thrift": { src: "/img/organisms/thrift.jpg", by: "Jay Alexander", page: "https://unsplash.com/photos/a-bunch-of-flowers-that-are-in-the-grass-ROAhD_QLQpQ" },
