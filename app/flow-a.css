@@ -52,8 +52,8 @@
   line-height: var(--text-title--line-height);
   font-weight: 400;
 }
-/* the spot count closes the pills row, on its right, on the last line where the pills wrap (phone) */
-.sug-pills-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 0.25rem; }
+/* the spot count opens the pills row, on its left, before the organism pills */
+.sug-pills-row { display: flex; align-items: flex-end; justify-content: flex-start; gap: 0.25rem; }
 .sug-spots-photo { display: none; }
 @media (max-width: 35.74rem) { .sug-spots-photo { display: inline-flex; } }
 .sug-spots {
@@ -64,6 +64,8 @@
   padding-bottom: 0.226em;
 }
 .sug-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+/* the shape icon, loop or one way, sits on the line at the type's own size, in its colour */
+.sug-loop { display: inline-block; width: 1.05em; height: 1.05em; vertical-align: -0.17em; }
 
 /* the name opens the route: its link covers the card, Save sits above it */
 .sug-open { color: inherit; text-decoration: none; }
@@ -1307,6 +1309,27 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* the Spots pill at the organism pills' height, its 1px outline running white into lime as its words do. The ring is ::before's own border, masked to its border box less its padding box:
+   a border snaps to whole pixels, where a padded mask drew a soft, uneven line. */
+.tag.sug-spots {
+  position: relative;
+  border: 1px solid transparent;
+}
+@supports ((-webkit-mask-composite: xor) or (mask-composite: exclude)) {
+  .tag.sug-spots::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border: 1px solid transparent;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-primary) 100%) border-box;
+    -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
 }
 
 /* phones under 430 wide: the place line and title stand in from the sheet's edge */

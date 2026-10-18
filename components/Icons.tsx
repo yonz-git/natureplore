@@ -25,6 +25,26 @@ function Svg({ size = 19, className, stroke = 1.5, fill = "none", children }: P 
   );
 }
 
+// a loop route: a round trip with an arrow back to the start, drawn on a 48 grid, so its stroke is
+// doubled to match the 1.5 line of the others
+export const LoopIcon = ({ size = 19, className }: P) => (
+  <svg width={`${size / 16}rem`} height={`${size / 16}rem`} viewBox="0 0 48 48" aria-hidden="true" className={className}
+    fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M43.8233 25.2305C43.7019 25.9889 43.5195 26.727 43.2814 27.4395C42.763 28.9914 41.9801 30.4222 40.9863 31.6785C38.4222 34.9201 34.454 37 30 37H16C9.39697 37 4 31.6785 4 25C4 18.3502 9.39624 13 16 13H44" />
+    <path d="M38 7L44 13L38 19" />
+  </svg>
+);
+
+// a one way route: a path from one end to the other, an open circle at each end, redrawn as a 1.5
+// line from the filled original so it weighs the same as the loop
+export const OneWayIcon = (p: P) => (
+  <Svg {...p}>
+    <circle cx="5" cy="13" r="2.25" />
+    <circle cx="19" cy="11" r="2.25" />
+    <path d="M5.5 15.2l.6 2.9C6.4 19.3 7.1 20 8.05 20c.9 0 1.7-.6 1.95-1.6L13.95 5.6c.25-1 1.05-1.6 2-1.6.95 0 1.65.7 1.95 1.9l.6 2.9" />
+  </Svg>
+);
+
 export const SearchIcon = (p: P) => (
   <Svg {...p}>
     <circle cx="10.5" cy="10.5" r="6.5" />

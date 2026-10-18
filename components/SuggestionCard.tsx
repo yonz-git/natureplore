@@ -16,6 +16,8 @@ import { useRef, useState } from "react";
 import {
   BookmarkIcon,
   GroupIcon,
+  LoopIcon,
+  OneWayIcon,
 } from "@/components/Icons";
 import { OrganismPills } from "@/components/MapParts";
 import {
@@ -145,20 +147,37 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
         <h2 className="sug-name">
           {route.href ? (
             <Link href={route.href} className="sug-open">
-              {route.name}
+              {route.name.replace(/ loop$/, "")}
             </Link>
           ) : (
-            route.name
+            route.name.replace(/ loop$/, "")
           )}
         </h2>
-        <p className="sug-meta">{route.meta}</p>
+        <p className="sug-meta">
+          {/* the route's shape shows as its icon after the time, the words kept for screen readers */}
+          {(() => {
+            const shape = route.meta.includes(" loop") ? "loop" : route.meta.includes(" one way") ? "one way" : null;
+            if (!shape) return route.meta;
+            const [before, after] = route.meta.split(` ${shape}`);
+            const Icon = shape === "loop" ? LoopIcon : OneWayIcon;
+            return (
+              <>
+                {before}
+                {after}
+                <span aria-hidden="true"> · </span>
+                <Icon className="sug-loop" />
+                <span className="sr-only">, {shape}</span>
+              </>
+            );
+          })()}
+        </p>
         {counts && <p className="tag sug-spots sug-spots-photo">{route.spots} Spots</p>}
       </div>
       {counts ? (
         <div className="sug-season">
           <div className="sug-pills-row">
-            <OrganismPills counts={counts} />
             <p className="tag sug-spots sug-spots-row">{route.spots} Spots</p>
+            <OrganismPills counts={counts} />
           </div>
         </div>
       ) : (
