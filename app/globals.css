@@ -29,7 +29,7 @@
   /* The two families from docs/design.md, with the copies Next self-hosts in front of them.
      The stacks themselves stay in tokens.css so the system reads the same outside this app. */
   --font-heading: var(--font-comfortaa), "Comfortaa", "Trebuchet MS", sans-serif;
-  --font-text: var(--font-general-sans), "General Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-text: var(--font-text-face), "Cabinet Grotesk", "Helvetica Neue", Arial, sans-serif;
 }
 
 /* the desktop's nav, search and switch sit closer to the top than nav-top-desktop, which the phone's
@@ -85,7 +85,7 @@ button:disabled:active {
 
 /* A number alone in a circle: centred on the figures' own height, never on the font's line box, which has more
    room under the baseline than above (docs/design.md, Components). Set --disc to the circle's size; a block,
-   because the trim does not apply to flex or grid items. General Sans' figures are lining, so every
+   because the trim does not apply to flex or grid items. Cabinet Grotesk's figures are lining, so every
    digit spans the same baseline to cap height (.design/fonts-original/lining-figures.py). */
 .num-disc {
   --disc: 2rem;
@@ -102,3 +102,18 @@ button:disabled:active {
 /* the organism group icons (components/Icons.tsx, GroupIcon) draw past their 24 box: the plant's
    leaves are wider, and the herbs, mushroom and plant overshoot it as they move */
 .group-icon { overflow: visible; }
+
+/* Dark text on the lime (the picked switch option, the current tab, the primary button): the body's
+   antialiased smoothing draws dark-on-light type a weight or two thinner, so 600 read like 400 and the
+   letters looked spaced out. These keep the system smoothing, which draws the weight as it is. */
+.seg-opt[aria-pressed="true"],
+.seg-opt[aria-current="page"],
+.tabbar-tab.is-current,
+.btn-primary { -webkit-font-smoothing: auto; -moz-osx-font-smoothing: auto; }
+/* dark letters on the lime open up against the light ground, so the button's label is drawn 2% tighter
+   to sit as close as the light labels beside it */
+.btn-primary { letter-spacing: -0.02em; }
+
+/* the picked option's icon fades to its label's 80% ink as the option is picked, never snaps */
+.seg-opt > svg,
+.tabbar-tab svg { transition: opacity 400ms var(--ease-move); }

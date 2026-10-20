@@ -915,12 +915,11 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
 }
 .seg-opt[aria-pressed="true"] {
-  color: rgb(from var(--color-picked) r g b / 0.78);
+  color: var(--color-on-primary);
   font-weight: var(--text-chip-active--font-weight);
 }
-/* a see-through colour would darken wherever an icon's line and fill overlap: the icon takes the solid
-   green and fades as a whole to the label's 78% */
-.seg-opt[aria-pressed="true"] > svg { color: var(--color-picked); opacity: 0.78; }
+/* the icon in the label's ink: solid, faded as one piece so its overlapping strokes and fills keep one tone */
+.seg-opt[aria-pressed="true"] > svg { color: rgb(from var(--color-on-primary) r g b / 1); opacity: 0.8; }
 .sg .seg-opt { transition: transform 160ms var(--ease-out), background-color var(--hover-fade) var(--ease-hover), color 400ms var(--ease-move); }
 /* each label holds the width of its heavier picked weight, so picking one never nudges the pill */
 .seg-label { display: inline-flex; flex-direction: column; text-align: start; }

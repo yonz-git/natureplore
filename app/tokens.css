@@ -14,7 +14,7 @@
   --color-primary: #AEB779;
   --color-primary-deep: #9DA56D;
   --color-primary-glow: #DDF57A;
-  --color-on-primary: #14261A;
+  --color-on-primary: #14261ACC;
   --color-on-ground: #E8EAE0;
   --color-on-ground-soft: rgb(255 255 255 / 0.78);
   --color-mist: #DCEBD7;
@@ -60,7 +60,7 @@
   --color-system-prompt-rule: #8E918F;
 
   --font-heading: 'Comfortaa', 'Trebuchet MS', 'Helvetica Neue', Arial, sans-serif;
-  --font-text: 'General Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-text: 'Cabinet Grotesk', 'Helvetica Neue', Arial, sans-serif;
 
   --text-display-desktop: 3.5rem;
   --text-display-desktop--font-family: var(--font-heading);
@@ -142,7 +142,6 @@
   --text-button--font-family: var(--font-text);
   --text-button--line-height: 1;
   --text-button--font-weight: 400;
-  --text-button--letter-spacing: 0.01em;
   --text-button-secondary: 1.2rem;
   --text-button-secondary--font-family: var(--font-text);
   --text-button-secondary--line-height: 1;
@@ -175,12 +174,10 @@
   --text-tab--font-family: var(--font-text);
   --text-tab--line-height: 1.2;
   --text-tab--font-weight: 400;
-  --text-tab--letter-spacing: 0.01em;
   --text-tab-active: 0.9rem;
   --text-tab-active--font-family: var(--font-text);
   --text-tab-active--line-height: 1.2;
   --text-tab-active--font-weight: 500;
-  --text-tab-active--letter-spacing: 0.01em;
 
   --radius-handle: 0.1875rem;
   --radius-tile: 0.75rem;

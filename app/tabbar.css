@@ -61,7 +61,6 @@
   font-size: var(--text-tab);
   line-height: 1;
   font-weight: var(--text-tab--font-weight);
-  letter-spacing: var(--text-tab--letter-spacing);
   text-decoration: none;
   background-color: rgb(255 255 255 / 0);
   transition: transform 160ms var(--ease-out), color 280ms var(--ease-out), background-color var(--hover-fade) var(--ease-hover);
@@ -102,14 +101,13 @@
    pin's own middle 8.74), and grows from that middle so it stays there when the tab is open */
 .tabbar-tab .tab-pin { transform-box: fill-box; transform-origin: 50% 50%; transition: scale 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-pin { scale: 1.2; }
-/* the current tab in 600, as the picked switch option */
+/* the current tab in 700, in the lime's label ink, as the picked switch option */
 .tabbar-tab.is-current {
-  color: rgb(from var(--color-picked) r g b / 0.78);
-  font-weight: 600;
+  color: var(--color-on-primary);
+  font-weight: 700;
 }
-/* a see-through colour would darken wherever an icon's line and fill overlap: the icon takes the solid
-   green and fades as a whole to the label's 78% */
-.tabbar-tab.is-current svg { color: var(--color-picked); opacity: 0.78; }
+/* the icon in the label's ink: solid, faded as one piece so its overlapping strokes and fills keep one tone */
+.tabbar-tab.is-current svg { color: rgb(from var(--color-on-primary) r g b / 1); opacity: 0.8; }
 
 @media (min-width: 64rem) {
   /* at the top right, with the search field centred on the same line (app/map.css) */
@@ -134,7 +132,7 @@
   .tabbar-icon-learn { margin: 0 calc(-0.0113rem - 0.0119rem) 0 calc(0.0263rem - 0.0050rem); }
   .tabbar-icon-saved { margin: 0 -0.0488rem 0 -0.0638rem; }
   .tabbar-icon-you { margin: 0 0 0 -0.0631rem; }
-  .tabbar-tab.is-current { font-weight: 600; }
+  .tabbar-tab.is-current { font-weight: 700; }
   /* the labels ride 1px up: 2px more padding below lifts each centred tab 1px; the current tab's icon
      stays where it was, only its label moves */
   .tabbar-tab { padding-bottom: 2px; }

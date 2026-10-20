@@ -3,15 +3,15 @@ import { Comfortaa } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
-// General Sans (Indian Type Foundry, Fontshare, free licence) carries all text but the headings: a
-// variable face, so 200 to 700 are all true weights
-const generalSans = localFont({
-  src: "./fonts/general-sans-variable.woff2",
-  variable: "--font-general-sans",
-  weight: "200 700",
+// Cabinet Grotesk (Indian Type Foundry, Fontshare, free licence) carries all text but the headings: a
+// variable face, so 100 to 900 are all true weights
+const textFace = localFont({
+  src: "./fonts/cabinet-grotesk-variable.woff2",
+  variable: "--font-text-face",
+  weight: "100 900",
   display: "swap",
-  // General Sans draws large on its em: scaled to 80% so its capitals sit under the sizes the tokens were set for
-  declarations: [{ prop: "size-adjust", value: "80%" }],
+  // Cabinet Grotesk draws large on its em: scaled to 86% so its capitals sit under the sizes the tokens were set for
+  declarations: [{ prop: "size-adjust", value: "86%" }],
 });
 
 const comfortaa = Comfortaa({
@@ -35,7 +35,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // extensions mark <html> before React loads (Dark Reader's data-darkreader-* attributes)
-    <html lang="en" className={`${generalSans.variable} ${comfortaa.variable} h-full`} suppressHydrationWarning>
+    <html lang="en" className={`${textFace.variable} ${comfortaa.variable} h-full`} suppressHydrationWarning>
       <body className="min-h-full">{children}</body>
     </html>
   );

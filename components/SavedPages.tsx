@@ -574,7 +574,7 @@ const MAP_CREDITS: Credit[] = [
 ];
 
 const TYPE_CREDITS: Credit[] = [
-  { what: "General Sans", who: "Indian Type Foundry, ITF Free Font License", href: "https://www.fontshare.com/fonts/general-sans" },
+  { what: "Cabinet Grotesk", who: "Indian Type Foundry, ITF Free Font License", href: "https://www.fontshare.com/fonts/cabinet-grotesk" },
   { what: "Comfortaa", who: "Johan Aakerlund, SIL Open Font License", href: "https://fonts.google.com/specimen/Comfortaa" },
   { what: "Motion", who: "GSAP by GreenSock", href: "https://gsap.com" },
 ];

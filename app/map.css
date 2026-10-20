@@ -45,7 +45,6 @@
   font-family: var(--text-button--font-family);
   font-size: var(--text-button);
   font-weight: var(--text-button--font-weight);
-  letter-spacing: var(--text-button--letter-spacing);
   line-height: 1.2;
 }
 .btn-secondary {
@@ -195,20 +194,19 @@
 .seg-opt:active { transform: scale(0.97); }
 /* tablet and desktop: the switch's labels at 1rem, as the tab bar's */
 @media (min-width: 35.75rem) { .seg-opt { font-size: 1.05rem; } }
-/* the picked option in 600, as the tab bar's current tab; each
+/* the picked option in 700, as the tab bar's current tab; each
    label holds the width of that weight */
-.seg .seg-opt[aria-pressed="true"], .seg .seg-opt[aria-current="page"] { font-weight: 600; }
-.seg .seg-label::after { font-weight: 600; }
+.seg .seg-opt[aria-pressed="true"], .seg .seg-opt[aria-current="page"] { font-weight: 700; }
+.seg .seg-label::after { font-weight: 700; }
 /* 44 to touch, inside the 48 pill (accessibility review #6) */
 .seg-opt::before { content: ""; position: absolute; inset: -0.125rem 0; }
 .seg-opt[aria-current="page"] {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
-  color: rgb(from var(--color-picked) r g b / 0.78);
+  color: var(--color-on-primary);
   font-weight: var(--text-chip-active--font-weight);
 }
-/* a see-through colour would darken wherever an icon's line and fill overlap: the icon takes the solid
-   green and fades as a whole to the label's 78% */
-.seg-opt[aria-current="page"] > svg { color: var(--color-picked); opacity: 0.78; }
+/* the icon in the label's ink: solid, faded as one piece so its overlapping strokes and fills keep one tone */
+.seg-opt[aria-current="page"] > svg { color: rgb(from var(--color-on-primary) r g b / 1); opacity: 0.8; }
 
 /* a 36 chip inside a sheet or panel; pressed takes the lime */
 .chips { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
@@ -727,7 +725,8 @@ button.float-pill,
 .a1 .ms-stack > form { width: 100%; }
 .a1 .ms-stack .btn { align-self: center; }
 /* the two ways in share one row under the field, side by side, and wrap only when there is no room */
-.a1-ways { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--spacing-control-stack); width: 100%; }
+/* half the control stack: the two ways in read as one pair */
+.a1-ways { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: calc(var(--spacing-control-stack) / 2); width: 100%; }
 /* on the phone the two ways in are as wide as the field, so "Browse Berlin and Brandenburg" keeps one line */
 @media (max-width: 35.74rem) {
   .a1-ways .btn { width: 100%; }
@@ -1298,8 +1297,9 @@ button.float-pill,
   /* A1: no panel on the desktop either, the words take the whole screen's middle */
   .a1 .ms-panel { display: contents; }
   .a1 .ms-sheet { position: absolute; inset: 0; padding: var(--spacing-inset-screen); }
-  .a1 .ms-title { font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
-  .a1 .ms-lead { font-size: var(--text-body); line-height: var(--text-body--line-height); }
+  /* the start screen's title and line 20% over h1 and body, the first words a visitor reads */
+  .a1 .ms-title { font-size: calc(var(--text-h1) * 1.2); line-height: calc(var(--text-h1--line-height) * 1.2); }
+  .a1 .ms-lead { font-size: calc(var(--text-body) * 1.2); line-height: calc(var(--text-body--line-height) * 1.2); }
   .a1 .ms-stack { margin-top: 2.5rem; }
   .a1 .ms-note-phone { display: none; }
   .a1 .ms-note-desk { display: block; margin-top: 1.5rem; }

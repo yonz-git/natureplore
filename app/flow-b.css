@@ -465,7 +465,13 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .b1-walk { animation: fade-in var(--enter) var(--ease-enter) backwards; }
 /* Walk the route and Use my location: the icon at 1.3rem, close to its label, in the medium weight */
 .btn.b1-walk,
-.btn.a1-locate { gap: 0.4rem; font-weight: 500; }
+.btn.a1-locate { gap: 0.4rem; font-weight: 600; }
+/* this button only for now: the secondary button's white sheen laid over the lime, stronger */
+.btn-primary.a1-locate {
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 0.32) 0%, rgb(255 255 255 / 0) 100%),
+    linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+}
 .btn.b1-walk { align-self: center; }
 /* full width on a phone; wider screens hug the label, as every button does */
 @media (max-width: 29.99rem) { /* phone-max */

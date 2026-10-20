@@ -38,10 +38,6 @@ export default function StartSheet() {
               </Link>
             </div>
           </div>
-
-          <p className="ms-note ms-note-desk">
-            Your browser asks before sharing your location, and it stays on this device.
-          </p>
         </div>
       </div>
       {prompt}
