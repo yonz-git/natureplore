@@ -318,7 +318,12 @@
 }
 /* the pin before the region, its drawn edge on the title's left edge and its middle on the words' */
 .sg-scope { display: flex; align-items: center; gap: 0.125rem; }
-.sg-pin { position: relative; display: flex; flex-shrink: 0; margin: 0 0 0.094rem -0.0615rem; }
+/* the pin as tall as the capitals, and the pin with its ring centred on them: the round head rises
+   a little over the cap line, as round letters do, and the ring sits as far under the baseline.
+   In em, so it follows the words at every size (the drawing fills 0.754 of its box, the capitals
+   stand 0.576em) */
+.sg-pin { --pin: 0.764em; position: relative; top: -0.087em; display: flex; flex-shrink: 0; margin: 0 0 0 -0.0615rem; }
+.sg-pin-icon { width: var(--pin); height: var(--pin); }
 /* the pin spins in once the sheet is up, calmly: a full turn about its upright axis, like a coin on
    its edge, fading in through the first third and slowing to rest with no overshoot */
 .sg-pin-icon { position: relative; animation: pin-roll-in 900ms var(--ease-out) 240ms both; }
@@ -326,14 +331,15 @@
    18 box), drawn behind the pin so the pin stands in it; it opens out as the pin comes to rest */
 .sg-pin-ring {
   position: absolute;
-  left: calc(0.5625rem - 0.375rem);
-  top: calc(0.975rem - 0.15625rem);
-  width: 0.75rem;
-  height: 0.3125rem;
+  left: 0;
+  top: 0;
+  width: var(--pin);
+  height: var(--pin);
+  transform-origin: 50% 87.1%;
   overflow: visible;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1;
+  stroke-width: 1.33;
   stroke-opacity: 0.7;
   animation: pin-ring-in 360ms var(--ease-out) 780ms both;
 }
@@ -1201,8 +1207,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-bento li:nth-child(4n+2):last-child { grid-row: span 2; }
 .sg-bento .sg-org-link { position: absolute; inset: 0; display: block; }
 .sg-bento .a8-thumb { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 0; }
-/* the photographs muted towards the forest, as the Blackthorn one reads, so no tile shouts */
-.sg-bento img.a8-thumb { filter: saturate(0.7) brightness(0.82) contrast(0.95); }
+/* the photographs are muted towards the forest by the one organism photo rule (app/globals.css) */
 .sg-bento li span:has(> b) {
   position: absolute;
   inset: auto 0 0;

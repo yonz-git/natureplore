@@ -435,6 +435,56 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-season > div.is-now { color: var(--color-on-ground); font-weight: 500; }
 .fb-season > div.is-now .fb-season-bar { background: var(--color-mist); }
 
+/* when each group is active (components/YearChart.tsx): a heatmap, a row a group in its own colour, a column a
+   month, each cell in one of four shades of the row's colour against its busiest month, an empty month a faint
+   outline. This month's cells carry a light ring and its letter is bright. */
+.fb-heat { margin: 0; gap: 0.875rem; }
+.fb-heat table { table-layout: fixed; border-collapse: separate; border-spacing: 0.1875rem; margin: -0.1875rem; width: calc(100% + 0.375rem); }
+.fb-heat thead td { width: 6.25rem; }
+.fb-heat thead th { padding-bottom: 0.125rem; font-size: 0.8rem; line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); text-align: center; }
+.fb-heat thead th.is-now { color: var(--color-on-ground); font-weight: 500; }
+.fb-heat tbody th {
+  padding-right: 0.375rem;
+  font-size: var(--text-caption);
+  line-height: 1.2;
+  font-weight: 400;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fb-heat tbody th svg { vertical-align: -0.2rem; margin-right: 0.375rem; }
+.fb-heat td { padding: 0; }
+.fb-heat tr.is-plants { --c: var(--color-group-plants); }
+.fb-heat tr.is-herbs { --c: var(--color-group-herbs); }
+.fb-heat tr.is-mushrooms { --c: var(--color-group-mushrooms); }
+.fb-heat tr.is-birds { --c: var(--color-group-birds); }
+.fb-heat tr.is-mammals { --c: var(--color-group-mammals); }
+.fb-heat-cell {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 0.25rem;
+  background: color-mix(in oklab, var(--c, var(--color-on-ground)) var(--k), transparent);
+  box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.12);
+}
+.fb-heat-cell[data-step="0"] { --k: 0%; }
+.fb-heat-cell[data-step="1"] { --k: 25%; }
+.fb-heat-cell[data-step="2"] { --k: 48%; }
+.fb-heat-cell[data-step="3"] { --k: 74%; }
+.fb-heat-cell[data-step="4"] { --k: 100%; }
+.fb-heat td.is-now .fb-heat-cell { box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.12), 0 0 0 1.5px rgb(from var(--color-on-ground) r g b / 0.75); }
+/* the key: four steps of the plain ink, between its two words */
+.fb-heat figcaption { display: flex; align-items: center; gap: 0.5rem; font-size: var(--text-caption); line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-heat-key { display: flex; gap: 0.1875rem; }
+.fb-heat-key .fb-heat-cell { width: 0.875rem; }
+/* the shades come in as the chart scrolls into view */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .fb-heat tbody .fb-heat-cell { animation: heat-in linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+  }
+}
+@keyframes heat-in { from { opacity: 0; scale: 0.6; } }
+
 .fb-facts { padding: 0.375rem 1.25rem; }
 /* label and value side by side; with large text the value drops under its label instead of running off */
 /* each label centred on its value, however many lines the value takes */
@@ -443,8 +493,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-facts dd { flex: 1 1 10rem; min-width: 0; }
 .fb-facts > div + div { border-top: 1px solid var(--color-divider); }
 .fb-facts dt { font-size: var(--text-caption); line-height: 1.5rem; font-weight: 500; color: var(--color-on-ground-soft); }
-/* the facts sit as close under the stats as the stats sit to each other, not at the sheet's own gap */
-.b1-stats + .fb-facts { margin-top: calc(0.5rem - 1.25rem); }
 /* four stats, the route's shape the fourth, so each tile gives up some of its side padding */
 .b1-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .b1-stats .card-stat { padding-inline: 0.375rem; }

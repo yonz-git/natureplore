@@ -17,6 +17,7 @@ import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap
 import { StatValue } from "@/components/CParts";
 import { ActionRow, ClaimCard, MonthGrid, RecordedToo, SpotLook, SpotMark } from "@/components/SpotParts";
 import { InSeasonList } from "@/components/InSeasonList";
+import { YearChart } from "@/components/YearChart";
 import { organismPhoto } from "@/lib/photos";
 import { GROUPS, recordsOf, spotsOf, type Route } from "@/lib/routes";
 import { lastList, useSaved } from "@/lib/saved";
@@ -607,6 +608,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
             <>
               <section aria-labelledby="sec-season-title">
                 <SectionHead id="season" lead="When to " close="walk the route" note="Spots in season" />
+                <YearChart routeId={route.id} />
                 <div className="fb-card">
                   <div
                     className="fb-season"

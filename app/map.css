@@ -985,6 +985,24 @@ button.float-pill,
   transition: transform 160ms var(--ease-out);
 }
 .a1-pin:active { transform: translate(-50%, -50%) scale(0.94); }
+/* a cluster's count sits on an olive glass, lit at the top and falling darker to the foot as the
+   secondary button does, the figures in the ground green at 64% */
+.a1-pin.glass:not(.a1-pin-place) {
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.02) 55%, rgb(6 18 9 / 0.16) 100%),
+    rgb(143 156 61 / 0.77);
+  color: rgb(from var(--color-on-primary) r g b / 0.64);
+}
+/* the count centred on its figures' own height, not on the font's line box: trimmed to the cap
+   height, a block because the trim does not apply to the flex button itself (.num-disc, globals.css) */
+/* Comfortaa's figures rise above its cap height, so trimmed they still read high: lowered by half
+   that rise (measured on the ink at 15px, 0.71 high before) */
+.a1-pin-num { display: block; position: relative; top: 0.024em; text-box: trim-both cap alphabetic; }
+/* the start sheet's clusters: the welcome route's glow dot (.glow-dot, app/globals.css), no count.
+   The 46 button stays the touch target. Each pin starts its blink at its own point (--i), as the
+   welcome's four stops breathe out of step. */
+.a1-pin-glow { background: none; }
+.a1-pin-glow .glow-dot { animation-delay: calc(var(--i, 0) * -0.6s); }
 /* a single route is a lime spot marker with a leaf, not a count */
 .a1-pin-place {
   width: 2.25rem;
