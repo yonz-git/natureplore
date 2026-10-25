@@ -11,27 +11,28 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { BackIcon, BookmarkIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, GroupIcon, LocationIcon, WalkIcon } from "@/components/Icons";
+import { BackIcon, BookmarkIcon, ChevronIcon, DownloadIcon, GroupIcon, LoopIcon, OneWayIcon, WalkIcon } from "@/components/Icons";
 import { useSheet } from "@/components/SheetGrab";
-import { MapTools } from "@/components/MapParts";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { StatValue } from "@/components/CParts";
-import { ActionRow, ClaimCard, MonthGrid, RecordedToo, SpotLook, SpotMark } from "@/components/SpotParts";
+import { ActionRow, ClaimCard, SpotMark } from "@/components/SpotParts";
+import { InSeasonList } from "@/components/InSeasonList";
+import { RECORDED_COUNTS } from "@/lib/records";
+import { YearChart } from "@/components/YearChart";
 import { organismPhoto } from "@/lib/photos";
 import { GROUPS, recordsOf, spotsOf, type Route } from "@/lib/routes";
 import { lastList, useSaved } from "@/lib/saved";
-import { MONTH_LETTERS, MONTH_NAMES, NOW, routeDetail, spotLine } from "@/lib/spots";
-import { suggestionById } from "@/lib/suggestions";
+import { MONTH_LETTERS, MONTH_NAMES, NOW, routeDetail } from "@/lib/spots";
+import { MONTH, suggestionById } from "@/lib/suggestions";
+import { easeScroll } from "@/lib/ease-scroll";
 
 const noop = () => () => {};
 
 const SECTIONS = [
+  ["recorded", "Organisms"],
   ["spots", "Spots"],
-  ["drawn", "The route"],
-  ["recorded", "What is recorded"],
-  ["season", "When to walk the route"],
-  ["happening", "What is happening"],
-  ["getting", "Getting there"],
+  ["season", "Seasons"],
+  ["happening", "Environment"],
 ] as const;
 
 function SectionHead({ id, lead, close, note }: { id: string; lead: string; close: string; note?: string }) {
@@ -47,25 +48,22 @@ function SectionHead({ id, lead, close, note }: { id: string; lead: string; clos
 }
 
 /**
- * Saving lives in one place, the bookmark on the photograph's top right (SaveToggle). The pinned bar
- * only appears once there is something to do next: Walk the route when the route is saved, and Undo for
- * the rest of the visit after it is removed. Saved on this visit, the bar also says the route was
- * downloaded and where to find it.
+ * Saving lives in one place, the bookmark on the photograph's top right (SaveToggle). Saved, Walk the
+ * route appears under the stats (WalkButton); removed, a pinned bar offers Undo for the rest of the visit.
  */
 function useRouteSave(id: string) {
   const { isSaved, toggle } = useSaved();
   const saved = isSaved(id);
   const [removed, setRemoved] = useState(false);
-  // saved on this visit: the bar shows where the route went; a route already saved says nothing
-  const [justSaved, setJustSaved] = useState(false);
+  // Undo brings Walk the route back, so focus follows it there
+  const undone = useRef(false);
   return {
     saved,
     removed,
-    justSaved,
+    undone,
     toggle: () => {
       toggle(id);
       setRemoved(saved);
-      setJustSaved(!saved);
     },
   };
 }
@@ -86,61 +84,90 @@ function SaveToggle({ route, save }: { route: Route; save: RouteSave }) {
   );
 }
 
-function Pin({ route, walkable, save }: { route: Route; walkable: boolean; save: RouteSave }) {
-  const { saved, removed, justSaved } = save;
-  // Undo puts Walk the route back where Undo was, so focus follows it there
-  const moved = useRef(false);
-  const focusIfMoved = (el: HTMLElement | null) => {
-    if (el && moved.current) {
-      moved.current = false;
+/** Downloaded: the suggestion card's second frost, left of the bookmark once saved, not a control. */
+function DownloadedMark({ saved }: { saved: boolean }) {
+  if (!saved) return null;
+  return (
+    <span className="sug-save sug-dl b1-dl glass glass-pin" aria-hidden="true">
+      <DownloadIcon size={20} />
+    </span>
+  );
+}
+
+/** The spots list's left column: the spot's number, or the finish flag, with how far along the route it is
+    under it, on the dashed line that joins them. */
+function SpotAt({ n, km }: { n?: number; km: string }) {
+  return (
+    <span className="fb-at">
+      {n ? (
+        <SpotMark n={n} />
+      ) : (
+        <span className="spot-mark fb-mark fb-mark-end" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7 20.5V3.5" />
+            <path d="M7 3.5h11l-2 4 2 4H7" />
+          </svg>
+        </span>
+      )}
+      <span className="fb-at-km">{km} km</span>
+    </span>
+  );
+}
+
+/** Walk the route, under the stats once the route is saved. */
+function WalkButton({ route, walkable, save }: { route: Route; walkable: boolean; save: RouteSave }) {
+  if (!save.saved) return null;
+  const focusIfUndone = (el: HTMLElement | null) => {
+    if (el && save.undone.current) {
+      save.undone.current = false;
       el.focus();
     }
   };
+  return walkable ? (
+    <Link ref={focusIfUndone} href={`/walk/${route.id}`} className="btn btn-primary b1-walk">
+      <WalkIcon size={20.8} />
+      Walk the route
+    </Link>
+  ) : (
+    <button ref={focusIfUndone} type="button" className="btn btn-primary b1-walk" aria-disabled="true">
+      <WalkIcon size={20.8} />
+      Walk the route
+      <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
+    </button>
+  );
+}
 
-  const note = saved && justSaved;
+/** The route in a few sentences, shown in full. */
+function About({ text }: { text: string }) {
+  return (
+    <div className="b1-about">
+      <p>{text}</p>
+    </div>
+  );
+}
+
+/** Pinned over the tab bar after a removal: Undo. The live region says what saving did. */
+function Pin({ save }: { save: RouteSave }) {
+  const { saved, removed } = save;
   const live = (
     <p className="sr-only" aria-live="polite">
       {saved ? "Saved and downloaded. Find it in Saved." : removed ? "Removed from Saved, and its download deleted." : ""}
     </p>
   );
-  if (!saved && !removed) return live;
+  if (saved || !removed) return live;
   return (
-    <div className={`b1-pin glass-phone${note ? " has-note" : ""}`}>
-      {/* on screen for sighted people; the live region below says the same to screen readers */}
-      {note && (
-        <p className="b1-note" aria-hidden="true">
-          <CheckCircleIcon size={16} />
-          Saved and downloaded. Find it in Saved.
-        </p>
-      )}
-      {saved ? (
-        walkable ? (
-          <Link ref={focusIfMoved} href={`/walk/${route.id}`} className="btn btn-primary b1-walk">
-            <WalkIcon size={19} />
-            Walk the route
-          </Link>
-        ) : (
-          <button ref={focusIfMoved} type="button" className="btn btn-primary b1-walk" aria-disabled="true">
-            <WalkIcon size={19} />
-            Walk the route
-            <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
-          </button>
-        )
-      ) : (
-        <>
-          <p className="b1-removed">Removed from Saved</p>
-          <button
-            type="button"
-            className="btn btn-secondary b1-undo"
-            onClick={() => {
-              moved.current = true;
-              save.toggle();
-            }}
-          >
-            Undo
-          </button>
-        </>
-      )}
+    <div className="b1-pin glass-phone">
+      <p className="b1-removed">Removed from Saved</p>
+      <button
+        type="button"
+        className="btn btn-secondary b1-undo"
+        onClick={() => {
+          save.undone.current = true;
+          save.toggle();
+        }}
+      >
+        Undo
+      </button>
       {live}
     </div>
   );
@@ -150,7 +177,126 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   const map = useRef<MapHandle>(null);
   const sheetEl = useRef<HTMLDivElement>(null);
   const sheet = useSheet(sheetEl);
+  // the jump strip stays at the top of the sheet; its pill for the section under it is the current one
+  const [current, setCurrent] = useState<string>(SECTIONS[0][0]);
+  // tablet: the docked panel slides away to the left to give the map the whole screen, and back
+  const [tucked, setTucked] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const jumping = useRef(false);
+  const jumps = useRef(0);
+  const onSheetScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    sheet.onScroll();
+    const strip = e.currentTarget.querySelector(".fb-strip");
+    if (!strip) return;
+    const stripBottom = strip.getBoundingClientRect().bottom;
+    const line = stripBottom + 1;
+    // what scrolls under the chips is cut away and fades in below them, like the suggestions list; each
+    // block after the strip is masked on its own, since a mask on the sheet would cut the chips too
+    for (let el = strip.nextElementSibling as HTMLElement | null; el; el = el.nextElementSibling as HTMLElement | null) {
+      el.style.setProperty("--cut", `${stripBottom - el.getBoundingClientRect().top}px`);
+    }
+    // the chips stuck at the top take the handle's place, so the handle hides while they are
+    const box = e.currentTarget;
+    setPinned(strip.getBoundingClientRect().top <= box.getBoundingClientRect().top + 1);
+    // while a chip's jump is scrolling the sheet, the chip that was tapped stays current: following the
+    // sections it passes would light every chip on the way, one after another
+    if (jumping.current) return;
+    let id: string = SECTIONS[0][0];
+    for (const [s] of SECTIONS) {
+      const el = document.getElementById(`sec-${s}`);
+      if (el && el.getBoundingClientRect().top <= line) id = s;
+    }
+    setCurrent(id);
+  };
+  // the chips scroll sideways with a mouse too: the wheel turns sideways over them until they reach
+  // an end, and a drag pulls them (a drag is not a click). The current chip slides into view.
+  useEffect(() => {
+    const strip = sheetEl.current?.querySelector<HTMLElement>(".fb-strip");
+    if (!strip) return;
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      const max = strip.scrollWidth - strip.clientWidth;
+      if ((e.deltaY > 0 && strip.scrollLeft >= max - 1) || (e.deltaY < 0 && strip.scrollLeft <= 0)) return;
+      e.preventDefault();
+      strip.scrollLeft += e.deltaY;
+    };
+    let drag: { x: number; left: number; moved: boolean } | null = null;
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType === "mouse" && e.button === 0) drag = { x: e.clientX, left: strip.scrollLeft, moved: false };
+    };
+    const onMove = (e: PointerEvent) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x;
+      if (Math.abs(dx) > 4) drag.moved = true;
+      if (drag.moved) strip.scrollLeft = drag.left - dx;
+    };
+    const onUp = () => {
+      if (drag?.moved) strip.addEventListener("click", (e) => e.preventDefault(), { capture: true, once: true });
+      drag = null;
+    };
+    // the chips fade out at a side that has more of them past it; each chip is masked on its own, since a
+    // mask on the strip would make it a backdrop root and take the frost off every chip
+    const fade = () => {
+      const S = strip.getBoundingClientRect();
+      const w = parseFloat(getComputedStyle(strip).paddingLeft) * 1.5;
+      const max = strip.scrollWidth - strip.clientWidth;
+      const fl = strip.scrollLeft > 1 ? w : 0;
+      const fr = strip.scrollLeft < max - 1 ? w : 0;
+      for (const chip of strip.querySelectorAll<HTMLElement>("a")) {
+        const x = chip.getBoundingClientRect().left;
+        const l = S.left - x;
+        const r = S.right - x;
+        chip.style.maskImage = `linear-gradient(to right, transparent ${l}px, #000 ${l + fl}px, #000 ${r - fr}px, transparent ${r}px)`;
+      }
+    };
+    fade();
+    const ro = new ResizeObserver(fade);
+    ro.observe(strip);
+    strip.addEventListener("scroll", fade, { passive: true });
+    strip.addEventListener("wheel", onWheel, { passive: false });
+    strip.addEventListener("pointerdown", onDown);
+    addEventListener("pointermove", onMove);
+    addEventListener("pointerup", onUp);
+    return () => {
+      ro.disconnect();
+      strip.removeEventListener("scroll", fade);
+      strip.removeEventListener("wheel", onWheel);
+      strip.removeEventListener("pointerdown", onDown);
+      removeEventListener("pointermove", onMove);
+      removeEventListener("pointerup", onUp);
+    };
+  }, [route.id]);
+  useEffect(() => {
+    const strip = sheetEl.current?.querySelector<HTMLElement>(".fb-strip");
+    const chip = strip?.querySelector<HTMLElement>("a[aria-current]");
+    if (!strip || !chip) return;
+    const pad = parseFloat(getComputedStyle(strip).paddingLeft);
+    const left = chip.offsetLeft - strip.offsetLeft;
+    if (left < strip.scrollLeft + pad || left + chip.offsetWidth > strip.scrollLeft + strip.clientWidth - pad)
+      easeScroll(strip, { left: left - pad });
+  }, [current]);
+  // a chip scrolls the sheet alone: the link's own jump also scrolls the panel and the page around
+  // it, which lifts the whole panel out of its frame. The section lands just under the stuck chips.
+  const jumpTo = (e: React.MouseEvent, id: string) => {
+    const box = sheetEl.current;
+    const target = document.getElementById(`sec-${id}`);
+    const strip = box?.querySelector<HTMLElement>(".fb-strip");
+    if (!box || !target || !strip) return;
+    e.preventDefault();
+    const stuckBottom = strip.offsetHeight + parseFloat(getComputedStyle(strip).top);
+    const top = target.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop - stuckBottom;
+    // held until the eased scroll ends, or the reader stops it
+    const jump = ++jumps.current;
+    jumping.current = true;
+    easeScroll(box, { top }).then(() => {
+      if (jumps.current === jump) jumping.current = false;
+    });
+    history.replaceState(null, "", `#sec-${id}`);
+    setCurrent(id);
+  };
   const detail = routeDetail(route.id);
+  // how far along the line each spot is, from the start, as on the map's distance axis
+  const kmAt = (n: number) => ((route.marks?.[n - 1] ?? n / (route.spots + 1)) * parseFloat(route.km)).toFixed(1);
   const spots = useMemo(() => spotsOf(route), [route]);
   const save = useRouteSave(route.id);
   const inSeasonPhotos = (suggestionById(route.id)?.inSeason ?? []).map((o) => organismPhoto(o.name)?.src).slice(0, 2);
@@ -199,11 +345,21 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
       const row = document.getElementById(`spot-${n}`);
       el?.closest(".ms")?.scrollTo({ top: 0 });
       if (!el || !row) return;
-      const top = el.scrollTop + row.getBoundingClientRect().top - el.getBoundingClientRect().top - 16;
-      el.scrollTo({ top, behavior });
+      // the row lands just under the stuck section chips
+      const strip = el.querySelector<HTMLElement>(".fb-strip");
+      const under = strip ? strip.offsetHeight + parseFloat(getComputedStyle(strip).top) : 16;
+      const top = el.scrollTop + row.getBoundingClientRect().top - el.getBoundingClientRect().top - under;
+      if (behavior === "smooth") easeScroll(el, { top });
+      else el.scrollTo({ top });
     };
-    // arriving with a spot open (back from its organism) lands on it at once
-    if (openSpot) requestAnimationFrame(() => reveal(openSpot, "auto"));
+    // arriving with a spot open (back from its organism) lands on it at once. A page loaded or reloaded
+    // straight at ?spot=n starts at the top instead, all spots folded
+    const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+    const fresh = nav && nav.type !== "back_forward" && nav.name === location.href;
+    if (openSpot && fresh) {
+      setOpenSpot(null);
+      history.replaceState(history.state, "", location.pathname);
+    } else if (openSpot) requestAnimationFrame(() => reveal(openSpot, "auto"));
     const onHash = () => {
       const m = /^#spot-(\d+)$/.exec(location.hash);
       if (!m || !detail) return;
@@ -221,32 +377,39 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detail]);
 
-  const total = recordsOf(route.counts);
+  // the card says what is in season this month: the bar, the pills and the tiles all count September, from GBIF
+  const counts = RECORDED_COUNTS[route.id] ?? route.counts;
+  const total = recordsOf(counts);
   const [name, ...rest] = route.name.split(" ").reverse();
   const lead = rest.reverse().join(" ");
-  const locate = () =>
-    map.current?.centre(route.lat, route.lon, 14, !matchMedia("(prefers-reduced-motion: reduce)").matches);
   const most = detail ? Math.max(...detail.season) : 1;
 
   return (
-    <section className="ms b1">
+    <section className={`ms b1${tucked ? " is-tucked" : ""}`}>
       <RegionMap className="a1-map" behind ref={map} points={points} line={line} detail={route.detail} maxZoom={15} mapLabel={`Map of ${route.name}`} />
 
       <div className="b1-top">
         <Link href={back} className="round glass glass-pin" aria-label={backLabel}>
           <BackIcon size={20} />
         </Link>
-        <button type="button" className="round glass glass-pin" aria-label="Show the start on the map" onClick={locate}>
-          <LocationIcon size={20} />
-        </button>
       </div>
+
+      <button
+        type="button"
+        className="b1-dock round glass glass-pin"
+        aria-expanded={!tucked}
+        aria-label={tucked ? "Show the route again" : "Hide the route, show the whole map"}
+        onClick={() => setTucked((t) => !t)}
+      >
+        <ChevronIcon size={18} />
+      </button>
 
       <div className="ms-panel glass-desk">
         <div
           ref={sheetEl}
-          className={`ms-sheet glass-phone${sheet.open ? " is-open" : ""}`}
+          className={`ms-sheet glass-phone${sheet.open ? " is-open" : ""}${sheet.down ? " is-down" : ""}${pinned ? " is-pinned" : ""}`}
           aria-labelledby="route-title"
-          onScroll={sheet.onScroll}
+          onScroll={onSheetScroll}
         >
           {sheet.grab("route")}
 
@@ -261,6 +424,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
               ),
             )}
             <SaveToggle route={route} save={save} />
+            <DownloadedMark saved={save.saved} />
           </div>
 
           <div className="b1-head">
@@ -268,6 +432,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
               {lead} <em>{name}</em>
             </h1>
             <p className="ms-lead">{route.from}</p>
+            <About text={route.description} />
           </div>
 
           <dl className="card-stats b1-stats">
@@ -290,128 +455,70 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                 <StatValue value={String(route.spots)} />
               </dd>
             </div>
+            {/* the route's shape: its word is the label, its icon the value, as on the route cards */}
+            <div className="card-stat b1-shape">
+              <dt>{route.oneWay ? "One way" : "Loop"}</dt>
+              <dd>{route.oneWay ? <OneWayIcon /> : <LoopIcon />}</dd>
+            </div>
           </dl>
 
           {detail && (
-            <nav aria-label="Jump to a section" className="fb-strip">
-              {SECTIONS.map(([id, label]) => (
-                <a key={id} href={`#sec-${id}`}>
-                  {label}
-                </a>
+            <dl className="fb-card fb-facts">
+              {detail.getting.map(([k, v]) => (
+                <div key={k}>
+                  <dt>{k}</dt>
+                  <dd>{v}</dd>
+                </div>
               ))}
+            </dl>
+          )}
+
+          <WalkButton route={route} walkable={!!detail} save={save} />
+
+          {detail && <hr className="b1-rule" />}
+
+          {detail && (
+            <nav aria-label="Jump to a section" className="fb-strip">
+              {SECTIONS.map(([id, label]) =>
+                // a section the route has nothing for stays in the row, muted, so every route shows the same chips
+                id === "happening" && !detail.claims.length ? (
+                  <a key={id} data-text={label} aria-disabled="true" aria-label={`${label}, nothing recorded on this route yet`}>
+                    <span>{label}</span>
+                  </a>
+                ) : (
+                  <a key={id} href={`#sec-${id}`} data-text={label} aria-current={current === id ? "location" : undefined} onClick={(e) => jumpTo(e, id)} draggable={false}>
+                    <span>{label}</span>
+                  </a>
+                ),
+              )}
             </nav>
           )}
 
-          <section aria-labelledby="sec-spots-title">
-            <SectionHead id="spots" lead="Spots along " close="this route" note="In walking order" />
-            <ol className="fb-card fb-rows">
-              {detail
-                ? detail.spots.map((s) => {
-                    const open = openSpot === s.n;
-                    return (
-                      <li key={s.n} id={`spot-${s.n}`} className={`fb-spot-row${open ? " is-open" : ""}${s.out ? " is-out" : ""}`}>
-                        <button
-                          type="button"
-                          className="fb-row"
-                          aria-expanded={open}
-                          aria-controls={`spot-${s.n}-detail`}
-                          onClick={() => toggleSpot(s.n, !open)}
-                        >
-                          <SpotMark n={s.n} />
-                          <span className="fb-row-text">
-                            <b>{s.name}</b>
-                            <span>{spotLine(s)}</span>
-                            <span className="fb-pill">
-                              <CalendarIcon size={14} />
-                              {s.when}
-                            </span>
-                          </span>
-                          <ChevronIcon size={18} />
-                        </button>
-                        {/* the spot's detail opens in place: what to look for and what not to do */}
-                        <div id={`spot-${s.n}-detail`} className="fb-spot-detail" inert={!open}>
-                          <div>
-                            <SpotLook spot={s} organismHref={(id) => `/map/organism/${id}?from=route&spot=${s.n}`} />
-                            <ActionRow spot={s} />
-                            <div className="fb-spot-part">
-                              <h3 className="fb-label">When</h3>
-                              <MonthGrid months={s.months} />
-                              <p className="fb-small">In season {s.when === "All year" ? "all year" : s.when}</p>
-                            </div>
-                            {detail.claims[0] && (
-                              <div className="fb-spot-part">
-                                <h3 className="fb-label">What is happening here</h3>
-                                <ClaimCard claim={detail.claims[0]} />
-                              </div>
-                            )}
-                            <div className="fb-spot-part">
-                              <h3 className="fb-label">Recorded here too</h3>
-                              <RecordedToo />
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                    );
-                  })
-                : route.stops.map((s, i) => (
-                    <li key={s.name}>
-                      <div className="fb-row">
-                        <SpotMark n={i + 1} />
-                        <span className="fb-row-text">
-                          <b>{s.name}</b>
-                          <span>{s.note}</span>
-                        </span>
-                      </div>
-                    </li>
-                  ))}
-            </ol>
-          </section>
-
-          {detail && (
-            <section aria-labelledby="sec-drawn-title">
-              <SectionHead id="drawn" lead="The route, and where its " close="spots are" />
-              <div className="fb-card">
-                <div className="fb-axis" role="img" aria-label={`Spots along the ${route.km} km line, in walking order`}>
-                  <span className="fb-axis-line" />
-                  {detail.axis.map((f, i) => (
-                    <span key={i} className={`fb-axis-mark${detail.spots[i]?.out ? " is-out" : ""}`} style={{ left: `${f * 100}%` }}>
-                      <SpotMark n={i + 1} />
-                    </span>
-                  ))}
-                </div>
-                <div className="fb-axis-ticks" aria-hidden="true">
-                  {detail.ticks.map((t) => (
-                    <span key={t}>{t}</span>
-                  ))}
-                </div>
-                <p className="fb-small">
-                  The line is drawn on the map, with the same numbers. {route.time.replace(":", " h ")} at a looking pace.
-                </p>
-              </div>
-            </section>
-          )}
-
           <section aria-labelledby="sec-recorded-title">
-            <SectionHead id="recorded" lead="What is recorded " close="along this route" note="Within 250 m of the line" />
+            <SectionHead id="recorded" lead="Recorded " close="organisms" />
             <div className="fb-card fb-recorded">
+              <span className="fb-label" id="in-season-label">
+                In season in {MONTH}
+              </span>
               <div
                 className="b1-bar"
                 role="img"
-                aria-label={`${total} records: ${GROUPS.map((g) => `${route.counts[g.id] ?? 0} ${g.label.toLowerCase()}`).join(", ")}`}
+                aria-label={`${total} species recorded: ${GROUPS.map((g) => `${counts[g.id] ?? 0} ${g.label.toLowerCase()}`).join(", ")}`}
               >
-                {GROUPS.filter((g) => route.counts[g.id]).map((g) => (
-                  <span key={g.id} className={`is-${g.id}`} style={{ flexGrow: route.counts[g.id] }} />
+                {GROUPS.filter((g) => counts[g.id]).map((g) => (
+                  <span key={g.id} className={`is-${g.id}`} style={{ flexGrow: counts[g.id] }} />
                 ))}
               </div>
               <ul className="fb-legend" aria-hidden="true">
                 {GROUPS.map((g) => (
-                  <li key={g.id} className={`fb-pill${route.counts[g.id] ? "" : " is-none"}`} title={g.label}>
+                  <li key={g.id} className={`fb-pill${counts[g.id] ? "" : " is-none"}`} title={g.label}>
                     <GroupIcon group={g.id} size={17} className={`is-${g.id}`} />
-                    <span className="fb-legend-num" data-last={String(route.counts[g.id] ?? 0).slice(-1)}>{route.counts[g.id] ?? 0}</span>
+                    <span className="fb-legend-num" data-last={String(counts[g.id] ?? 0).slice(-1)}>{counts[g.id] ?? 0}</span>
                   </li>
                 ))}
               </ul>
-              {/* A8 has the records of Grumsin beech forest loop only */}
+              <InSeasonList routeId={route.id} />
+              {/* A8 has the records of Grumsin beech forest only */}
               {route.id === "grumsin" ? (
                 <Link href={`/map/route/${route.id}/recorded`} className="btn btn-secondary btn-chev">
                   See everything recorded
@@ -427,10 +534,72 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
             </div>
           </section>
 
+          <section aria-labelledby="sec-spots-title">
+            <SectionHead id="spots" lead="Spots along " close="this route" />
+            <ol className="fb-card fb-rows">
+              {detail
+                ? detail.spots.map((s) => {
+                    const open = openSpot === s.n;
+                    return (
+                      <li key={s.n} id={`spot-${s.n}`} className={`fb-spot-row${open ? " is-open" : ""}`}>
+                        <button
+                          type="button"
+                          className="fb-row"
+                          aria-expanded={open}
+                          aria-controls={`spot-${s.n}-detail`}
+                          onClick={() => toggleSpot(s.n, !open)}
+                        >
+                          <SpotAt n={s.n} km={kmAt(s.n)} />
+                          <span className="fb-row-text">
+                            <b>{s.name}</b>
+                          </span>
+                          <ChevronIcon size={18} />
+                        </button>
+                        {/* the spot's detail opens in place: what to do or not do here */}
+                        <div id={`spot-${s.n}-detail`} className="fb-spot-detail" inert={!open}>
+                          <div>
+                            <ActionRow spot={s} />
+                            {detail.claims[0] && (
+                              <div className="fb-spot-part">
+                                <h3 className="fb-label">What is happening here</h3>
+                                <ClaimCard claim={detail.claims[0]} />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })
+                    .concat(
+                      <li key="end" className="fb-spot-end">
+                        <div className="fb-row">
+                          <SpotAt km={route.km} />
+                          <span className="fb-row-text">
+                            <b>Finish</b>
+                            <span>{route.oneWay ? "The end of the route" : "Back where you started"}</span>
+                          </span>
+                        </div>
+                      </li>,
+                    )
+                : route.stops.map((s, i) => (
+                    <li key={s.name}>
+                      <div className="fb-row">
+                        <SpotAt n={i + 1} km={kmAt(i + 1)} />
+                        <span className="fb-row-text">
+                          <b>{s.name}</b>
+                          <span>{s.note}</span>
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+            </ol>
+          </section>
+
           {detail && (
             <>
               <section aria-labelledby="sec-season-title">
                 <SectionHead id="season" lead="When to " close="walk the route" note="Spots in season" />
+                <YearChart routeId={route.id} />
                 <div className="fb-card">
                   <div
                     className="fb-season"
@@ -460,27 +629,12 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                 </section>
               )}
 
-              <section aria-labelledby="sec-getting-title">
-                <SectionHead id="getting" lead="Getting there, and " close="getting along it" />
-                <dl className="fb-card fb-facts">
-                  {detail.getting.map(([k, v]) => (
-                    <div key={k}>
-                      <dt>{k}</dt>
-                      <dd>{v}</dd>
-                    </div>
-                  ))}
-                </dl>
-                <p className="fb-small">{detail.gettingNote}</p>
-              </section>
-
               <p className="fb-small b1-foot">{detail.foot}</p>
             </>
           )}
         </div>
-        <Pin route={route} walkable={!!detail} save={save} />
+        <Pin save={save} />
       </div>
-
-      <MapTools locate={locate} />
     </section>
   );
 }

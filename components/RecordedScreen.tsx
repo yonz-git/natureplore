@@ -9,7 +9,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { BackIcon, ChevronIcon } from "@/components/Icons";
+import { BackIcon, ChevronIcon, GroupIcon } from "@/components/Icons";
 import { organismPhoto } from "@/lib/photos";
 import { GRUMSIN_RECORDED } from "@/lib/recorded";
 import { GROUPS, type Group } from "@/lib/routes";
@@ -39,9 +39,8 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
       </Link>
       <div className="saved-sheet glass">
         <h1 id="a8-title">
-          Recorded along <em>{routeName}</em>
+          <em>{routeName}</em>
         </h1>
-        <p>Within 250 m of the line. One fixed order, and a group with nothing recorded keeps its place.</p>
 
         <div className="b1-box a8-box">
           <div
@@ -66,8 +65,10 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
                 aria-pressed={picked.includes(g.group)}
                 onClick={() => pick(g.group)}
               >
-                <i style={{ background: TINT[g.group] }} />
-                {label(g.group)} {g.total}
+                {/* the icon and the count, as on the route page; the group's name is for screen readers */}
+                <GroupIcon group={g.group} size={17} className={`is-${g.group}`} />
+                <span className="sr-only">{label(g.group)} </span>
+                {g.total}
               </button>
             ))}
           </div>
@@ -90,7 +91,7 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
             <section key={g.group} className="a8-section" aria-labelledby={`a8-${g.group}`}>
               <div className="a8-group-head">
                 <h2 id={`a8-${g.group}`}>{name}</h2>
-                <span>{g.total} recorded</span>
+                <span className="tag sug-spots sg-org-count">{g.total} Species</span>
               </div>
               <div className="saved-card a8-group">
                 {g.rows.length === 0 ? (

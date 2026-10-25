@@ -51,32 +51,34 @@ export type Route = {
   stops: { name: string; note: string; left?: boolean }[];
   /** where each spot sits along the line, 0 at the start and 1 at the finish, when it is not evenly spaced */
   marks?: number[];
+  /** counts: how many species of each group GBIF has recorded within 250 m of the line, 2016 to 2025
+      (.design/gbif/counts.py), for the built routes; the sample cards keep their sample counts */
   /** the real line, when it is mapped (lib/route-lines.ts), and the detail map drawn under it */
   path?: [number, number][];
   detail?: string;
-  /** point to point: the line ends somewhere else, so the flag at its start reads Start, not Start and finish */
+  /** one way: the line ends somewhere else, so the flag at its start reads Start, not Start and finish */
   oneWay?: boolean;
 };
 
 export const ROUTES: Route[] = [
   {
     id: "tempelhof",
-    name: "Tempelhofer Feld loop",
+    name: "Tempelhofer Feld",
     where: "Loop in Tempelhof, Berlin",
     line: "5.7 km loop, 1 h 40 at a looking pace",
     km: "5.7",
     time: "1:40",
     spots: 5,
-    counts: { plants: 24, herbs: 72, birds: 41, mammals: 6 },
+    counts: { plants: 82, herbs: 267, mushrooms: 15, birds: 163, mammals: 6 },
     season: ["meadow"],
     lat: 52.48228,
     lon: 13.40724,
     image: "/img/routes/tempelhof.jpg",
-    summary: "Grassland, 5 spots, 96 records within 250 m of the line, last recorded yesterday",
+    summary: "Grassland, 5 spots, 31,671 records within 250 m of the line",
     notable: { text: "Notable now: skylarks on the open meadow, until October" },
-    from: "Loop from the Columbiadamm main entrance, Tempelhof, Berlin",
+    from: "From the Columbiadamm main entrance, Tempelhof, Berlin",
     description:
-      "A flat loop around the old airfield, on the runways and the paths beside the meadows. Skylarks sing over the fenced grassland from spring into early autumn, wheatears stop on the runway edges on passage, and the gardens on the east side are busy with insects all summer.",
+      "A flat loop around the old airfield, on the runways and the paths beside the meadows. Skylarks sing over the grassland from spring into early autumn. It starts at the Columbiadamm entrance, near U-Bahn Platz der Luftbrücke, and is step-free all the way round.",
     stops: [
       { name: "The community gardens", note: "Butterfly bushes, in flower into October" },
       { name: "The skylark meadow", note: "Skylarks until October" },
@@ -91,21 +93,21 @@ export const ROUTES: Route[] = [
   {
     id: "tegel",
     name: "Tegeler Fließ valley path",
-    where: "Point to point in Reinickendorf, Berlin",
-    line: "4.9 km, point to point, 1 h 25 at a looking pace",
+    where: "One way in Reinickendorf, Berlin",
+    line: "4.9 km one way, 1 h 25 at a looking pace",
     km: "4.9",
     time: "1:25",
     spots: 7,
-    counts: { plants: 22, herbs: 66, mushrooms: 12, birds: 57, mammals: 9 },
+    counts: { plants: 76, herbs: 120, mushrooms: 34, birds: 140, mammals: 18 },
     season: ["fungi", "meadow"],
     lat: 52.61804,
     lon: 13.3075,
     image: "/img/routes/tegel.jpg",
-    summary: "River meadow, 7 spots, 164 records within 250 m of the line, last recorded 3 days ago",
+    summary: "River meadow, 7 spots, 6,865 records within 250 m of the line",
     notable: { text: "Notable now: kingfishers on the Fließ, all year" },
     from: "From S-Bahn Hermsdorf to Alt-Lübars, Reinickendorf, Berlin",
     description:
-      "A path along the Tegeler Fließ, a small river in a wide meadow valley at the edge of the city. Down the valley past the beaver’s stretch of the Fließ and the Hermsdorfer See, over the Fließ and along a boardwalk through the alder carr, then across the wet meadows and pastures to the old village of Lübars.",
+      "A path down the Tegeler Fließ, a small river in a wide meadow valley, past the beaver’s stretch and along a boardwalk through the alder carr to the old village of Lübars. It starts at S-Bahn Hermsdorf. The paths are soft after rain, so wear boots.",
     stops: [
       { name: "The beaver lodge", note: "Gnawed trunks along the bank" },
       { name: "Hermsdorf lake shore", note: "Grey herons fishing all year" },
@@ -122,22 +124,22 @@ export const ROUTES: Route[] = [
   },
   {
     id: "linum",
-    name: "Linum wet meadows loop",
+    name: "Linum wet meadows",
     where: "Loop in Linum, Brandenburg",
     line: "6.3 km loop, 1 h 50 at a looking pace",
     km: "6.3",
     time: "1:50",
     spots: 6,
-    counts: { plants: 19, herbs: 48, birds: 64, mammals: 7 },
+    counts: { plants: 19, herbs: 81, mushrooms: 3, birds: 199, mammals: 13 },
     season: ["meadow"],
     lat: 52.75773,
     lon: 12.88274,
     image: "/img/routes/linum.jpg",
-    summary: "Wetland, 6 spots, 138 records within 250 m of the line, last recorded 2 days ago",
+    summary: "Wetland, 6 spots, 14,769 records within 250 m of the line",
     notable: { text: "Notable now: cranes gathering, September to November", organism: "common-crane" },
-    from: "Loop from the village church in Linum, Brandenburg",
+    from: "From the village church in Linum, Brandenburg",
     description:
-      "An easy loop from the village church out along the fish ponds of the Linumer Teichland and back across the wet meadows. Flat, and mostly on farm tracks, so it suits any fitness level. In autumn thousands of cranes gather on the ponds at dusk.",
+      "An easy, flat loop from the village church along the fish ponds and back across the wet meadows. In autumn thousands of cranes gather on the ponds at dusk. It is about an hour by car from Berlin, with parking in the village. Keep to the paths in crane season.",
     stops: [
       { name: "The flooded ditch", note: "Cranes feeding, in spring and October to November" },
       { name: "Reed edge of the fish ponds", note: "Reed warblers and bearded tits" },
@@ -152,22 +154,22 @@ export const ROUTES: Route[] = [
   },
   {
     id: "grumsin",
-    name: "Grumsin beech forest loop",
+    name: "Grumsin beech forest",
     where: "Loop in Grumsin, Brandenburg",
     line: "10.2 km loop, 3 h at a looking pace",
     km: "10.2",
     time: "3:00",
     spots: 5,
-    counts: { plants: 31, herbs: 18, mushrooms: 26, birds: 38, mammals: 7 },
+    counts: { plants: 16, herbs: 66, mushrooms: 22, birds: 102, mammals: 9 },
     season: ["fungi"],
     lat: 53.01237,
     lon: 13.87510,
     image: "/img/routes/grumsin.jpg",
-    summary: "Beech forest, 5 spots, 120 records within 250 m of the line, last recorded 4 days ago",
+    summary: "Beech forest, 5 spots, 1,060 records within 250 m of the line",
     notable: { text: "Notable now: bog arum at Schwarzer See, until the end of September" },
-    from: "Loop from the Altkünkendorf car park, Uckermark, Brandenburg",
+    from: "From the Altkünkendorf car park, Uckermark, Brandenburg",
     description:
-      "The Orange Beech Leaf, a waymarked loop along the edge of the Grumsin beech forest, part of a world heritage site. Old beeches, two quiet forest lakes and the shore of Wolletzsee, with fungi on the fallen trunks after the first autumn rain. Mostly forest path and gravel track, with gentle climbs.",
+      "The Orange Beech Leaf, a waymarked loop along the edge of the Grumsin beech forest, a world heritage site. Old beeches, two forest lakes and the shore of Wolletzsee, with fungi on fallen trunks in autumn. It starts at the Altkünkendorf car park. Stay on the marked path.",
     stops: [
       { name: "The forest gate", note: "Jays in the old beeches" },
       { name: "Buckow-See", note: "Nuthatches on the lakeside beeches" },

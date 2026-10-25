@@ -41,8 +41,9 @@
 .a1-map:not(.is-ready) { opacity: 0; scale: 1.04; }
 .screen-enter .ms-search-top,
 .screen-enter .ms-bar > :not(:has(.glass)):not(.glass),
-.screen-enter .ms-bar .glass { animation: sheet-in var(--enter) var(--ease-enter) 150ms backwards; }
-.screen-enter .ms-tools > * { animation: sheet-in var(--enter) var(--ease-enter) 300ms backwards; }
+/* not the Organisms filters: they are shown and hidden later, and each showing would replay this
+   rise; they slide out sideways on their own (app/flow-a.css) */
+.screen-enter .ms-bar .glass:not(.sg-group) { animation: sheet-in var(--enter) var(--ease-enter) 150ms backwards; }
 /* the labels on the map wait for the map, then come one by one (--i, set by RegionMap) */
 .screen-enter .a1-pin,
 .screen-enter .a1-here,
@@ -51,6 +52,8 @@
 .screen-enter .map-start { animation: pin-in var(--enter) var(--ease-enter) calc(450ms + var(--i, 0) * 110ms) backwards; }
 @media (max-width: 63.99rem) {
   .screen-enter .ms-sheet { animation: sheet-in var(--enter) var(--ease-enter) 250ms backwards; }
+  /* the panel's slide button comes in with the panel, not before it */
+  .screen-enter .b1-dock { animation: dock-in var(--enter) var(--ease-enter) 380ms backwards; }
   .screen-enter .search .ms-sheet > * { animation: sheet-in var(--enter) var(--ease-enter) 250ms backwards; }
   .screen-enter .search .ms-sheet { animation: none; }
 }
@@ -109,6 +112,8 @@
   from { opacity: 0; scale: 1.04; }
 }
 
+/* a fade only: the slide button keeps its own translate for centring */
+@keyframes dock-in { from { opacity: 0; } }
 @keyframes sheet-in {
   from { opacity: 0; translate: 0 var(--enter-rise); }
 }
@@ -131,8 +136,7 @@
   .a1-map:not(.is-ready) { scale: none; }
   .screen-enter .ms-search-top,
   .screen-enter .ms-bar > :not(:has(.glass)):not(.glass),
-  .screen-enter .ms-bar .glass,
-  .screen-enter .ms-tools > *,
+  .screen-enter .ms-bar .glass:not(.sg-group),
   .screen-enter .a1-pin,
   .screen-enter .a1-here,
   .screen-enter .map-route,

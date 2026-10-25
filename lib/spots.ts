@@ -43,10 +43,7 @@ export type RouteDetail = {
   season: number[];
   seasonNote: string;
   /** where the spots sit along the line, from 0 at the start to 1 at the finish */
-  axis: number[];
-  ticks: string[];
   getting: [string, string][];
-  gettingNote: string;
   claims: Claim[];
   foot: string;
 };
@@ -364,82 +361,50 @@ const DETAILS: Record<string, RouteDetail> = {
     spots: GRUMSIN_SPOTS.map(asOfNow),
     season: GRUMSIN_SEASON,
     seasonNote: `${COUNT_WORDS[GRUMSIN_SEASON[NOW]]} of the five spots ${GRUMSIN_SEASON[NOW] === 1 ? "is" : "are"} in season in ${MONTH}. Nothing here promises a sighting.`,
-    axis: [0.135, 0.272, 0.374, 0.637, 0.894],
-    ticks: ["0 km", "2.5", "5.0", "7.5", "10.2 km"],
     getting: [
-      ["Length", "10.2 km, loop"],
-      ["Time", "3 h at a looking pace"],
-      ["Surface", "Forest path, gravel track and a short stretch of village road"],
-      ["Getting round", "Not for pushchairs or wheelchairs: about 4 km is narrow earth path"],
-      ["Ascent", "Rolling, about 150 m total"],
       ["Start", "Altkünkendorf car park"],
+      ["Ascent", "Rolling, about 150 m total"],
+      ["Surface", "Forest path, gravel track and a short stretch of village road"],
     ],
-    gettingNote: "No difficulty grade and no estimated speed. The figures say whether the route is reachable, not how fit the walker is.",
     claims: [],
-    foot: CAPTURE
-      ? "Route last checked 23 September 2026. 120 records within 250 m of the line."
-      : "Route last checked 23 September 2026. 120 records within 250 m of the line, last recorded 10 Sep.",
+    foot: "Route last checked 23 September 2026. 1,060 records within 250 m of the line.",
   },
   linum: {
     spots: LINUM_SPOTS.map(asOfNow),
     season: LINUM_SEASON,
     seasonNote: `${COUNT_WORDS[LINUM_SEASON[NOW]]} of the six spots ${LINUM_SEASON[NOW] === 1 ? "is" : "are"} in season in ${MONTH}. Nothing here promises a sighting.`,
-    axis: [0.271, 0.486, 0.603, 0.657, 0.815, 0.881],
-    ticks: ["0 km", "1.6", "3.2", "4.8", "6.3 km"],
     getting: [
-      ["Length", "6.3 km, loop"],
-      ["Time", "1 h 50 at a looking pace"],
-      ["Surface", "Village street, farm track and grass path on the pond dams"],
-      ["Getting round", "Flat. The dam paths are grass and soft after rain, so not for wheelchairs"],
-      ["Ascent", "Flat"],
       ["Start", "Dorfkirche Linum"],
+      ["Ascent", "Flat"],
+      ["Surface", "Village street, farm track and grass path on the pond dams"],
     ],
-    gettingNote: "No difficulty grade and no estimated speed. The figures say whether the route is reachable, not how fit the walker is.",
     claims: [CLAIMS.c1a, CLAIMS.c1b],
-    foot: CAPTURE
-      ? "Route last checked 23 September 2026. 138 records within 250 m of the line."
-      : "Route last checked 23 September 2026. 138 records within 250 m of the line, last recorded 11 Sep.",
+    foot: "Route last checked 23 September 2026. 14,769 records within 250 m of the line.",
   },
   tegel: {
     spots: TEGEL_SPOTS.map(asOfNow),
     season: TEGEL_SEASON,
     seasonNote: `${COUNT_WORDS[TEGEL_SEASON[NOW]]} of the seven spots ${TEGEL_SEASON[NOW] === 1 ? "is" : "are"} in season in ${MONTH}. Nothing here promises a sighting.`,
-    axis: [0.3, 0.454, 0.629, 0.721, 0.831, 0.886, 1.0],
-    ticks: ["0 km", "1.2", "2.5", "3.7", "4.9 km"],
     getting: [
-      ["Length", "4.9 km, point to point"],
-      ["Time", "1 h 25 at a looking pace"],
-      ["Surface", "Village street, forest path, a boardwalk and field track"],
-      ["Getting round", "Not for wheelchairs: the boardwalk and the meadow tracks are narrow and soft after rain"],
-      ["Ascent", "Flat"],
       ["Start", "S-Bahn Hermsdorf, ends in Alt-Lübars"],
+      ["Ascent", "Flat"],
+      ["Surface", "Village street, forest path, a boardwalk and field track"],
     ],
-    gettingNote: "No difficulty grade and no estimated speed. The figures say whether the route is reachable, not how fit the walker is.",
     claims: [CLAIMS.c6],
-    foot: CAPTURE
-      ? "Route last checked 23 September 2026. 164 records within 250 m of the line."
-      : "Route last checked 23 September 2026. 164 records within 250 m of the line, last recorded 18 Sep.",
+    foot: "Route last checked 23 September 2026. 6,865 records within 250 m of the line.",
   },
   tempelhof: {
     spots: TEMPELHOF_SPOTS.map(asOfNow),
     season: TEMPELHOF_SEASON,
     seasonNote: `${COUNT_WORDS[TEMPELHOF_SEASON[NOW]]} of the five spots ${TEMPELHOF_SEASON[NOW] === 1 ? "is" : "are"} in season in ${MONTH}. Nothing here promises a sighting.`,
-    axis: [0.239, 0.279, 0.544, 0.758, 0.842],
-    ticks: ["0 km", "1.4", "2.8", "4.3", "5.7 km"],
     getting: [
-      ["Length", "5.7 km, loop"],
-      ["Time", "1 h 40 at a looking pace"],
-      ["Surface", "Old runway tarmac and asphalt paths"],
-      ["Getting round", "Step-free all the way, for wheelchairs and pushchairs"],
-      ["Opening", "The field closes at night and opens again at sunrise"],
-      ["Ascent", "Flat"],
       ["Start", "Tor 5, Columbiadamm"],
+      ["Ascent", "Flat"],
+      ["Surface", "Old runway tarmac and asphalt paths"],
+      ["Opening", "The field closes at night and opens again at sunrise"],
     ],
-    gettingNote: "No difficulty grade and no estimated speed. The figures say whether the route is reachable, not how fit the walker is.",
     claims: [],
-    foot: CAPTURE
-      ? "Route last checked 23 September 2026. 96 records within 250 m of the line."
-      : "Route last checked 23 September 2026. 96 records within 250 m of the line, last recorded 20 Sep.",
+    foot: "Route last checked 23 September 2026. 31,671 records within 250 m of the line.",
   },
 };
 

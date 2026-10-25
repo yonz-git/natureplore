@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLayoutEffect, useRef, useState } from "react";
 
-// Map, Learn, Saved: Map is A5, Learn is D0, Saved is E1. The redesign's boards call the first tab
+// Map, Learn, Saved, You: Map is A5, Learn is D0, Saved is E1, You has no board yet. The redesign's boards call the first tab
 // Routes; it was renamed Map in the prototype on 1 Oct 2026.
 const TABS = [
   {
@@ -64,6 +64,17 @@ const TABS = [
           d="M123.184 32H30.8158C25.1675 32.0164 19.7553 34.2721 15.7614 38.2744C11.7674 42.2766 9.5164 47.7 9.5 53.36V210L77 153.04L144.5 210V53.36C144.484 47.7 142.233 42.2766 138.239 38.2744C134.245 34.2721 128.832 32.0164 123.184 32Z"
         />
       </g>
+    ),
+  },  {
+    href: "/you",
+    label: "You",
+    // a head and shoulders; its line is the Map outline's, 1.4 at rest and 2 when open, filled when open (app/tabbar.css)
+    big: true,
+    icon: (
+      <path
+        className="tab-outline tab-you"
+        d="M12.16 10.87c-.1-.01-.22-.01-.33 0a4.42 4.42 0 0 1-4.27-4.43C7.56 3.99 9.54 2 12 2a4.435 4.435 0 0 1 .16 8.87m-5 3.69c-2.42 1.62-2.42 4.26 0 5.87c2.75 1.84 7.26 1.84 10.01 0c2.42-1.62 2.42-4.26 0-5.87c-2.74-1.83-7.25-1.83-10.01 0"
+      />
     ),
   },
 ];

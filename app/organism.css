@@ -144,7 +144,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
 }
 .org-rows li + li .org-row { border-top: 1px solid var(--color-divider); }
 .org-row > span { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-.org-row b { font-size: var(--text-body); line-height: 1.65rem; font-weight: 400; }
+.org-row b { font-size: var(--text-body); line-height: 1.15; font-weight: 400; }
 .org-row > span > span { font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
 .org-row > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
 
@@ -214,7 +214,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
 }
 
 /* The phone's round controls on the desktop too, rather than a text back link. Back leaves the sheet
-   for the nav pill's line (3.625rem tall at 2rem, app/tabbar.css), at the top left, fixed with the
+   for the nav pill's line (3.25rem tall at 2rem, app/tabbar.css), at the top left, fixed with the
    nav. Save and share stay in the sheet, at the top right of its content, lined up with its columns,
    and the content starts below them. B4, the claim, action and documentary pages, and the pages
    under Saved. */
@@ -223,7 +223,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
   .org > .org-top > a {
     position: fixed;
     z-index: 2;
-    top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2);
+    top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 2.75rem) / 2);
     left: 2.5rem;
   }
   .org > .org-top > .org-actions {

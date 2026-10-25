@@ -46,7 +46,7 @@ export const SUGGESTIONS: Suggestion[] = [
   {
     id: "grumsin",
     name: "Grumsin beech forest loop",
-    meta: "10.2 km loop, 3 h at a looking pace",
+    meta: "10.2 km loop · 3 h",
     place: "10.2 km loop in Grumsin, Brandenburg",
     spots: 5,
     lit: [1, 2, 3, 5],
@@ -63,7 +63,7 @@ export const SUGGESTIONS: Suggestion[] = [
   {
     id: "linum",
     name: "Linum wet meadows loop",
-    meta: "6.3 km loop, 1 h 50 at a looking pace",
+    meta: "6.3 km loop · 1 h 50",
     place: "6.3 km loop in Linum, Brandenburg",
     spots: 6,
     lit: [2, 3, 4],
@@ -80,7 +80,7 @@ export const SUGGESTIONS: Suggestion[] = [
   {
     id: "tegel",
     name: "Tegeler Fließ valley path",
-    meta: "4.9 km, point to point, 1 h 25 at a looking pace",
+    meta: "4.9 km one way · 1 h 25",
     place: "4.9 km in Reinickendorf, Berlin",
     spots: 7,
     lit: [1, 2, 3, 5, 6],
@@ -97,7 +97,7 @@ export const SUGGESTIONS: Suggestion[] = [
   {
     id: "tempelhof",
     name: "Tempelhofer Feld loop",
-    meta: "5.7 km loop, 1 h 40 at a looking pace",
+    meta: "5.7 km loop · 1 h 40",
     place: "5.7 km loop in Tempelhof, Berlin",
     spots: 5,
     lit: [1, 2, 3, 4, 5],
@@ -125,8 +125,6 @@ export const ROUTE_POINTS: MapPoint[] = SUGGESTIONS.map((s) => ({
 
 export const suggestionById = (id: string) => SUGGESTIONS.find((s) => s.id === id);
 
-/** How many routes the region holds in all, for "Show all". */
-export const ROUTE_TOTAL = 48;
 
 /** "4 of 6 spots in season in September" */
 export const inSeasonLine = (s: Suggestion) => `${s.lit.length} of ${s.spots} spots in season in ${MONTH}`;

@@ -55,7 +55,7 @@ const LABELS: [string, number, number, "nature" | "water"][] = [
 
 const DESKTOP = "(min-width: 64rem)";
 // the tablet step where the suggestions dock their sheet beside the map (app/tablet.css)
-const TABLET = "(min-width: 48rem) and (max-width: 63.99rem) and (min-height: 36rem)";
+const TABLET = "(min-width: 35.75rem) and (max-width: 63.99rem) and (min-height: 36rem)";
 // The region is fitted to whatever space the sheet leaves free rather than shown at one fixed
 // zoom, so a wide window frames Berlin and Brandenburg instead of half of northern Europe.
 // REGION_ZOOM_MIN is the zoom the phone has always used: the band above a sheet that tall cannot
@@ -113,7 +113,14 @@ type Pin = MapPoint & { x: number; y: number; free: boolean };
 type Centre = ((lat: number, lon: number, zoom: number, animate: boolean) => void) | null;
 
 /** What a screen can ask the map to do: put a point in the middle of the space it has. */
-export type MapHandle = { centre: (lat: number, lon: number, zoom: number, animate: boolean) => void };
+export type MapHandle = {
+  centre: (lat: number, lon: number, zoom: number, animate: boolean) => void;
+  /** fly to these places, as close as `cap` allows, in the space the sheet leaves free */
+  show: (to: { lat: number; lon: number }[], cap: number) => void;
+  /** fly back to the screen's own view, and let a resize refit it again */
+  reset: () => void;
+};
+type Fly = { show: MapHandle["show"]; reset: MapHandle["reset"] } | null;
 
 const token = (name: string) =>
   getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -153,10 +160,7 @@ function freeBox(host: HTMLElement, sheet: HTMLElement | null, band: HTMLElement
   // sit under the sheet and still count as free
   if (!desktop) return { x: 0, y: top, w, h: Math.max(1, sheet.offsetTop - top) };
   const right = sheet.offsetLeft + sheet.offsetWidth;
-  // the map's own controls down the right edge are not free either
-  const tools = host.parentElement?.querySelector<HTMLElement>(".ms-tools");
-  const end = tools && tools.offsetWidth ? tools.offsetLeft - 8 : w;
-  return { x: right, y: top, w: Math.max(1, end - right), h: Math.max(1, h - top) };
+  return { x: right, y: top, w: Math.max(1, w - right), h: Math.max(1, h - top) };
 }
 
 // half a pin, so one is hidden before it slides under the edge of the glass
@@ -181,6 +185,8 @@ export default function RegionMap({
   mapLabel = "Map of Berlin and Brandenburg",
   behind = false,
   hot,
+  current,
+  focus,
   ref,
 }: {
   className?: string;
@@ -202,6 +208,10 @@ export default function RegionMap({
   behind?: boolean;
   /** the route whose card is under the pointer or focus in the list: its label on the map lightens */
   hot?: string;
+  /** the spot marker the screen is showing, by point id: drawn larger, with a wider halo */
+  current?: string;
+  /** where the map opens instead of its fit, read once when the map is built: the walk's spot */
+  focus?: { lat: number; lon: number; zoom: number };
   /** a screen holds this to move the map from a control of its own */
   ref?: React.Ref<MapHandle>;
 }) {
@@ -215,7 +225,21 @@ export default function RegionMap({
   // set by the tab stop effect below, called again once Leaflet has made the map focusable
   const tabStopRef = useRef<() => void>(() => {});
   // read at the moment it is called, so the handle survives the map being rebuilt
-  useImperativeHandle(ref, () => ({ centre: (...args) => centreRef.current?.(...args) }), []);
+  const flyRef = useRef<Fly>(null);
+  // read when the map is built, not a dependency: a new focus moves the map through `centre` instead
+  const focusRef = useRef(focus);
+  useLayoutEffect(() => {
+    focusRef.current = focus;
+  });
+  useImperativeHandle(
+    ref,
+    () => ({
+      centre: (...args) => centreRef.current?.(...args),
+      show: (...args) => flyRef.current?.show(...args),
+      reset: () => flyRef.current?.reset(),
+    }),
+    [],
+  );
 
   useEffect(() => {
     let live = true;
@@ -393,10 +417,10 @@ export default function RegionMap({
       };
 
       const wide = matchMedia(DESKTOP);
-      // on a tablet the suggestions dock their sheet to the left (app/tablet.css), so the free
+      // on a tablet the suggestions and the route page dock their sheet to the left (app/tablet.css), so the free
       // space is beside it, as on the desktop; every other screen keeps the phone's
       const tablet = matchMedia(TABLET);
-      const docked = !!host.closest(".sg");
+      const docked = !!host.closest(".sg, .b1");
       const side = () => wide.matches || (tablet.matches && docked);
       // what covers the map: the sheet on the phone and the tablet, the panel it moves into on the desktop
       // A1 has no sheet or panel: its words stand in the middle of the map, so the whole map is free
@@ -484,9 +508,9 @@ export default function RegionMap({
       // the welcome card has no sheet over it, so the whole region fits inside it
       const cluster = L.latLngBounds([...pts.map((pt) => [pt.lat, pt.lon] as [number, number]), ...(line ?? [])]);
       // the zoom at which every point fits the box, on whichever axis runs out first
-      const zoomForBox = (box: { w: number; h: number }) => {
-        const nw = map.project(cluster.getNorthWest(), 0);
-        const se = map.project(cluster.getSouthEast(), 0);
+      const zoomForBox = (box: { w: number; h: number }, bounds = cluster, cap = maxZoom) => {
+        const nw = map.project(bounds.getNorthWest(), 0);
+        const se = map.project(bounds.getSouthEast(), 0);
         const w = Math.max(80, box.w - REGION_PAD * 2);
         const h = Math.max(80, box.h - REGION_PAD * 2);
         // down to the zoomSnap step, so the view is the same on every reload
@@ -494,19 +518,30 @@ export default function RegionMap({
         // the same line has to be smaller than any real span, not a whole pixel
         const span = (a: number, b: number) => Math.max(1e-9, b - a);
         const z = Math.log2(Math.min(w / span(nw.x, se.x), h / span(nw.y, se.y)));
-        return Math.min(maxZoom, Math.floor(z * 4) / 4);
+        return Math.min(cap, Math.floor(z * 4) / 4);
+      };
+      const fitView = () => {
+        const box = freeBox(host, sheetEl(), bandEl(), side());
+        const z = zoomForBox(box);
+        // a box that cannot hold the whole region keeps the anchor the phone was drawn around,
+        // rather than centring on clusters half of which would be off the band anyway. A
+        // screen that brought its own points has no such anchor: they are all there is to show.
+        const anchor = points || z >= REGION_ZOOM_MIN ? cluster.getCenter() : L.latLng(REGION[0], REGION[1]);
+        return { lat: anchor.lat, lon: anchor.lng, zoom: points ? z : Math.max(REGION_ZOOM_MIN, z) };
       };
       const fit = still
         ? () => map.fitBounds(cluster, { animate: false, padding: L.point(28, 28) })
         : () => {
-            const box = freeBox(host, sheetEl(), bandEl(), side());
-            const z = zoomForBox(box);
-            // a box that cannot hold the whole region keeps the anchor the phone was drawn around,
-            // rather than centring on clusters half of which would be off the band anyway. A
-            // screen that brought its own points has no such anchor: they are all there is to show.
-            const anchor = points || z >= REGION_ZOOM_MIN ? cluster.getCenter() : L.latLng(REGION[0], REGION[1]);
-            centreOn(anchor.lat, anchor.lng, points ? z : Math.max(REGION_ZOOM_MIN, z), false);
+            const v = fitView();
+            centreOn(v.lat, v.lon, v.zoom, false);
           };
+      // a flight rather than a jump, centred in the free space like centreOn; reduced motion jumps
+      const flyTo = (lat: number, lon: number, zoom: number) => {
+        if (calm) return centreOn(lat, lon, zoom, false);
+        const box = freeBox(host, sheetEl(), bandEl(), side());
+        const off = L.point(host.offsetWidth / 2 - (box.x + box.w / 2), host.offsetHeight / 2 - (box.y + box.h / 2));
+        map.flyTo(map.unproject(map.project([lat, lon], zoom).add(off), zoom), zoom, { duration: 0.9 });
+      };
 
       map.on("move zoomend", placePins);
       // drawn: the map fades up from here (app/transitions.css), not from when the page mounted
@@ -531,8 +566,32 @@ export default function RegionMap({
       };
 
       refit();
+      // a screen that opens on one place starts there, and the map is then the person's to move
+      const f = focusRef.current;
+      if (f && !still) {
+        taken = true;
+        centreOn(f.lat, f.lon, f.zoom, false);
+      }
       showLabels();
       placePins();
+
+      flyRef.current = still
+        ? null
+        : {
+            show: (to, cap) => {
+              if (!to.length) return;
+              taken = true;
+              const bounds = L.latLngBounds(to.map((t) => [t.lat, t.lon] as [number, number]));
+              const c = bounds.getCenter();
+              flyTo(c.lat, c.lng, zoomForBox(freeBox(host, sheetEl(), bandEl(), side()), bounds, cap));
+            },
+            reset: () => {
+              taken = false;
+              const v = fitView();
+              flyTo(v.lat, v.lon, v.zoom);
+              fitted = boxKey();
+            },
+          };
 
       const onResize = () => {
         map.invalidateSize({ animate: false });
@@ -553,6 +612,7 @@ export default function RegionMap({
       mapRef.current?.remove();
       mapRef.current = null;
       centreRef.current = null;
+      flyRef.current = null;
     };
   }, [still, fixedZoom, points, maxZoom, line, detail, mapLabel]);
 
@@ -634,7 +694,8 @@ export default function RegionMap({
                 </span>
               </>
             );
-            const cls = `map-spot${pin.left ? " is-left" : ""}${pin.current ? " is-current" : ""}${pin.out ? " is-out" : ""}`;
+            const now = pin.current || pin.id === current;
+            const cls = `map-spot${pin.left ? " is-left" : ""}${now ? " is-current" : ""}${pin.out ? " is-out" : ""}`;
             return pin.href ? (
               <Link key={pin.id} href={pin.href} className={cls} style={style} aria-label={`Spot ${pin.n}, ${pin.label}`}>
                 {body}
@@ -649,8 +710,9 @@ export default function RegionMap({
             return (
               <div key={pin.id} className="map-start" style={style} role="img" aria-label={pin.label}>
                 <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M6 21V4" />
-                  <path d="M6 4h11l-2 4 2 4H6" />
+                  {/* centred on its box, nudged half a unit right since the pole carries the left edge */}
+                  <path d="M7 20.5V3.5" />
+                  <path d="M7 3.5h11l-2 4 2 4H7" />
                 </svg>
                 <span className="map-start-label" aria-hidden="true">
                   {pin.startText ?? "Start and finish"}
@@ -688,11 +750,14 @@ export default function RegionMap({
             );
           }
 
+          // the start sheet's clusters: the welcome route's glow dot, no count to read (the count
+          // stays in its label)
+          const glow = fixedZoom && pin.count !== undefined;
           return (
             <button
               key={pin.id}
               type="button"
-              className={`a1-pin glass glass-pin${pin.count === undefined ? " a1-pin-place" : ""}${pin.current ? " is-current" : ""}`}
+              className={glow ? "a1-pin a1-pin-glow" : `a1-pin glass glass-pin${pin.count === undefined ? " a1-pin-place" : ""}${pin.current ? " is-current" : ""}`}
               aria-current={pin.current ? "true" : undefined}
               style={style}
               aria-label={fixedZoom ? pin.label.replace(", zoom in", "") : pin.label}
@@ -705,7 +770,7 @@ export default function RegionMap({
                 )
               }
             >
-              {pin.count ?? (
+              {glow ? <span className="glow-dot" aria-hidden="true" /> : pin.count !== undefined ? <span className="a1-pin-num">{pin.count}</span> : (
                 <svg width="1rem" height="1rem" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 19c0-9 5-14 15-14 0 10-5 15-14 15" />
                   <path d="M5 19 13 11" />

@@ -5,21 +5,25 @@
 
 /* ── the suggestion card ───────────────────────────────────────────────────────────────────── */
 
+/* a row: the square photograph on the left, the text on the right, Save at the top right; what is
+   in season runs the full width under both */
 .sug {
   position: relative;
   flex-shrink: 0;
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.35rem;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  column-gap: 1rem;
+  row-gap: 0.75rem;
   border-radius: var(--radius-inner);
   background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
   border: 0.5px solid var(--color-inner-edge);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
 }
 .sug-photo {
+  align-self: start;
   width: 100%;
-  height: 7.75rem;
+  aspect-ratio: 1;
   display: block;
   box-sizing: border-box;
   border-radius: var(--radius-tile);
@@ -28,15 +32,38 @@
     linear-gradient(170deg, var(--color-field-mid) 0%, var(--color-field-shade) 100%);
   border: 0.5px solid var(--color-inner-edge);
 }
-.sug-head { display: flex; flex-direction: column; gap: 0.3375rem; }
+/* the photographs: one on show, the rest a swipe away (scroll snap) at every size */
+.sug-media { position: relative; min-width: 0; align-self: start; }
+.sug-track {
+  display: flex;
+  overflow: hidden;
+  border-radius: var(--radius-tile);
+  cursor: pointer;
+}
+.sug-track .sug-photo { flex: 0 0 100%; }
+.sug-dots { display: none; }
+
+/* the name and its line sit under the Save circles, the full width of the column */
+.sug-head { display: flex; flex-direction: column; gap: 0.3375rem; padding-top: calc(2.25rem + 0.5rem); }
 .sug-name {
   margin: 0;
   font-family: var(--font-text);
-  font-size: 1.35rem;
-  line-height: 1.8rem;
+  font-size: var(--text-title);
+  line-height: var(--text-title--line-height);
   font-weight: 400;
 }
+/* the spot count opens the pills row, on its left, before the organism pills */
+.sug-pills-row { display: flex; align-items: flex-end; justify-content: flex-start; gap: 0.25rem; }
+.sug-spots-photo { display: none; }
+@media (max-width: 35.74rem) { .sug-spots-photo { display: inline-flex; } }
+.sug-spots {
+  height: 2rem;
+  margin: 0;
+  border-color: rgb(222 224 222 / 0.39);
+}
 .sug-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+/* the shape icon, loop or one way, sits on the line at the type's own size, in its colour */
+.sug-loop { display: inline-block; width: 1.05em; height: 1.05em; vertical-align: -0.17em; }
 
 /* the name opens the route: its link covers the card, Save sits above it */
 .sug-open { color: inherit; text-decoration: none; }
@@ -48,10 +75,10 @@
 .sug-save {
   position: absolute;
   z-index: 1;
-  top: 1.75rem;
-  right: 1.75rem;
-  width: 2.75rem;
-  height: 2.75rem;
+  top: 1rem;
+  right: 1rem;
+  width: 2.25rem;
+  height: 2.25rem;
   padding: 0;
   display: flex;
   align-items: center;
@@ -62,7 +89,107 @@
   transition: transform 160ms var(--ease-out);
 }
 .sug-save:active { transform: scale(0.94); }
+/* on the phone the card's padding is a quarter less, the save buttons the same distance in from the top and side */
+@media (max-width: 35.74rem) {
+  .sug { padding: 0.75rem; grid-template-columns: minmax(0, 1fr); }
+  .sug-save { top: 1.5rem; right: 1.5rem; z-index: 4; }
+
+  /* a big photograph, the full card width, that swipes */
+  .sug-media { grid-area: 1 / 1; }
+  .sug-track {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 5 / 4;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .sug-track::-webkit-scrollbar { display: none; }
+  .sug-track .sug-photo {
+    height: 100%;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
+    scroll-snap-align: start;
+    user-select: none;
+  }
+  /* a scrim under the name, so white text holds 4.5:1 on any photograph */
+  .sug-media::after {
+    content: "";
+    position: absolute;
+    inset: 40% 0 0;
+    z-index: 2;
+    border-radius: 0 0 var(--radius-tile) var(--radius-tile);
+    background: linear-gradient(to top, rgb(6 18 9 / 0.78) 0%, rgb(6 18 9 / 0.45) 50%, transparent 100%);
+    pointer-events: none;
+  }
+
+  /* the name, distance and time on the photograph's bottom left */
+  .sug-head {
+    grid-area: 1 / 1;
+    align-self: end;
+    justify-self: start;
+    z-index: 3;
+    max-width: 100%;
+    padding: 0 1rem 1rem;
+    text-align: left;
+    pointer-events: none;
+    color: var(--color-on-ground);
+    text-shadow: 0 1px 0.5rem rgb(6 18 9 / 0.5);
+  }
+  .sug-name { font-size: var(--text-h2); line-height: 1.15; }
+  /* the meta line shares its row with the photo dots on the right */
+  .sug-meta { color: rgb(255 255 255 / 0.67); font-weight: 400; }
+  /* the Spots pill moves into the photograph, under the distance and time */
+  .sug-head { align-items: flex-start; gap: calc(0.3375rem - 3px); }
+  .sug-spots-photo { margin-top: 0.25rem; }
+  .sug-spots-row { display: none; }
+  .sug-open { pointer-events: auto; }
+  /* the photograph opens the route here; the link stays on the name and does not cover the swipe */
+  .sug-open::after { content: none; }
+
+  /* where the photographs are: small tight dots at the bottom right, on the meta line, each a button */
+  .sug-dots {
+    position: absolute;
+    z-index: 3;
+    right: 0.75rem;
+    /* the visible dot sits as far from the bottom edge as from the right (0.9375rem): the button is
+       1.5rem tall round a 0.375rem dot, 0.75rem wide */
+    bottom: 0.375rem;
+    display: flex;
+  }
+  .sug-dot {
+    width: 0.75rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .sug-dot::before {
+    content: "";
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 0.5);
+    transition: background-color 200ms var(--ease-out), transform 200ms var(--ease-out);
+  }
+  .sug-dot[aria-current="true"]::before { background: var(--color-on-ground); transform: scale(1.25); }
+
+  /* the pills in one line under the photograph, the spot count on the right */
+  .sug-pills-row { align-items: center; }
+  .sug-pills-row .pills { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .sug-spots { flex-shrink: 0; }
+}
+/* the circle is 36, the tap area stays 44 */
+.sug-save:not(.sug-dl)::before { content: ""; position: absolute; inset: -0.25rem; border-radius: inherit; }
 .sug-save svg { transition: transform 200ms var(--ease-out); }
+/* the bookmark draws at 1.2rem, but in a 1.25rem box: 8px in from each side of the 36px circle, a whole
+   pixel, so Safari cannot snap it off centre; scale does not snap */
+.sug-save:not(.sug-dl) svg { scale: 0.96; }
 /* inside a glass card it would turn inner glass; it sits on a photograph, so it keeps the full
    recipe from glass.css, its blur reaching only the photograph under it */
 .sug-save.glass,
@@ -73,40 +200,21 @@
     var(--color-glass-fill);
   backdrop-filter: blur(1.875rem) saturate(1.4);
   border: 0.5px solid var(--color-glass-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.11), inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35);
+  /* small circles: an even edge, no top highlight or 150 degree rim, which read as off centre */
+  box-shadow: 0 0.25rem 0.75rem rgb(6 18 9 / 0.25);
+}
+.sug-save.glass::after { content: none; }
+/* downloaded: a second frost left of the bookmark, shown once saved, not a control */
+.sug-save.sug-dl {
+  right: calc(1rem + 2.25rem + 0.25rem);
+  cursor: default;
+  animation: sheet-in var(--enter) var(--ease-enter) backwards;
 }
 .sug-save[aria-pressed="true"] svg { animation: save-pop 280ms var(--ease-out); }
 @keyframes save-pop {
   from { transform: scale(0.7); }
   to { transform: scale(1); }
 }
-/* the confirmation sits on the photograph beside the bookmark, where the tap was, not at the card's
-   foot below the fold */
-.sug-saved {
-  position: absolute;
-  z-index: 1;
-  top: 2.125rem;
-  left: 1.75rem;
-  margin: 0;
-  width: max-content;
-  max-width: calc(100% - 6.75rem);
-  box-sizing: border-box;
-  min-height: 2rem;
-  padding: 0.3125rem 0.75rem 0.3125rem 0.625rem;
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  border-radius: var(--radius-pill);
-  background: var(--color-glass-solid);
-  border: 0.5px solid var(--color-inner-edge);
-  color: var(--color-on-ground);
-  font-size: var(--text-caption);
-  line-height: 1.25;
-  font-weight: 400;
-}
-.sug-saved svg { flex-shrink: 0; color: var(--color-mist); }
-.sug-saved:empty { display: none; }
-.sug-saved:not(:empty) { animation: sheet-in var(--enter) var(--ease-enter) backwards; }
 
 /* the spots in season: numbered dots, the lit ones filled with mist */
 .dots { display: flex; flex-wrap: wrap; align-items: center; gap: 0.84375rem; }
@@ -146,14 +254,13 @@
 .dots-line { font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); font-weight: 400; }
 
 /* what is in season along it, each with its group first */
-.sug-season { display: flex; flex-direction: column; gap: 0.675rem; }
+.sug-season { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 0.675rem; }
 .sug-season-label { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .sug-orgs { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.84375rem; }
 /* a built route's card ends on View route, a button inside a card, so it hugs its label at every size */
-.sug .sug-view { align-self: flex-start; width: auto; margin-top: 0.5rem; }
 .sug-orgs li { display: flex; align-items: center; gap: 0.75rem; }
 .sug-org { min-width: 0; display: flex; flex-direction: column; gap: 0.16875rem; }
-.sug-org-name { font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
+.sug-org-name { font-size: var(--text-body-sm); line-height: 1.15; font-weight: 400; }
 .sug-org-note { font-weight: 300; color: var(--color-on-ground-soft); }
 .sug-org-last { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 
@@ -187,19 +294,36 @@
    Opened, it stops under the search field, the only thing left over the map. */
 .sg { --sheet-top: max(min(17rem, 100dvh - 27rem), var(--top-chrome) + 4.5rem); --sheet-open: calc(var(--top-chrome) + 4.5rem); }
 /* the switch is the sheet's first row; on the phone it clears the grab handle above it */
-@media (max-width: 47.99rem), (max-width: 63.99rem) and (max-height: 35.99rem) {
-  .sg .ms-sheet > .sg-switch { margin-top: 0.75rem; }
+@media (max-width: 35.74rem), (max-width: 63.99rem) and (max-height: 35.99rem) {
+  /* from the handle's foot to the switch is the sheet's 1.5rem side padding */
 }
-.sg .ms-sheet { gap: 1.6875rem; }
+.sg .ms-sheet { --sg-gap: 1.6875rem; gap: var(--sg-gap); }
 .sg-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
 /* the heading shrinks first; "Show on map" only drops under it when the text is very large */
 .sg-head > div { flex: 1 1 11rem; min-width: 0; }
 /* the suggestions title takes the h2 step at every size, as a route's own title does on B1; it stays the page's h1 */
 .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
-.sg-scope { margin: 0.675rem 0 0; font-size: var(--text-body-sm); line-height: 1.575rem; font-weight: 400; }
+.sg-scope { margin: 0 0 0.675rem; font-size: var(--text-body-sm); line-height: 1.15; font-weight: 400; }
+/* phone: the switch, the title and the place a step smaller, so the title and its map button share a line */
+@media (max-width: 35.74rem) {
+  .sg .seg-opt { font-size: 1.025rem; }
+  /* the search circle stands in from the left edge as far as it stands down from the top */
+  .sg .ms-bar { left: 0.65rem; }
+  .sg-head { padding-left: 0.8rem; }
+  .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
+  .sg-scope { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); }
+  /* the map shows above the sheet already: no map button, so the title keeps one line */
+  .sg .sg-toggle { display: none; }
+  .sg .ms-title { white-space: nowrap; }
+}
 /* the pin before the region, its drawn edge on the title's left edge and its middle on the words' */
 .sg-scope { display: flex; align-items: center; gap: 0.125rem; }
-.sg-pin { position: relative; display: flex; flex-shrink: 0; margin: 0 0 0.094rem -0.0615rem; }
+/* the pin as tall as the capitals, and the pin with its ring centred on them: the round head rises
+   a little over the cap line, as round letters do, and the ring sits as far under the baseline.
+   In em, so it follows the words at every size (the drawing fills 0.754 of its box, the capitals
+   stand 0.576em) */
+.sg-pin { --pin: 0.764em; position: relative; top: -0.087em; display: flex; flex-shrink: 0; margin: 0 0 0 -0.0615rem; }
+.sg-pin-icon { width: var(--pin); height: var(--pin); }
 /* the pin spins in once the sheet is up, calmly: a full turn about its upright axis, like a coin on
    its edge, fading in through the first third and slowing to rest with no overshoot */
 .sg-pin-icon { position: relative; animation: pin-roll-in 900ms var(--ease-out) 240ms both; }
@@ -207,14 +331,15 @@
    18 box), drawn behind the pin so the pin stands in it; it opens out as the pin comes to rest */
 .sg-pin-ring {
   position: absolute;
-  left: calc(0.5625rem - 0.375rem);
-  top: calc(0.975rem - 0.15625rem);
-  width: 0.75rem;
-  height: 0.3125rem;
+  left: 0;
+  top: 0;
+  width: var(--pin);
+  height: var(--pin);
+  transform-origin: 50% 87.1%;
   overflow: visible;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1;
+  stroke-width: 1.33;
   stroke-opacity: 0.7;
   animation: pin-ring-in 360ms var(--ease-out) 780ms both;
 }
@@ -231,7 +356,9 @@
   .sg-pin-icon,
   .sg-pin-ring { animation: fade-in var(--enter) var(--ease-enter) 120ms backwards; }
 }
-.sg .ms-lead { margin-top: 0.16875rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; }
+.sg .ms-lead { margin-top: 0.16875rem; font-size: calc(var(--text-caption) + 0.25rem); line-height: 1.15; font-weight: 300; }
+/* the counts in the medium weight */
+.sg .ms-lead b { font-weight: 500; }
 
 /* Show on map / Show as a list: inner glass on the sheet, the phone only */
 .sg-toggle {
@@ -444,7 +571,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   border: 0.5px solid var(--color-inner-edge);
 }
 .saved-row > span:not(.saved-thumb) { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-.saved-row b { font-size: 1.275rem; line-height: 1.65rem; font-weight: 400; }
+.saved-row b { font-size: 1.275rem; line-height: 1.15; font-weight: 400; }
 .saved-row small { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .saved-row em { display: flex; align-items: center; gap: 0.375rem; font-style: normal; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-mist); }
 .saved-row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
@@ -455,7 +582,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   background: linear-gradient(160deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
   border: 0.5px solid var(--color-inner-edge);
   font-size: var(--text-body-sm);
-  line-height: 1.65rem;
+  line-height: 1.15;
   font-weight: 300;
   color: var(--color-on-ground-soft);
 }
@@ -469,6 +596,9 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   z-index: 3;
 }
 .a8 .saved-sheet { margin-top: 8.25rem; min-height: calc(100% - 8.25rem); }
+/* the title scales with the sheet so the route name always fits on one line, up to 2.4rem */
+.a8 .saved-sheet { container-type: inline-size; }
+.a8 .saved-sheet h1 { font-size: min(2.4rem, 8.6cqi); line-height: 1.25; text-align: center; }
 .saved-sheet h1 em {
   font-style: normal;
   background-image: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-primary) 100%);
@@ -500,15 +630,21 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 .a8-filter:active { transform: scale(0.97); }
 /* nothing recorded: full white for contrast, the dashed edge says it is empty */
 .a8-filter.is-none { border-style: dashed; }
-.a8-filter i { width: 0.5rem; height: 0.5rem; border-radius: var(--radius-pill); }
-/* a picked group takes the lime, as every selected control does; its dot keeps its colour on a ring */
+/* each group by its icon in its own colour, as on the route page's legend */
+.a8-filter .group-icon { transition: color var(--hover-fade) var(--ease-hover); }
+.a8-filter .group-icon.is-plants { color: var(--color-group-plants); }
+.a8-filter .group-icon.is-herbs { color: var(--color-group-herbs); }
+.a8-filter .group-icon.is-mushrooms { color: var(--color-group-mushrooms); }
+.a8-filter .group-icon.is-birds { color: var(--color-group-birds); }
+.a8-filter .group-icon.is-mammals { color: var(--color-group-mammals); }
+/* a picked group takes the lime, as every selected control does, its icon in the label colour */
 .a8-filter[aria-pressed="true"] {
   border-color: transparent;
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
   color: var(--color-on-primary);
   font-weight: 500;
 }
-.a8-filter[aria-pressed="true"] i { box-shadow: 0 0 0 1.5px var(--color-on-primary); }
+.a8-filter[aria-pressed="true"] .group-icon { color: var(--color-on-primary); }
 .a8-clear {
   align-self: flex-start;
   min-height: 2.75rem;
@@ -529,18 +665,62 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 @media (hover: hover) and (pointer: fine) {
   .a8-filter:not([aria-pressed="true"]):hover { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0.08); }
 }
-.a8-group-head { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem; }
+.a8-group-head { margin-top: 2.375rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 0.25rem 0.75rem; padding: 0 0.625rem; }
 .a8-group-head h2 { margin: 0; }
-.a8-group-head span { font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
-.saved-sheet .a8-group-head h2 { margin: 0; }
-.a8-group { margin-top: 0.75rem; padding: 0.125rem 1.25rem; }
+.saved-sheet .a8-group-head h2 { margin: 0; font-size: 2rem; line-height: 1.15; }
+/* the pill stands on the heading's baseline, not its line box: same gap to the card as the letters */
+.a8-group-head .tag { margin-bottom: 0.625rem; }
+/* under 430 px: the group heads step down a size */
+@media (max-width: 26.86rem) {
+  .saved-sheet .a8-group-head h2 { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
+  .a8-group-head .tag { margin-bottom: 0.47rem; }
+}
+.a8-group { margin-top: 0.375rem; padding: 0.125rem 1.25rem; }
+/* the organisms list: the same 1.25rem inside the card on every side, so the first group's head starts as
+   far down as its icon stands in; Discover more closes a group after its fourth row */
+.sg-list .a8-group { padding: 1.25rem; }
+/* each group is its own card: its head sits flush with the card's 1.25rem padding */
+.sg-list .sg-org-sec > .sg-org-sec-head { margin-top: 0; }
+/* centred under the group's rows, as wide as its words; the head to the tiles and the tiles to this
+   button take the card's own 1.25rem padding, as above the head and below the button */
+.sg-org-more { margin: 0.25rem auto 0; }
+/* Discover more: the secondary button 20% smaller all round, height, padding and type */
+.btn.sg-org-more {
+  min-height: calc(var(--spacing-button-height) * 0.8);
+  padding: 0.6rem 1.4rem;
+  font-size: calc(var(--text-button-secondary) * 0.8);
+  width: fit-content;
+}
 .a8-rows { margin: 0; padding: 0; list-style: none; }
-.a8-rows li { padding: 0.875rem 0; display: flex; align-items: center; gap: 0.875rem; }
+/* the organisms list: one section per group in the filters' order, headed by the group's icon in its
+   colour, its name, and the species count as an outlined pill on the right */
+.sg-org-sec-head {
+  margin: 1.25rem 0 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-text);
+  font-size: var(--text-title);
+  line-height: var(--text-title--line-height);
+  font-weight: 400;
+}
+/* the group names in the heading face, a step under the h3, plain white at every size */
+.sg-org-sec-head { font-family: var(--font-heading); font-size: var(--text-title); line-height: 1.15; font-weight: 300; }
+.sg-org-name { top: 0; color: var(--color-on-ground); }
+.sg-org-sec-head .is-plants { color: var(--color-group-plants); }
+.sg-org-sec-head .is-herbs { color: var(--color-group-herbs); }
+.sg-org-sec-head .is-mushrooms { color: var(--color-group-mushrooms); }
+.sg-org-sec-head .is-birds { color: var(--color-group-birds); }
+.sg-org-sec-head .is-mammals { color: var(--color-group-mammals); }
+/* the species count is the route cards' Spots pill (.tag.sug-spots), pushed to the right, in the text face */
+/* every "N Species" count pill: one size, text centred on its cap height */
+.tag.sg-org-count { margin-left: auto; font-family: var(--font-text); height: 2.21rem; padding: 0 0.85rem; font-size: 0.87975rem; line-height: 0.87975rem; }
+.a8-rows li { padding: 0.875rem 0; display: flex; align-items: center; gap: 1.05rem; }
 .a8-rows li + li { border-top: 1px solid var(--color-divider); }
 .a8-rows li.is-new { animation: sheet-in var(--enter) var(--ease-enter) backwards; }
 .a8-thumb {
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 5.25rem;
+  height: 5.25rem;
   flex-shrink: 0;
   border-radius: var(--radius-tile);
   border: 0.5px solid var(--color-inner-edge);
@@ -548,9 +728,11 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
     linear-gradient(160deg, var(--a8-tint) 0%, var(--color-field-shade) 110%);
 }
 img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; background: var(--color-field-shade); }
-.a8-rows li > span:last-child { min-width: 0; display: flex; flex-direction: column; gap: 0.1875rem; }
-.a8-rows b { font-size: var(--text-body); line-height: 1.65rem; font-weight: 400; }
-.a8-rows small { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
+.a8-rows li > span:last-child { min-width: 0; display: flex; flex-direction: column; gap: 0; }
+/* the lines set close, 1.1 and no gap between them, so the name and three lines under it fit the 5.25rem
+   thumbnail's height */
+.a8-rows b { font-size: var(--text-body); line-height: 1.15; font-weight: 400; }
+.a8-rows small { font-size: var(--text-caption); line-height: 1.15; font-weight: 300; color: var(--color-on-ground-soft); }
 .a8-group > .saved-empty { margin: 1.18125rem 0; padding: 0; background: none; border: 0; }
 .a8-more { padding: 0.25rem 0 1rem; display: flex; justify-content: center; }
 .a8-more .btn { align-self: auto; width: auto; min-width: 0; }
@@ -562,24 +744,78 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 
 /* ── from 64rem ────────────────────────────────────────────────────────────────────────────── */
 
+@media (min-width: 35.75rem) {
+  .sug { grid-template-columns: 7.5rem minmax(0, 1fr); }
+  /* the name and its line centred on the photograph's height, the card's full width beside it */
+  .sug-head { align-self: center; padding: 0; }
+}
+/* the square photograph swipes too from the tablet up, with its dots centred at its foot */
+@media (min-width: 35.75rem) {
+  .sug-track {
+    aspect-ratio: 1;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    border: 0.5px solid var(--color-inner-edge);
+  }
+  .sug-track::-webkit-scrollbar { display: none; }
+  .sug-track .sug-photo { height: 100%; aspect-ratio: auto; border: 0; border-radius: 0; scroll-snap-align: start; user-select: none; }
+  .sug-dots { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0.25rem; display: flex; justify-content: center; }
+  .sug-dot { width: 0.625rem; height: 1.25rem; padding: 0; border: 0; background: none; display: grid; place-items: center; cursor: pointer; }
+  .sug-dot::before {
+    content: "";
+    width: 0.3125rem;
+    height: 0.3125rem;
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 0.55);
+    box-shadow: 0 0 0.25rem rgb(6 18 9 / 0.6);
+    transition: background-color 200ms var(--ease-out), transform 200ms var(--ease-out);
+  }
+  .sug-dot[aria-current="true"]::before { background: var(--color-on-ground); transform: scale(1.25); }
+}
+/* the header and route card from the tablet up, set on /tweak at 1280 */
+@media (min-width: 35.75rem) {
+  .sg-scope { font-size: 1.2rem; line-height: 1.15; }
+  .sg .ms-title { font-size: 1.65rem; line-height: 1.15; margin: 1.875rem 0 -1rem; }
+  /* the place line and title stand in from the panel edge, in line with the card photographs */
+  .sg-head { margin-left: 0.6vw; }
+  /* the title's negative bottom margin pulls the list up; on Organisms the count line under the title
+     takes that back, plus its own 0.3375rem */
+  .sg .ms-title + .ms-lead { margin-top: calc(1rem + 0.3375rem); }
+  .sug { grid-template-columns: 9.125rem minmax(0, 1fr); padding: 0.5rem; column-gap: 0.9375rem; }
+  .sug-head { position: relative; top: 0.875rem; gap: 0.4375rem; }
+  .sug-name { font-size: 1.375rem; line-height: 1.15; }
+  .sug-meta { font-size: 1.225rem; }
+  .sg-list { gap: 0.5rem; }
+  .sug-save { top: 0.4375rem; right: 0.4375rem; width: 2.0625rem; height: 2.0625rem; }
+  .sug-save svg { width: 1.25rem; height: 1.25rem; }
+}
 @media (min-width: 64rem) {
   /* one panel frame for every Routes screen: it stays in place from the suggestions into search,
      and ends as far above the bottom edge as the nav sits below the top */
-  .ms-panel { inset: 2.5rem auto var(--spacing-nav-top-desktop) 2.5rem; }
+  .ms-panel { inset: 2.5rem auto var(--spacing-nav-top-desktop) 1.5rem; }
+  /* the panel's width, one value per desktop size, shared with the search row */
+  :root { --panel-w: 27.75rem; }
   /* where the search field or B1's back sits over the panel, on the nav pill's line, the panel
      starts under it: both are 3.25rem */
-  .b1 .ms-panel,
-  .ms:has(.ms-search-top) .ms-panel { top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2 + 3.25rem + var(--spacing-control-stack)); }
+  .ms:has(.ms-search-top) .ms-panel { top: calc(var(--spacing-nav-top-desktop) + 3.25rem + var(--spacing-control-stack)); }
+  /* B1's back is 2.75rem, centred on the 3.25rem line: the same control-stack gap under it */
+  .b1 .ms-panel { top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 2.75rem) / 2 + 2.75rem + var(--spacing-control-stack)); }
 
   .sg-toggle,
   .sg-map-note,
   .sg .ms-handle { display: none; }
   /* the search field sits over the panel, outside it, so the sheet starts at the panel's top */
-  .sg .ms-sheet { margin-top: 0; gap: 1.6875rem; }
+  .sg .ms-sheet { margin-top: 0; --sg-gap: 1.9rem; }
+  /* the desktop panel, set on /tweak (the header and card it shares with the tablet are above) */
+  .ms.sg:has(.ms-search-top) .ms-panel { top: 5rem; padding-top: 1.0625rem; }
+  .sg-scope { margin-bottom: 0.4725rem; }
   .sg-list {
     flex: 1 1 auto;
     min-height: 0;
-    margin: 0 -0.5rem;
+    /* the region line to the first card: 1.12rem */
+    margin: calc(1.12rem - 1.35rem) -0.5rem 0;
     padding: 0 0.5rem 0.5rem;
     overflow-y: auto;
     scrollbar-width: none;
@@ -594,14 +830,10 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
     --fade-bottom: 2.5rem;
     mask-image: linear-gradient(to bottom, transparent, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent);
   }
-  /* B1's panel scrolls the same way, so its edges fade the same way */
-  .b1 .ms-sheet {
-    --fade-top: 0rem;
-    --fade-bottom: 2.5rem;
-    mask-image: linear-gradient(to bottom, transparent, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent);
-  }
+  /* B1's panel has no fade: its section chips stay at the top, and a mask there would fade them and
+     stop their backdrop blur, since a masked ancestor becomes the blur's backdrop root */
   @supports (animation-timeline: scroll()) {
-    .sg-list, .b1 .ms-sheet { animation: sg-fade linear both; animation-timeline: scroll(self); }
+    .sg-list { animation: sg-fade linear both; animation-timeline: scroll(self); }
   }
 
   .sr-veil { display: none; }
@@ -622,11 +854,24 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
     border-radius: var(--radius-card);
   }
   .saved-card .btn { align-self: flex-start; }
-  /* the back control sits on the nav pill's line, centred on its 3.625rem height (app/tabbar.css) */
-  .a8-top { top: calc(var(--spacing-nav-top-desktop) + (3.625rem - 3.25rem) / 2); left: 2.5rem; }
+  /* the back control sits on the nav pill's line, centred on its 3.25rem height (app/tabbar.css) */
+  .a8-top { top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 2.75rem) / 2); left: 2.5rem; }
   .a8 .saved-sheet { margin-top: 7.5rem; min-height: 0; }
   .a8-more { justify-content: flex-start; }
   .a8-more .btn { flex-grow: 0; }
+}
+
+/* ── from 90rem (1440 wide), set on /tweak ───────────────────────────────────────────────────── */
+@media (min-width: 90rem) {
+  .ms .ms-panel { padding: 0.85rem; }
+  .ms.sg:has(.ms-search-top) .ms-panel { top: 5rem; padding-top: 1.0625rem; }
+  .sg .ms-title { font-size: 1.525rem; margin: 1.875rem 0 -1rem; }
+  .sug { grid-template-columns: 8.75rem minmax(0, 1fr); column-gap: 0.9375rem; }
+  .sug-head { position: relative; top: 0.875rem; gap: 0.4375rem; }
+  .sug-name { font-size: 1.375rem; }
+  .sug-meta { font-size: 1.225rem; }
+  .sug-save { width: 2.1875rem; height: 2.1875rem; }
+  .sug-save svg { width: 1.1875rem; height: 1.1875rem; }
 }
 
 
@@ -636,7 +881,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   /* no press scale, but the lit veil still fades, shorter: a fade is not movement */
   .map-route { transition: box-shadow 160ms ease, border-color 160ms ease; }
   .sug-save[aria-pressed="true"] svg,
-  .sug-saved:not(:empty),
+  .sug-save.sug-dl,
   .sg.is-map .sg-map-note,
   .sg:not(.is-map) .sg-list,
   .a8-rows li.is-new,
@@ -681,9 +926,11 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   color: var(--color-on-primary);
   font-weight: var(--text-chip-active--font-weight);
 }
+/* the icon in the label's ink: solid, faded as one piece so its overlapping strokes and fills keep one tone */
+.seg-opt[aria-pressed="true"] > svg { color: rgb(from var(--color-on-primary) r g b / 1); opacity: 0.8; }
 .sg .seg-opt { transition: transform 160ms var(--ease-out), background-color var(--hover-fade) var(--ease-hover), color 400ms var(--ease-move); }
 /* each label holds the width of its heavier picked weight, so picking one never nudges the pill */
-.seg-label { display: inline-flex; flex-direction: column; }
+.seg-label { display: inline-flex; flex-direction: column; text-align: start; }
 .seg-label::after {
   content: attr(data-text);
   height: 0;
@@ -702,50 +949,109 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 /* the icons sit as far from the edge and from the ink of their label's first letter as the nav's
    (app/tabbar.css): each icon's own empty margin cancelled, and the room R and O leave before
    their first stroke, measured at 18 */
-.sg .seg-opt:first-of-type > svg { margin: 0 -0.0800rem 0 -0.0350rem; }
-.sg .seg-opt:last-of-type > svg { margin: 0 -0.0663rem 0 -0.0185rem; }
+/* the Routes drawing fills less of its box than Organisms: drawn at 25 so its ink matches Organisms'
+   16.8, its line kept at the 18 icon's weight (x 18/25), the extra box taken back in the margins */
+/* the boxes are cut to the ink (components/Icons.tsx), so these margins only keep the gaps they had */
+.sg .seg-opt:first-of-type > svg { margin: 0 0.0384rem 0 0.0759rem; }
+.sg .seg-opt > svg.seg-routes { stroke-width: 1.07; }
+.sg .seg-opt[aria-pressed="true"] > svg.seg-routes { stroke-width: 1.5; }
+/* the tree is narrower than Routes' loop, so it is drawn at 21 to read as the same size; its line
+   kept at the 18 icon's weight (x 18/21) and the extra box taken back in the margins */
+.sg .seg-opt:last-of-type > svg { margin: 0 0.0711rem 0 0.0667rem; }
 /* the open option's icon gets heavier, its line 40% thicker as on the nav's Map, and the two ends of
    Routes' line fill in */
 .sg .seg-opt > svg,
-.sg .seg-opt > svg g { transition: stroke-width 220ms var(--ease-out); }
-.sg .seg-opt > svg circle { fill: rgb(from currentColor r g b / 0); transition: fill 220ms var(--ease-out), stroke-width 220ms var(--ease-out); }
+.sg .seg-opt > svg g { transition: stroke-width 540ms var(--ease-move); }
+.sg .seg-opt > svg circle { fill: rgb(from currentColor r g b / 0); transition: fill 540ms var(--ease-move), stroke-width 540ms var(--ease-move); }
 .sg .seg-opt[aria-pressed="true"] > svg { stroke-width: 2.1; }
 .sg .seg-opt[aria-pressed="true"] > svg g { stroke-width: 3.64; }
+.sg .seg-opt > svg.seg-orgs g { stroke-width: 2.23; }
+.sg .seg-opt[aria-pressed="true"] > svg.seg-orgs g { stroke-width: 3.12; }
 .sg .seg-opt[aria-pressed="true"] > svg circle { fill: currentColor; }
-/* the switch and, on Organisms, the group filters beside it; on a phone they wrap under it */
-.sg-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 0 0.75rem; }
-/* on a line of their own, indented to start under the Organisms option (--org-x, measured). The line
-   and indent belong to the row whether it is on or not, so while the toggles fade out on the way back
-   to Routes they stay where they were instead of jumping left beside the switch */
-/* The row opens and closes its own height, so the heading and list under it glide down and back
-   up instead of jumping: it grows as the toggles come in, and folds once most have gone. Height,
-   not a transform, since everything under it has to move; the space above it is a margin for the
-   same reason, so it opens with the row. */
+/* the top row, outside the sheet: a search circle, then Routes or Organisms, matching the search
+   field's 3.25rem */
+/* half the usual control gap between the circle, the switch and the filters */
+.sg .ms-bar-row { position: relative; align-items: center; gap: calc(var(--spacing-control-stack) / 2); }
+.sg .ms-bar-row > .seg { position: relative; z-index: 1; flex-shrink: 0; min-height: 3.25rem; align-items: center; }
+/* the options as tall as the tab bar's, 44 inside the 52 pill: the padding gives up the switch's 1px border */
+.sg .ms-bar-row > .seg { padding: calc(0.25rem - 1px); }
+.sg .ms-bar-row > .seg .seg-opt { min-height: 2.75rem; }
+/* the magnifier's drawing sits 0.2px low and right in its box: nudged onto the circle's centre */
+.sg-search > svg { translate: -0.013rem -0.013rem; }
+.sg-search {
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  color: var(--color-on-ground);
+}
+/* Search opened: the circle and the switch slide out to the left and fade, and the field
+   slides in over the whole row from the circle's side, its icon now Back. Each glass part moves on its
+   own (an animated ancestor would switch the frost off). The field's layer stays shown until the
+   field has gone. */
+.sg-search,
+.sg .ms-bar-row > .seg { transition: opacity 360ms var(--ease-move), translate 540ms var(--ease-move); }
+.sg .ms-bar-row.is-searching > .sg-search,
+.sg .ms-bar-row.is-searching > .seg { opacity: 0; translate: 1.5rem 0; pointer-events: none; }
+.sg-find { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; visibility: hidden; transition: visibility 0s 540ms; }
+.sg-find > form { flex: 1 1 auto; }
+.sg-find .field { opacity: 0; translate: -1.5rem 0; transition: opacity 360ms var(--ease-move), translate 540ms var(--ease-move); }
+.is-searching > .sg-find { visibility: visible; transition: visibility 0s; }
+.is-searching > .sg-find .field { opacity: 1; translate: 0 0; }
+/* the field's Back, in the search icon's place: a 44 target round the 20 arrow */
+.field-back {
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0 -0.75rem 0 -0.8125rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-on-ground);
+  cursor: pointer;
+}
+/* on the phone the hint keeps clear of Back instead of taking the search icon into its middle */
+@media (max-width: 35.74rem) {
+  .field:has(> .field-back) .field-hint { inset: 0 calc(1.25rem + 1.1875rem + 0.75rem); }
+  .field:has(> .field-back) .field-hint-search { display: none; }
+}
+/* On Organisms the filters are a row in the sheet, between the heading and the list. The row opens
+   its own height, so the list glides down and back up instead of jumping; while it is closed it also
+   takes back the sheet's gap under it. It stays until the last filter has gone. */
 .sg-groups {
   display: none;
-  flex-basis: 100%;
+  flex-shrink: 0;
+  align-items: center;
   height: 0;
-  margin-top: 0;
-  padding-left: var(--org-x, 0);
-  box-sizing: border-box;
+  margin-bottom: calc(-1 * var(--sg-gap));
   gap: 0.25rem; /* about a third of 0.6875rem, a whole pixel */
-  /* held until the row has folded */
   transition:
-    display 480ms allow-discrete,
-    height 300ms var(--ease-move) 180ms,
-    margin-top 300ms var(--ease-move) 180ms;
+    display 660ms allow-discrete,
+    height 540ms var(--ease-move) 120ms,
+    margin-bottom 540ms var(--ease-move) 120ms;
 }
 .sg-groups.is-on {
   display: flex;
   height: 2.125rem;
-  margin-top: 0.5rem;
-  transition: display 0ms allow-discrete, height 340ms var(--ease-move), margin-top 340ms var(--ease-move);
+  margin-bottom: 0;
+  transition: display 0ms allow-discrete, height 540ms var(--ease-move), margin-bottom 540ms var(--ease-move);
 }
-@starting-style { .sg-groups.is-on { height: 0; margin-top: 0; } }
-/* each toggle fades and grows in on its own, never its row (the toggles are glass, and animating
-   anything above glass switches the frost off): one after another from the left, drifting a touch to
-   the right as they come, and out again the other way, from the right. --d is each one's beat, and
-   only the coming and going wait for it, never a hover or a press */
+@starting-style { .sg-groups.is-on { height: 0; margin-bottom: calc(-1 * var(--sg-gap)); } }
+/* the filters stand 0.975rem over the list, a touch under what the eye reads between the heading's baseline and the
+   first route card */
+.sg-groups.is-on { margin-bottom: calc(0.975rem - var(--sg-gap)); }
+/* each toggle slides out on its own from the first one's place to its own, never its row (the toggles
+   are glass, and animating anything above glass switches the frost off): one after another from the
+   left, and back in again the other way, the last first. --d is each one's beat, and only the coming
+   and going wait for it, never a hover or a press */
 .sg-group {
   position: relative;
   /* 3rem less 30%, rounded to 34 so every edge lands on a whole pixel */
@@ -758,36 +1064,43 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   border-radius: var(--radius-pill);
   cursor: pointer;
   --d: 0ms;
-  --in: 300ms;
+  --in: 540ms;
   opacity: 0;
-  scale: 0.9;
-  translate: -0.375rem 0;
+  /* stacked on the first filter's place, each fans out to its own */
+  --i: 1;
+  translate: calc(-1 * (var(--i) - 1) * 2.375rem) 0;
   transition:
-    opacity var(--in) var(--ease-out) var(--d),
-    scale var(--in) var(--ease-out) var(--d),
-    translate var(--in) var(--ease-out) var(--d),
+    opacity var(--in) var(--ease-move) var(--d),
+    translate var(--in) var(--ease-move) var(--d),
     transform 160ms var(--ease-out),
     background-color var(--hover-fade) var(--ease-hover),
     box-shadow var(--hover-fade) var(--ease-hover);
 }
-.sg-groups.is-on .sg-group { opacity: 1; scale: 1; translate: 0 0; }
+.sg-groups.is-on .sg-group { opacity: 1; translate: 0 0; }
+.sg-group:nth-child(2) { --i: 2; }
+.sg-group:nth-child(3) { --i: 3; }
+.sg-group:nth-child(4) { --i: 4; }
+.sg-group:nth-child(5) { --i: 5; }
+.sg-group:nth-child(6) { --i: 6; }
 /* and out again, the dimmed ones too: the site-wide 45% for a disabled control would otherwise hold
    them there until the row is gone, and they would vanish instead of fading with the rest */
-.sg-groups:not(.is-on) .sg-group { opacity: 0; scale: 0.9; translate: -0.375rem 0; --in: 200ms; }
+.sg-groups:not(.is-on) .sg-group { opacity: 0; translate: calc(-1 * (var(--i) - 1) * 2.375rem) 0; --in: 440ms; }
 @starting-style {
   /* the dimmed ones as well: their own 40% rule, further down and as specific, would otherwise win
      here too and skip their fade, so this one is a step more specific */
   .sg-groups.is-on .sg-group,
-  .sg-groups.is-on .sg-group.sg-group[aria-disabled="true"] { opacity: 0; scale: 0.9; translate: -0.375rem 0; }
+  .sg-groups.is-on .sg-group.sg-group[aria-disabled="true"] { opacity: 0; translate: calc(-1 * (var(--i) - 1) * 2.375rem) 0; }
 }
 .sg-groups.is-on .sg-group:nth-child(2) { --d: 60ms; }
 .sg-groups.is-on .sg-group:nth-child(3) { --d: 120ms; }
 .sg-groups.is-on .sg-group:nth-child(4) { --d: 180ms; }
 .sg-groups.is-on .sg-group:nth-child(5) { --d: 240ms; }
-.sg-groups:not(.is-on) .sg-group:nth-child(4) { --d: 50ms; }
-.sg-groups:not(.is-on) .sg-group:nth-child(3) { --d: 100ms; }
-.sg-groups:not(.is-on) .sg-group:nth-child(2) { --d: 150ms; }
-.sg-groups:not(.is-on) .sg-group:nth-child(1) { --d: 200ms; }
+.sg-groups.is-on .sg-group:nth-child(6) { --d: 300ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(5) { --d: 50ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(4) { --d: 100ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(3) { --d: 150ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(2) { --d: 200ms; }
+.sg-groups:not(.is-on) .sg-group:nth-child(1) { --d: 250ms; }
 .sg-group:active { transform: scale(0.94); }
 /* 44 tall to touch; across, the hit areas meet halfway into the gap so neighbours never overlap */
 .sg-group::before { content: ""; position: absolute; inset: calc((2.125rem - 2.75rem) / 2) -0.125rem; }
@@ -825,22 +1138,48 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg-group[aria-disabled="true"]:active { transform: none; }
 /* each group in its own colour; picked, the toggle turns the dark forest green and the icon keeps
    its colour, which reads on the dark at 6:1 and more (on the lime it fell to 1.3:1) */
+/* All, first and picked by default: a word, not an icon, so the pill runs its own width */
+.sg-group.sg-all {
+  width: auto;
+  padding: 0 0.875rem;
+  color: var(--color-on-ground);
+  font-size: calc(var(--text-caption) * 0.85);
+  line-height: 1;
+}
 .sg-group.is-plants { color: var(--color-group-plants); }
 .sg-group.is-herbs { color: var(--color-group-herbs); }
 .sg-group.is-mushrooms { color: var(--color-group-mushrooms); }
 .sg-group.is-birds { color: var(--color-group-birds); }
 .sg-group.is-mammals { color: var(--color-group-mammals); }
-.sg-group.glass[aria-pressed="true"] {
-  /* frosted: the forest green at 55% over the toggle's own frost (glass in glass keeps one blur) */
+/* phone: the filters 20% larger all round, the All label 10% smaller */
+@media (max-width: 35.74rem) {
+  .sg-groups { gap: 0.3rem; }
+  .sg-groups.is-on { height: 2.55rem; }
+  .sg-group { width: 2.55rem; height: 2.55rem; translate: calc(-1 * (var(--i) - 1) * 2.85rem) 0; }
+  .sg-group > svg { width: 1.365rem; height: 1.365rem; }
+  .sg-group::before { inset: calc((2.55rem - 2.75rem) / 2) -0.15rem; }
+  .sg-group.sg-all { padding: 0 1.05rem; font-size: calc(var(--text-caption) * 0.765); }
+  /* they fan out from the first one's place by the larger step */
+  .sg-groups:not(.is-on) .sg-group { translate: calc(-1 * (var(--i) - 1) * 2.85rem) 0; }
+  @starting-style {
+    .sg-groups.is-on .sg-group,
+    .sg-groups.is-on .sg-group.sg-group[aria-disabled="true"] { translate: calc(-1 * (var(--i) - 1) * 2.85rem) 0; }
+  }
+}
+.sg-group.sg-all.glass[aria-pressed="true"] {
+  /* All, picked: the forest green at 55% over the toggle's own frost (glass in glass keeps one blur) */
   /* shaded like the unselected glass: a touch lighter at the top, darker towards the bottom */
   background:
     linear-gradient(160deg, rgb(255 255 255 / 0.03) 0%, rgb(0 0 0 / 0.24) 100%),
-    rgb(from var(--color-ground) r g b / 0.55);
-  border-color: transparent;
-  /* the shading spans the whole circle, border included: sized to the inside only, it repeated into
-     the clear 1px border and drew its dark end along the top and its light end along the bottom */
-  background-origin: border-box;
+    rgb(from var(--color-picked) r g b / 0.55);
+  /* a faint edge, half the inner glass edge, so the dark still has a rim */
+  border-color: rgb(255 255 255 / 0.07);
+  /* the fill stops inside the edge, as on the route page's current section chip (app/flow-b.css), so
+     the rim shows all round and the picked toggle reads as tall as the others */
+  background-clip: padding-box;
 }
+/* a picked group keeps its frost and takes a 1.4px ring in its own colour, the icon's */
+.sg-group.glass:not(.sg-all)[aria-pressed="true"] { border: 1.4px solid currentColor; }
 @media (hover: hover) and (pointer: fine) {
   .sg-group[aria-pressed="false"]:not([aria-disabled="true"]):hover { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0.08), 0 0 0 rgb(6 18 9 / 0); }
 }
@@ -848,6 +1187,43 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg-groups, .sg-groups.is-on { transition: display 120ms allow-discrete; }
   .sg-group, .sg-groups:not(.is-on) .sg-group { scale: 1; translate: 0 0; transition: opacity 120ms ease, background-color 200ms ease; }
 }
+/* a group card fades and rises in whenever the filters change, one after another, smooth and unhurried;
+   tiles opened by Discover more come in the same way. The cards are inner glass with no blur of their
+   own, so moving them leaves the sheet's frost alone. */
+@keyframes org-in { from { opacity: 0; translate: 0 0.75rem; } }
+.sg-org-sec { animation: org-in 600ms var(--ease-move) calc(var(--n, 0) * 90ms) backwards; }
+.sg-bento li.is-new { animation: org-in 540ms var(--ease-move) calc(var(--n, 0) * 70ms) backwards; }
+@media (prefers-reduced-motion: reduce) {
+  @keyframes org-fade { from { opacity: 0; } }
+  .sg-org-sec, .sg-bento li.is-new { animation: org-fade 360ms var(--ease-move) backwards; }
+}
+/* each group's organisms as a bento: a tall photo tile, two beside it, a wide one under them, and again
+   for every four; the name and Latin name sit on the photo over a dark fade, the last line only where
+   a tile has the room. A lone last tile runs the full width, a lone second one the full height. */
+.sg-bento { margin-top: 0; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 7.5rem; gap: 0.5rem; }
+.sg-bento li { position: relative; padding: 0; display: block; overflow: hidden; border-radius: var(--radius-tile); }
+.sg-bento li + li { border-top: 0; }
+.sg-bento li:nth-child(4n+1) { grid-row: span 2; }
+.sg-bento li:nth-child(4n+4) { grid-column: span 2; }
+.sg-bento li:nth-child(4n+1):last-child { grid-column: span 2; grid-row: span 1; }
+.sg-bento li:nth-child(4n+2):last-child { grid-row: span 2; }
+.sg-bento .sg-org-link { position: absolute; inset: 0; display: block; }
+.sg-bento .a8-thumb { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 0; }
+/* the photographs are muted towards the forest by the one organism photo rule (app/globals.css) */
+.sg-bento li span:has(> b) {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 1.5rem 0.75rem 0.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  background: linear-gradient(to top, rgb(6 18 9 / 0.85) 0%, rgb(6 18 9 / 0.5) 60%, transparent 100%);
+  text-shadow: 0 1px 0.5rem rgb(6 18 9 / 0.5);
+}
+.sg-bento b { font-size: 1rem; line-height: 1.15; }
+.sg-bento small { font-size: 0.8125rem; line-height: 1.3; color: var(--color-on-ground-soft); }
+.sg-bento li:not(:nth-child(4n+1)) small:last-of-type { display: none; }
+.sg-bento .sg-org-link > svg { display: none; }
 .sg-org-link { flex-grow: 1; min-width: 0; display: flex; align-items: center; gap: 0.875rem; color: var(--color-on-ground); text-decoration: none; }
 .sg-org-link > span:nth-child(2) { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1875rem; }
 .sg-org-link > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
@@ -881,3 +1257,95 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 @media (hover: hover) and (pointer: fine) {
   .ln-credits a:hover { color: var(--color-on-ground); }
 }
+
+/* ── phone, set on /tweak at 430 wide ─────────────────────────────────────────────────────────── */
+@media (max-width: 35.74rem) {
+  .ms-handle { height: 0.2125rem; }
+  .ms-grab .ms-handle { margin-top: -8.5px; }
+  .ms-bar { top: calc(0.45rem + env(safe-area-inset-top, 0px)); }
+  /* the place line's pin a little further from the sheet's top than from its side */
+  .sg-head { margin-top: -0.9375rem; }
+  .sg-scope { font-size: 1.125rem; line-height: 1.15; }
+  .sg .ms-title { font-size: 1.5rem; line-height: 1.15; margin: 1.625rem 0 -1rem; }
+  /* the title's negative bottom margin would pull Organisms' count line into it: take it back */
+  .sg .ms-title + .ms-lead { margin-top: calc(1rem + 0.3375rem); }
+  .sug-track { aspect-ratio: 100 / 62; }
+  .sug-save { top: 1.125rem; right: 1.125rem; }
+  .sug-dot::before { width: 0.35rem; height: 0.35rem; }
+  .sug-media::after { background: linear-gradient(to top, rgb(6 18 9 / 1) 0%, rgb(6 18 9 / 0.58) 50%, transparent 100%); }
+  .sug-name { font-size: 1.5rem; }
+  .sug-meta { font-size: 1.225rem; }
+  .sug-head { padding-left: 0.875rem; padding-bottom: 0.875rem; }
+  /* name, distance and Spots a fifth closer together, held to the bottom so the top lines move down */
+  .sug-head { gap: 0.145rem; }
+  .sug-spots-photo { margin: 0.3rem 0; }
+}
+
+/* ── small phones, under 390 wide, set on /tweak at 320 and 375 ───────────────────────────────────────── */
+@media (max-width: 24.37rem) {
+  .ms-bar { top: calc(0.4rem + env(safe-area-inset-top, 0px)); }
+  .ms-handle { width: 2.625rem; height: 0.25rem; }
+  .ms-grab .ms-handle { margin-top: -7.5px; }
+  .sg-scope { font-size: 1.05rem; }
+  .sg .ms-title { font-size: 1.3rem; margin: 1.4375rem 0 -1rem; }
+  .sug-track { aspect-ratio: 100 / 74; }
+  .sug-name { font-size: 1.275rem; }
+  .sug-meta { font-size: 0.95rem; }
+  .sug-head { padding-left: 0.625rem; padding-bottom: 0.625rem; }
+  .sug-save { top: 1rem; right: 1.0625rem; }
+  .sug-dots { right: 0.6875rem; bottom: 0.375rem; }
+  .sug-dot::before { width: 0.3125rem; height: 0.3125rem; }
+}
+/* from 375 up to 430 wide the title takes a step more than on the smallest phones */
+@media (min-width: 23.4375rem) and (max-width: 26.87rem) {
+  .sg .ms-title { font-size: 1.4rem; }
+}
+
+/* a little more room above the place line, at every size */
+.sg-scope { padding-top: 0.3125rem; }
+
+/* phones from 375 to 430 wide: the suggestions title, the route name and its distance line a step larger */
+@media (min-width: 23.4375rem) and (max-width: 26.875rem) {
+  .sg .ms-title { font-size: 1.55rem; line-height: 1.15; }
+  .sug-name { font-size: 1.425rem; }
+  .sug-meta { font-size: 1.225rem; }
+}
+
+/* the Spots pill's words run white into lime, as "September" in the title; the pill keeps its outline only */
+.sug-spots {
+  background-image: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-primary) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* the Spots pill at the organism pills' height, its 1px outline running white into lime as its words do. The ring is ::before's own border, masked to its border box less its padding box:
+   a border snaps to whole pixels, where a padded mask drew a soft, uneven line. */
+.tag.sug-spots {
+  position: relative;
+  border: 1px solid transparent;
+}
+@supports ((-webkit-mask-composite: xor) or (mask-composite: exclude)) {
+  .tag.sug-spots::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border: 1px solid transparent;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(100deg, var(--color-on-ground) 0%, var(--color-primary) 100%) border-box;
+    -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0) border-box;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+}
+
+/* phones under 430 wide: the place line and title stand in from the sheet's edge */
+@media (max-width: 26.87rem) {
+  .sg-head { padding-left: 0.5rem; }
+}
+
+/* the place line on phones: 1.125rem from 375, 1.15rem from 390, 1.2rem from 430 up (the tablet and desktop's size) */
+@media (min-width: 26.875rem) and (max-width: 35.74rem) { .sg-scope { font-size: 1.2rem; } }
+@media (min-width: 24.375rem) and (max-width: 26.87rem) { .sg-scope { font-size: 1.15rem; } }
+@media (min-width: 23.4375rem) and (max-width: 24.37rem) { .sg-scope { font-size: 1.125rem; } }

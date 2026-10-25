@@ -21,14 +21,24 @@
 
 /* The room a screen leaves above its first element. A status bar only exists when the app is
    installed, so the allowance comes from the safe area rather than a fixed value: in a browser,
-   on a laptop or a phone, this is the same offset the desktop layout uses and nothing is wasted. */
+   on a laptop or a phone, this is the same offset the desktop layout uses and nothing is wasted.
+   The top controls sit 0.5rem under it, at the desktop's nav-top-desktop, at every size. */
 :root {
-  --top-chrome: calc(1.75rem + env(safe-area-inset-top, 0px));
+  --top-chrome: calc(var(--spacing-nav-top-desktop) - 0.5rem + env(safe-area-inset-top, 0px));
 
   /* The two families from docs/design.md, with the copies Next self-hosts in front of them.
      The stacks themselves stay in tokens.css so the system reads the same outside this app. */
   --font-heading: var(--font-comfortaa), "Comfortaa", "Trebuchet MS", sans-serif;
-  --font-text: var(--font-alpino), "Alpino", "Futura", "Century Gothic", sans-serif;
+  --font-text: var(--font-text-face), "Cabinet Grotesk", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* the desktop's nav, search and switch sit closer to the top than nav-top-desktop, which the phone's
+   top-chrome is built on; top-chrome keeps its 0.7rem-based value here */
+@media (min-width: 64rem) {
+  :root {
+    --spacing-nav-top-desktop: 0.4rem;
+    --top-chrome: calc(0.2rem + env(safe-area-inset-top, 0px));
+  }
 }
 
 html,
@@ -75,7 +85,7 @@ button:disabled:active {
 
 /* A number alone in a circle: centred on the figures' own height, never on the font's line box, which has more
    room under the baseline than above (docs/design.md, Components). Set --disc to the circle's size; a block,
-   because the trim does not apply to flex or grid items. Alpino's files carry lining figures by default, so every
+   because the trim does not apply to flex or grid items. Cabinet Grotesk's figures are lining, so every
    digit spans the same baseline to cap height (.design/fonts-original/lining-figures.py). */
 .num-disc {
   --disc: 2rem;
@@ -92,3 +102,67 @@ button:disabled:active {
 /* the organism group icons (components/Icons.tsx, GroupIcon) draw past their 24 box: the plant's
    leaves are wider, and the herbs, mushroom and plant overshoot it as they move */
 .group-icon { overflow: visible; }
+
+/* Dark text on the lime (the picked switch option, the current tab, the primary button): the body's
+   antialiased smoothing draws dark-on-light type a weight or two thinner, so 600 read like 400 and the
+   letters looked spaced out. These keep the system smoothing, which draws the weight as it is. */
+.seg-opt[aria-pressed="true"],
+.seg-opt[aria-current="page"],
+.tabbar-tab.is-current,
+.btn-primary { -webkit-font-smoothing: auto; -moz-osx-font-smoothing: auto; }
+/* dark letters on the lime open up against the light ground, so the button's label is drawn 2% tighter
+   to sit as close as the light labels beside it */
+.btn-primary { letter-spacing: -0.02em; }
+
+/* the glowing lime dot: the welcome route's stops (app/welcome2.css) and the start map's clusters
+   (app/map.css) use this one dot, same size, glow and blink */
+.glow-dot {
+  display: block;
+  width: 0.675rem;
+  height: 0.675rem;
+  border-radius: var(--radius-pill);
+  --glow: var(--color-primary-glow);
+  --ring: 0.42rem; /* the faint wider circle around the dot */
+  background: var(--glow);
+  animation: glow-blink 2.4s ease-in-out infinite;
+}
+@media (min-width: 64rem) {
+  .glow-dot { width: 0.84375rem; height: 0.84375rem; --ring: 0.5rem; }
+}
+/* neon: a white-hot core, a tight lime halo and a wide soft bloom that swell together as the dot
+   lights, and sink to a dim ember between. Both ends hold the same shadow list so it interpolates.
+   The dim is a darker solid colour, never opacity, so the route line never shows through the dot. */
+@keyframes glow-blink {
+  0%, 100% {
+    background-color: var(--glow);
+    box-shadow:
+      0 0 0 var(--ring) rgb(from var(--glow) r g b / 0.14),
+      inset 0 0 0.125rem rgb(255 255 255 / 0.9),
+      0 0 0.25rem rgb(from var(--glow) r g b / 1),
+      0 0 0.75rem rgb(from var(--glow) r g b / 0.85),
+      0 0 1.75rem rgb(from var(--glow) r g b / 0.55);
+  }
+  50% {
+    background-color: color-mix(in srgb, var(--glow) 45%, var(--color-ground));
+    box-shadow:
+      0 0 0 var(--ring) rgb(from var(--glow) r g b / 0.14),
+      inset 0 0 0.125rem rgb(255 255 255 / 0),
+      0 0 0.125rem rgb(from var(--glow) r g b / 0.4),
+      0 0 0.375rem rgb(from var(--glow) r g b / 0.2),
+      0 0 0.75rem rgb(from var(--glow) r g b / 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glow-dot {
+    animation: none;
+    box-shadow: 0 0 0 var(--ring) rgb(from var(--glow) r g b / 0.14), 0 0 0.25rem rgb(from var(--glow) r g b / 1), 0 0 0.75rem rgb(from var(--glow) r g b / 0.6);
+  }
+}
+/* the picked option's icon fades to its label's 80% ink as the option is picked, never snaps */
+.seg-opt > svg,
+.tabbar-tab svg { transition: opacity 400ms var(--ease-move); }
+
+/* every organism photograph, wherever it sits (thumbs, cards, the organism page, a spot, a
+   documentary's species, the Organisms grid): muted towards the forest, a touch darker, deeper and
+   less saturated, so no photo shouts over the glass. Keyed on the folder, so a new screen gets it too. */
+img[src*="/img/organisms/"] { filter: saturate(0.7) brightness(0.82) contrast(0.95); }

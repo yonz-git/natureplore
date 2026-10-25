@@ -29,8 +29,8 @@ export default function StartSheet() {
           <div className="ms-stack">
             <SearchField />
             <div className="a1-ways">
-              <button type="button" className="btn btn-primary" onClick={ask}>
-                <LocationIcon />
+              <button type="button" className="btn btn-primary a1-locate" onClick={ask}>
+                <LocationIcon size={20.8} />
                 Use my location
               </button>
               <Link href="/map" className="btn btn-secondary btn-browse">
@@ -38,10 +38,6 @@ export default function StartSheet() {
               </Link>
             </div>
           </div>
-
-          <p className="ms-note ms-note-desk">
-            Your browser asks before sharing your location, and it stays on this device.
-          </p>
         </div>
       </div>
       {prompt}
