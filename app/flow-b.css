@@ -452,6 +452,20 @@ a.fb-claim-act:active { transform: scale(0.985); }
   background: color-mix(in oklab, var(--c, var(--color-on-ground)) var(--k), transparent);
   box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.12);
 }
+/* each square carries its count: sized to the square (52% of its width fits three digits), centred on the
+   digits' own height, light on the darker steps and dark on the two brightest, dim at zero */
+.fb-heat tbody .fb-heat-cell { container-type: inline-size; display: grid; place-items: center; }
+.fb-heat-n {
+  font-size: 52cqi;
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: rgb(from var(--color-on-ground) r g b / 0.9);
+}
+.fb-heat-cell[data-step="0"] .fb-heat-n { color: rgb(from var(--color-on-ground) r g b / 0.35); }
+.fb-heat-cell:is([data-step="3"], [data-step="4"]) .fb-heat-n { color: var(--color-on-primary); }
 .fb-heat-cell[data-step="0"] { --k: 0%; }
 .fb-heat-cell[data-step="1"] { --k: 25%; }
 .fb-heat-cell[data-step="2"] { --k: 48%; }

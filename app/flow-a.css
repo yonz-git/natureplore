@@ -323,6 +323,9 @@
    In em, so it follows the words at every size (the drawing fills 0.754 of its box, the capitals
    stand 0.576em) */
 .sg-pin { --pin: 0.764em; position: relative; top: -0.087em; display: flex; flex-shrink: 0; margin: 0 0 0 -0.0615rem; }
+/* the pin as large as the route card's beside its spot marks: an 18 drawing (0.754 of its box), its drawn edge
+   kept on the title's left edge and the line kept at its height */
+.sg-scope .sg-pin { --pin: calc(1.125rem / 0.754); top: calc(-0.087em - 0.0125rem); margin: -0.1rem 0 -0.1rem -0.199rem; }
 .sg-pin-icon { width: var(--pin); height: var(--pin); }
 /* the pin spins in once the sheet is up, calmly: a full turn about its upright axis, like a coin on
    its edge, fading in through the first third and slowing to rest with no overshoot */
