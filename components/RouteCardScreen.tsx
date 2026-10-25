@@ -11,18 +11,19 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { BackIcon, BookmarkIcon, CalendarIcon, ChevronIcon, DownloadIcon, GroupIcon, LoopIcon, OneWayIcon, WalkIcon } from "@/components/Icons";
+import { BackIcon, BookmarkIcon, ChevronIcon, DownloadIcon, GroupIcon, LoopIcon, OneWayIcon, WalkIcon } from "@/components/Icons";
 import { useSheet } from "@/components/SheetGrab";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { StatValue } from "@/components/CParts";
-import { ActionRow, ClaimCard, MonthGrid, RecordedToo, SpotLook, SpotMark } from "@/components/SpotParts";
+import { ActionRow, ClaimCard, SpotMark } from "@/components/SpotParts";
 import { InSeasonList } from "@/components/InSeasonList";
+import { RECORDED_COUNTS } from "@/lib/records";
 import { YearChart } from "@/components/YearChart";
 import { organismPhoto } from "@/lib/photos";
 import { GROUPS, recordsOf, spotsOf, type Route } from "@/lib/routes";
 import { lastList, useSaved } from "@/lib/saved";
-import { MONTH_LETTERS, MONTH_NAMES, NOW, routeDetail, spotLine } from "@/lib/spots";
-import { suggestionById } from "@/lib/suggestions";
+import { MONTH_LETTERS, MONTH_NAMES, NOW, routeDetail } from "@/lib/spots";
+import { MONTH, suggestionById } from "@/lib/suggestions";
 import { easeScroll } from "@/lib/ease-scroll";
 
 const noop = () => () => {};
@@ -376,7 +377,9 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detail]);
 
-  const total = recordsOf(route.counts);
+  // the card says what is in season this month: the bar, the pills and the tiles all count September, from GBIF
+  const counts = RECORDED_COUNTS[route.id] ?? route.counts;
+  const total = recordsOf(counts);
   const [name, ...rest] = route.name.split(" ").reverse();
   const lead = rest.reverse().join(" ");
   const most = detail ? Math.max(...detail.season) : 1;
@@ -494,25 +497,28 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           <section aria-labelledby="sec-recorded-title">
             <SectionHead id="recorded" lead="Recorded " close="organisms" />
             <div className="fb-card fb-recorded">
+              <span className="fb-label" id="in-season-label">
+                In season in {MONTH}
+              </span>
               <div
                 className="b1-bar"
                 role="img"
-                aria-label={`${total} species recorded: ${GROUPS.map((g) => `${route.counts[g.id] ?? 0} ${g.label.toLowerCase()}`).join(", ")}`}
+                aria-label={`${total} species recorded: ${GROUPS.map((g) => `${counts[g.id] ?? 0} ${g.label.toLowerCase()}`).join(", ")}`}
               >
-                {GROUPS.filter((g) => route.counts[g.id]).map((g) => (
-                  <span key={g.id} className={`is-${g.id}`} style={{ flexGrow: route.counts[g.id] }} />
+                {GROUPS.filter((g) => counts[g.id]).map((g) => (
+                  <span key={g.id} className={`is-${g.id}`} style={{ flexGrow: counts[g.id] }} />
                 ))}
               </div>
               <ul className="fb-legend" aria-hidden="true">
                 {GROUPS.map((g) => (
-                  <li key={g.id} className={`fb-pill${route.counts[g.id] ? "" : " is-none"}`} title={g.label}>
+                  <li key={g.id} className={`fb-pill${counts[g.id] ? "" : " is-none"}`} title={g.label}>
                     <GroupIcon group={g.id} size={17} className={`is-${g.id}`} />
-                    <span className="fb-legend-num" data-last={String(route.counts[g.id] ?? 0).slice(-1)}>{route.counts[g.id] ?? 0}</span>
+                    <span className="fb-legend-num" data-last={String(counts[g.id] ?? 0).slice(-1)}>{counts[g.id] ?? 0}</span>
                   </li>
                 ))}
               </ul>
               <InSeasonList routeId={route.id} />
-              {/* A8 has the records of Grumsin beech forest loop only */}
+              {/* A8 has the records of Grumsin beech forest only */}
               {route.id === "grumsin" ? (
                 <Link href={`/map/route/${route.id}/recorded`} className="btn btn-secondary btn-chev">
                   See everything recorded
@@ -535,7 +541,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                 ? detail.spots.map((s) => {
                     const open = openSpot === s.n;
                     return (
-                      <li key={s.n} id={`spot-${s.n}`} className={`fb-spot-row${open ? " is-open" : ""}${s.out ? " is-out" : ""}`}>
+                      <li key={s.n} id={`spot-${s.n}`} className={`fb-spot-row${open ? " is-open" : ""}`}>
                         <button
                           type="button"
                           className="fb-row"
@@ -546,34 +552,19 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                           <SpotAt n={s.n} km={kmAt(s.n)} />
                           <span className="fb-row-text">
                             <b>{s.name}</b>
-                            <span>{spotLine(s)}</span>
-                            <span className="fb-pill">
-                              <CalendarIcon size={14} />
-                              {s.when}
-                            </span>
                           </span>
                           <ChevronIcon size={18} />
                         </button>
-                        {/* the spot's detail opens in place: what to look for and what not to do */}
+                        {/* the spot's detail opens in place: what to do or not do here */}
                         <div id={`spot-${s.n}-detail`} className="fb-spot-detail" inert={!open}>
                           <div>
-                            <SpotLook spot={s} organismHref={(id) => `/map/organism/${id}?from=route&spot=${s.n}`} />
                             <ActionRow spot={s} />
-                            <div className="fb-spot-part">
-                              <h3 className="fb-label">When</h3>
-                              <MonthGrid months={s.months} />
-                              <p className="fb-small">In season {s.when === "All year" ? "all year" : s.when}</p>
-                            </div>
                             {detail.claims[0] && (
                               <div className="fb-spot-part">
                                 <h3 className="fb-label">What is happening here</h3>
                                 <ClaimCard claim={detail.claims[0]} />
                               </div>
                             )}
-                            <div className="fb-spot-part">
-                              <h3 className="fb-label">Recorded here too</h3>
-                              <RecordedToo />
-                            </div>
                           </div>
                         </div>
                       </li>

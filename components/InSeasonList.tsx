@@ -1,60 +1,94 @@
 "use client";
 
-// B1's Recorded organisms card, under the group pills: what GBIF has recorded along the route this month
-// (lib/records.ts), most records first. Five show, the rest open in place with Show all. A species with a
-// photograph shows it; one without shows its group icon in a tile. Rows: the Organisms list's (app/flow-a.css).
+// B1's Recorded organisms card, under the September bar and pills: what GBIF has recorded along the route this month
+// (lib/records.ts), most records first, the first ten in two columns. Each tile is the photograph with the name
+// on its foot (the group icon on a tinted tile when there is no photograph), then the group and Latin name, the
+// records, and behind a pin the spots it was recorded within 300 m of, as their numbered marks, or the one spot
+// nearest its records when it was recorded near none (.design/gbif/build.py).
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { GroupIcon } from "@/components/Icons";
+import { GroupIcon, PinIcon } from "@/components/Icons";
+import { SpotMark } from "@/components/SpotParts";
 import { organismPhoto } from "@/lib/photos";
 import { RECORDED } from "@/lib/records";
-import { groupWord, MONTH } from "@/lib/suggestions";
+import { groupWord } from "@/lib/suggestions";
 
-const FIRST = 5;
+const FIRST = 10;
 
 export function InSeasonList({ routeId }: { routeId: string }) {
-  const [all, setAll] = useState(false);
   const rows = [...(RECORDED[routeId] ?? [])].sort((a, b) => b.records - a.records);
   if (!rows.length) return null;
-  const shown = all ? rows : rows.slice(0, FIRST);
+  const shown = rows.slice(0, FIRST);
 
   return (
     <div className="fb-in-season">
-      <span className="fb-label" id="in-season-label">
-        In season in {MONTH}
-      </span>
-      <ul className="a8-rows" aria-labelledby="in-season-label">
-        {shown.map((o, i) => {
+      {/* headed by "In season in <month>" at the top of the card (components/RouteCardScreen.tsx) */}
+      <ul className="fb-org-tiles" aria-labelledby="in-season-label">
+        {shown.map((o) => {
           const photo = organismPhoto(o.name);
           return (
-            <li key={o.latin} className={i >= FIRST ? "is-new" : undefined}>
-              {photo ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img className="a8-thumb" src={photo.src} alt="" loading="lazy" />
-              ) : (
-                <span className="a8-thumb fb-in-season-tile" aria-hidden="true">
-                  <GroupIcon group={o.group} size={22} className={`is-${o.group}`} />
-                </span>
-              )}
-              <span>
+            <li key={o.latin}>
+              <span className="fb-org-photo">
+                {photo ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={photo.src} alt="" loading="lazy" />
+                ) : (
+                  <span className="fb-in-season-tile" aria-hidden="true">
+                    <GroupIcon group={o.group} size={28} className={`is-${o.group}`} />
+                  </span>
+                )}
                 <b>{o.name}</b>
-                <small>
-                  {groupWord(o.group)}, <i>{o.latin}</i>
-                </small>
-                <small>
-                  {o.records} record{o.records > 1 ? "s" : ""} in {MONTH}, last {o.last}
-                </small>
               </span>
+              <small>
+                {groupWord(o.group)}, <i>{o.latin}</i>
+              </small>
+              <small>
+                {o.records} record{o.records > 1 ? "s" : ""}
+              </small>
+              {o.spots.length > 0 && <Where spots={o.spots} />}
             </li>
           );
         })}
       </ul>
-      {rows.length > FIRST && (
-        <button type="button" className="cp-link" aria-expanded={all} onClick={() => setAll((v) => !v)}>
-          {all ? "Show fewer" : `Show all ${rows.length}`}
-        </button>
-      )}
     </div>
+  );
+}
+
+/** The region line's pin on its ground ring (SuggestionsScreen), then the spots as their numbered marks. The pin
+ *  rolls in and the ring opens only once the line is on screen, and plays once. */
+function Where({ spots }: { spots: number[] }) {
+  const ref = useRef<HTMLElement>(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setSeen(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 1 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <small ref={ref} className={`fb-in-season-where${seen ? " is-seen" : ""}`}>
+      <span className="sg-pin">
+        <svg className="sg-pin-ring" viewBox="0 0 24 24" aria-hidden="true">
+          <ellipse cx="12" cy="20.9" rx="7.2" ry="2.5" />
+        </svg>
+        <PinIcon size={18} className="sg-pin-icon" />
+      </span>
+      <span className="sr-only">Recorded near spot{spots.length > 1 ? "s" : ""} {spots.join(", ")}</span>
+      <span className="fb-org-spots" aria-hidden="true">
+        {spots.map((n) => (
+          <SpotMark key={n} n={n} />
+        ))}
+      </span>
+    </small>
   );
 }

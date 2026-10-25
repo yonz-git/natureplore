@@ -80,7 +80,7 @@
   margin: 1.25rem 0 0.75rem;
   font-family: var(--text-h3--font-family);
   font-size: 1.25rem;
-  line-height: 1.625rem;
+  line-height: 1.15;
   font-weight: var(--text-h3--font-weight);
 }
 .ln-group .ln-site { margin-top: 2rem; }
@@ -120,7 +120,7 @@
   line-height: 1;
 }
 .dc-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
-.dc-text b { font-size: var(--text-body); line-height: 1.65rem; font-weight: 400; }
+.dc-text b { font-size: var(--text-body); line-height: 1.15; font-weight: 400; }
 .dc-text > span:not(.fb-pill) { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .dc-text .fb-pill { align-self: flex-start; margin-top: 0.50625rem; height: auto; min-height: 1.75rem; padding-block: 0.3125rem; white-space: normal; line-height: 1.2; }
 
@@ -188,7 +188,7 @@ img.cp-icon { padding: 0; object-fit: cover; }
   margin: 0 0 1rem;
   font-family: var(--text-h3--font-family);
   font-size: 1.25rem;
-  line-height: 1.625rem;
+  line-height: 1.15;
   font-weight: var(--text-h3--font-weight);
 }
 .dc-watch-do { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.625rem; }

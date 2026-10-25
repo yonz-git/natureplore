@@ -71,13 +71,13 @@
 .se-more { margin-top: 1rem; }
 
 .se-checks { margin: 0; list-style: none; gap: 1.18125rem; }
-.se-checks li { display: flex; gap: 0.75rem; align-items: flex-start; font-size: var(--text-body-sm); line-height: 1.65rem; }
+.se-checks li { display: flex; gap: 0.75rem; align-items: flex-start; font-size: var(--text-body-sm); line-height: 1.15; }
 .se-checks svg { flex-shrink: 0; color: var(--color-mist); }
 .se-actions { margin-top: 2rem; display: flex; flex-direction: column; }
 .se-actions > .fb-small { display: flex; gap: 0.375rem; align-items: center; min-height: 1.125rem; }
 .se-actions > .fb-small svg { color: var(--color-mist); }
 .se-confirm { margin-top: 1.0125rem; gap: 1.0125rem; }
-.se-confirm p { margin: 0; font-size: var(--text-body-sm); line-height: 1.65rem; }
+.se-confirm p { margin: 0; font-size: var(--text-body-sm); line-height: 1.15; }
 .se-confirm div { display: flex; flex-wrap: wrap; align-items: center; gap: 0.675rem 1.5rem; }
 .se-confirm .cp-link { margin: 0; }
 

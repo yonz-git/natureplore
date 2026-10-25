@@ -19,8 +19,8 @@
 .fb-stack { display: flex; flex-direction: column; gap: 0.75rem; }
 .fb-soft { color: var(--color-on-ground-soft); }
 .fb-small { margin: 0.84375rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
-.fb-label { font-size: var(--text-body-sm); line-height: 1.65rem; font-weight: 500; color: var(--color-mist); }
-.fb-placeholder { font-size: var(--text-body-sm); line-height: 1.725rem; font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-label { font-size: var(--text-body-sm); line-height: 1.15; font-weight: 500; color: var(--color-mist); }
+.fb-placeholder { font-size: var(--text-body-sm); line-height: 1.15; font-weight: 300; color: var(--color-on-ground-soft); }
 
 /* the spot marker, larger at the head of a spot block */
 .fb-mark.is-lg { --mark: 2.25rem; font-size: calc(1.125rem * 1.35); }
@@ -100,7 +100,7 @@
 }
 a.fb-row:active { transform: scale(0.985); }
 .fb-row-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
-.fb-row-text b { font-size: var(--text-body); line-height: 1.65rem; font-weight: 400; }
+.fb-row-text b { font-size: var(--text-body); line-height: 1.15; font-weight: 400; }
 .fb-row-text > span:not(.fb-pill) { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
 .fb-row-text .fb-pill { align-self: flex-start; margin-top: 0.3375rem; }
@@ -192,7 +192,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
   align-items: center;
   border-top: 1px solid var(--color-divider);
   font-size: var(--text-body-sm);
-  line-height: 1.575rem;
+  line-height: 1.15;
 }
 .fb-claim-act > span:first-child { flex-grow: 1; }
 
@@ -222,8 +222,8 @@ a.fb-claim-act:active { transform: scale(0.985); }
 }
 .fb-rule-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
 .fb-rule-text .fb-label { margin-bottom: 0.16875rem; }
-.fb-rule-line { font-size: var(--text-body); line-height: 1.8rem; font-weight: 500; text-wrap: pretty; }
-.fb-rule-why { font-size: var(--text-body-sm); line-height: 1.725rem; font-weight: 300; color: var(--color-on-ground-soft); text-wrap: pretty; }
+.fb-rule-line { font-size: var(--text-body); line-height: 1.15; font-weight: 500; text-wrap: pretty; }
+.fb-rule-why { font-size: var(--text-body-sm); line-height: 1.15; font-weight: 300; color: var(--color-on-ground-soft); text-wrap: pretty; }
 
 /* the spot block: solid, not glass, the same on the spot page and as the walk sheet */
 .fb-spot {
@@ -238,17 +238,17 @@ a.fb-claim-act:active { transform: scale(0.985); }
 }
 /* the number and the name read as one: the marker sits centred on the two lines beside it */
 .fb-spot-head { display: flex; align-items: center; gap: 1rem; }
-.fb-spot-head > div { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.16875rem; font-size: var(--text-body-sm); line-height: 1.65rem; }
+.fb-spot-head > div { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.16875rem; font-size: var(--text-body-sm); line-height: 1.15; }
 .fb-spot .fb-spot-title {
   overflow-wrap: break-word;
   margin: 0;
   font-family: var(--font-heading);
   font-size: 1.5rem;
-  line-height: 1.875rem;
+  line-height: 1.15;
   font-weight: 300;
   text-wrap: balance;
 }
-.fb-out { margin: 0; font-size: var(--text-body); line-height: 1.725rem; }
+.fb-out { margin: 0; font-size: var(--text-body); line-height: 1.15; }
 .fb-look { display: flex; flex-direction: column; gap: 0.84375rem; }
 .fb-look ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.675rem; }
 /* what to look for: the organism, its photograph, what it is doing and when it was last seen */
@@ -274,8 +274,8 @@ a.fb-claim-act:active { transform: scale(0.985); }
   background: var(--color-field-shade);
 }
 .fb-look-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.08438rem; }
-.fb-look-name { font-size: var(--text-body); line-height: 1.8rem; font-weight: 500; }
-.fb-look-what { font-size: var(--text-body-sm); line-height: 1.65rem; font-weight: 400; color: var(--color-on-ground); }
+.fb-look-name { font-size: var(--text-body); line-height: 1.15; font-weight: 500; }
+.fb-look-what { font-size: var(--text-body-sm); line-height: 1.15; font-weight: 400; color: var(--color-on-ground); }
 .fb-look-last { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-look-link { transition: transform 160ms var(--ease-out), box-shadow var(--hover-fade) var(--ease-hover), border-color var(--hover-fade) var(--ease-hover); }
 @media (hover: hover) {
@@ -317,7 +317,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-nav-next > svg { flex-shrink: 0; }
 .fb-nav-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
 .fb-nav-kicker { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
-.fb-nav-name { font-size: var(--text-body-sm); line-height: 1.65rem; font-weight: 500; overflow-wrap: break-word; }
+.fb-nav-name { font-size: var(--text-body-sm); line-height: 1.15; font-weight: 500; overflow-wrap: break-word; }
 @media (hover: hover) {
   .fb-nav-prev:hover,
   .fb-nav-next:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 10rem rgb(255 255 255 / 0.06); }
@@ -414,8 +414,10 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-strip ~ * { mask-image: linear-gradient(to bottom, transparent calc(var(--cut, -100px) - 1rem), #000 calc(var(--cut, -100px) + 1rem)); }
 
 
-.fb-recorded { gap: 1rem; }
-.fb-recorded .btn { margin-top: 0.25rem; width: auto; }
+.fb-recorded { gap: 0.75rem; }
+/* the heading, bar and pills are one summary, held close; the tiles and the button below it stand apart */
+.fb-recorded .fb-in-season { margin-top: 0.75rem; }
+.fb-recorded .btn { margin-top: 0.75rem; width: auto; align-self: center; }
 .fb-legend { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
 /* spots in season by month: this month in mist */
@@ -446,7 +448,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-heat tbody th {
   padding-right: 0.375rem;
   font-size: var(--text-caption);
-  line-height: 1.2;
+  line-height: 1.15;
   font-weight: 400;
   text-align: left;
   white-space: nowrap;
@@ -492,7 +494,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-facts dt { flex: 0 0 7.5rem; }
 .fb-facts dd { flex: 1 1 10rem; min-width: 0; }
 .fb-facts > div + div { border-top: 1px solid var(--color-divider); }
-.fb-facts dt { font-size: var(--text-caption); line-height: 1.5rem; font-weight: 500; color: var(--color-on-ground-soft); }
+.fb-facts dt { font-size: var(--text-caption); line-height: 1.15; font-weight: 500; color: var(--color-on-ground-soft); }
 /* four stats, the route's shape the fourth, so each tile gives up some of its side padding */
 .b1-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .b1-stats .card-stat { padding-inline: 0.375rem; }
@@ -506,7 +508,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 /* the shape icon as tall as the figures beside it, a value cut to cap height */
 .b1-shape dd { height: 1em; align-items: center; font-size: var(--text-stat-sm); }
 .b1-shape svg { width: 1.15em; height: 1.15em; }
-.fb-facts dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.5rem; }
+.fb-facts dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.15; }
 .b1-foot { margin-top: 0.5rem; }
 
 /* Walk the route, under the stats once saved */
@@ -514,12 +516,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
 /* Walk the route and Use my location: the icon at 1.3rem, close to its label, in the medium weight */
 .btn.b1-walk,
 .btn.a1-locate { gap: 0.4rem; font-weight: 600; }
-/* this button only for now: the secondary button's white sheen laid over the lime, stronger */
-.btn-primary.a1-locate {
-  background:
-    linear-gradient(160deg, rgb(255 255 255 / 0.32) 0%, rgb(255 255 255 / 0) 100%),
-    linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
-}
 .btn.b1-walk { align-self: center; }
 /* full width on a phone; wider screens hug the label, as every button does */
 @media (max-width: 29.99rem) { /* phone-max */
@@ -544,7 +540,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .b1-pin .btn { animation: fade-in var(--enter) var(--ease-enter) backwards; }
 /* with large text a label wraps inside its button rather than running out of the bar */
 .b1-pin .btn { min-width: 0; flex-shrink: 1; height: auto; min-height: var(--spacing-button-height); padding-top: 0.5rem; padding-bottom: 0.5rem; white-space: normal; text-align: center; }
-.b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-sm); line-height: 1.65rem; animation: fade-in var(--enter) var(--ease-enter) backwards; }
+.b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-sm); line-height: 1.15; animation: fade-in var(--enter) var(--ease-enter) backwards; }
 .b1-pin .b1-undo { padding: 0 1.5rem; }
 
 /* ── L3, a spot, opened in place in B1's spots list ─────────────────────────────────────────── */
@@ -655,7 +651,7 @@ button.fb-row:active { transform: scale(0.985); }
 .walk .fb-spot-head .fb-soft { font-weight: 400; color: var(--color-on-ground); }
 .walk-nav .fb-nav-prev,
 .walk-nav .fb-nav-next { background: var(--color-field-shade); border: 1px solid var(--color-inner-edge); box-shadow: none; }
-.walk-nav .fb-nav-name { font-size: var(--text-body); line-height: 1.8rem; }
+.walk-nav .fb-nav-name { font-size: var(--text-body); line-height: 1.15; }
 .walk-nav .fb-nav-kicker { font-weight: 400; color: var(--color-on-ground); }
 /* More about this spot: the same small secondary button as Discover more, 20% under the standard one */
 .btn.walk-toggle {
@@ -687,7 +683,8 @@ button.fb-row:active { transform: scale(0.985); }
     font-size: var(--text-chip);
     text-decoration: none;
   }
-  .fb-strip { margin: 0 -2rem; padding: 0.75rem 2rem 1rem; }
+  /* bleeds exactly the sheet's 1rem padding (above), no further, or the sheet scrolls sideways */
+  .fb-strip { margin: 0 -1rem; padding: 0.75rem 1rem 1rem; }
   .b1-pin {
     position: static;
     width: auto;
@@ -730,4 +727,31 @@ button.fb-row:active { transform: scale(0.985); }
 .fb-in-season { display: flex; flex-direction: column; }
 .fb-in-season .a8-rows { margin-top: 0.25rem; }
 .fb-in-season-tile { display: grid; place-items: center; }
-.fb-in-season .cp-link { align-self: flex-start; }
+/* ten tiles in two columns: the photograph, square at the tile radius, with the name on its foot over a shade so it
+   reads on any photo; under it the group and Latin name and the records at 1rem, then the pin and the spots, all
+   starting at the name's 0.625rem inset */
+.fb-org-tiles { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 0.75rem; }
+.fb-org-tiles li { min-width: 0; display: flex; flex-direction: column; }
+.fb-org-photo { position: relative; aspect-ratio: 1; border-radius: var(--radius-tile); overflow: hidden; border: 0.5px solid var(--color-inner-edge); background: var(--color-field-shade); }
+.fb-org-photo img, .fb-org-photo .fb-in-season-tile { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.fb-org-photo b {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 1.5rem 0.625rem 0.5rem;
+  background: linear-gradient(to top, rgb(6 18 9 / 0.78) 0%, rgb(6 18 9 / 0.45) 55%, rgb(6 18 9 / 0) 100%);
+  color: var(--color-on-ground);
+  font-size: var(--text-body);
+  line-height: 1.15;
+  font-weight: 500;
+}
+.fb-org-tiles small { margin-top: 0.5rem; padding-left: 0.625rem; font-size: 1rem; line-height: 1.15; font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-org-tiles small + small { margin-top: 0; }
+/* the pin of the region line (app/flow-a.css .sg-pin), spaced as there, then the spots it was recorded near as
+   their marks at three quarters of the map's size; it rolls in and the ring opens once the line is on screen
+   (components/InSeasonList.tsx adds is-seen), until then both wait unseen */
+.fb-org-tiles small.fb-in-season-where { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.125rem; font-size: 1.125rem; line-height: 1.15; font-weight: 400; color: var(--color-on-ground); }
+/* beside the marks the pin stands 18 tall to their 24 (its drawing fills 0.754 of its box), centred on them */
+.fb-org-tiles .fb-in-season-where .sg-pin { --pin: calc(1.125rem / 0.754); top: -0.075rem; margin-left: -0.299rem; }
+.fb-org-spots { margin-left: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.fb-org-spots .spot-mark { --mark: 1.5rem; font-size: calc(var(--text-count) * 1.35 * 0.75); box-shadow: 0 0 0 0.125rem rgb(from var(--color-primary) r g b / 0.6); }
+.fb-in-season-where:not(.is-seen) :is(.sg-pin-icon, .sg-pin-ring) { animation: none; opacity: 0; }

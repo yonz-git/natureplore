@@ -76,7 +76,7 @@ export default function SavedScreen() {
                   ) : (
                     <div className="saved-row">{row}</div>
                   )}
-                  {/* L4, the walk, is built for Grumsin beech forest loop only */}
+                  {/* L4, the walk, is built for Grumsin beech forest only */}
                   {routeDetail(r.id) ? (
                     <Link href={`/walk/${r.id}`} className="btn btn-primary">
                       <WalkIcon size={18} />
@@ -89,7 +89,7 @@ export default function SavedScreen() {
                       <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
                     </button>
                   )}
-                  {!routeDetail(r.id) && <p className="org-small">The walk is built for Grumsin beech forest loop only.</p>}
+                  {!routeDetail(r.id) && <p className="org-small">The walk is built for Grumsin beech forest only.</p>}
                 </article>
               );
             })}

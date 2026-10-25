@@ -69,31 +69,31 @@ typography:
     fontFamily: Comfortaa
     fontSize: 3.5rem
     fontWeight: 300
-    lineHeight: 4rem
+    lineHeight: 1.15
     letterSpacing: -0.015em
   display:
     fontFamily: Comfortaa
     fontSize: 2.125rem
     fontWeight: 300
-    lineHeight: 2.625rem
+    lineHeight: 1.15
     letterSpacing: -0.01em
   h1:
     fontFamily: Comfortaa
     fontSize: 2rem
     fontWeight: 300
-    lineHeight: 2.5rem
+    lineHeight: 1.15
     letterSpacing: -0.01em
   h2:
     fontFamily: Comfortaa
     fontSize: 1.5rem
     fontWeight: 300
-    lineHeight: 1.875rem
+    lineHeight: 1.15
     letterSpacing: -0.01em
   h3:
     fontFamily: Comfortaa
     fontSize: 1.375rem
     fontWeight: 300
-    lineHeight: 1.75rem
+    lineHeight: 1.15
   stat:
     fontFamily: Comfortaa
     fontSize: 1.5rem
@@ -113,47 +113,47 @@ typography:
     fontFamily: Cabinet Grotesk
     fontSize: 1.725rem
     fontWeight: 300
-    lineHeight: 2.55rem
+    lineHeight: 1.15
   body:
     fontFamily: Cabinet Grotesk
     fontSize: 1.2rem
     fontWeight: 300
-    lineHeight: 1.8rem
+    lineHeight: 1.15
   body-sm:
     fontFamily: Cabinet Grotesk
     fontSize: 1.125rem
     fontWeight: 300
-    lineHeight: 1.65rem
+    lineHeight: 1.15
   secondary:
     fontFamily: Cabinet Grotesk
     fontSize: 1.2rem
     fontWeight: 300
-    lineHeight: 1.8rem
+    lineHeight: 1.15
   caption:
     fontFamily: Cabinet Grotesk
     fontSize: 1.125rem
     fontWeight: 300
-    lineHeight: 1.65rem
+    lineHeight: 1.15
   title:
     fontFamily: Cabinet Grotesk
     fontSize: 1.275rem
     fontWeight: 400
-    lineHeight: 1.65rem
+    lineHeight: 1.15
   title-sm:
     fontFamily: Cabinet Grotesk
     fontSize: 1.2rem
     fontWeight: 400
-    lineHeight: 1.65rem
+    lineHeight: 1.15
   meta:
     fontFamily: Cabinet Grotesk
     fontSize: 1.2rem
     fontWeight: 400
-    lineHeight: 1.8rem
+    lineHeight: 1.15
   label:
     fontFamily: Cabinet Grotesk
     fontSize: 1.125rem
     fontWeight: 400
-    lineHeight: 1.65rem
+    lineHeight: 1.15
   field:
     fontFamily: Cabinet Grotesk
     fontSize: 1.2rem
@@ -489,7 +489,7 @@ The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group
 
 Two faces with separate jobs. Comfortaa 300 is the voice: headings, stat numbers and map counts, round and light so large sizes stay friendly rather than loud. Cabinet Grotesk (Indian Type Foundry, Fontshare) carries everything you read or tap, in 300 for running text and 400 for titles, labels and controls, stepping to 500 only on the active tab or segment, and counts in pills. Nothing is heavier than 500 and nothing is set in capitals.
 
-Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, the figures themselves at weight 400 and any word between them (the h in 3 h 00) left at 300, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 27.6/40.8 for the one desktop subline, `body` 19.2/28.8, `body-sm` 18/26.4 for notes under a section, `secondary` 19.2/28.8, `caption` 18/26.4, raised two steps on 17 Oct 2026 so no reading text is under 18. `title` 20.4/26.4 names a route, spot or organism; `title-sm` 19.2/26.4 names a search result or a fact. Reading text was raised a fifth over the headings, with line heights a fifth taller to match: headings, stats, spot numbers and buttons kept their size. Controls follow: `field` 19.2, `chip` 19.2, `tab` 14.4, `pill` 18, `stat-label` 14.4. `button-small` 14 is a small inner glass button on a sheet, such as Show on map. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
+Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, the figures themselves at weight 400 and any word between them (the h in 3 h 00) left at 300, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 27.6/31.7 for the one desktop subline, `body` 19.2/22.1, `body-sm` 18/20.7 for notes under a section, `secondary` 19.2/22.1, `caption` 18/20.7, raised two steps on 17 Oct 2026 so no reading text is under 18. `title` 20.4/23.5 names a route, spot or organism; `title-sm` 19.2/22.1 names a search result or a fact. Every text line height is `1.15`, unitless, so it follows the font size wherever that changes: 1rem text sits on 1.15rem, 18 on 20.7, a 34 heading on 39.1 (20 Oct 2026). Reading text was raised a fifth over the headings: headings, stats, spot numbers and buttons kept their size. Controls follow: `field` 19.2, `chip` 19.2, `tab` 14.4, `pill` 18, `stat-label` 14.4. `button-small` 14 is a small inner glass button on a sheet, such as Show on map. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
 
 ## Layout
 

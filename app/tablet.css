@@ -65,6 +65,8 @@
     border-radius: var(--radius-card);
     transition: translate 600ms var(--ease-move);
   }
+  /* the section chips bleed exactly the panel's 1.2rem sides, no further, or the panel scrolls sideways */
+  .b1 .fb-strip { margin: 0 -1.2rem; padding-inline: 1.2rem; }
   .b1 .ms-grab,
   .b1 .ms-handle { display: none; }
   /* the pinned bar sits under the panel, its width */
