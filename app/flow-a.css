@@ -303,7 +303,7 @@
 .sg-head > div { flex: 1 1 11rem; min-width: 0; }
 /* the suggestions title takes the h2 step at every size, as a route's own title does on B1; it stays the page's h1 */
 .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
-.sg-scope { margin: 0 0 0.675rem; font-size: var(--text-body-sm); line-height: 1.15; font-weight: 400; }
+.sg-scope { margin: 0 0 0.675rem; font-size: var(--text-title); line-height: 1.15; font-weight: 400; }
 /* phone: the switch, the title and the place a step smaller, so the title and its map button share a line */
 @media (max-width: 35.74rem) {
   .sg .seg-opt { font-size: 1.025rem; }
@@ -311,18 +311,20 @@
   .sg .ms-bar { left: 0.65rem; }
   .sg-head { padding-left: 0.8rem; }
   .sg .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
-  .sg-scope { font-size: var(--text-body-sm); line-height: var(--text-body-sm--line-height); }
   /* the map shows above the sheet already: no map button, so the title keeps one line */
   .sg .sg-toggle { display: none; }
   .sg .ms-title { white-space: nowrap; }
 }
 /* the pin before the region, its drawn edge on the title's left edge and its middle on the words' */
-.sg-scope { display: flex; align-items: center; gap: 0.125rem; }
+.sg-scope { display: flex; align-items: center; gap: 0.1125rem; }
 /* the pin as tall as the capitals, and the pin with its ring centred on them: the round head rises
    a little over the cap line, as round letters do, and the ring sits as far under the baseline.
    In em, so it follows the words at every size (the drawing fills 0.754 of its box, the capitals
    stand 0.576em) */
 .sg-pin { --pin: 0.764em; position: relative; top: -0.087em; display: flex; flex-shrink: 0; margin: 0 0 0 -0.0615rem; }
+/* the pin as large as the route card's beside its spot marks: an 18 drawing (0.754 of its box), its drawn edge
+   kept on the title's left edge and the line kept at its height */
+.sg-scope .sg-pin { --pin: calc(1.125rem / 0.754); top: calc(-0.087em - 0.0125rem); margin: -0.1rem 0 -0.1rem -0.199rem; }
 .sg-pin-icon { width: var(--pin); height: var(--pin); }
 /* the pin spins in once the sheet is up, calmly: a full turn about its upright axis, like a coin on
    its edge, fading in through the first third and slowing to rest with no overshoot */
@@ -776,7 +778,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 }
 /* the header and route card from the tablet up, set on /tweak at 1280 */
 @media (min-width: 35.75rem) {
-  .sg-scope { font-size: 1.2rem; line-height: 1.15; }
   .sg .ms-title { font-size: 1.65rem; line-height: 1.15; margin: 1.875rem 0 -1rem; }
   /* the place line and title stand in from the panel edge, in line with the card photographs */
   .sg-head { margin-left: 0.6vw; }
@@ -957,7 +958,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg .seg-opt[aria-pressed="true"] > svg.seg-routes { stroke-width: 1.5; }
 /* the tree is narrower than Routes' loop, so it is drawn at 21 to read as the same size; its line
    kept at the 18 icon's weight (x 18/21) and the extra box taken back in the margins */
-.sg .seg-opt:last-of-type > svg { margin: 0 0.0711rem 0 0.0667rem; }
+.sg .seg-opt:last-of-type > svg { margin: 0 0.0305rem 0 0.0667rem; }
 /* the open option's icon gets heavier, its line 40% thicker as on the nav's Map, and the two ends of
    Routes' line fill in */
 .sg .seg-opt > svg,
@@ -1265,7 +1266,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .ms-bar { top: calc(0.45rem + env(safe-area-inset-top, 0px)); }
   /* the place line's pin a little further from the sheet's top than from its side */
   .sg-head { margin-top: -0.9375rem; }
-  .sg-scope { font-size: 1.125rem; line-height: 1.15; }
   .sg .ms-title { font-size: 1.5rem; line-height: 1.15; margin: 1.625rem 0 -1rem; }
   /* the title's negative bottom margin would pull Organisms' count line into it: take it back */
   .sg .ms-title + .ms-lead { margin-top: calc(1rem + 0.3375rem); }
@@ -1286,7 +1286,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .ms-bar { top: calc(0.4rem + env(safe-area-inset-top, 0px)); }
   .ms-handle { width: 2.625rem; height: 0.25rem; }
   .ms-grab .ms-handle { margin-top: -7.5px; }
-  .sg-scope { font-size: 1.05rem; }
   .sg .ms-title { font-size: 1.3rem; margin: 1.4375rem 0 -1rem; }
   .sug-track { aspect-ratio: 100 / 74; }
   .sug-name { font-size: 1.275rem; }
@@ -1345,7 +1344,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg-head { padding-left: 0.5rem; }
 }
 
-/* the place line on phones: 1.125rem from 375, 1.15rem from 390, 1.2rem from 430 up (the tablet and desktop's size) */
-@media (min-width: 26.875rem) and (max-width: 35.74rem) { .sg-scope { font-size: 1.2rem; } }
-@media (min-width: 24.375rem) and (max-width: 26.87rem) { .sg-scope { font-size: 1.15rem; } }
-@media (min-width: 23.4375rem) and (max-width: 24.37rem) { .sg-scope { font-size: 1.125rem; } }
+/* the place line: title from 430 up (above), body from 375, body-sm on the smallest phones */
+@media (min-width: 23.4375rem) and (max-width: 26.87rem) { .sg-scope { font-size: var(--text-body); } }
+@media (max-width: 23.43rem) { .sg-scope { font-size: var(--text-body-sm); } }

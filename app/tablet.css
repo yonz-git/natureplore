@@ -118,7 +118,7 @@
   .ms-sheet,
   .ms-sheet.is-short { left: 3vw; right: 3vw; }
   /* reading text at the measure, left-aligned; photographs, stat tiles and maps keep the width */
-  :is(.org-main, .org-side, .saved-sheet, .cp-dialog-sheet) > :not(.org-photo, .cp-photo, .dc-hero, .cp-aerial, .cp-stats, .org-credit) {
+  :is(.org-main, .org-side, .saved-sheet, .cp-dialog-sheet) > :not(.org-photo, .cp-photo, .dc-hero, .cp-stats, .org-credit) {
     max-width: var(--spacing-measure);
   }
 }

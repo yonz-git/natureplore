@@ -1,6 +1,6 @@
 // The spots of a route and what B1 says about it beyond its card, for the four routes on the map:
 // Grumsin beech forest loop, Linum wet meadows loop, Tegeler Fließ valley path and Tempelhofer Feld
-// loop. The spots in season per month, getting there, and which claims are along it. Content is the
+// loop. Getting there, and which claims are along it. Content is the
 // sample content of the flow and IA redesign (§3), as on the boards B1, L3-1 to L3-6, L4 and B4.
 // Each spot is about a species GBIF has recorded at that spot, with its months and last record from GBIF
 // (.design/gbif/spots_gbif.py and season.py; spots_ts.py writes the spot arrays): the months it is recorded
@@ -39,9 +39,6 @@ export type Spot = {
 
 export type RouteDetail = {
   spots: Spot[];
-  /** how many spots are in season in each month, January first */
-  season: number[];
-  seasonNote: string;
   /** where the spots sit along the line, from 0 at the start to 1 at the finish */
   getting: [string, string][];
   claims: Claim[];
@@ -348,19 +345,10 @@ const asOfNow = (s: Spot): Spot =>
     ? { ...s, look: (CAPTURE && s.captureLook?.[NOW]) || s.look, out: undefined }
     : { ...s, look: [], out: `Not in season in ${MONTH}. ${s.outText}` };
 
-// how many of a route's spots are in season in each month, January first
-const seasonOf = (spots: Spot[]) => Array.from({ length: 12 }, (_, m) => spots.filter((s) => s.months.includes(m)).length);
-const GRUMSIN_SEASON = seasonOf(GRUMSIN_SPOTS);
-const LINUM_SEASON = seasonOf(LINUM_SPOTS);
-const TEGEL_SEASON = seasonOf(TEGEL_SPOTS);
-const TEMPELHOF_SEASON = seasonOf(TEMPELHOF_SPOTS);
-const COUNT_WORDS = ["None", "One", "Two", "Three", "Four", "Five", "Six", "Seven"];
 
 const DETAILS: Record<string, RouteDetail> = {
   grumsin: {
     spots: GRUMSIN_SPOTS.map(asOfNow),
-    season: GRUMSIN_SEASON,
-    seasonNote: `${COUNT_WORDS[GRUMSIN_SEASON[NOW]]} of the five spots ${GRUMSIN_SEASON[NOW] === 1 ? "is" : "are"} in season in ${MONTH}. Nothing here promises a sighting.`,
     getting: [
       ["Start", "Altkünkendorf car park"],
       ["Ascent", "Rolling, about 150 m total"],
@@ -371,8 +359,6 @@ const DETAILS: Record<string, RouteDetail> = {
   },
   linum: {
     spots: LINUM_SPOTS.map(asOfNow),
-    season: LINUM_SEASON,
-    seasonNote: `${COUNT_WORDS[LINUM_SEASON[NOW]]} of the six spots ${LINUM_SEASON[NOW] === 1 ? "is" : "are"} in season in ${MONTH}. Nothing here promises a sighting.`,
     getting: [
       ["Start", "Dorfkirche Linum"],
       ["Ascent", "Flat"],
@@ -383,8 +369,6 @@ const DETAILS: Record<string, RouteDetail> = {
   },
   tegel: {
     spots: TEGEL_SPOTS.map(asOfNow),
-    season: TEGEL_SEASON,
-    seasonNote: `${COUNT_WORDS[TEGEL_SEASON[NOW]]} of the seven spots ${TEGEL_SEASON[NOW] === 1 ? "is" : "are"} in season in ${MONTH}. Nothing here promises a sighting.`,
     getting: [
       ["Start", "S-Bahn Hermsdorf, ends in Alt-Lübars"],
       ["Ascent", "Flat"],
@@ -395,8 +379,6 @@ const DETAILS: Record<string, RouteDetail> = {
   },
   tempelhof: {
     spots: TEMPELHOF_SPOTS.map(asOfNow),
-    season: TEMPELHOF_SEASON,
-    seasonNote: `${COUNT_WORDS[TEMPELHOF_SEASON[NOW]]} of the five spots ${TEMPELHOF_SEASON[NOW] === 1 ? "is" : "are"} in season in ${MONTH}. Nothing here promises a sighting.`,
     getting: [
       ["Start", "Tor 5, Columbiadamm"],
       ["Ascent", "Flat"],
