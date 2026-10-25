@@ -63,7 +63,7 @@ export type Route = {
 export const ROUTES: Route[] = [
   {
     id: "tempelhof",
-    name: "Tempelhofer Feld loop",
+    name: "Tempelhofer Feld",
     where: "Loop in Tempelhof, Berlin",
     line: "5.7 km loop, 1 h 40 at a looking pace",
     km: "5.7",
@@ -76,7 +76,7 @@ export const ROUTES: Route[] = [
     image: "/img/routes/tempelhof.jpg",
     summary: "Grassland, 5 spots, 31,671 records within 250 m of the line",
     notable: { text: "Notable now: skylarks on the open meadow, until October" },
-    from: "Loop from the Columbiadamm main entrance, Tempelhof, Berlin",
+    from: "From the Columbiadamm main entrance, Tempelhof, Berlin",
     description:
       "A flat loop around the old airfield, on the runways and the paths beside the meadows. Skylarks sing over the grassland from spring into early autumn. It starts at the Columbiadamm entrance, near U-Bahn Platz der Luftbrücke, and is step-free all the way round.",
     stops: [
@@ -124,7 +124,7 @@ export const ROUTES: Route[] = [
   },
   {
     id: "linum",
-    name: "Linum wet meadows loop",
+    name: "Linum wet meadows",
     where: "Loop in Linum, Brandenburg",
     line: "6.3 km loop, 1 h 50 at a looking pace",
     km: "6.3",
@@ -137,7 +137,7 @@ export const ROUTES: Route[] = [
     image: "/img/routes/linum.jpg",
     summary: "Wetland, 6 spots, 14,769 records within 250 m of the line",
     notable: { text: "Notable now: cranes gathering, September to November", organism: "common-crane" },
-    from: "Loop from the village church in Linum, Brandenburg",
+    from: "From the village church in Linum, Brandenburg",
     description:
       "An easy, flat loop from the village church along the fish ponds and back across the wet meadows. In autumn thousands of cranes gather on the ponds at dusk. It is about an hour by car from Berlin, with parking in the village. Keep to the paths in crane season.",
     stops: [
@@ -154,7 +154,7 @@ export const ROUTES: Route[] = [
   },
   {
     id: "grumsin",
-    name: "Grumsin beech forest loop",
+    name: "Grumsin beech forest",
     where: "Loop in Grumsin, Brandenburg",
     line: "10.2 km loop, 3 h at a looking pace",
     km: "10.2",
@@ -167,7 +167,7 @@ export const ROUTES: Route[] = [
     image: "/img/routes/grumsin.jpg",
     summary: "Beech forest, 5 spots, 1,060 records within 250 m of the line",
     notable: { text: "Notable now: bog arum at Schwarzer See, until the end of September" },
-    from: "Loop from the Altkünkendorf car park, Uckermark, Brandenburg",
+    from: "From the Altkünkendorf car park, Uckermark, Brandenburg",
     description:
       "The Orange Beech Leaf, a waymarked loop along the edge of the Grumsin beech forest, a world heritage site. Old beeches, two forest lakes and the shore of Wolletzsee, with fungi on fallen trunks in autumn. It starts at the Altkünkendorf car park. Stay on the marked path.",
     stops: [

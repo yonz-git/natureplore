@@ -2,7 +2,7 @@
 // OpenStreetMap tracks and paths (© OpenStreetMap contributors, ODbL). A route without a line here
 // is drawn through its spots until its own line is mapped.
 
-// Linum wet meadows loop: from the Dorfkirche Linum out along the canal path, round the Teichland fish ponds
+// Linum wet meadows: from the Dorfkirche Linum out along the canal path, round the Teichland fish ponds
 // past both bird hides, and back across the meadows into the village. Built by .design/linum-route/line.py.
 export const LINUM_LINE: [number, number][] = [
   [52.75773, 12.88274],
@@ -108,7 +108,7 @@ export const LINUM_LINE: [number, number][] = [
   [52.75773, 12.88274],
 ];
 
-// Grumsin beech forest loop: the Oranges Buchenblatt ("Wildnispfad") waymarked trail, OSM relation 10982790,
+// Grumsin beech forest: the Oranges Buchenblatt ("Wildnispfad") waymarked trail, OSM relation 10982790,
 // from the Altkünkendorf car park round to Wolletzsee and back. Built by .design/grumsin-route/line.py.
 export const GRUMSIN_LINE: [number, number][] = [
   [53.01235, 13.87507],
@@ -438,7 +438,7 @@ export const TEGEL_LINE: [number, number][] = [
   [52.61973, 13.35703],
 ];
 
-// Tempelhofer Feld loop: from the Columbiadamm main entrance (Tor 5) round the old airfield on its own paths and
+// Tempelhofer Feld: from the Columbiadamm main entrance (Tor 5) round the old airfield on its own paths and
 // runways, past the Allmende-Kontor gardens and the fenced meadows. Routed over OpenStreetMap paths by
 // .design/tempelhof-route/line.py.
 export const TEMPELHOF_LINE: [number, number][] = [

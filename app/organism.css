@@ -144,7 +144,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
 }
 .org-rows li + li .org-row { border-top: 1px solid var(--color-divider); }
 .org-row > span { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-.org-row b { font-size: var(--text-body); line-height: 1.65rem; font-weight: 400; }
+.org-row b { font-size: var(--text-body); line-height: 1.15; font-weight: 400; }
 .org-row > span > span { font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
 .org-row > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
 

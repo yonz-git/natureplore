@@ -750,11 +750,14 @@ export default function RegionMap({
             );
           }
 
+          // the start sheet's clusters: the welcome route's glow dot, no count to read (the count
+          // stays in its label)
+          const glow = fixedZoom && pin.count !== undefined;
           return (
             <button
               key={pin.id}
               type="button"
-              className={`a1-pin glass glass-pin${pin.count === undefined ? " a1-pin-place" : ""}${pin.current ? " is-current" : ""}`}
+              className={glow ? "a1-pin a1-pin-glow" : `a1-pin glass glass-pin${pin.count === undefined ? " a1-pin-place" : ""}${pin.current ? " is-current" : ""}`}
               aria-current={pin.current ? "true" : undefined}
               style={style}
               aria-label={fixedZoom ? pin.label.replace(", zoom in", "") : pin.label}
@@ -767,7 +770,7 @@ export default function RegionMap({
                 )
               }
             >
-              {pin.count ?? (
+              {glow ? <span className="glow-dot" aria-hidden="true" /> : pin.count !== undefined ? <span className="a1-pin-num">{pin.count}</span> : (
                 <svg width="1rem" height="1rem" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 19c0-9 5-14 15-14 0 10-5 15-14 15" />
                   <path d="M5 19 13 11" />

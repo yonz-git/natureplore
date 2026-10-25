@@ -141,11 +141,11 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
     <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill" ref={seg} inert={searching}>
       <span className="seg-thumb" ref={thumb} aria-hidden="true" />
       <button type="button" className="seg-opt" aria-pressed={show === "routes"} onClick={() => setShow("routes")}>
-        <RoutesIcon size={25} className="seg-routes" />
+        <RoutesIcon size={18.23} className="seg-routes" />
         <span className="seg-label" data-text="Routes">Routes</span>
       </button>
       <button type="button" className="seg-opt" aria-pressed={show === "organisms"} onClick={() => setShow("organisms")}>
-        <OrganismsIcon size={21} className="seg-orgs" />
+        <OrganismsIcon size={21.49} className="seg-orgs" />
         <span className="seg-label" data-text="Organisms">Organisms</span>
       </button>
     </div>
@@ -245,8 +245,9 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
                 {/* keyed so the pin rolls in again for each region */}
                 <span className="sg-pin" key={region.id}>
                   {/* a ring on the ground round the pin's tip */}
-                  <svg className="sg-pin-ring" viewBox="0 0 12 5" aria-hidden="true">
-                    <ellipse cx="6" cy="2.5" rx="5.4" ry="1.9" />
+                  {/* drawn on the pin's own 24 grid and laid exactly over it, centred under its tip (12, 21) */}
+                  <svg className="sg-pin-ring" viewBox="0 0 24 24" aria-hidden="true">
+                    <ellipse cx="12" cy="20.9" rx="7.2" ry="2.5" />
                   </svg>
                   <PinIcon size={18} className="sg-pin-icon" />
                 </span>
