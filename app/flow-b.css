@@ -125,12 +125,12 @@ a.fb-row:active { transform: scale(0.985); }
 .fb-pill svg { color: var(--color-mist); }
 .fb-pill.is-none { color: var(--color-on-ground-soft); }
 /* the legend under the proportion bar: each group's own icon in its bar colour, then its count */
-/* the group icons in every pill row take their group's colour: B1's legend, its in-season list and the organism pills on the cards */
-:is(.fb-legend, .pill-org, .fb-in-season-tile) .group-icon.is-plants { color: var(--color-group-plants); }
-:is(.fb-legend, .pill-org, .fb-in-season-tile) .group-icon.is-herbs { color: var(--color-group-herbs); }
-:is(.fb-legend, .pill-org, .fb-in-season-tile) .group-icon.is-mushrooms { color: var(--color-group-mushrooms); }
-:is(.fb-legend, .pill-org, .fb-in-season-tile) .group-icon.is-birds { color: var(--color-group-birds); }
-:is(.fb-legend, .pill-org, .fb-in-season-tile) .group-icon.is-mammals { color: var(--color-group-mammals); }
+/* the group icons in every pill row take their group's colour: B1's legend, its in-season list, its year chart and the organism pills on the cards */
+:is(.fb-legend, .pill-org, .fb-in-season-tile, .fb-heat) .group-icon.is-plants { color: var(--color-group-plants); }
+:is(.fb-legend, .pill-org, .fb-in-season-tile, .fb-heat) .group-icon.is-herbs { color: var(--color-group-herbs); }
+:is(.fb-legend, .pill-org, .fb-in-season-tile, .fb-heat) .group-icon.is-mushrooms { color: var(--color-group-mushrooms); }
+:is(.fb-legend, .pill-org, .fb-in-season-tile, .fb-heat) .group-icon.is-birds { color: var(--color-group-birds); }
+:is(.fb-legend, .pill-org, .fb-in-season-tile, .fb-heat) .group-icon.is-mammals { color: var(--color-group-mammals); }
 /* centred on the ink, not the boxes: 10 from the pill's edge to the icon's drawing on the left and
    to the last figure on the right, the figures trimmed to their cap height so they sit on the
    pill's middle, and each icon's own empty margin inside its 24 box cancelled, measured per icon */
@@ -164,7 +164,9 @@ a.fb-row:active { transform: scale(0.985); }
   border: 0.5px solid var(--color-inner-edge);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
 }
-.fb-claim-photo { width: auto; margin: 0.75rem 0.75rem 0; }
+/* the card's width less its 0.75rem inset: stretched, as .sug-photo starts aligned and would take the file's own width;
+   its height 70% of that width at every size */
+.fb-claim-photo { align-self: stretch; width: auto; aspect-ratio: 10 / 7; margin: 0.75rem 0.75rem 0; }
 .fb-claim-photo + .fb-claim-open { padding-top: 1rem; }
 .fb-claim-open,
 .fb-claim-act {
@@ -420,42 +422,23 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-recorded .btn { margin-top: 0.75rem; width: auto; align-self: center; }
 .fb-legend { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
-/* spots in season by month: this month in mist */
-.fb-season { margin: 0; padding: 0; list-style: none; display: flex; align-items: flex-end; gap: 0.25rem; }
-.fb-season > div {
-  flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.375rem;
-  font-size: 0.9rem;
-  line-height: 1;
-  font-weight: 300;
-  color: var(--color-on-ground-soft);
-}
-.fb-season-bar { width: 100%; border-radius: 0.375rem; background: var(--color-bar-rest); }
-.fb-season > div.is-now { color: var(--color-on-ground); font-weight: 500; }
-.fb-season > div.is-now .fb-season-bar { background: var(--color-mist); }
 
 /* when each group is active (components/YearChart.tsx): a heatmap, a row a group in its own colour, a column a
    month, each cell in one of four shades of the row's colour against its busiest month, an empty month a faint
    outline. This month's cells carry a light ring and its letter is bright. */
 .fb-heat { margin: 0; gap: 0.875rem; }
 .fb-heat table { table-layout: fixed; border-collapse: separate; border-spacing: 0.1875rem; margin: -0.1875rem; width: calc(100% + 0.375rem); }
-.fb-heat thead td { width: 6.25rem; }
+/* the rows are named by their icons alone: the column is the icon and a gap before the first month */
+.fb-heat thead td { width: 2rem; }
 .fb-heat thead th { padding-bottom: 0.125rem; font-size: 0.8rem; line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); text-align: center; }
 .fb-heat thead th.is-now { color: var(--color-on-ground); font-weight: 500; }
 .fb-heat tbody th {
   padding-right: 0.375rem;
-  font-size: var(--text-caption);
-  line-height: 1.15;
-  font-weight: 400;
+  line-height: 1;
   text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
-.fb-heat tbody th svg { vertical-align: -0.2rem; margin-right: 0.375rem; }
+/* the group's icon in its colour names the row; the name itself is for screen readers and the tooltip */
+.fb-heat tbody th svg { display: block; }
 .fb-heat td { padding: 0; }
 .fb-heat tr.is-plants { --c: var(--color-group-plants); }
 .fb-heat tr.is-herbs { --c: var(--color-group-herbs); }
