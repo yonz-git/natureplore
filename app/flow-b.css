@@ -571,10 +571,6 @@ button.fb-row:active { transform: scale(0.985); }
   transition: opacity 200ms var(--ease-out);
 }
 .fb-spot-row.is-open .fb-spot-detail { grid-template-rows: 1fr; }
-/* the parts below what to look for: a small heading over the month grid, the claim, the rest */
-.fb-spot-part { display: flex; flex-direction: column; gap: 0.625rem; }
-.fb-spot-part h3 { margin: 0; font-family: var(--font-text); letter-spacing: normal; }
-.fb-spot-part .fb-small { margin: -0.25rem 0 0; }
 /* the space under the detail is a margin inside it, so it folds away with the rest */
 .fb-spot-detail > div > :last-child { margin-bottom: 1.125rem; }
 .fb-spot-row.is-open .fb-spot-detail > div { opacity: 1; transition: opacity 280ms var(--ease-out) 80ms; }
@@ -745,10 +741,13 @@ button.fb-row:active { transform: scale(0.985); }
 .fb-org-tiles small + small { margin-top: 0; }
 /* the pin of the region line (app/flow-a.css .sg-pin), spaced as there, then the spots it was recorded near as
    their marks at three quarters of the map's size; it rolls in and the ring opens once the line is on screen
-   (components/InSeasonList.tsx adds is-seen), until then both wait unseen */
-.fb-org-tiles small.fb-in-season-where { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.125rem; font-size: 1.125rem; line-height: 1.15; font-weight: 400; color: var(--color-on-ground); }
+   (components/InSeasonList.tsx adds is-seen), until then both wait unseen. The same line on a claim card. */
+:is(.fb-org-tiles, .fb-claim) small.fb-in-season-where { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.43rem; font-size: 1.125rem; line-height: 1.15; font-weight: 400; color: var(--color-on-ground); }
 /* beside the marks the pin stands 18 tall to their 24 (its drawing fills 0.754 of its box), centred on them */
-.fb-org-tiles .fb-in-season-where .sg-pin { --pin: calc(1.125rem / 0.754); top: -0.075rem; margin-left: -0.299rem; }
+:is(.fb-org-tiles, .fb-claim) .fb-in-season-where .sg-pin { --pin: calc(1.125rem / 0.754); top: -0.075rem; margin-left: -0.299rem; }
 .fb-org-spots { margin-left: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .fb-org-spots .spot-mark { --mark: 1.5rem; font-size: calc(var(--text-count) * 1.35 * 0.75); box-shadow: 0 0 0 0.125rem rgb(from var(--color-primary) r g b / 0.6); }
 .fb-in-season-where:not(.is-seen) :is(.sg-pin-icon, .sg-pin-ring) { animation: none; opacity: 0; }
+/* on the claim card, under the source lines as far as they stand apart, then the card's 1rem to the rule */
+.fb-claim-open:has(+ .fb-in-season-where) { padding-bottom: 0; }
+.fb-claim small.fb-in-season-where { margin: 0.5rem 1.25rem 1rem; }

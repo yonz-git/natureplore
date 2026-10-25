@@ -558,12 +558,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                         <div id={`spot-${s.n}-detail`} className="fb-spot-detail" inert={!open}>
                           <div>
                             <ActionRow spot={s} />
-                            {detail.claims[0] && (
-                              <div className="fb-spot-part">
-                                <h3 className="fb-label">What is happening here</h3>
-                                <ClaimCard claim={detail.claims[0]} />
-                              </div>
-                            )}
                           </div>
                         </div>
                       </li>
