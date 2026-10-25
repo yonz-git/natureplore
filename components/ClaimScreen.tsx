@@ -1,7 +1,7 @@
 "use client";
 
 // C1a, C1b and C6 · the claim: what is the claim, and what answers it? The tags, the claim with
-// its site and review date, the two aerial dates where the figure comes from a survey, the figure
+// its site and review date, the photograph its card carries (lib/photos.ts), the figure
 // with who published it and "Read the source" (C2), then what you can do (C3, C5, C7) or, for a
 // recovering site, what was done and how to keep it that way, and the route it is on. On the
 // phone a sheet over the photograph; from 64rem a wide sheet in two columns, as on the C1 and C6
@@ -15,6 +15,7 @@ import { ActionRows, BackTop, Stat, Tags } from "@/components/CParts";
 import { CheckIcon, ChevronIcon, MapIcon } from "@/components/Icons";
 import { backLabel, useBack } from "@/lib/back";
 import type { Claim } from "@/lib/claims";
+import { creditLine, PHOTOS } from "@/lib/photos";
 
 export default function ClaimScreen({ claim }: { claim: Claim }) {
   const back = useBack("/learn");
@@ -24,6 +25,9 @@ export default function ClaimScreen({ claim }: { claim: Claim }) {
   useEffect(() => {
     if (location.hash === "#read-source") document.getElementById("read-source")?.focus();
   }, []);
+
+  // the same photograph as the claim's card on the route, decorative
+  const photo = PHOTOS[`claims/${claim.id}`];
 
   const main = (
     <>
@@ -35,18 +39,12 @@ export default function ClaimScreen({ claim }: { claim: Claim }) {
         {claim.site}. {claim.reviewed}
       </p>
 
-      {claim.aerial && (
-        <figure className="cp-aerial">
-          <div role="img" aria-label={`Aerial photographs of the designated site, ${claim.aerial[0]} and ${claim.aerial[1]}, not in the prototype yet`}>
-            <span>
-              <em>Aerial, {claim.aerial[0]}</em>
-            </span>
-            <span>
-              <em>Aerial, {claim.aerial[1]}</em>
-            </span>
-          </div>
-          <figcaption className="org-small">The designated site, two dates. Aerial photographs to come.</figcaption>
-        </figure>
+      {photo && (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="org-photo cp-photo cp-claim-photo" src={photo.src} alt="" />
+          <p className="org-credit">{creditLine(photo)}</p>
+        </>
       )}
 
       <div className="cp-stats cp-stats-one">
@@ -93,7 +91,7 @@ export default function ClaimScreen({ claim }: { claim: Claim }) {
           <h2 className="org-h2">
             Keep it <em>that way</em>
           </h2>
-          <div className="org-box fb-rule">
+          <div className="org-box fb-rule cp-keep">
             <span className="fb-rule-line">{claim.keep.line}</span>
             <span className="fb-rule-why">{claim.keep.why}</span>
           </div>

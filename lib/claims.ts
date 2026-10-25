@@ -18,8 +18,8 @@ export type Claim = {
   /** the designated site: a scope label, never a link, because there is no site page */
   site: string;
   reviewed: string;
-  /** the two dates of the aerial comparison, when the figure comes from one */
-  aerial?: [string, string];
+  /** the route's spots where the claim can be seen, shown on its card behind a pin */
+  spots?: number[];
   stat: { label: string; value: string; unit: string };
   sourceLine: string;
   source: {
@@ -52,7 +52,7 @@ export const CLAIMS: Record<string, Claim> = {
     ],
     site: "NSG and FFH-Gebiet Oberes Rhinluch",
     reviewed: "Last reviewed Mar 2026",
-    aerial: ["1990", "2024"],
+    spots: [5],
     stat: { label: "Wet meadow since 1990", value: "−40", unit: "%" },
     sourceLine: "Landesamt für Umwelt Brandenburg, 2023, aerial survey. True of the whole designated site.",
     source: {
@@ -104,7 +104,7 @@ export const CLAIMS: Record<string, Claim> = {
     ],
     site: "LSG Tegeler Fließtal",
     reviewed: "Recovering since 2022, last reviewed Jun 2026",
-    aerial: ["2012", "2025"],
+    spots: [5],
     stat: { label: "Wet meadow since 2012", value: "+15", unit: "%" },
     sourceLine: "Senatsverwaltung für Umwelt Berlin, 2025, aerial survey. True of the whole designated site.",
     source: {

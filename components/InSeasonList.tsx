@@ -56,8 +56,8 @@ export function InSeasonList({ routeId }: { routeId: string }) {
 }
 
 /** The region line's pin on its ground ring (SuggestionsScreen), then the spots as their numbered marks. The pin
- *  rolls in and the ring opens only once the line is on screen, and plays once. */
-function Where({ spots }: { spots: number[] }) {
+ *  rolls in and the ring opens only once the line is on screen, and plays once. Also on the claim card. */
+export function Where({ spots }: { spots: number[] }) {
   const ref = useRef<HTMLElement>(null);
   const [seen, setSeen] = useState(false);
   useEffect(() => {

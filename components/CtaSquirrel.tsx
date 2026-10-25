@@ -11,9 +11,10 @@ gsap.registerPlugin(MotionPathPlugin, MorphSVGPlugin);
 
 // The squirrel from the wordmark lives on A0's green button while the pointer is on it: it appears
 // on the ground to the left, hops onto the button, hops twice along its top, runs to the right end and sits
-// there for as long as the pointer stays. When the pointer leaves, or the button is clicked, it
-// leaps up and away to the right as if it could fly, shrinking and fading as it goes; a click waits
-// for most of that leap before it opens the map.
+// there to nibble. For as long as the pointer stays it loops: after two nibbles it leaps away and,
+// a moment later, comes back from the left and crosses again. When the pointer leaves, or the button
+// is clicked, it leaps up and away to the right as if it could fly, shrinking and fading as it goes,
+// and stays gone; a click waits for most of that leap before it opens the map.
 // It takes the button's own fill, the primary to primary-deep gradient.
 // On a touch screen there is no hover, so it comes on its own as the page lands, once the button
 // has arrived, and sits nibbling there; a tap sends it off before the map opens, as a click does.
@@ -76,6 +77,8 @@ const OPEN_AFTER = 0.4; // seconds into the flight, a click opens the map
 // everything above is written at the pace it was drawn; the squirrel plays it this much faster
 const SPEED = 2;
 const ARRIVED = 1.1; // seconds after the page lands, the button has arrived (.a02-cta in app/welcome.css)
+const NIBBLES = 2; // under the pointer, it nibbles this many times before it leaps off and comes round again
+const AGAIN = 0.7; // seconds between leaping off and coming back
 
 export default function CtaSquirrel() {
   const ref = useRef<HTMLSpanElement>(null);
@@ -89,6 +92,8 @@ export default function CtaSquirrel() {
       const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
       const calm = window.matchMedia("(prefers-reduced-motion: no-preference)");
       let state: "idle" | "on" | "away" = "idle";
+      let hovering = false; // the pointer is on the button, so the crossing loops
+      let round: gsap.core.Tween | null = null; // the wait before it comes back round
       let tl: gsap.core.Timeline | null = null;
       let idle: gsap.core.Timeline | null = null; // the nibbling, while it sits
       const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -125,7 +130,13 @@ export default function CtaSquirrel() {
             [arm, { morphSVG: armD, duration, ease }],
             [eye, { attr: eyeAt, duration, ease }],
           ] as const;
-          idle = gsap.timeline({ repeat: -1, repeatDelay: 1.1, delay: 0.5 });
+          // under the pointer it nibbles NIBBLES times and goes round again; on a touch screen it stays
+          idle = gsap.timeline({
+            repeat: hovering ? NIBBLES - 1 : -1,
+            repeatDelay: 1.1,
+            delay: 0.5,
+            onComplete: () => void (state === "on" && hovering && leave(true)),
+          });
           const at = (t: number, parts: ReturnType<typeof shape>) => parts.forEach(([target, vars]) => idle!.to(target, vars, t));
           at(0, shape(NIBBLING, ARM.nibble, EYE.nibble, 0.3, "power2.inOut"));
           at(0.32, shape(CHEWING, ARM.chew, EYE.chew, 0.12, "sine.inOut"));
@@ -191,8 +202,9 @@ export default function CtaSquirrel() {
           .to(el, { scaleY: 1, scaleX: 1, duration: 0.26, ease: "power3.out" }, "sit+=0.7");
       });
 
-      // leaps away up and right from wherever it is, stretching out, and is gone
-      const leave = contextSafe(() => {
+      // leaps away up and right from wherever it is, stretching out, and is gone; with `again`, while
+      // the pointer is still on the button, it comes back round
+      const leave = contextSafe((again = false) => {
         if (state !== "on") return;
         state = "away";
         tl?.kill();
@@ -202,7 +214,12 @@ export default function CtaSquirrel() {
         const y = gsap.getProperty(el, "y") as number;
         const away = { x: x + 6 * r, y: y - 7 * r };
         tl = gsap
-          .timeline({ onComplete: () => void (state = "idle") })
+          .timeline({
+            onComplete: () => {
+              state = "idle";
+              if (again && hovering) round = gsap.delayedCall(AGAIN, () => void (hovering && enter()));
+            },
+          })
           .timeScale(SPEED)
           .to(el, { scaleY: 0.88, scaleX: 1.06, duration: 0.08, ease: "power2.out" })
           .addLabel("leap")
@@ -235,8 +252,17 @@ export default function CtaSquirrel() {
       });
 
       // a mouse or pen brings it on and sends it off; a finger only taps, and the tap is the click
-      const over = (e: PointerEvent) => void (e.pointerType !== "touch" && fine.matches && enter());
-      const out = (e: PointerEvent) => void (e.pointerType !== "touch" && fine.matches && leave());
+      const over = (e: PointerEvent) => {
+        if (e.pointerType === "touch" || !fine.matches) return;
+        hovering = true;
+        enter();
+      };
+      const out = (e: PointerEvent) => {
+        if (e.pointerType === "touch" || !fine.matches) return;
+        hovering = false;
+        round?.kill();
+        leave();
+      };
 
       // A touch screen: it comes as the page lands (a0-open, set by components/WelcomeLogo.tsx),
       // once the button has arrived. If the opening is scrolled back up before the end, it goes.
@@ -268,6 +294,7 @@ export default function CtaSquirrel() {
       return () => {
         watch.disconnect();
         landing?.kill();
+        round?.kill();
         button.removeEventListener("pointerenter", over);
         button.removeEventListener("pointerleave", out);
         button.removeEventListener("click", click);

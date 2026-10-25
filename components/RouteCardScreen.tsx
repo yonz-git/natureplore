@@ -382,7 +382,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   const total = recordsOf(counts);
   const [name, ...rest] = route.name.split(" ").reverse();
   const lead = rest.reverse().join(" ");
-  const most = detail ? Math.max(...detail.season) : 1;
 
   return (
     <section className={`ms b1${tucked ? " is-tucked" : ""}`}>
@@ -559,12 +558,6 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                         <div id={`spot-${s.n}-detail`} className="fb-spot-detail" inert={!open}>
                           <div>
                             <ActionRow spot={s} />
-                            {detail.claims[0] && (
-                              <div className="fb-spot-part">
-                                <h3 className="fb-label">What is happening here</h3>
-                                <ClaimCard claim={detail.claims[0]} />
-                              </div>
-                            )}
                           </div>
                         </div>
                       </li>
@@ -598,24 +591,8 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           {detail && (
             <>
               <section aria-labelledby="sec-season-title">
-                <SectionHead id="season" lead="When to " close="walk the route" note="Spots in season" />
+                <SectionHead id="season" lead="Best season to visit " close="the route" />
                 <YearChart routeId={route.id} />
-                <div className="fb-card">
-                  <div
-                    className="fb-season"
-                    role="img"
-                    aria-label={`Spots in season by month. ${MONTH_NAMES[NOW]}: ${detail.season[NOW]} of ${detail.spots.length}`}
-                  >
-                    {detail.season.map((c, i) => (
-                      <div key={i} className={i === NOW ? "is-now" : undefined}>
-                        <span>{c}</span>
-                        <span className="fb-season-bar" style={{ height: `${0.75 + (4.375 * c) / most}rem` }} />
-                        <span>{MONTH_LETTERS[i]}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="fb-small">{detail.seasonNote}</p>
-                </div>
               </section>
 
               {detail.claims.length > 0 && (

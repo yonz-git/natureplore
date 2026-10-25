@@ -60,48 +60,18 @@
 .cp-facts li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: var(--text-body-sm); line-height: 1.15; }
 .cp-facts li > svg { flex-shrink: 0; margin-top: 0.0625rem; color: var(--color-mist); }
 .cp-facts li > span { min-width: 0; overflow-wrap: break-word; }
-.cp-done { margin-top: 0; }
+/* as a glass box, under its heading: the box's own padding back (the list rule above takes it away),
+   and the heading's 1rem the only gap above, as on every other box on the page */
+.org-box.cp-facts { padding: 1.25rem; }
+.cp-done, .cp-keep { margin-top: 0; }
 
 .cp-benefits { margin-top: 1rem; }
 .cp-benefits .org-small { margin: 0 0 0.5rem; }
 
 /* ── the claim ─────────────────────────────────────────────────────────────────────────────── */
 
-/* the aerial comparison: two labelled frames until the photographs exist */
-.cp-aerial { margin: 1.5rem 0 0; }
-.cp-aerial > div {
-  height: 13.75rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-radius: var(--radius-inner);
-  overflow: hidden;
-  border: 0.5px solid var(--color-inner-edge);
-}
-.cp-aerial > div > span {
-  position: relative;
-  background:
-    repeating-linear-gradient(8deg, transparent 0 2.9rem, rgb(255 255 255 / 0.1) 2.9rem calc(2.9rem + 1px)),
-    repeating-linear-gradient(94deg, transparent 0 3.6rem, rgb(255 255 255 / 0.1) 3.6rem calc(3.6rem + 1px)),
-    var(--color-basemap-land);
-}
-.cp-aerial > div > span + span { border-left: 2px solid rgb(255 255 255 / 0.9); background-color: var(--color-basemap-wood); }
-.cp-aerial em {
-  position: absolute;
-  bottom: 0.75rem;
-  left: 0.75rem;
-  height: 1.875rem;
-  padding: 0 0.75rem;
-  display: flex;
-  align-items: center;
-  border-radius: var(--radius-pill);
-  background: var(--color-glass-solid);
-  border: 0.5px solid var(--color-inner-edge);
-  font-style: normal;
-  font-size: var(--text-caption);
-  line-height: 1;
-}
-.cp-aerial > div > span + span em { left: auto; right: 0.75rem; }
-.cp-aerial figcaption { margin-top: 0.675rem; }
+/* the claim's photograph, where the aerial pair stood until the photographs exist */
+.cp-claim-photo { margin-top: 1.5rem; }
 
 .cp-source { margin-top: 1rem; }
 .cp-source > p:first-child { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
@@ -266,7 +236,6 @@ body:has(.cp-dialog) .tabbar { display: none; }
 
 @media (min-width: 64rem) {
   .cp-claim { font-size: 2.5rem; line-height: 1.15; }
-  .cp-aerial > div { height: 23.75rem; }
   .cp-photo { height: 22.5rem; }
   .cp-side { position: sticky; top: 2rem; margin-top: 0; }
   .cp-act { padding: 1.5rem; }
