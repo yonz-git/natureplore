@@ -413,7 +413,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-sec { scroll-margin-top: 4.5rem; }
 /* hidden behind the chips, fading in over the strip's bottom padding and 1rem below it; --cut is how
    far the strip's foot runs into the block (components/RouteCardScreen.tsx) */
-.fb-strip ~ * { mask-image: linear-gradient(to bottom, transparent calc(var(--cut, -100px) - 1rem), #000 calc(var(--cut, -100px) + 1rem)); }
+:is(.fb-strip, .ln-stick) ~ * { mask-image: linear-gradient(to bottom, transparent calc(var(--cut, -100px) - 1rem), #000 calc(var(--cut, -100px) + 1rem)); }
 
 
 .fb-recorded { gap: 0.75rem; }
