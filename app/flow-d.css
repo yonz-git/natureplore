@@ -141,7 +141,7 @@
   line-height: 1;
 }
 .dc-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
-.dc-text b { font-size: var(--text-body); line-height: 1.15; font-weight: 400; }
+.dc-text b { font-size: var(--text-title); line-height: 1.15; font-weight: 400; }
 .dc-text > span:not(.fb-pill) { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .dc-text .fb-pill { align-self: flex-start; margin-top: 0.50625rem; height: auto; min-height: 1.75rem; padding-block: 0.3125rem; white-space: normal; line-height: 1.2; }
 
