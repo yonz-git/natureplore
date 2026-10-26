@@ -7,15 +7,17 @@ import { SplitText } from "gsap/SplitText";
 
 gsap.registerPlugin(SplitText);
 
-// A label whose letters ride one small wave when the pointer comes onto the control around it: each
-// letter bobs up and back down once, one after another from the first, so a single ripple runs
-// along the word and stops. Leaving before it has run settles them back onto the line.
+// A label whose letters ride a small wave while the pointer is on the control around it: each
+// letter bobs up and back down once, one after another from the first, so a ripple runs along the
+// word, and after a short rest it runs again for as long as the pointer stays. Leaving settles the
+// letters back onto the line.
 // Mouse and pen only, and nothing under reduced motion; there the label is plain text. A reader's
 // software gets the plain text either way, the split letters are decoration.
 
 const LIFT = 0.15; // of the font size, how high a letter rises
 const RISE = 0.4; // seconds, a letter going up (and again coming down)
 const STAGGER = 0.06; // seconds between one letter and the next
+const REST = 0.6; // seconds between one ripple ending and the next starting
 
 export default function LetterWave({ text }: { text: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -28,14 +30,14 @@ export default function LetterWave({ text }: { text: string }) {
       const mq = matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
       if (!mq.matches) return;
       const split = SplitText.create(el, { type: "chars", aria: "none" });
-      let wave: gsap.core.Tween | null = null;
+      let wave: gsap.core.Timeline | null = null;
       let settle: gsap.core.Tween | null = null;
 
       const over = contextSafe((e: PointerEvent) => {
         if (e.pointerType === "touch") return;
         settle?.kill();
         wave?.kill();
-        wave = gsap.to(split.chars, {
+        wave = gsap.timeline({ repeat: -1, repeatDelay: REST }).to(split.chars, {
           y: -LIFT * parseFloat(getComputedStyle(el).fontSize),
           duration: RISE,
           ease: "sine.inOut",
