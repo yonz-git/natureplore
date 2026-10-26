@@ -15,6 +15,8 @@
   --color-primary-deep: #9DA56D;
   --color-primary-glow: #DDF57A;
   --color-on-primary: #14261ACC;
+  --color-search: #0B171273;
+  --color-search-deep: #0308068C;
   --color-on-ground: #E8EAE0;
   --color-on-ground-soft: rgb(255 255 255 / 0.78);
   --color-mist: #DCEBD7;
@@ -58,6 +60,10 @@
   --color-system-prompt-action: #A8C7FA;
   --color-system-prompt-on-action: #062E6F;
   --color-system-prompt-rule: #8E918F;
+
+  --fill-lime: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  --fill-primary: linear-gradient(160deg, rgb(255 255 255 / 0.32) 0%, rgb(255 255 255 / 0) 100%), var(--fill-lime);
+  --fill-search: linear-gradient(160deg, var(--color-search) 0%, var(--color-search-deep) 100%);
 
   --font-heading: 'Comfortaa', 'Trebuchet MS', 'Helvetica Neue', Arial, sans-serif;
   --font-text: 'Cabinet Grotesk', 'Helvetica Neue', Arial, sans-serif;
