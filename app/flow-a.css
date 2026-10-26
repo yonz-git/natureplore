@@ -248,7 +248,7 @@
   color: var(--color-on-primary);
 }
 .dot.is-lit {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  background: var(--fill-lime);
   box-shadow: 0 0 0 0.1875rem rgb(from var(--color-primary) r g b / 0.6);
 }
 .dots-line { font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); font-weight: 400; }
@@ -642,7 +642,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 /* a picked group takes the lime, as every selected control does, its icon in the label colour */
 .a8-filter[aria-pressed="true"] {
   border-color: transparent;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  background: var(--fill-lime);
   color: var(--color-on-primary);
   font-weight: 500;
 }
@@ -912,7 +912,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   top: 0;
   left: 0;
   border-radius: var(--radius-pill);
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  background: var(--fill-lime);
   pointer-events: none;
   opacity: 0;
 }
@@ -922,7 +922,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   transition: transform 400ms var(--ease-move), width 400ms var(--ease-move);
 }
 .seg:not([data-thumb]) .seg-opt[aria-pressed="true"] {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%);
+  background: var(--fill-lime);
 }
 .seg-opt[aria-pressed="true"] {
   color: var(--color-on-primary);
