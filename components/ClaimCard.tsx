@@ -6,8 +6,8 @@
 // Used on B1, the spots (L3), the walk (L4) and the crane (B4). Both links remember the page they
 // were opened from, so the claim and the action go back to it. Each claim carries a photograph of
 // the kind of ground it is about (lib/photos.ts), decorative, so the card reads the same without it.
-// A claim seen at particular spots of its route shows them under the source, behind a pin, as the
-// in-season tiles do.
+// On the route's own card (spots), a claim seen at particular spots of the route shows them under
+// the source, behind a pin, as the in-season tiles do; elsewhere the numbers would mean nothing.
 
 import Link from "next/link";
 
@@ -17,7 +17,7 @@ import { leaveFor } from "@/lib/back";
 import { PHOTOS } from "@/lib/photos";
 import type { Claim } from "@/lib/claims";
 
-export function ClaimCard({ claim }: { claim: Claim }) {
+export function ClaimCard({ claim, spots = false }: { claim: Claim; spots?: boolean }) {
   const photo = PHOTOS[`claims/${claim.id}`];
   return (
     <div className="fb-claim">
@@ -33,7 +33,7 @@ export function ClaimCard({ claim }: { claim: Claim }) {
         </span>
         <ChevronIcon size={18} />
       </Link>
-      {claim.spots && <Where spots={claim.spots} />}
+      {spots && claim.spots && <Where spots={claim.spots} />}
       {claim.actionId ? (
         <Link href={`/learn/action/${claim.actionId}`} className="fb-claim-act" onClick={() => leaveFor(`/learn/action/${claim.actionId}`)}>
           <span>

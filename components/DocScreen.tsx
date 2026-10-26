@@ -17,7 +17,6 @@ import { DocList } from "@/components/DocParts";
 import { BookmarkIcon, ChevronIcon, ExternalIcon, LockIcon, MapIcon } from "@/components/Icons";
 import { backLabel, useBack } from "@/lib/back";
 import { type Doc, docById, watchFacts } from "@/lib/docs";
-import { creditLine } from "@/lib/photos";
 import { useSaved } from "@/lib/saved";
 
 /** "Documentary title" with its last word in the lime of the titles */
@@ -49,7 +48,6 @@ function Hero({ doc, off = false }: { doc: Doc; off?: boolean }) {
           </span>
         )}
       </div>
-      <p className="org-credit">{creditLine(doc.photo)}</p>
     </>
   );
 }

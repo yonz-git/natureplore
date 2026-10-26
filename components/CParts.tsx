@@ -80,7 +80,7 @@ export function ActionRows({ ids, long = false }: { ids: string[]; long?: boolea
 export function BackTop({ href, label, share }: { href: string; label: string; share?: string }) {
   return (
     <div className="org-top">
-      <Link href={href} className="round glass glass-pin" aria-label={label}>
+      <Link href={href} className="round glass glass-pin back-top" aria-label={label}>
         <BackIcon size={20} />
       </Link>
       {share && (
@@ -179,7 +179,7 @@ export function StatValue({ value }: { value: string }) {
   );
 }
 
-export function Stat({ label, value, unit }: { label: string; value: string; unit?: string }) {
+export function Stat({ label, value, unit, note }: { label: string; value: string; unit?: string; note?: string }) {
   return (
     <div className="cp-stat">
       <span>{label}</span>
@@ -187,6 +187,8 @@ export function Stat({ label, value, unit }: { label: string; value: string; uni
         <StatValue value={value} />
         {unit && <small>{unit}</small>}
       </span>
+      {/* what the figure means in plain words, and how it was found */}
+      {note && <p className="cp-stat-note">{note}</p>}
     </div>
   );
 }

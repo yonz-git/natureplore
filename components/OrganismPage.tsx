@@ -16,7 +16,7 @@ import type { Organism } from "@/lib/organisms";
 import { leaveFor } from "@/lib/back";
 import { docById, docLine } from "@/lib/docs";
 import { useSaved } from "@/lib/saved";
-import { creditLine, organismPhoto } from "@/lib/photos";
+import { organismPhoto } from "@/lib/photos";
 
 function Actions({ o }: { o: Organism }) {
   const { isSaved, toggle } = useSaved();
@@ -56,7 +56,7 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
   return (
     <section className={`org${walk ? " is-walk" : ""}`} aria-labelledby="org-title">
       <div className="org-top">
-        <Link href={back.href} className="round glass glass-pin" aria-label={back.label}>
+        <Link href={back.href} className="round glass glass-pin back-top" aria-label={back.label}>
           <BackIcon size={20} />
         </Link>
         <Actions o={o} />
@@ -70,7 +70,6 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
           ) : (
             <div className="org-photo" role="img" aria-label={`Photograph of the ${name.toLowerCase()} to come`} />
           )}
-          <p className="org-credit">{photo ? creditLine(photo) : o.credit}</p>
           <h1 id="org-title" className="org-title">
             {o.name} <em>{o.close}</em>
           </h1>

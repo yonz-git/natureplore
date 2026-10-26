@@ -34,7 +34,7 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
 
   return (
     <section className="saved a8" aria-labelledby="a8-title">
-      <Link href={routeHref} className="round glass glass-pin a8-top" aria-label={`Back to ${routeName}`}>
+      <Link href={routeHref} className="round glass glass-pin a8-top back-top" aria-label={`Back to ${routeName}`}>
         <BackIcon size={20} />
       </Link>
       <div className="saved-sheet glass">

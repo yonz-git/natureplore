@@ -19,8 +19,8 @@
 .fb-stack { display: flex; flex-direction: column; gap: 0.75rem; }
 .fb-soft { color: var(--color-on-ground-soft); }
 .fb-small { margin: 0.84375rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
-.fb-label { font-size: var(--text-body-sm); line-height: 1.15; font-weight: 500; color: var(--color-mist); }
-.fb-placeholder { font-size: var(--text-body-sm); line-height: 1.15; font-weight: 300; color: var(--color-on-ground-soft); }
+.fb-label { font-size: var(--text-body); line-height: 1.15; font-weight: 500; color: var(--color-mist); }
+.fb-placeholder { font-size: var(--text-body); line-height: 1.15; font-weight: 300; color: var(--color-on-ground-soft); }
 
 /* the spot marker, larger at the head of a spot block */
 .fb-mark.is-lg { --mark: 2.25rem; font-size: calc(1.125rem * 1.35); }
@@ -193,7 +193,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
   padding: 0.875rem 0 1rem;
   align-items: center;
   border-top: 1px solid var(--color-divider);
-  font-size: var(--text-body-sm);
+  font-size: var(--text-body);
   line-height: 1.15;
 }
 .fb-claim-act > span:first-child { flex-grow: 1; }
@@ -225,7 +225,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-rule-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
 .fb-rule-text .fb-label { margin-bottom: 0.16875rem; }
 .fb-rule-line { font-size: var(--text-body); line-height: 1.15; font-weight: 500; text-wrap: pretty; }
-.fb-rule-why { font-size: var(--text-body-sm); line-height: 1.15; font-weight: 300; color: var(--color-on-ground-soft); text-wrap: pretty; }
+.fb-rule-why { font-size: var(--text-body); line-height: 1.15; font-weight: 300; color: var(--color-on-ground-soft); text-wrap: pretty; }
 
 /* the spot block: solid, not glass, the same on the spot page and as the walk sheet */
 .fb-spot {
@@ -240,7 +240,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 }
 /* the number and the name read as one: the marker sits centred on the two lines beside it */
 .fb-spot-head { display: flex; align-items: center; gap: 1rem; }
-.fb-spot-head > div { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.16875rem; font-size: var(--text-body-sm); line-height: 1.15; }
+.fb-spot-head > div { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.16875rem; font-size: var(--text-body); line-height: 1.15; }
 .fb-spot .fb-spot-title {
   overflow-wrap: break-word;
   margin: 0;
@@ -277,7 +277,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 }
 .fb-look-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.08438rem; }
 .fb-look-name { font-size: var(--text-body); line-height: 1.15; font-weight: 500; }
-.fb-look-what { font-size: var(--text-body-sm); line-height: 1.15; font-weight: 400; color: var(--color-on-ground); }
+.fb-look-what { font-size: var(--text-body); line-height: 1.15; font-weight: 400; color: var(--color-on-ground); }
 .fb-look-last { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-look-link { transition: transform 160ms var(--ease-out), box-shadow var(--hover-fade) var(--ease-hover), border-color var(--hover-fade) var(--ease-hover); }
 @media (hover: hover) {
@@ -319,7 +319,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-nav-next > svg { flex-shrink: 0; }
 .fb-nav-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
 .fb-nav-kicker { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
-.fb-nav-name { font-size: var(--text-body-sm); line-height: 1.15; font-weight: 500; overflow-wrap: break-word; }
+.fb-nav-name { font-size: var(--text-body); line-height: 1.15; font-weight: 500; overflow-wrap: break-word; }
 @media (hover: hover) {
   .fb-nav-prev:hover,
   .fb-nav-next:hover { border-color: rgb(255 255 255 / 0.3); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 10rem rgb(255 255 255 / 0.06); }
@@ -476,10 +476,11 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-heat figcaption { display: flex; align-items: center; gap: 0.5rem; font-size: var(--text-caption); line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-heat-key { display: flex; gap: 0.1875rem; }
 .fb-heat-key .fb-heat-cell { width: 0.875rem; }
-/* the shades come in as the chart scrolls into view */
+/* the shades come in as the chart scrolls into view, each done once it is wholly on screen, so the
+   last rows finish even when the panel cannot scroll them any higher */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .fb-heat tbody .fb-heat-cell { animation: heat-in linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+    .fb-heat tbody .fb-heat-cell { animation: heat-in linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
   }
 }
 @keyframes heat-in { from { opacity: 0; scale: 0.6; } }
@@ -505,7 +506,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 /* the shape icon as tall as the figures beside it, a value cut to cap height */
 .b1-shape dd { height: 1em; align-items: center; font-size: var(--text-stat-sm); }
 .b1-shape svg { width: 1.15em; height: 1.15em; }
-.fb-facts dd { margin: 0; font-size: var(--text-body-sm); line-height: 1.15; }
+.fb-facts dd { margin: 0; font-size: var(--text-body); line-height: 1.15; }
 .b1-foot { margin-top: 0.5rem; }
 
 /* Walk the route, under the stats once saved */
@@ -537,7 +538,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .b1-pin .btn { animation: fade-in var(--enter) var(--ease-enter) backwards; }
 /* with large text a label wraps inside its button rather than running out of the bar */
 .b1-pin .btn { min-width: 0; flex-shrink: 1; height: auto; min-height: var(--spacing-button-height); padding-top: 0.5rem; padding-bottom: 0.5rem; white-space: normal; text-align: center; }
-.b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-sm); line-height: 1.15; animation: fade-in var(--enter) var(--ease-enter) backwards; }
+.b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body); line-height: 1.15; animation: fade-in var(--enter) var(--ease-enter) backwards; }
 .b1-pin .b1-undo { padding: 0 1.5rem; }
 
 /* ── L3, a spot, opened in place in B1's spots list ─────────────────────────────────────────── */
@@ -614,7 +615,7 @@ button.fb-row:active { transform: scale(0.985); }
 .walk-locate { flex-shrink: 0; }
 /* wraps rather than cutting the route name off, with large text */
 .walk-title { min-width: 0; height: auto; min-height: 2.75rem; padding-block: 0.625rem; line-height: 1.2; }
-.walk-end { flex-shrink: 0; padding: 0 1.125rem; font-size: var(--text-body-sm); font-weight: 500; text-decoration: none; transition: transform 160ms var(--ease-out); }
+.walk-end { flex-shrink: 0; padding: 0 1.125rem; font-size: var(--text-body); font-weight: 500; text-decoration: none; transition: transform 160ms var(--ease-out); }
 .walk-end:active { transform: scale(0.97); }
 
 /* the sheet is solid ground, so it reads in daylight; everything in it may move */
@@ -665,7 +666,9 @@ button.fb-row:active { transform: scale(0.985); }
 @media (min-width: 64rem) {
   /* the route panel's content sits 1rem in on every side: the panel adds nothing of its own */
   .b1 .ms-panel { padding: 0; }
-  .b1 .ms-sheet { padding: 1rem; scroll-padding-top: 1rem; }
+  /* no tab bar under the panel here: the scroll keeps the panel's own 1rem at both ends, not the phone's
+     clearance, which also kept the year chart's last rows counted as off screen */
+  .b1 .ms-sheet { padding: 1rem; scroll-padding-block: 1rem; }
   .fb-backlink {
     align-self: flex-start;
     align-items: center;

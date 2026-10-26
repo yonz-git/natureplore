@@ -17,7 +17,6 @@ import { BackTop, Benefits, Facts, KindTag, Stat } from "@/components/CParts";
 import { BookmarkIcon, CalendarIcon, CheckCircleIcon, CheckIcon, ExternalIcon } from "@/components/Icons";
 import type { Action, CleanUp, Figure, Practice, Support } from "@/lib/actions";
 import { backLabel, useBack } from "@/lib/back";
-import { creditLine, PHOTOS } from "@/lib/photos";
 import { useSaved } from "@/lib/saved";
 
 function FigureBox({ f }: { f: Figure }) {
@@ -44,12 +43,10 @@ function SeeClaim({ id }: { id: string }) {
 // ── C3 ────────────────────────────────────────────────────────────────────────────────────────
 
 function CleanUpMain({ a, going }: { a: CleanUp; going: number }) {
-  const photo = PHOTOS["routes/linum"];
   return (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img className="org-photo cp-photo" src={a.image} alt="Cranes on an open meadow" />
-      <p className="org-credit">{creditLine(photo)}</p>
       <KindTag kind={a.kind} icon={a.kindIcon} />
       <h1 id="action-title" className="org-title cp-title">
         {a.title} <em>{a.close}</em>

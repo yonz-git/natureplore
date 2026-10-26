@@ -114,7 +114,7 @@
   --text-secondary--font-family: var(--font-text);
   --text-secondary--line-height: 1.15;
   --text-secondary--font-weight: 300;
-  --text-caption: 1.125rem;
+  --text-caption: 1.2rem;
   --text-caption--font-family: var(--font-text);
   --text-caption--line-height: 1.15;
   --text-caption--font-weight: 300;
@@ -214,5 +214,6 @@
   --spacing-screen-desktop: 7.5rem;
   --spacing-chrome-desktop: 2.5rem;
   --spacing-nav-top-desktop: 0.7rem;
+  --spacing-nav-side-desktop: 1.5rem;
   --spacing-content-max: 75rem;
 }

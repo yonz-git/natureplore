@@ -537,7 +537,7 @@ button.float-pill,
   position: absolute;
   z-index: 3;
   top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 3.25rem) / 2);
-  left: 1.5rem;
+  left: var(--spacing-nav-side-desktop);
   width: var(--panel-w, 27.75rem);
   display: flex;
   align-items: center;
@@ -1273,14 +1273,8 @@ button.float-pill,
   }
 
   /* B1: the panel scrolls, save, share and navigate stay at its foot. Back stays outside the panel,
-     on the nav pill's line at the top left, as on every page (app/organism.css) */
+     on the nav pill's line at the top left, as on every page (.back-top, app/tabbar.css) */
   .b1-top { display: contents; }
-  .b1-top > a {
-    position: fixed;
-    z-index: 3;
-    top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 2.75rem) / 2);
-    left: 1.5rem;
-  }
   .b1-top > button { display: none; }
   /* the photos sit as far below the panel top as they sit in from its sides */
   .b1 .ms-panel { padding: 2rem 0 0; }

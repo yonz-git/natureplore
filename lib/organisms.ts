@@ -13,7 +13,6 @@ export type Organism = {
   group: Group;
   kind: string;
   latin: string;
-  credit: string;
   /** where the page was opened from when nothing else is known: spot 4 for the crane */
   back: { href: string; label: string };
   /** the spot and route it was recorded at, under the name */
@@ -45,7 +44,6 @@ export const ORGANISMS: Organism[] = [
     group: "birds",
     kind: "Bird",
     latin: "Grus grus",
-    credit: "M. Keller, CC BY",
     back: { href: "/map/route/linum?spot=4", label: "Back to Linum wet meadows" },
     scope: "Recorded at The dam between the ponds, Linum wet meadows",
     record: {
@@ -70,7 +68,6 @@ export const ORGANISMS: Organism[] = [
     group: "herbs",
     kind: "Herb",
     latin: "Dactylorhiza incarnata",
-    credit: "Photo: photographer name, licence",
     back: { href: "/map/search?q=orchid", label: "Back to search" },
     record: { title: "", lines: [] },
     generalised: {
