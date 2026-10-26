@@ -54,7 +54,8 @@ body:has(.org.is-walk) .tabbar { display: none; }
     linear-gradient(160deg, rgb(255 255 255 / 0.1) 0%, rgb(255 255 255 / 0.02) 100%);
 }
 img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit: cover; }
-.org-credit { margin: 0.5rem 0 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
+/* the same space under every page's photograph, whatever follows it (credits are on the credits page only) */
+.org-main > :is(.org-photo, .dc-hero) + * { margin-top: 1.5rem; }
 .org-title {
   margin: 1.35rem 0 0;
   font-family: var(--text-h1--font-family);
@@ -196,9 +197,12 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
 .org-note { margin-top: 2.025rem; }
 
 @media (min-width: 64rem) {
+  /* a card on the ground: rounded at all four corners, and as far above the window's foot at the end
+     of the scroll as it stands under the window's top */
   .org-sheet {
-    margin: 7.625rem 3vw 0;
-    min-height: calc(100% - 7.625rem);
+    margin: 7.625rem 3vw;
+    min-height: calc(100% - 2 * 7.625rem);
+    border-radius: var(--radius-card);
     padding: 3rem max(6rem, calc((100% - 6vw - 71.25rem) / 2)) 6rem;
     display: grid;
     grid-template-columns: minmax(0, 50rem) minmax(0, 23.75rem);
@@ -214,18 +218,11 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
 }
 
 /* The phone's round controls on the desktop too, rather than a text back link. Back leaves the sheet
-   for the nav pill's line (3.25rem tall at 2rem, app/tabbar.css), at the top left, fixed with the
-   nav. Save and share stay in the sheet, at the top right of its content, lined up with its columns,
+   for the nav pill's line at the top left, fixed with the nav (.back-top, app/tabbar.css). Save and share stay in the sheet, at the top right of its content, lined up with its columns,
    and the content starts below them. B4, the claim, action and documentary pages, and the pages
    under Saved. */
 @media (min-width: 64rem) {
   .org > .org-top { display: contents; }
-  .org > .org-top > a {
-    position: fixed;
-    z-index: 2;
-    top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 2.75rem) / 2);
-    left: 2.5rem;
-  }
   .org > .org-top > .org-actions {
     position: absolute;
     z-index: 2;

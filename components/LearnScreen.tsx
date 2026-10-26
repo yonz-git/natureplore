@@ -10,6 +10,7 @@
 import Link from "next/link";
 
 import { ClaimCard } from "@/components/ClaimCard";
+import { RegionLine } from "@/components/RegionLine";
 import { ActionRows } from "@/components/CParts";
 import { DocList } from "@/components/DocParts";
 import { ChevronIcon } from "@/components/Icons";
@@ -47,7 +48,7 @@ function LearnHead({ className }: { className: string }) {
       <h1 className="org-title ln-title">
         <em>Learn</em>
       </h1>
-      <p className="org-small ln-sub">Berlin and Brandenburg</p>
+      <RegionLine className="ln-sub">Berlin and Brandenburg</RegionLine>
       <nav className="chips ln-jump" aria-label="Jump to a section">
         <a href="#sec-impact" className="chip">
           Impact

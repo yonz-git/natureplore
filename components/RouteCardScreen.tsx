@@ -388,7 +388,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
       <RegionMap className="a1-map" behind ref={map} points={points} line={line} detail={route.detail} maxZoom={15} mapLabel={`Map of ${route.name}`} />
 
       <div className="b1-top">
-        <Link href={back} className="round glass glass-pin" aria-label={backLabel}>
+        <Link href={back} className="round glass glass-pin back-top" aria-label={backLabel}>
           <BackIcon size={20} />
         </Link>
       </div>
@@ -600,7 +600,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                   <SectionHead id="happening" lead="What is happening " close="along this route" />
                   <div className="fb-stack">
                     {detail.claims.map((c) => (
-                      <ClaimCard key={c.id} claim={c} />
+                      <ClaimCard key={c.id} claim={c} spots />
                     ))}
                   </div>
                 </section>
