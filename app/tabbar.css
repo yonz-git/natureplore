@@ -66,6 +66,9 @@
   transition: transform 160ms var(--ease-out), color 280ms var(--ease-out), background-color var(--hover-fade) var(--ease-hover);
 }
 .tabbar-tab:active { transform: scale(0.97); }
+/* the icon and its label are one group (components/TabBar.tsx); on the phone it adds nothing, the
+   tab stacks them itself */
+.tabbar-in { display: contents; }
 /* the Map and Learn icons, detailed drawings, read at the others' size only 20% bigger */
 .tabbar-icon-big { scale: 1.2; overflow: visible; }
 /* the open tab's icon gets heavier: Saved's bookmark becomes solid */
@@ -125,7 +128,7 @@
   .tabbar-tab {
     width: auto;
     height: 2.75rem;
-    padding: 0 1.125rem 0 0.875rem;
+    padding: 0 1rem;
     flex-direction: row;
     gap: 0.40625rem;
     color: var(--color-on-ground);
@@ -134,6 +137,10 @@
     letter-spacing: 0;
   }
   .tabbar-tab svg { width: 1.125rem; height: 1.125rem; }
+  /* the icon and label side by side as one group, centred in the tab; the label trimmed to its cap
+     height and baseline, so centring it lines its letters up with the icon rather than its line box */
+  .tabbar-in { display: inline-flex; align-items: center; gap: 0.40625rem; }
+  .tabbar-label { text-box: trim-both cap alphabetic; }
   /* every icon's drawing sits 16 from the pill's edge and 9.5 from the ink of its label's first letter,
      as on the Routes and Organisms switch, measured on the render: each icon's own empty margins cancelled */
   .tabbar-icon-map { margin: 0 calc(0.18rem - 0.0694rem) 0 calc(0.165rem - 0.0175rem); }
@@ -141,10 +148,6 @@
   .tabbar-icon-saved { margin: 0 -0.0488rem 0 -0.0638rem; }
   .tabbar-icon-you { margin: 0 0 0 -0.0631rem; }
   .tabbar-tab.is-current { font-weight: 700; }
-  /* the labels ride 1px up: 2px more padding below lifts each centred tab 1px; the current tab's icon
-     stays where it was, only its label moves */
-  .tabbar-tab { padding-bottom: 2px; }
-  .tabbar-tab.is-current svg { translate: 0 1px; }
 }
 
 @media (hover: hover) and (pointer: fine) {
