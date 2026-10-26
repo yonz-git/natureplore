@@ -14,6 +14,9 @@ const push = (name, value) => lines.push(`  ${name}: ${value};`);
 
 for (const [k, v] of Object.entries(d.colors ?? {})) push(`--color-${k}`, v);
 lines.push('');
+// fills: gradients built from the colours, so each is written once and used by name
+for (const [k, v] of Object.entries(d.fills ?? {})) push(`--fill-${k}`, v);
+lines.push('');
 for (const [k, v] of Object.entries(d.fonts ?? {})) push(`--font-${k}`, v);
 const familyVar = (name) =>
   Object.keys(d.fonts ?? {}).find((k) => (d.fonts[k] ?? '').includes(`'${name}'`));

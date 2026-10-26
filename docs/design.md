@@ -21,6 +21,8 @@ colors:
   primary-deep: "#9DA56D"
   primary-glow: "#DDF57A"
   on-primary: "#14261ACC"
+  search: "#0B171273"
+  search-deep: "#0308068C"
   on-ground: "#E8EAE0"
   on-ground-soft: "rgb(255 255 255 / 0.78)"
   mist: "#DCEBD7"
@@ -64,6 +66,10 @@ colors:
   system-prompt-action: "#A8C7FA"
   system-prompt-on-action: "#062E6F"
   system-prompt-rule: "#8E918F"
+fills:
+  lime: "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-deep) 100%)"
+  primary: "linear-gradient(160deg, rgb(255 255 255 / 0.32) 0%, rgb(255 255 255 / 0) 100%), var(--fill-lime)"
+  search: "linear-gradient(160deg, var(--color-search) 0%, var(--color-search-deep) 100%)"
 typography:
   display-desktop:
     fontFamily: Comfortaa
@@ -514,7 +520,7 @@ Photographs always sit under a dark filter so white text holds. The standard fil
 
 Radius follows depth. A card on the photograph is 28. Anything inside a card is 18. Anything inside that is 12. Buttons are full pills at 50 tall. Every other pill (fields, chips, segments, tags, the tab bar, the desktop nav) has a radius of exactly half its height: 52 gives 26, 40 gives 20, 36 gives 18, 30 gives 15, 70 gives 35. Round controls, icon discs, orbs and markers are circles. Images are rounded rectangles on the same depth rule, never circles.
 
-The search field is a full pill. That overrides the earlier "inputs 8" line in the scale, and applies to every field. Sheets round only their top corners, 28. Month bars round 10 on top and 4 at the base. The only square-ish radius is the 3px sheet handle.
+The search field is a full pill, filled with `fill-search` (`search` #0B1712 at 45% deepening to `search-deep` #030806 at 55%, with a 2 blur in place of the glass's 30 so the map lines show through) and pressed in: an inner shade from the top left and a hairline of light on the bottom and right lip, no float shadow. Gradients live under `fills` and are used by name (`var(--fill-lime)`), never written out again in a stylesheet: every lime control (picked switch, current tab, pressed chip, lit dot) uses `fill-lime`. That overrides the earlier "inputs 8" line in the scale, and applies to every field. Sheets round only their top corners, 28. Month bars round 10 on top and 4 at the base. The only square-ish radius is the 3px sheet handle.
 
 ## Motion
 
@@ -522,7 +528,7 @@ Motion shows what changed and nothing else. Every movement uses one strong ease-
 
 ## Components
 
-`button-primary` is the only filled element on a screen, one per view: the lime gradient, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule, and no button is ever full width: on a phone, up to 480 wide (`phone-max`), they are 80% of the column and centred (`button-phone`); wider than that, tablet and desktop alike, they hug their label. A button inside a section, a bar or a card (the route's pinned bar with Walk the route, See all in a group card, See everything recorded), hugs its label on the phone too, as on the desktop; 80% is only for the buttons that close a page. There they are centred when they close a full-width grid or list ("Show all", "See all", "Open the route") and start-aligned when they follow a text block or sit in a stack with a field. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in Cabinet Grotesk 400 19.2, the same size and weight as the primary's `button` label, the same 50 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so a button that ends in a chevron takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
+`button-primary` is the only filled element on a screen, one per view: `fill-primary`, the lime gradient (`fill-lime`) under the secondary button's white sheen, stronger, forest ink in `button`, an inner top highlight at white 35% and a soft `scrim` float shadow. Both buttons follow one width rule, and no button is ever full width: on a phone, up to 480 wide (`phone-max`), they are 80% of the column and centred (`button-phone`); wider than that, tablet and desktop alike, they hug their label. A button inside a section, a bar or a card (the route's pinned bar with Walk the route, See all in a group card, See everything recorded), hugs its label on the phone too, as on the desktop; 80% is only for the buttons that close a page. There they are centred when they close a full-width grid or list ("Show all", "See all", "Open the route") and start-aligned when they follow a text block or sit in a stack with a field. Pressed, it scales to 0.97 over 160ms. `button-secondary` is the second of the two buttons, for actions like "Show all", "See all" and "Browse": inner glass (no second blur, it always sits on a glass sheet or panel) with a white `button-secondary` label in Cabinet Grotesk 400 19.2, the same size and weight as the primary's `button` label, the same 50 height and 28 side padding as the primary. A trailing chevron, 18 with a 10 gap, leaves 6 of empty space inside its box, so a button that ends in a chevron takes 22 on the right to keep both sides optically 28. Pressed, it scales to 0.97 like the primary. There is no third button style: anything quieter is a text link.
 
 States, for every control. Hover (mouse and pen only): the lime primary lightens to brightness 1.1, glass and inner glass controls take a white 8% wash, and every hover fades in and out over 200ms `ease`, never snaps. The wash is an inset shadow layer that every resting shadow already carries at 0%, so the two shadow lists match and interpolate. Focus: a 2px `mist` outline 3 outside the shape, following its radius, never removed. Pressed: scale 0.97. Disabled: 45% opacity, no press, and the reason said next to it. Loading: the primary keeps its width, its label gives way to an 18 spinner in `on-primary`, and it is marked busy. A field with a problem keeps its shape, its edge rises to white 40%, and a `caption` line with an alert icon under it says what to do; there is no red, the words carry it.
 
