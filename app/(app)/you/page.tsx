@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
 
-// You: the fourth tab. A placeholder in the Saved sheet's frame until its screens are designed.
+// You: the fourth tab. Until its screens are designed it holds one centred button, which does
+// nothing yet: there are no accounts in v1.
 
 export const metadata: Metadata = { title: "You" };
 
 export default function You() {
   return (
-    <section className="saved" aria-labelledby="you-title">
-      <div className="saved-sheet glass">
-        <h1 id="you-title">
-          <em>You</em>
-        </h1>
-        <p>Coming soon</p>
-      </div>
+    <section className="you" aria-label="You">
+      <button type="button" className="btn btn-primary">
+        Login or Signup
+      </button>
     </section>
   );
 }

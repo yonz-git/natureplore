@@ -534,6 +534,11 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 
 /* ── E1: Saved ─────────────────────────────────────────────────────────────────────────────── */
 
+/* You: one button in the middle of the screen, on the forest */
+.you { position: fixed; inset: 0; display: grid; padding: 0 var(--spacing-inset-screen); }
+/* auto margins, since the desktop .btn sets its own align-self */
+.you > .btn { margin: auto; }
+
 /* hidden sideways: only hit areas and rims reach past the edge, never content */
 .saved { position: fixed; inset: 0; overflow-x: hidden; overflow-y: auto; scroll-padding-bottom: var(--spacing-tabbar-clearance); }
 .saved-sheet {
