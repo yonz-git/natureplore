@@ -20,7 +20,8 @@ export type Claim = {
   reviewed: string;
   /** the route's spots where the claim can be seen, shown on its card behind a pin */
   spots?: number[];
-  stat: { label: string; value: string; unit: string };
+  /** the claim's figure: what was measured, the change, and what it means in plain words */
+  stat: { label: string; value: string; unit: string; note: string };
   sourceLine: string;
   source: {
     title: string;
@@ -53,7 +54,12 @@ export const CLAIMS: Record<string, Claim> = {
     site: "NSG and FFH-Gebiet Oberes Rhinluch",
     reviewed: "Last reviewed Mar 2026",
     spots: [5],
-    stat: { label: "Wet meadow since 1990", value: "−40", unit: "%" },
+    stat: {
+      label: "Wet meadow area since 1990",
+      value: "40",
+      unit: "% less",
+      note: "Of every 100 hectares of wet meadow on the site in 1990, about 40 have since dried out, most of them drained through ditches. Found by comparing aerial photographs from then and now.",
+    },
     sourceLine: "Landesamt für Umwelt Brandenburg, 2023, aerial survey. True of the whole designated site.",
     source: {
       title: "Wetland change in northern Brandenburg,",
@@ -79,7 +85,12 @@ export const CLAIMS: Record<string, Claim> = {
     ],
     site: "NSG and FFH-Gebiet Oberes Rhinluch",
     reviewed: "Last reviewed Mar 2026",
-    stat: { label: "Summer water since 2005", value: "−30", unit: "cm" },
+    stat: {
+      label: "Summer water level since 2005",
+      value: "30",
+      unit: "cm lower",
+      note: "In summer the water on the site now stands about 30 cm lower than it did in 2005, so the meadows dry out sooner each year. Measured at the site's water gauges.",
+    },
     sourceLine: "Landesamt für Umwelt Brandenburg, 2022, gauge records. True of the whole designated site.",
     source: {
       // a placeholder on the board too: the report's title is not known yet
@@ -105,7 +116,12 @@ export const CLAIMS: Record<string, Claim> = {
     site: "LSG Tegeler Fließtal",
     reviewed: "Recovering since 2022, last reviewed Jun 2026",
     spots: [5],
-    stat: { label: "Wet meadow since 2012", value: "+15", unit: "%" },
+    stat: {
+      label: "Wet meadow area since 2012",
+      value: "15",
+      unit: "% more",
+      note: "Where there were 100 hectares of wet meadow in 2012 there are now about 115, since the ditches were blocked and the water stays in the ground. Found by comparing aerial photographs from then and now.",
+    },
     sourceLine: "Senatsverwaltung für Umwelt Berlin, 2025, aerial survey. True of the whole designated site.",
     source: {
       title: "",

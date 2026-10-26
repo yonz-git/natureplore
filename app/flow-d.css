@@ -45,7 +45,8 @@
 /* with the head above the sheet, the first section starts at the sheet's top */
 .ln-head-desk + .ln-part > .ln-sec { margin-top: 0.5rem; }
 .ln-title { margin-top: 0; }
-.ln-sub { margin-top: 0.675rem; }
+/* the place line (components/RegionLine.tsx) at the map's size and pin; only the space around it is Learn's */
+.ln-sub.sg-scope { margin: 0.675rem 0 0; padding-top: 0; }
 .ln-intro { margin-top: 1.0125rem; max-width: 40rem; color: var(--color-on-ground-soft); }
 .ln-jump,
 .ln-filter { margin-top: 1.25rem; }
@@ -71,7 +72,7 @@
   align-items: center;
   gap: 0.25rem;
   color: var(--color-on-ground);
-  font-size: var(--text-body-sm);
+  font-size: var(--text-body);
   text-decoration: none;
 }
 .ln-more svg { color: var(--color-on-ground-soft); }
@@ -224,7 +225,7 @@ img.cp-icon { padding: 0; object-fit: cover; }
   .ln-top { display: none; }
   .ln-head-desk { display: block; }
   .ln-head-desk + .ln-part > .ln-sec { margin-top: 3rem; }
-  .ln-home .org-sheet { flex: none; overflow: visible; margin-top: 7.625rem; min-height: calc(100% - 7.625rem); }
+  .ln-home .org-sheet { flex: none; overflow: visible; margin-block: 7.625rem; min-height: calc(100% - 2 * 7.625rem); }
   .ln-home .ln-title { margin-top: 0.675rem; }
   .ln-claims { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 

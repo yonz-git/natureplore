@@ -13,6 +13,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { ChevronIcon, GroupIcon, ListIcon, MapIcon, OrganismsIcon, PinIcon, RoutesIcon, SearchIcon } from "@/components/Icons";
 import { SearchField } from "@/components/MapParts";
+import { RegionLine } from "@/components/RegionLine";
 import { useSheet } from "@/components/SheetGrab";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
@@ -241,18 +242,8 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           {/* on Organisms, the group filters at the top of the sheet */}
           <div className="sg-head">
             <div>
-              <p className="sg-scope">
-                {/* keyed so the pin rolls in again for each region */}
-                <span className="sg-pin" key={region.id}>
-                  {/* a ring on the ground round the pin's tip */}
-                  {/* drawn on the pin's own 24 grid and laid exactly over it, centred under its tip (12, 21) */}
-                  <svg className="sg-pin-ring" viewBox="0 0 24 24" aria-hidden="true">
-                    <ellipse cx="12" cy="20.9" rx="7.2" ry="2.5" />
-                  </svg>
-                  <PinIcon size={18} className="sg-pin-icon" />
-                </span>
-                {near ? `Near you, in ${region.name}` : region.name}
-              </p>
+              {/* the pin rolls in again for each region */}
+              <RegionLine replay={region.id}>{near ? `Near you, in ${region.name}` : region.name}</RegionLine>
               <h1 id="sg-title" className="ms-title">
                 In season in <em>{MONTH}</em>
               </h1>
