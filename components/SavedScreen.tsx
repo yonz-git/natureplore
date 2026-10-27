@@ -1,16 +1,17 @@
 "use client";
 
-// E1 · Saved, the Saved tab: what is kept on this device. Routes, each downloaded, with Walk the route;
+// You, the third tab: the profile on top (picture, name, notifications and settings, none of them
+// working yet), then E1 · Saved under it, what is kept on this device. Routes, each downloaded;
 // the organisms saved on B4; the clean-up registered for (C4), the practices saved (C7) and the
 // documentaries saved to watch later (D3). It reads the same store as every Save control, so a
-// route saved on A5 is here. Walk the route opens the walk (L4). Each section shows its first five and
+// route saved on A5 is here. Each section shows its first five and
 // its heading opens the whole list (E4, E6, E5); "On this device" opens recent searches (E7),
 // downloaded routes (E8) and notifications (E3). Boards: E1 · Saved, and E1 · Saved, all sections.
 
 import Link from "next/link";
 import { useEffect } from "react";
 
-import { BagIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, OfflineIcon, SearchIcon, WalkIcon } from "@/components/Icons";
+import { BagIcon, BellIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, OfflineIcon, LoopIcon, OneWayIcon, SearchIcon, SettingsIcon } from "@/components/Icons";
 import { ACTION_ROWS } from "@/lib/actions";
 import { leaveFor } from "@/lib/back";
 import { docById, docLine } from "@/lib/docs";
@@ -18,7 +19,6 @@ import { ORGANISMS } from "@/lib/organisms";
 import { organismPhoto } from "@/lib/photos";
 import { useRecent } from "@/lib/recent";
 import { rememberList, useSaved } from "@/lib/saved";
-import { routeDetail } from "@/lib/spots";
 import { SUGGESTIONS } from "@/lib/suggestions";
 
 export default function SavedScreen() {
@@ -32,14 +32,34 @@ export default function SavedScreen() {
   const recent = useRecent();
   const notes = ids.includes("action:clean-up") ? 1 : 0;
   // a route opened from here goes back here
-  useEffect(() => rememberList("/saved"), []);
+  useEffect(() => rememberList("/you"), []);
 
   return (
-    <section className="saved" aria-labelledby="e1-title">
+    <section className="saved" aria-labelledby="you-name">
       <div className="saved-sheet glass">
-        <h1 id="e1-title">
+        <div className="you-head">
+          {/* the profile picture's place, a person until a picture is added */}
+          <span className="you-photo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              {/* head and shoulders, their ink 4 to 20, centred in the 24 box */}
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7Z" />
+            </svg>
+          </span>
+          <h1 id="you-name">Yeon Ji</h1>
+          <div className="you-tools">
+            <button type="button" className="round glass glass-pin" aria-label="Notifications">
+              <BellIcon size={20} />
+            </button>
+            <button type="button" className="round glass glass-pin" aria-label="Settings">
+              <SettingsIcon size={20} />
+            </button>
+          </div>
+        </div>
+
+        <h2 className="you-saved">
           <em>Saved</em>
-        </h1>
+        </h2>
         <p>Kept on this device</p>
 
         <h2>Routes</h2>
@@ -58,7 +78,13 @@ export default function SavedScreen() {
                   )}
                   <span>
                     <b>{r.name}</b>
-                    <small>{r.meta.replace(/ · .*$/, "")}</small>
+                    {/* the distance and the route's shape as its icon, as on the map's cards, the words kept for screen readers */}
+                    <small>
+                      {r.meta.replace(/ (loop|one way) · .*$/, "")}
+                      <span aria-hidden="true"> · </span>
+                      {r.meta.includes(" one way") ? <OneWayIcon className="sug-loop" /> : <LoopIcon className="sug-loop" />}
+                      <span className="sr-only">, {r.meta.includes(" one way") ? "one way" : "loop"}</span>
+                    </small>
                     <em>
                       <CheckCircleIcon size={16} />
                       Downloaded
@@ -76,20 +102,6 @@ export default function SavedScreen() {
                   ) : (
                     <div className="saved-row">{row}</div>
                   )}
-                  {/* L4, the walk, is built for Grumsin beech forest only */}
-                  {routeDetail(r.id) ? (
-                    <Link href={`/walk/${r.id}`} className="btn btn-primary">
-                      <WalkIcon size={18} />
-                      Walk the route
-                    </Link>
-                  ) : (
-                    <button type="button" className="btn btn-primary" aria-disabled="true">
-                      <WalkIcon size={18} />
-                      Walk the route
-                      <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
-                    </button>
-                  )}
-                  {!routeDetail(r.id) && <p className="org-small">The walk is built for Grumsin beech forest only.</p>}
                 </article>
               );
             })}

@@ -51,6 +51,7 @@ export function backLabel(href: string, fallback: string): string {
   if (href.startsWith("/learn/claim/")) return "Back to the claim";
   if (href.startsWith("/learn/action/")) return "Back to the action";
   if (href.startsWith("/saved")) return "Back to Saved";
+  if (href === "/you") return "Back to You";
   if (href === "/learn") return "Back to Learn";
   return fallback;
 }

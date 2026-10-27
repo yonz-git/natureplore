@@ -27,7 +27,7 @@ function Page({
   pre,
   close,
   intro,
-  back = "/saved",
+  back = "/you",
   action,
   children,
 }: {
@@ -39,7 +39,7 @@ function Page({
   action?: React.ReactNode;
   children: React.ReactNode;
 }) {
-  const label = back === "/saved" ? "Back to Saved" : back === "/learn" ? "Back to Learn" : "Back to downloaded routes";
+  const label = back === "/you" ? "Back to You" : back === "/learn" ? "Back to Learn" : "Back to downloaded routes";
   return (
     <section className="org ln se" aria-labelledby={id}>
       <BackTop href={back} label={label} />

@@ -20,7 +20,7 @@ import { InSeasonList } from "@/components/InSeasonList";
 import { RECORDED_COUNTS } from "@/lib/records";
 import { YearChart } from "@/components/YearChart";
 import { organismPhoto } from "@/lib/photos";
-import { GROUPS, recordsOf, spotsOf, type Route } from "@/lib/routes";
+import { GROUPS, recordsOf, spotsOf, type Group, type Route } from "@/lib/routes";
 import { lastList, useSaved } from "@/lib/saved";
 import { MONTH_LETTERS, MONTH_NAMES, NOW, routeDetail } from "@/lib/spots";
 import { MONTH, suggestionById } from "@/lib/suggestions";
@@ -302,7 +302,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   const inSeasonPhotos = (suggestionById(route.id)?.inSeason ?? []).map((o) => organismPhoto(o.name)?.src).slice(0, 2);
   // back goes to the list the route was opened from, A5, A4 or Saved, read once the page is in the browser
   const back = useSyncExternalStore(noop, lastList, () => "/map");
-  const backLabel = back === "/saved" ? "Back to Saved" : "Back to the suggestions";
+  const backLabel = back === "/you" ? "Back to You" : "Back to the suggestions";
 
   // the real line when the route has one, otherwise a loop through its spots
   const line = useMemo<[number, number][]>(
@@ -379,6 +379,12 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
 
   // the card says what is in season this month: the bar, the pills and the tiles all count September, from GBIF
   const counts = RECORDED_COUNTS[route.id] ?? route.counts;
+  // the legend's pills filter the in-season tiles to their groups; none picked shows every group. The pick
+  // is kept with its route, so another route opens with every group
+  const [pickedOn, setPickedOn] = useState<{ route: string; groups: Group[] }>({ route: route.id, groups: [] });
+  const picked = pickedOn.route === route.id ? pickedOn.groups : [];
+  const pick = (g: Group) =>
+    setPickedOn({ route: route.id, groups: picked.includes(g) ? picked.filter((x) => x !== g) : [...picked, g] });
   const total = recordsOf(counts);
   const [name, ...rest] = route.name.split(" ").reverse();
   const lead = rest.reverse().join(" ");
@@ -508,15 +514,25 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                   <span key={g.id} className={`is-${g.id}`} style={{ flexGrow: counts[g.id] }} />
                 ))}
               </div>
-              <ul className="fb-legend" aria-hidden="true">
+              <ul className="fb-legend" aria-label="Show only these groups">
                 {GROUPS.map((g) => (
-                  <li key={g.id} className={`fb-pill${counts[g.id] ? "" : " is-none"}`} title={g.label}>
-                    <GroupIcon group={g.id} size={17} className={`is-${g.id}`} />
-                    <span className="fb-legend-num" data-last={String(counts[g.id] ?? 0).slice(-1)}>{counts[g.id] ?? 0}</span>
+                  <li key={g.id}>
+                    <button
+                      type="button"
+                      className={`fb-pill${counts[g.id] ? "" : " is-none"}`}
+                      title={g.label}
+                      aria-label={`${g.label}, ${counts[g.id] ?? 0}`}
+                      aria-pressed={picked.includes(g.id)}
+                      disabled={!counts[g.id]}
+                      onClick={() => pick(g.id)}
+                    >
+                      <GroupIcon group={g.id} size={17} className={`is-${g.id}`} />
+                      <span className="fb-legend-num" data-last={String(counts[g.id] ?? 0).slice(-1)}>{counts[g.id] ?? 0}</span>
+                    </button>
                   </li>
                 ))}
               </ul>
-              <InSeasonList routeId={route.id} />
+              <InSeasonList routeId={route.id} groups={picked} />
               {/* A8 has the records of Grumsin beech forest only */}
               {route.id === "grumsin" ? (
                 <Link href={`/map/route/${route.id}/recorded`} className="btn btn-secondary btn-chev">
