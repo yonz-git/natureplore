@@ -302,7 +302,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   const inSeasonPhotos = (suggestionById(route.id)?.inSeason ?? []).map((o) => organismPhoto(o.name)?.src).slice(0, 2);
   // back goes to the list the route was opened from, A5, A4 or Saved, read once the page is in the browser
   const back = useSyncExternalStore(noop, lastList, () => "/map");
-  const backLabel = back === "/saved" ? "Back to Saved" : "Back to the suggestions";
+  const backLabel = back === "/you" ? "Back to You" : "Back to the suggestions";
 
   // the real line when the route has one, otherwise a loop through its spots
   const line = useMemo<[number, number][]>(

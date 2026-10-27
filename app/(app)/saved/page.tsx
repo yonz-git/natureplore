@@ -1,10 +1,7 @@
-import type { Metadata } from "next";
-import SavedScreen from "@/components/SavedScreen";
+import { redirect } from "next/navigation";
 
-// E1 · Saved: the Saved tab, what is kept on this device.
-
-export const metadata: Metadata = { title: "Saved" };
+// Saved is part of You now (app/(app)/you/page.tsx); its own pages under /saved stay where they are.
 
 export default function Saved() {
-  return <SavedScreen />;
+  redirect("/you");
 }
