@@ -14,7 +14,7 @@ import { GroupFilter } from "@/components/GroupFilter";
 import { Where } from "@/components/InSeasonList";
 import { organismHref } from "@/lib/organisms";
 import { organismPhoto } from "@/lib/photos";
-import { GRUMSIN_RECORDED } from "@/lib/recorded";
+import type { RecordedGroup } from "@/lib/recorded";
 import { GROUPS, type Group } from "@/lib/routes";
 
 const FIRST = 5;
@@ -27,13 +27,23 @@ const TINT: Record<Group, string> = {
 };
 const label = (g: Group) => GROUPS.find((x) => x.id === g)!.label;
 
-export default function RecordedScreen({ routeName, routeHref }: { routeName: string; routeHref: string }) {
+export default function RecordedScreen({
+  routeId,
+  routeName,
+  recorded,
+}: {
+  routeId: string;
+  routeName: string;
+  /** the route's records, by group in the fixed order */
+  recorded: RecordedGroup[];
+}) {
+  const routeHref = `/map/route/${routeId}`;
   const [open, setOpen] = useState<Group | null>(null);
   // the groups picked in the legend; none picked shows every group
   const [picked, setPicked] = useState<Group[]>([]);
   const pick = (g: Group) => setPicked((p) => (p.includes(g) ? p.filter((x) => x !== g) : [...p, g]));
-  const shownGroups = picked.length ? GRUMSIN_RECORDED.filter((g) => picked.includes(g.group)) : GRUMSIN_RECORDED;
-  const total = GRUMSIN_RECORDED.reduce((a, g) => a + g.total, 0);
+  const shownGroups = picked.length ? recorded.filter((g) => picked.includes(g.group)) : recorded;
+  const total = recorded.reduce((a, g) => a + g.total, 0);
 
   return (
     <section className="saved a8" aria-labelledby="a8-title">
@@ -49,18 +59,20 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
           <div
             className="b1-bar"
             role="img"
-            aria-label={`${total} records: ${GRUMSIN_RECORDED.map((g) => `${g.total} ${label(g.group).toLowerCase()}`).join(", ")}`}
+            aria-label={`${total} records: ${recorded.map((g) => `${g.total} ${label(g.group).toLowerCase()}`).join(", ")}`}
           >
-            {GRUMSIN_RECORDED.filter((g) => g.total).map((g) => (
-              <span
-                key={g.group}
-                className={`is-${g.group}${picked.length && !picked.includes(g.group) ? " is-dim" : ""}`}
-                style={{ flexGrow: g.total }}
-              />
-            ))}
+            {recorded
+              .filter((g) => g.total)
+              .map((g) => (
+                <span
+                  key={g.group}
+                  className={`is-${g.group}${picked.length && !picked.includes(g.group) ? " is-dim" : ""}`}
+                  style={{ flexGrow: g.total }}
+                />
+              ))}
           </div>
           <GroupFilter
-            counts={Object.fromEntries(GRUMSIN_RECORDED.map((g) => [g.group, g.total]))}
+            counts={Object.fromEntries(recorded.map((g) => [g.group, g.total]))}
             picked={picked}
             onPick={pick}
             onAll={() => setPicked([])}
@@ -86,30 +98,40 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
                   <p className="saved-empty">Nothing recorded along this route yet. The group keeps its place in the order.</p>
                 ) : (
                   <ul className="a8-rows" id={`a8-list-${g.group}`}>
-                    {shown.map((r, i) => (
-                      <li key={r.name} className={i >= FIRST ? "is-new" : undefined}>
-                        {organismPhoto(r.name) ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img className="a8-thumb" src={organismPhoto(r.name)!.src} alt="" loading="lazy" />
-                        ) : (
-                          <span className="a8-thumb" aria-hidden="true" style={{ "--a8-tint": TINT[g.group] } as React.CSSProperties} />
-                        )}
-                        <span className="a8-text">
-                          <b>{r.name}</b>
-                          {/* the group is the section's heading, so only the Latin name */}
-                          <small>
-                            <i>{r.latin}</i>
-                          </small>
-                          <small>
-                            Recorded, last {r.last}.
-                          </small>
-                          {!r.where && <small>Along the route, at no spot</small>}
-                          {/* the spot as its pin and numbered marks, as on the route page's in-season tiles */}
-                          {r.where && <Where spots={r.where.match(/\d+/g)!.map(Number)} />}
-                        </span>
-                        {organismHref(r.name) && <Link href={organismHref(r.name)!} className="org-link" aria-label={r.name} />}
-                      </li>
-                    ))}
+                    {shown.map((r, i) => {
+                      const photo = organismPhoto(r.name);
+                      const href = organismHref(r.name);
+                      return (
+                        <li key={r.name} className={i >= FIRST ? "is-new" : undefined}>
+                          {photo ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img className="a8-thumb" src={photo.src} alt="" loading="lazy" />
+                          ) : (
+                            <span
+                              className="a8-thumb"
+                              aria-hidden="true"
+                              style={
+                                {
+                                  "--a8-tint": TINT[g.group],
+                                } as React.CSSProperties
+                              }
+                            />
+                          )}
+                          <span className="a8-text">
+                            <b>{r.name}</b>
+                            {/* the group is the section's heading, so only the Latin name */}
+                            <small>
+                              <i>{r.latin}</i>
+                            </small>
+                            <small>Recorded, last {r.last}.</small>
+                            {!r.spots.length && <small>Along the route, at no spot</small>}
+                            {/* the spot as its pin and numbered marks, as on the route page's in-season tiles */}
+                            {r.spots.length > 0 && <Where spots={r.spots} />}
+                          </span>
+                          {href && <Link href={`${href}?from=recorded&route=${routeId}`} className="org-link" aria-label={r.name} />}
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
                 {g.total > FIRST && (

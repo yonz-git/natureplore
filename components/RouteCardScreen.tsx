@@ -57,7 +57,7 @@ function useRouteSave(id: string) {
   const saved = isSaved(id);
   const [removed, setRemoved] = useState(false);
   // Undo brings Walk the route back, so focus follows it there
-  const undone = useRef(false);
+  const [undone, setUndone] = useState(false);
   return {
     saved,
     removed,
@@ -65,6 +65,13 @@ function useRouteSave(id: string) {
     toggle: () => {
       toggle(id);
       setRemoved(saved);
+      setUndone(false);
+    },
+    /** Undo: saves again, and the Walk button that comes back takes focus */
+    undo: () => {
+      toggle(id);
+      setRemoved(saved);
+      setUndone(true);
     },
   };
 }
@@ -117,20 +124,20 @@ function SpotAt({ n, km }: { n?: number; km: string }) {
 
 /** Walk the route, under the stats once the route is saved. */
 function WalkButton({ route, walkable, save }: { route: Route; walkable: boolean; save: RouteSave }) {
-  if (!save.saved) return null;
-  const focusIfUndone = (el: HTMLElement | null) => {
-    if (el && save.undone.current) {
-      save.undone.current = false;
-      el.focus();
-    }
-  };
+  const link = useRef<HTMLAnchorElement>(null);
+  const button = useRef<HTMLButtonElement>(null);
+  const { saved, undone } = save;
+  useEffect(() => {
+    if (saved && undone) (link.current ?? button.current)?.focus();
+  }, [saved, undone]);
+  if (!saved) return null;
   return walkable ? (
-    <Link ref={focusIfUndone} href={`/walk/${route.id}`} className="btn btn-primary b1-walk">
+    <Link ref={link} href={`/walk/${route.id}`} className="btn btn-primary b1-walk">
       <WalkIcon size={20.8} />
       Walk the route
     </Link>
   ) : (
-    <button ref={focusIfUndone} type="button" className="btn btn-primary b1-walk" aria-disabled="true">
+    <button ref={button} type="button" className="btn btn-primary b1-walk" aria-disabled="true">
       <WalkIcon size={20.8} />
       Walk the route
       <span className="sr-only">, the walk of this route is not built in the prototype yet</span>
@@ -162,10 +169,7 @@ function Pin({ save }: { save: RouteSave }) {
       <button
         type="button"
         className="btn btn-secondary b1-undo"
-        onClick={() => {
-          save.undone.current = true;
-          save.toggle();
-        }}
+        onClick={save.undo}
       >
         Undo
       </button>
@@ -358,6 +362,8 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
     const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
     const fresh = nav && nav.type !== "back_forward" && nav.name === location.href;
     if (openSpot && fresh) {
+      // the navigation type is only known in the browser, so this cannot be the initial state
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setOpenSpot(null);
       history.replaceState(history.state, "", location.pathname);
     } else if (openSpot) requestAnimationFrame(() => reveal(openSpot, "auto"));

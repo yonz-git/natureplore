@@ -172,8 +172,8 @@ export function watchFacts(d: Doc): Fact[] {
   return [{ icon: "check", text: where }];
 }
 
-/** The three shown on Learn (D0), in the board's order. */
-export const LEARN_DOCS = ["drainage", "migration", "tegel"];
+/** The six shown on Learn (D0): the board's three, then the rest that can be watched here, a second row from 64rem. */
+export const LEARN_DOCS = ["drainage", "migration", "tegel", "peatland", "fungi", "orchids"];
 
 export const REGIONS: Region[] = ["Brandenburg", "Northern Germany", "Europe"];
 export const TOPICS: Topic[] = ["Wetlands", "Birds", "Fungi", "Forests"];

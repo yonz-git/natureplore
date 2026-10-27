@@ -135,7 +135,7 @@
   line-height: 1;
 }
 .dc-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
-.dc-text b { font-size: var(--text-title); line-height: 1.15; font-weight: 400; }
+.dc-text b { font-size: var(--text-h3); line-height: var(--text-h3--line-height); font-weight: 400; }
 .dc-text > span:not(.fb-pill) { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .dc-text .fb-pill { align-self: flex-start; margin-top: 0.50625rem; height: auto; min-height: 1.75rem; padding-block: 0.3125rem; white-space: normal; line-height: 1.2; }
 
@@ -231,8 +231,8 @@ img.cp-icon { padding: 0; object-fit: cover; }
 @media (min-width: 64rem) {
   /* D0 and D2: one wide column, not the two of the organism page */
   .ln .org-sheet {
-    padding-left: max(6rem, calc((100% - 6vw - 78rem) / 2));
-    padding-right: max(6rem, calc((100% - 6vw - 78rem) / 2));
+    padding-left: max(6rem, calc((100% - 2 * var(--sheet-side) - 78rem) / 2));
+    padding-right: max(6rem, calc((100% - 2 * var(--sheet-side) - 78rem) / 2));
     display: flex;
   }
   /* stuck, the chips sit on the nav's line at the top of the window, centred on the 3.25rem nav pill

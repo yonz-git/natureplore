@@ -112,6 +112,8 @@
   .org-sheet,
   .saved-sheet,
   .cp-dialog-sheet { margin-left: 3vw; margin-right: 3vw; }
+  /* Learn: the title stands as far below the sheet's top as it does in from its left */
+  .ln-home .org-sheet { padding-top: var(--spacing-sheet-tablet); }
   /* A8: the sheet is only as wide as its content, centred as on the desktop, so no empty strip on the right */
   .a8 .saved-sheet { max-width: min(var(--spacing-measure) + 2 * var(--spacing-sheet-tablet), 100% - 6vw); margin-left: auto; margin-right: auto; }
   .ms-sheet,

@@ -32,7 +32,7 @@ function Step({ to, kicker, end, back = false }: { to?: Organism; kicker: string
       {body}
     </Link>
   ) : (
-    <span className={`fb-nav-next${back ? " is-back" : ""}`} aria-disabled="true">
+    <span className={`fb-nav-next${back ? " is-back" : ""}`}>
       {body}
     </span>
   );
