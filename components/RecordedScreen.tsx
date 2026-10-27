@@ -1,15 +1,17 @@
 "use client";
 
 // A8 · Recorded along this route: everything recorded within 250 m of the line, in the fixed group
-// order. The proportion bar and its legend first, each legend pill a filter that shows only its
-// group (several can be picked, none picked shows all), then each group's first five with a photograph
+// order. The proportion bar and its legend first, the shared group filter (components/GroupFilter.tsx,
+// All first, several groups can be picked), then each group's first five with a photograph
 // photograph, and "See all" opening the rest in place. A group with nothing recorded keeps its place.
 // Rows are plain text in the prototype. Boards: A8, phone and tablet.
 
 import Link from "next/link";
 import { useState } from "react";
 
-import { BackIcon, ChevronIcon, GroupIcon } from "@/components/Icons";
+import { BackIcon, ChevronIcon } from "@/components/Icons";
+import { GroupFilter } from "@/components/GroupFilter";
+import { Where } from "@/components/InSeasonList";
 import { organismHref } from "@/lib/organisms";
 import { organismPhoto } from "@/lib/photos";
 import { GRUMSIN_RECORDED } from "@/lib/recorded";
@@ -57,27 +59,12 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
               />
             ))}
           </div>
-          <div className="a8-legend" role="group" aria-label="Show only these groups">
-            {GRUMSIN_RECORDED.map((g) => (
-              <button
-                key={g.group}
-                type="button"
-                className={`a8-filter${g.total ? "" : " is-none"}`}
-                aria-pressed={picked.includes(g.group)}
-                onClick={() => pick(g.group)}
-              >
-                {/* the icon and the count, as on the route page; the group's name is for screen readers */}
-                <GroupIcon group={g.group} size={17} className={`is-${g.group}`} />
-                <span className="sr-only">{label(g.group)} </span>
-                {g.total}
-              </button>
-            ))}
-          </div>
-          {picked.length > 0 && (
-            <button type="button" className="a8-clear" onClick={() => setPicked([])}>
-              Show all groups
-            </button>
-          )}
+          <GroupFilter
+            counts={Object.fromEntries(GRUMSIN_RECORDED.map((g) => [g.group, g.total]))}
+            picked={picked}
+            onPick={pick}
+            onAll={() => setPicked([])}
+          />
         </div>
 
         <p className="sr-only" aria-live="polite">
@@ -107,14 +94,18 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
                         ) : (
                           <span className="a8-thumb" aria-hidden="true" style={{ "--a8-tint": TINT[g.group] } as React.CSSProperties} />
                         )}
-                        <span>
+                        <span className="a8-text">
                           <b>{r.name}</b>
+                          {/* the group is the section's heading, so only the Latin name */}
                           <small>
-                            {name.slice(0, -1)}, <i>{r.latin}</i>
+                            <i>{r.latin}</i>
                           </small>
                           <small>
-                            Recorded, last {r.last}. {r.where ?? "Along the route, at no spot"}
+                            Recorded, last {r.last}.
                           </small>
+                          {!r.where && <small>Along the route, at no spot</small>}
+                          {/* the spot as its pin and numbered marks, as on the route page's in-season tiles */}
+                          {r.where && <Where spots={r.where.match(/\d+/g)!.map(Number)} />}
                         </span>
                         {organismHref(r.name) && <Link href={organismHref(r.name)!} className="org-link" aria-label={r.name} />}
                       </li>
