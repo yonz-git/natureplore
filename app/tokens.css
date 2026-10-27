@@ -73,6 +73,11 @@
   --text-display-desktop--line-height: 1.15;
   --text-display-desktop--font-weight: 300;
   --text-display-desktop--letter-spacing: -0.015em;
+  --text-display-desktop-sm: 2.75rem;
+  --text-display-desktop-sm--font-family: var(--font-heading);
+  --text-display-desktop-sm--line-height: 1.15;
+  --text-display-desktop-sm--font-weight: 300;
+  --text-display-desktop-sm--letter-spacing: -0.0125em;
   --text-display: 2.125rem;
   --text-display--font-family: var(--font-heading);
   --text-display--line-height: 1.15;

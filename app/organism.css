@@ -229,7 +229,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
   }
   .org-sheet.is-solo { grid-template-columns: minmax(0, 1fr); width: min(58rem, 100% - 2 * var(--sheet-side)); margin-inline: auto; padding-inline: 4rem; }
   .org-photo { height: 26rem; }
-  .org-title { font-size: var(--text-display-desktop); line-height: var(--text-display-desktop--line-height); letter-spacing: var(--text-display-desktop--letter-spacing); }
+  .org-title { font-size: var(--text-display-desktop-sm); line-height: var(--text-display-desktop-sm--line-height); letter-spacing: var(--text-display-desktop-sm--letter-spacing); }
   .org-h2 { margin-top: 2.5rem; }
   .org-side > .org-small { display: block; margin-top: 0; }
   .org-side > .org-h2-first { margin-top: 0; }
