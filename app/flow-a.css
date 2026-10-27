@@ -634,63 +634,9 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 }
 .a8-box { margin-top: 1.25rem; }
 .a8-box .b1-bar { height: 0.625rem; }
-.a8-legend { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.a8-filter {
-  height: 2.75rem;
-  padding: 0 0.875rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  border-radius: var(--radius-pill);
-  background: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
-  border: 0.5px solid var(--color-inner-edge);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
-  color: var(--color-on-ground);
-  font-family: var(--font-text);
-  font-size: var(--text-caption);
-  font-weight: 400;
-  line-height: 1;
-  cursor: pointer;
-  transition: transform 160ms var(--ease-out), box-shadow var(--hover-fade) var(--ease-hover);
-}
-.a8-filter:active { transform: scale(0.97); }
-/* nothing recorded: full white for contrast, the dashed edge says it is empty */
-.a8-filter.is-none { border-style: dashed; }
-/* each group by its icon in its own colour, as on the route page's legend */
-.a8-filter .group-icon { transition: color var(--hover-fade) var(--ease-hover); }
-.a8-filter .group-icon.is-plants { color: var(--color-group-plants); }
-.a8-filter .group-icon.is-herbs { color: var(--color-group-herbs); }
-.a8-filter .group-icon.is-mushrooms { color: var(--color-group-mushrooms); }
-.a8-filter .group-icon.is-birds { color: var(--color-group-birds); }
-.a8-filter .group-icon.is-mammals { color: var(--color-group-mammals); }
-/* a picked group takes the lime, as every selected control does, its icon in the label colour */
-.a8-filter[aria-pressed="true"] {
-  border-color: transparent;
-  background: var(--fill-lime);
-  color: var(--color-on-primary);
-  font-weight: 500;
-}
-.a8-filter[aria-pressed="true"] .group-icon { color: var(--color-on-primary); }
-.a8-clear {
-  align-self: flex-start;
-  min-height: 2.75rem;
-  margin-top: -0.5rem;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--color-on-ground);
-  font-family: var(--font-text);
-  font-size: var(--text-secondary);
-  text-decoration: underline;
-  text-underline-offset: 0.1875rem;
-  cursor: pointer;
-}
 .b1-bar span { transition: opacity 200ms var(--ease-out); }
 .b1-bar span.is-dim { opacity: 0.25; }
 .a8-section { animation: sheet-in var(--enter) var(--ease-enter) backwards; }
-@media (hover: hover) and (pointer: fine) {
-  .a8-filter:not([aria-pressed="true"]):hover { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0.08); }
-}
 .a8-group-head { margin-top: 2.375rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 0.25rem 0.75rem; padding: 0 0.625rem; }
 .a8-group-head h2 { margin: 0; }
 .saved-sheet .a8-group-head h2 { margin: 0; font-size: 2rem; line-height: 1.15; }
@@ -754,7 +700,8 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
     linear-gradient(160deg, var(--a8-tint) 0%, var(--color-field-shade) 110%);
 }
 img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; background: var(--color-field-shade); }
-.a8-rows li > span:last-child { min-width: 0; display: flex; flex-direction: column; gap: 0; }
+/* the text column by its own class: rows that open an organism end in their link, not in it */
+.a8-text { min-width: 0; display: flex; flex-direction: column; gap: 0; }
 /* the lines set close, 1.1 and no gap between them, so the name and three lines under it fit the 5.25rem
    thumbnail's height */
 .a8-rows b { font-size: var(--text-body); line-height: 1.15; font-weight: 400; }
@@ -912,7 +859,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sg:not(.is-map) .sg-list,
   .a8-rows li.is-new,
   .a8-section { animation: fade-in 160ms var(--ease-out) backwards; }
-  .a8-filter,
   .b1-bar span { transition: none; }
 }
 

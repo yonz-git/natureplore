@@ -11,12 +11,13 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
-import { BackIcon, BookmarkIcon, ChevronIcon, DownloadIcon, GroupIcon, LoopIcon, OneWayIcon, WalkIcon } from "@/components/Icons";
+import { BackIcon, BookmarkIcon, ChevronIcon, DownloadIcon, LoopIcon, OneWayIcon, WalkIcon } from "@/components/Icons";
 import { useSheet } from "@/components/SheetGrab";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
 import { StatValue } from "@/components/CParts";
 import { ActionRow, ClaimCard, SpotMark } from "@/components/SpotParts";
 import { InSeasonList } from "@/components/InSeasonList";
+import { GroupFilter } from "@/components/GroupFilter";
 import { RECORDED_COUNTS } from "@/lib/records";
 import { YearChart } from "@/components/YearChart";
 import { organismPhoto } from "@/lib/photos";
@@ -514,24 +515,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                   <span key={g.id} className={`is-${g.id}`} style={{ flexGrow: counts[g.id] }} />
                 ))}
               </div>
-              <ul className="fb-legend" aria-label="Show only these groups">
-                {GROUPS.map((g) => (
-                  <li key={g.id}>
-                    <button
-                      type="button"
-                      className={`fb-pill${counts[g.id] ? "" : " is-none"}`}
-                      title={g.label}
-                      aria-label={`${g.label}, ${counts[g.id] ?? 0}`}
-                      aria-pressed={picked.includes(g.id)}
-                      disabled={!counts[g.id]}
-                      onClick={() => pick(g.id)}
-                    >
-                      <GroupIcon group={g.id} size={17} className={`is-${g.id}`} />
-                      <span className="fb-legend-num" data-last={String(counts[g.id] ?? 0).slice(-1)}>{counts[g.id] ?? 0}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <GroupFilter counts={counts} picked={picked} onPick={pick} onAll={() => setPickedOn({ route: route.id, groups: [] })} />
               <InSeasonList routeId={route.id} groups={picked} />
               {/* A8 has the records of Grumsin beech forest only */}
               {route.id === "grumsin" ? (
