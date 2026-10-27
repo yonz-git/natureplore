@@ -106,7 +106,7 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
 
       <div className="walk-top">
         <p id="walk-route" className="walk-title glass glass-pill">Walking {route.name}</p>
-        <Link href="/saved" className="walk-end glass glass-pill">
+        <Link href="/you" className="walk-end glass glass-pill">
           End walk
         </Link>
         {/* locate, on the phone and tablet only: the desktop map shows the whole route beside the panel */}

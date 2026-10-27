@@ -1,3 +1,6 @@
+import Link from "next/link";
+
+import Logo from "@/components/Logo";
 import TabBar from "@/components/TabBar";
 
 export default function AppLayout({ children }: LayoutProps<"/">) {
@@ -11,6 +14,10 @@ export default function AppLayout({ children }: LayoutProps<"/">) {
       <main className="mx-auto min-h-full w-full max-w-[32.5rem] px-inset-screen pt-[var(--top-chrome)] pb-tabbar-clearance">
         {children}
       </main>
+      {/* the welcome's corner symbol, in the same corner, on every page whose corner is free (app/tabbar.css) */}
+      <Link href="/" className="app-logo" aria-label="natureplore, back to the welcome">
+        <Logo symbol />
+      </Link>
       <TabBar />
     </div>
   );

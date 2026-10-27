@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLayoutEffect, useRef, useState } from "react";
 
-// Map, Learn, Saved, You: Map is A5, Learn is D0, Saved is E1, You has no board yet. The redesign's boards call the first tab
+// Map, Learn, You: Map is A5, Learn is D0, You holds the profile and E1 · Saved, the tab Saved was until
+// the two were combined. The redesign's boards call the first tab
 // Routes; it was renamed Map in the prototype on 1 Oct 2026.
 const TABS = [
   {
@@ -51,21 +52,6 @@ const TABS = [
     ),
   },
   {
-    href: "/saved",
-    label: "Saved",
-    // one bookmark, the front one of the Figma pair (.design/icons/saved-bookmarks.svg), on its own
-    // and centred in the 24 box at about the height the pair stood; drawn 20% bigger like Map and Learn
-    big: true,
-    icon: (
-      <g transform="translate(12 12) scale(0.0985) translate(-77 -121)" fill="none" stroke="currentColor" strokeLinejoin="round">
-        <path
-          className="tab-fill"
-          strokeWidth="19"
-          d="M123.184 32H30.8158C25.1675 32.0164 19.7553 34.2721 15.7614 38.2744C11.7674 42.2766 9.5164 47.7 9.5 53.36V210L77 153.04L144.5 210V53.36C144.484 47.7 142.233 42.2766 138.239 38.2744C134.245 34.2721 128.832 32.0164 123.184 32Z"
-        />
-      </g>
-    ),
-  },  {
     href: "/you",
     label: "You",
     // a head and shoulders; its line is the Map outline's, 1.4 at rest and 2 when open, filled when open (app/tabbar.css)
@@ -135,7 +121,9 @@ export default function TabBar() {
         />
         {TABS.map((tab) => {
           // the start sheet at /start belongs to the Map tab
-          const current = pathname.startsWith(tab.href) || (tab.href === "/map" && pathname === "/start");
+          // the Saved pages are You's
+          const current =
+            pathname.startsWith(tab.href) || (tab.href === "/map" && pathname === "/start") || (tab.href === "/you" && pathname.startsWith("/saved"));
           return (
             <li key={tab.href}>
               <Link

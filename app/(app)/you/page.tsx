@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
+import SavedScreen from "@/components/SavedScreen";
 
-// You: the fourth tab. Until its screens are designed it holds one centred button, which does
-// nothing yet: there are no accounts in v1.
+// You: the fourth tab, the profile and, under it, what is kept on this device (E1 · Saved, which
+// was a tab of its own until the two were combined).
 
 export const metadata: Metadata = { title: "You" };
 
 export default function You() {
-  return (
-    <section className="you" aria-label="You">
-      <button type="button" className="btn btn-primary">
-        Login or Signup
-      </button>
-    </section>
-  );
+  return <SavedScreen />;
 }

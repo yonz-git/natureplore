@@ -135,6 +135,39 @@ a.fb-row:active { transform: scale(0.985); }
    to the last figure on the right, the figures trimmed to their cap height so they sit on the
    pill's middle, and each icon's own empty margin inside its 24 box cancelled, measured per icon */
 .fb-legend .fb-pill { padding: 0 0.625rem; }
+/* the legend's pills are filters for the in-season tiles: a picked group in the route chips' dark forest
+   green (.fb-strip a[aria-current]), with a brighter rim; a group with nothing this month cannot be picked.
+   The green and the hover wash are layers in one shadow list, so both fade */
+.fb-legend button.fb-pill {
+  position: relative;
+  background: none;
+  color: var(--color-on-ground);
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 10rem rgb(from var(--color-picked) r g b / 0), inset 0 0 0 10rem rgb(255 255 255 / 0);
+  transition: transform 160ms var(--ease-out), box-shadow 480ms var(--ease-move), border-color 480ms var(--ease-move);
+}
+/* 28 tall, 44 to touch */
+.fb-legend button.fb-pill::before { content: ""; position: absolute; inset: -0.5rem 0; }
+.fb-legend button.fb-pill:active { transform: scale(0.97); }
+.fb-legend button.fb-pill[aria-pressed="true"] {
+  border-color: rgb(255 255 255 / 0.3);
+  box-shadow: inset 0 0 0 10rem rgb(from var(--color-picked) r g b / 0.72), inset 0 0 0 10rem rgb(255 255 255 / 0);
+}
+.fb-legend button.fb-pill:disabled { cursor: default; color: var(--color-on-ground-soft); }
+.fb-legend button.fb-pill:disabled:active { transform: none; }
+@media (hover: hover) and (pointer: fine) {
+  .fb-legend button.fb-pill:not(:disabled, [aria-pressed="true"]):hover {
+    box-shadow: inset 0 0 0 10rem rgb(from var(--color-picked) r g b / 0), inset 0 0 0 10rem rgb(255 255 255 / 0.08);
+  }
+}
+/* the tiles a pick leaves rise in */
+@media (prefers-reduced-motion: no-preference) {
+  .fb-org-tiles > li { animation: fb-tile-in 420ms var(--ease-out) backwards; }
+}
+@keyframes fb-tile-in {
+  from { opacity: 0; translate: 0 0.75rem; }
+}
 /* the count in the organism pills' size and weight (.pill-org b, app/map.css) */
 /* trimmed to the caps, the figures still rendered 0.5px low (measured at 4x): lifted that much */
 .fb-legend-num { display: block; position: relative; top: -0.5px; text-box: trim-both cap alphabetic; font-size: var(--text-stat-label); font-weight: var(--text-pill-count--font-weight); font-variant-numeric: tabular-nums; }

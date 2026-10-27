@@ -12,19 +12,22 @@ import { GroupIcon, PinIcon } from "@/components/Icons";
 import { SpotMark } from "@/components/SpotParts";
 import { organismPhoto } from "@/lib/photos";
 import { RECORDED } from "@/lib/records";
+import type { Group } from "@/lib/routes";
 import { groupWord } from "@/lib/suggestions";
 
 const FIRST = 10;
 
-export function InSeasonList({ routeId }: { routeId: string }) {
+/** `groups`, picked on the legend's pills above, keeps only those groups; none picked keeps every group */
+export function InSeasonList({ routeId, groups = [] }: { routeId: string; groups?: Group[] }) {
   const rows = [...(RECORDED[routeId] ?? [])].sort((a, b) => b.records - a.records);
   if (!rows.length) return null;
-  const shown = rows.slice(0, FIRST);
+  const shown = rows.filter((o) => !groups.length || groups.includes(o.group)).slice(0, FIRST);
 
   return (
     <div className="fb-in-season">
       {/* headed by "In season in <month>" at the top of the card (components/RouteCardScreen.tsx) */}
-      <ul className="fb-org-tiles" aria-labelledby="in-season-label">
+      {/* a new pick redraws the tiles, so each rises in (app/flow-b.css) */}
+      <ul key={groups.join()} className="fb-org-tiles" aria-labelledby="in-season-label" aria-live="polite">
         {shown.map((o) => {
           const photo = organismPhoto(o.name);
           return (

@@ -71,15 +71,10 @@
 .tabbar-in { display: contents; }
 /* the Map and Learn icons, detailed drawings, read at the others' size only 20% bigger */
 .tabbar-icon-big { scale: 1.2; overflow: visible; }
-/* the open tab's icon gets heavier: Saved's bookmark becomes solid */
-/* the bookmark's line matches the Map outline: 1.4 at rest, 2 when open, in its own 0.0985 scale */
-.tabbar-tab .tab-fill { fill: rgb(from currentColor r g b / 0); stroke-width: 14.2; transition: fill 220ms var(--ease-out), stroke-width 220ms var(--ease-out); }
-.tabbar-tab.is-current .tab-fill { fill: currentColor; stroke-width: 20.3; }
-/* opening a tab, the icon fills only once its colour has turned from white to forest, so it never
+/* opening You, its icon fills only once its colour has turned from white to forest, so it never
    flashes solid white on its way to green */
-.tabbar-tab.is-current .tab-fill,
 .tabbar-tab.is-current .tab-outline.tab-you { transition-delay: 280ms; }
-/* You fills like Saved when open */
+/* You fills when open */
 .tabbar-tab .tab-outline.tab-you { fill: rgb(from currentColor r g b / 0); transition: fill 220ms var(--ease-out), stroke-width 220ms var(--ease-out); }
 .tabbar-tab.is-current .tab-outline.tab-you { fill: currentColor; }
 /* Learn's earth turns to its negative when selected, the two drawings crossfade */
@@ -145,9 +140,29 @@
      as on the Routes and Organisms switch, measured on the render: each icon's own empty margins cancelled */
   .tabbar-icon-map { margin: 0 calc(0.18rem - 0.0694rem) 0 calc(0.165rem - 0.0175rem); }
   .tabbar-icon-learn { margin: 0 calc(-0.0113rem - 0.0119rem) 0 calc(0.0263rem - 0.0050rem); }
-  .tabbar-icon-saved { margin: 0 -0.0488rem 0 -0.0638rem; }
   .tabbar-icon-you { margin: 0 0 0 -0.0631rem; }
   .tabbar-tab.is-current { font-weight: 700; }
+}
+
+/* the logo symbol where the welcome leaves it (.a0-mark-corner, app/welcome.css): the same corner and
+   size, on every desktop page whose corner is free. The map's search and every back control take
+   that corner, so there it fades away */
+.app-logo { display: none; }
+@media (min-width: 64rem) {
+  .app-logo {
+    position: fixed;
+    z-index: 3;
+    top: var(--spacing-chrome-edge);
+    left: var(--spacing-chrome-edge);
+    display: block;
+    height: 2.44375rem;
+    color: var(--color-primary);
+    transition: opacity 400ms var(--ease-move), visibility 400ms var(--ease-move);
+  }
+  .app-logo svg { display: block; height: 100%; width: auto; }
+  /* 44 to click, whatever the symbol's own size */
+  .app-logo::before { content: ""; position: absolute; inset: -0.125rem; }
+  body:has(.back-top, .ms-search-top) .app-logo { opacity: 0; visibility: hidden; }
 }
 
 @media (hover: hover) and (pointer: fine) {
