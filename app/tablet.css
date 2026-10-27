@@ -46,7 +46,6 @@
   .sg .ms-grab,
   .sg .ms-handle,
   .sg .sg-toggle { display: none; }
-  .sg:not(.is-map) .map-route { display: flex; }
 
   /* ── A2, A3: search keeps a column on the left, over the dimmed map, as on its board ──────── */
 

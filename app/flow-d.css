@@ -8,22 +8,10 @@
 
 /* ── D0 and D2, the one-column pages ───────────────────────────────────────────────────────── */
 
-/* D0 under 64rem: the head stays on the photograph at the top and only the sheet scrolls, under it */
-.ln-home { display: flex; flex-direction: column; overflow: hidden; }
-.ln-top { flex: none; padding: calc(var(--top-chrome) + 0.5rem) calc(1.5vw + 1.5rem) 1.25rem; text-shadow: 0 1px 0.5rem rgb(0 0 0 / 0.35); }
-/* off the sheet the chips stand on the photograph, so they frost like the map's floating controls */
-.ln-top .chip { text-shadow: none; backdrop-filter: blur(1.875rem) saturate(1.4); }
-.ln-head-desk { display: none; }
-.ln-home .org-sheet {
-  flex: 1 1 auto;
-  min-height: 0;
-  margin-top: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: none;
-  scroll-padding-bottom: var(--spacing-tabbar-clearance);
-}
-.ln-home .org-sheet::-webkit-scrollbar { display: none; }
+/* D0 at every size: the head and the chips sit inside the sheet, which scrolls with the page (the sheet's top
+   gap is --sheet-gap-top, app/organism.css). The chips stick at the top of the window as they scroll. */
+.ln-home { display: block; overflow-y: auto; }
+.ln-home .org-sheet { flex: none; overflow: visible; }
 /* the jump chips glide to their section, eased (components/LearnScreen.tsx); what a section holds
    fades up as it scrolls into view, so nothing arrives with a snap. Only opacity and translate, on
    items with no frosted glass inside, so no frost is switched off */
@@ -40,8 +28,7 @@
   from { opacity: 0; translate: 0 1.5rem; }
   to { opacity: 1; translate: 0 0; }
 }
-/* with the head above the sheet, the first section starts at the sheet's top */
-.ln-stick + .ln-part > .ln-sec { margin-top: 0.5rem; }
+.ln-stick + .ln-part > .ln-sec { margin-top: 3rem; }
 .ln-title { margin-top: 0; }
 /* the place line (components/RegionLine.tsx) at the map's size and pin; only the space around it is Learn's */
 .ln-sub.sg-scope { margin: 0.675rem 0 0; padding-top: 0; }
@@ -49,7 +36,14 @@
 .ln-jump { margin-top: 2.5rem; }
 .ln-filter { margin-top: 1.25rem; }
 /* the jump chips stay at the top of the window from 64rem, and only then */
-.ln-stick { display: none; }
+.ln-stick {
+  display: flex;
+  position: sticky;
+  /* stuck, the chips stand under the corner logo, which stays at the top left */
+  top: calc(var(--top-chrome) + 0.5rem + 2.44375rem + 0.5rem);
+  z-index: 2;
+}
+.ln-stick .chip { backdrop-filter: blur(1.875rem) saturate(1.4); }
 .ln-jump .chip { text-decoration: none; }
 /* the chip for the section under the chips is the current one, in the route page's dark forest green
    (.fb-strip, app/flow-b.css) and the heavier weight; each chip holds that width so none nudges. The
@@ -241,21 +235,11 @@ img.cp-icon { padding: 0; object-fit: cover; }
     padding-right: max(6rem, calc((100% - 6vw - 78rem) / 2));
     display: flex;
   }
-  .ln-home { display: block; overflow-y: auto; }
-  .ln-top { display: none; }
-  .ln-head-desk { display: block; }
   /* stuck, the chips sit on the nav's line at the top of the window, centred on the 3.25rem nav pill
      (a chip is its line, its 0.4375rem padding and its 1px edge, each twice), and frost what passes
      under them */
-  .ln-stick {
-    display: flex;
-    position: sticky;
-    top: calc(var(--spacing-chrome-edge) + (3.25rem - var(--text-chip) * 1.2 - 0.875rem - 2px) / 2);
-    z-index: 2;
-  }
-  .ln-stick .chip { backdrop-filter: blur(1.875rem) saturate(1.4); }
-  .ln-stick + .ln-part > .ln-sec { margin-top: 3rem; }
-  .ln-home .org-sheet { flex: none; overflow: visible; margin-block: var(--sheet-gap-top); min-height: calc(100% - 2 * var(--sheet-gap-top)); }
+  .ln-stick { top: calc(var(--spacing-chrome-edge) + (3.25rem - var(--text-chip) * 1.2 - 0.875rem - 2px) / 2); }
+  .ln-home .org-sheet { margin-block: var(--sheet-gap-top); min-height: calc(100% - 2 * var(--sheet-gap-top)); }
   .ln-home .ln-title { margin-top: 0.675rem; }
   .ln-claims { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
