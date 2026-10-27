@@ -3,6 +3,7 @@
 // and the Flow A boards on the redesign canvas. Prototype date: Thursday 24 September 2026, so
 // "this month" is September. Only Grumsin beech forest loop has its route page built.
 
+import { organismHref } from "@/lib/organisms";
 import type { MapPoint } from "@/components/RegionMap";
 import type { Group } from "@/lib/routes";
 
@@ -191,7 +192,7 @@ export function organismsIn(r: Region): RegionOrganism[] {
   for (const s of routesIn(r))
     for (const o of inSeasonOf(s)) {
       const seen = found.get(o.name);
-      found.set(o.name, { organism: o, routes: (seen?.routes ?? 0) + 1, href: o.name === "Common crane" ? "/map/organism/common-crane" : undefined });
+      found.set(o.name, { organism: o, routes: (seen?.routes ?? 0) + 1, href: organismHref(o.name) });
     }
   return [...found.values()];
 }

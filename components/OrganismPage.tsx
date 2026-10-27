@@ -51,6 +51,8 @@ function Actions({ o }: { o: Organism }) {
 /** `walk` is set when the page was opened from the walk: the tab bar stays hidden, as on the walk. */
 export default function OrganismPage({ o, back, walk = false }: { o: Organism; back: { href: string; label: string }; walk?: boolean }) {
   const photo = organismPhoto(`${o.name} ${o.close}`);
+  // nothing for the right column (no claim, impact or documentary): the sheet narrows to one column
+  const side = Boolean(o.claim || o.impact || o.docs);
   const name = `${o.name} ${o.close}`;
 
   return (
@@ -62,7 +64,7 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
         <Actions o={o} />
       </div>
 
-      <div className="org-sheet glass glass-top">
+      <div className={`org-sheet glass glass-top${side ? "" : " is-solo"}`}>
         <div className="org-main">
           {photo ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -148,11 +150,13 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
           {o.generalised && <p className="org-small org-note">{o.generalised.note}</p>}
         </div>
 
-        <aside className="org-side">
+        {side && <aside className="org-side">
 
-          <h2 className="org-h2 org-h2-first">
-            Impact <em>here</em>
-          </h2>
+          {(o.claim || o.impact) && (
+            <h2 className="org-h2 org-h2-first">
+              Impact <em>here</em>
+            </h2>
+          )}
           {o.claim && (
             <div className="fb-stack">
               <ClaimCard claim={o.claim} />
@@ -184,7 +188,7 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
 
           {o.docs && (
             <>
-              <h2 className="org-h2">Documentaries</h2>
+              <h2 className={o.claim || o.impact ? "org-h2" : "org-h2 org-h2-first"}>Documentaries</h2>
               {o.docs.map((id) => {
                 const d = docById(id)!;
                 const href = `/learn/documentaries/${id}`;
@@ -202,7 +206,7 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
               })}
             </>
           )}
-        </aside>
+        </aside>}
       </div>
     </section>
   );

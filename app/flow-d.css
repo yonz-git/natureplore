@@ -255,7 +255,7 @@ img.cp-icon { padding: 0; object-fit: cover; }
   }
   .ln-stick .chip { backdrop-filter: blur(1.875rem) saturate(1.4); }
   .ln-stick + .ln-part > .ln-sec { margin-top: 3rem; }
-  .ln-home .org-sheet { flex: none; overflow: visible; margin-block: 7.625rem; min-height: calc(100% - 2 * 7.625rem); }
+  .ln-home .org-sheet { flex: none; overflow: visible; margin-block: var(--sheet-gap-top); min-height: calc(100% - 2 * var(--sheet-gap-top)); }
   .ln-home .ln-title { margin-top: 0.675rem; }
   .ln-claims { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
