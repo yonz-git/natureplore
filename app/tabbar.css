@@ -147,23 +147,24 @@
 /* the logo symbol where the welcome leaves it (.a0-mark-corner, app/welcome.css): the same corner and
    size, on every desktop page whose corner is free. The map's search and every back control take
    that corner, so there it fades away */
-.app-logo { display: none; }
-@media (min-width: 64rem) {
-  .app-logo {
-    position: fixed;
-    z-index: 3;
-    top: var(--spacing-chrome-edge);
-    left: var(--spacing-chrome-edge);
-    display: block;
-    height: 2.44375rem;
-    color: var(--color-primary);
-    transition: opacity 400ms var(--ease-move), visibility 400ms var(--ease-move);
-  }
-  .app-logo svg { display: block; height: 100%; width: auto; }
-  /* 44 to click, whatever the symbol's own size */
-  .app-logo::before { content: ""; position: absolute; inset: -0.125rem; }
-  body:has(.back-top, .ms-search-top) .app-logo { opacity: 0; visibility: hidden; }
+.app-logo {
+  position: fixed;
+  z-index: 3;
+  /* phone and tablet: where the round back controls stand; from 64rem the chrome edge, as on the welcome */
+  top: calc(var(--top-chrome) + 0.5rem);
+  left: var(--spacing-screen-phone);
+  display: block;
+  height: 2.44375rem;
+  color: var(--color-primary);
+  transition: opacity 400ms var(--ease-move), visibility 400ms var(--ease-move);
 }
+@media (min-width: 64rem) {
+  .app-logo { top: var(--spacing-chrome-edge); left: var(--spacing-chrome-edge); }
+}
+.app-logo svg { display: block; height: 100%; width: auto; }
+/* 44 to click, whatever the symbol's own size */
+.app-logo::before { content: ""; position: absolute; inset: -0.125rem; }
+body:has(.back-top, .ms-search-top, .ms-bar) .app-logo { opacity: 0; visibility: hidden; }
 
 @media (hover: hover) and (pointer: fine) {
   .tabbar-tab:not(.is-current):hover { background: rgb(255 255 255 / 0.08); }

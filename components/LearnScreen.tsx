@@ -151,12 +151,9 @@ export default function LearnScreen() {
 
   return (
     <section ref={root} className="org ln ln-home" aria-label="Learn" onScrollCapture={onScroll}>
-      <LearnHead className="ln-top">
-        <JumpChips current={current} onJump={jumpTo} />
-      </LearnHead>
       <div className="org-sheet glass glass-top">
         <div className="org-main">
-          <LearnHead className="ln-head-desk" />
+          <LearnHead className="ln-head" />
           <JumpChips className="ln-stick" current={current} onJump={jumpTo} />
 
           <section className="ln-part" aria-labelledby="sec-impact">
