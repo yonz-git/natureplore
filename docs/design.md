@@ -77,6 +77,12 @@ typography:
     fontWeight: 300
     lineHeight: 1.15
     letterSpacing: -0.015em
+  display-desktop-sm:
+    fontFamily: Comfortaa
+    fontSize: 2.75rem
+    fontWeight: 300
+    lineHeight: 1.15
+    letterSpacing: -0.0125em
   display:
     fontFamily: Comfortaa
     fontSize: 2.125rem
@@ -495,7 +501,7 @@ The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group
 
 Two faces with separate jobs. Comfortaa 300 is the voice: headings, stat numbers and map counts, round and light so large sizes stay friendly rather than loud. Cabinet Grotesk (Indian Type Foundry, Fontshare) carries everything you read or tap, in 300 for running text and 400 for titles, labels and controls, stepping to 500 only on the active tab or segment, and counts in pills. Nothing is heavier than 500 and nothing is set in capitals.
 
-Headings run `display-desktop` 56, `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, the figures themselves at weight 400 and any word between them (the h in 3 h 00) left at 300, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 27.6/31.7 for the one desktop subline, `body` 19.2/22.1, `body-sm` 18/20.7 for notes under a section, `secondary` 19.2/22.1, `caption` 19.2/22.1, raised two steps on 17 Oct 2026 so no reading text is under 18 and one more on 26 Oct 2026 to sit with `body`. Since 26 Oct 2026 every note that took `body-sm` takes `body`, and a figure's label takes 18. `title` 20.4/23.5 names a route, spot or organism; `title-sm` 19.2/22.1 names a search result or a fact. Every text line height is `1.15`, unitless, so it follows the font size wherever that changes: 1rem text sits on 1.15rem, 18 on 20.7, a 34 heading on 39.1 (20 Oct 2026). Reading text was raised a fifth over the headings: headings, stats, spot numbers and buttons kept their size. Controls follow: `field` 19.2, `chip` 19.2, `tab` 14.4, `pill` 18, `stat-label` 14.4. `button-small` 14 is a small inner glass button on a sheet, such as Show on map. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
+Headings run `display-desktop` 56, `display-desktop-sm` 44 (the title of a desktop page, from 27 Oct 2026), `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, the figures themselves at weight 400 and any word between them (the h in 3 h 00) left at 300, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 27.6/31.7 for the one desktop subline, `body` 19.2/22.1, `body-sm` 18/20.7 for notes under a section, `secondary` 19.2/22.1, `caption` 19.2/22.1, raised two steps on 17 Oct 2026 so no reading text is under 18 and one more on 26 Oct 2026 to sit with `body`. Since 26 Oct 2026 every note that took `body-sm` takes `body`, and a figure's label takes 18. `title` 20.4/23.5 names a route, spot or organism; `title-sm` 19.2/22.1 names a search result or a fact. Every text line height is `1.15`, unitless, so it follows the font size wherever that changes: 1rem text sits on 1.15rem, 18 on 20.7, a 34 heading on 39.1 (20 Oct 2026). Reading text was raised a fifth over the headings: headings, stats, spot numbers and buttons kept their size. Controls follow: `field` 19.2, `chip` 19.2, `tab` 14.4, `pill` 18, `stat-label` 14.4. `button-small` 14 is a small inner glass button on a sheet, such as Show on map. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
 
 ## Layout
 

@@ -31,9 +31,14 @@
 .ln-stick + .ln-part > .ln-sec { margin-top: 3rem; }
 .ln-title { margin-top: 0; }
 /* the place line (components/RegionLine.tsx) at the map's size and pin; only the space around it is Learn's */
-.ln-sub.sg-scope { margin: 0.675rem 0 0; padding-top: 0; }
+.ln-sub.sg-scope { margin: calc(3 * 0.675rem) 0 0; padding-top: 0; }
 .ln-intro { margin-top: 1.0125rem; max-width: 40rem; color: var(--color-on-ground-soft); }
-.ln-jump { margin-top: 2.5rem; }
+/* the gap under a section's heading before its line of text, and the same above the section chips */
+.ln { --ln-gap: 0.50625rem; }
+/* the same gap by ink, measured from the foot of the region line's pin ring (which sits 0.3px above the line's
+   descender) to the chips: 1.4px more than a heading's margin, 2.2px on the phone, where the line is set smaller */
+.ln-jump { margin-top: calc(var(--ln-gap) + 0.0875rem); }
+@media (max-width: 26.87rem) { .ln-jump { margin-top: calc(var(--ln-gap) + 0.1375rem); } }
 .ln-filter { margin-top: 1.25rem; }
 /* the jump chips stay at the top of the window from 64rem, and only then */
 .ln-stick {
@@ -78,7 +83,7 @@
 .ln-sec { margin-top: 3rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 0.25rem 0.75rem; }
 .ln-sec > div { flex: 1 1 12rem; min-width: 0; }
 .ln-sec .org-h2 { margin: 0; scroll-margin-top: 1.5rem; }
-.ln-sec .org-small { margin: 0.50625rem 0 0; max-width: 40rem; }
+.ln-sec .org-small { margin: var(--ln-gap) 0 0; max-width: 40rem; }
 .ln-more {
   flex-shrink: 0;
   min-height: 2.75rem;
