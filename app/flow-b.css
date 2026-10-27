@@ -778,9 +778,9 @@ button.fb-row:active { transform: scale(0.985); }
 /* the pin of the region line (app/flow-a.css .sg-pin), spaced as there, then the spots it was recorded near as
    their marks at three quarters of the map's size; it rolls in and the ring opens once the line is on screen
    (components/InSeasonList.tsx adds is-seen), until then both wait unseen. The same line on a claim card. */
-:is(.fb-org-tiles, .fb-claim) small.fb-in-season-where { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.43rem; font-size: 1.125rem; line-height: 1.15; font-weight: 400; color: var(--color-on-ground); }
+:is(.fb-org-tiles, .fb-claim, .a8-rows) small.fb-in-season-where { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.43rem; font-size: 1.125rem; line-height: 1.15; font-weight: 400; color: var(--color-on-ground); }
 /* beside the marks the pin stands 18 tall to their 24 (its drawing fills 0.754 of its box), centred on them */
-:is(.fb-org-tiles, .fb-claim) .fb-in-season-where .sg-pin { --pin: calc(1.125rem / 0.754); top: -0.075rem; margin-left: -0.299rem; }
+:is(.fb-org-tiles, .fb-claim, .a8-rows) .fb-in-season-where .sg-pin { --pin: calc(1.125rem / 0.754); top: -0.075rem; margin-left: -0.299rem; }
 .fb-org-spots { margin-left: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .fb-org-spots .spot-mark { --mark: 1.5rem; font-size: calc(var(--text-count) * 1.35 * 0.75); box-shadow: 0 0 0 0.125rem rgb(from var(--color-primary) r g b / 0.6); }
 .fb-in-season-where:not(.is-seen) :is(.sg-pin-icon, .sg-pin-ring) { animation: none; opacity: 0; }
@@ -790,3 +790,14 @@ button.fb-row:active { transform: scale(0.985); }
 
 /* a whole organism tile or row opens its page: an empty link stretched over it */
 .org-link { position: absolute; inset: 0; border-radius: var(--radius-tile); }
+
+/* the foot of an organism page (components/OrganismSiblings.tsx): the rest of its group as the records page
+   lists them, then previous and next, each naming where it goes; previous mirrors next, its arrow first */
+.org-more { padding: 0 1.25rem; }
+/* each button fitted to its name, previous at the left edge and next at the right, never past half the row */
+.org-nav { margin-top: 1.5rem; display: flex; justify-content: space-between; }
+.org-nav .fb-nav-next { flex: 0 1 auto; max-width: calc(50% - 0.3125rem); }
+.org-nav .fb-nav-next.is-back { padding: 0.5rem 1.5rem 0.5rem 1.125rem; }
+/* next reads from the right, against its arrow */
+.org-nav .fb-nav-next:not(.is-back) .fb-nav-text { align-items: flex-end; text-align: right; }
+
