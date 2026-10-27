@@ -62,6 +62,24 @@ export const ORGANISMS: Organism[] = [
     docs: ["migration"],
   },
   {
+    id: "european-buckthorn",
+    name: "European",
+    close: "buckthorn",
+    group: "plants",
+    kind: "Plant",
+    latin: "Rhamnus cathartica",
+    back: { href: "/map/route/grumsin?spot=3", label: "Back to Grumsin Orange Beech Leaf loop" },
+    scope: "Recorded at Schwarzer See, Grumsin Orange Beech Leaf loop",
+    record: {
+      title: "Recorded here, last 19 Sep 2020",
+      lines: ["3 records in Grumsiner Forst. Regional plant survey, CC BY"],
+    },
+    why: "A shrub of woodland edges and damp scrub. Its dark berries ripen late in the year and are eaten by birds, which carry the seeds on.",
+    season: [8],
+    when: "Recorded in September, berries on the branch in early autumn",
+    where: [{ n: 3, name: "Schwarzer See", line: "Grumsin Orange Beech Leaf loop. Sep, last recorded 19 Sep 2020" }],
+  },
+  {
     id: "early-marsh-orchid",
     name: "Early marsh",
     close: "orchid",
@@ -80,5 +98,11 @@ export const ORGANISMS: Organism[] = [
     actions: [{ title: "Stay on paths in June and July", sub: "Trampling damages the plants and the ground" }],
   },
 ];
+
+/** The page of an organism by its common name as the lists write it ("Common crane"), when it has one. */
+export const organismHref = (name: string) => {
+  const o = ORGANISMS.find((x) => `${x.name} ${x.close}`.toLowerCase() === name.toLowerCase());
+  return o && `/map/organism/${o.id}`;
+};
 
 export const organismById = (id: string) => ORGANISMS.find((o) => o.id === id);

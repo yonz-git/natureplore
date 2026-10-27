@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { BackIcon, ChevronIcon, GroupIcon } from "@/components/Icons";
+import { organismHref } from "@/lib/organisms";
 import { organismPhoto } from "@/lib/photos";
 import { GRUMSIN_RECORDED } from "@/lib/recorded";
 import { GROUPS, type Group } from "@/lib/routes";
@@ -115,6 +116,7 @@ export default function RecordedScreen({ routeName, routeHref }: { routeName: st
                             Recorded, last {r.last}. {r.where ?? "Along the route, at no spot"}
                           </small>
                         </span>
+                        {organismHref(r.name) && <Link href={organismHref(r.name)!} className="org-link" aria-label={r.name} />}
                       </li>
                     ))}
                   </ul>
