@@ -3,6 +3,7 @@
 // because it is at risk from collection and trampling (B5).
 
 import type { Group } from "@/lib/routes";
+import { GENERATED } from "@/lib/organism-pages";
 import { CLAIMS, spotOf, type Claim, type Spot } from "@/lib/spots";
 
 export type Organism = {
@@ -25,7 +26,7 @@ export type Organism = {
   season?: number[];
   when: string;
   /** the spots it is recorded at, in the order the spot page lists them */
-  where?: { n: number; name: string; line: string }[];
+  where?: { n: number; name: string; line: string; route?: string }[];
   /** Impact here: the claim card and the action row of its spot, the same row the spot shows */
   claim?: Claim;
   rule?: Spot;
@@ -36,7 +37,7 @@ export type Organism = {
   docs?: string[];
 };
 
-export const ORGANISMS: Organism[] = [
+const HAND: Organism[] = [
   {
     id: "common-crane",
     name: "Common",
@@ -77,7 +78,7 @@ export const ORGANISMS: Organism[] = [
     why: "A shrub of woodland edges and damp scrub. Its dark berries ripen late in the year and are eaten by birds, which carry the seeds on.",
     season: [8],
     when: "Recorded in September, berries on the branch in early autumn",
-    where: [{ n: 3, name: "Schwarzer See", line: "Grumsin Orange Beech Leaf loop. Sep, last recorded 19 Sep 2020" }],
+    where: [{ n: 3, route: "grumsin", name: "Schwarzer See", line: "Grumsin Orange Beech Leaf loop. Sep, last recorded 19 Sep 2020" }],
   },
   {
     id: "early-marsh-orchid",
@@ -99,9 +100,12 @@ export const ORGANISMS: Organism[] = [
   },
 ];
 
+/** The hand-written pages first, then one for every species the routes list, from GBIF. */
+export const ORGANISMS: Organism[] = [...HAND, ...GENERATED.filter((g) => !HAND.some((h) => h.id === g.id))];
+
 /** The page of an organism by its common name as the lists write it ("Common crane"), when it has one. */
 export const organismHref = (name: string) => {
-  const o = ORGANISMS.find((x) => `${x.name} ${x.close}`.toLowerCase() === name.toLowerCase());
+  const o = ORGANISMS.find((x) => `${x.name} ${x.close}`.trim().toLowerCase() === name.toLowerCase());
   return o && `/map/organism/${o.id}`;
 };
 
