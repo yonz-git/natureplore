@@ -760,7 +760,7 @@ button.fb-row:active { transform: scale(0.985); }
    reads on any photo; under it the group and Latin name and the records at 1rem, then the pin and the spots, all
    starting at the name's 0.625rem inset */
 .fb-org-tiles { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 0.75rem; }
-.fb-org-tiles li { min-width: 0; display: flex; flex-direction: column; }
+.fb-org-tiles li { position: relative; min-width: 0; display: flex; flex-direction: column; }
 .fb-org-photo { position: relative; aspect-ratio: 1; border-radius: var(--radius-tile); overflow: hidden; border: 0.5px solid var(--color-inner-edge); background: var(--color-field-shade); }
 .fb-org-photo img, .fb-org-photo .fb-in-season-tile { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .fb-org-photo b {
@@ -787,3 +787,6 @@ button.fb-row:active { transform: scale(0.985); }
 /* on the claim card, under the source lines as far as they stand apart, then the card's 1rem to the rule */
 .fb-claim-open:has(+ .fb-in-season-where) { padding-bottom: 0; }
 .fb-claim small.fb-in-season-where { margin: 0.5rem 1.25rem 1rem; }
+
+/* a whole organism tile or row opens its page: an empty link stretched over it */
+.org-link { position: absolute; inset: 0; border-radius: var(--radius-tile); }

@@ -623,7 +623,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
   left: var(--spacing-screen-phone);
   z-index: 3;
 }
-.a8 .saved-sheet { margin-top: 8.25rem; min-height: calc(100% - 8.25rem); }
+.a8 .saved-sheet { margin-top: var(--sheet-gap-top); min-height: calc(100% - var(--sheet-gap-top)); }
 /* the title scales with the sheet so the route name always fits on one line, up to 2.4rem */
 .a8 .saved-sheet { container-type: inline-size; }
 .a8 .saved-sheet h1 { font-size: min(2.4rem, 8.6cqi); line-height: 1.25; text-align: center; }
@@ -743,7 +743,7 @@ a.map-route:active { transform: translate(-50%, -50%) scale(0.97); }
 /* the species count is the route cards' Spots pill (.tag.sug-spots), pushed to the right, in the text face */
 /* every "N Species" count pill: one size, text centred on its cap height */
 .tag.sg-org-count { margin-left: auto; font-family: var(--font-text); height: 2.21rem; padding: 0 0.85rem; font-size: 0.87975rem; line-height: 0.87975rem; }
-.a8-rows li { padding: 0.875rem 0; display: flex; align-items: center; gap: 1.05rem; }
+.a8-rows li { position: relative; padding: 0.875rem 0; display: flex; align-items: center; gap: 1.05rem; }
 .a8-rows li + li { border-top: 1px solid var(--color-divider); }
 .a8-rows li.is-new { animation: sheet-in var(--enter) var(--ease-enter) backwards; }
 .a8-thumb {
@@ -878,13 +878,13 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
     min-height: 0;
     height: max-content;
     /* as far above the window's foot at the end of the scroll as under its top */
-    margin: 7.5rem 0;
+    margin: var(--sheet-gap-top) 0;
     padding: 2.5rem 2.5rem 2rem;
     border-bottom: 0.5px solid var(--color-glass-edge);
     border-radius: var(--radius-card);
   }
   .saved-card .btn { align-self: flex-start; }
-  .a8 .saved-sheet { margin-top: 7.5rem; min-height: 0; }
+  .a8 .saved-sheet { margin-top: var(--sheet-gap-top); min-height: 0; }
   .a8-more { justify-content: flex-start; }
   .a8-more .btn { flex-grow: 0; }
 }
@@ -1289,7 +1289,8 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 /* ── phone, set on /tweak at 430 wide ─────────────────────────────────────────────────────────── */
 @media (max-width: 35.74rem) {
   .ms-handle { height: 0.2125rem; }
-  .ms-grab .ms-handle { margin-top: -8.5px; }
+  /* the handle stands 2.6 times as far under the sheet's top edge as it first did: 10.4px at 430 */
+  .ms-grab .ms-handle { margin-top: -2.1px; }
   .ms-bar { top: calc(0.45rem + env(safe-area-inset-top, 0px)); }
   /* the place line's pin a little further from the sheet's top than from its side */
   .sg-head { margin-top: -0.9375rem; }
@@ -1312,7 +1313,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 @media (max-width: 24.37rem) {
   .ms-bar { top: calc(0.4rem + env(safe-area-inset-top, 0px)); }
   .ms-handle { width: 2.625rem; height: 0.25rem; }
-  .ms-grab .ms-handle { margin-top: -7.5px; }
+  .ms-grab .ms-handle { margin-top: 0.5px; }
   .sg .ms-title { font-size: 1.3rem; margin: 1.4375rem 0 -1rem; }
   .sug-track { aspect-ratio: 100 / 74; }
   .sug-name { font-size: 1.275rem; }

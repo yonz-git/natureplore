@@ -1,5 +1,5 @@
 /* B4 · Organism detail and B5, its location generalised. Phone: three round controls over the
-   photograph of the forest and a glass sheet from 8.25rem that scrolls with the page. From 64rem a
+   photograph of the forest and a glass sheet twice the controls' top margin below them (--sheet-gap-top) that scrolls with the page. From 64rem a
    wide sheet under the nav, in two columns: the organism on the left, where and how to see it on
    the right. Shared controls (round, chip, btn) are in app/map.css. */
 
@@ -31,9 +31,20 @@ body:has(.org.is-walk) .tabbar { display: none; }
 
 /* every sheet stands in from each side so the ground shows down both edges: 1.5vw on the phone,
    3vw from the tablet up (app/tablet.css, and the desktop below) */
+/* From 64rem the sheet stands twice the nav's distance from the top of the window below the nav: the nav is
+   chrome-edge from the top and 3.25rem tall, so the sheet starts 3 chrome-edges plus the nav down, and
+   ends as far above the foot of the window. Every wide sheet (organism, Learn, Saved) reads this one value. */
+:root {
+  /* phone and tablet: the round controls (2.75rem) stand 0.5rem under top-chrome, the sheet twice that below them */
+  --sheet-gap-top: calc(3 * (var(--top-chrome) + 0.5rem) + 2.75rem);
+}
+@media (min-width: 64rem) {
+  :root { --sheet-gap-top: calc(3 * var(--spacing-chrome-edge) + 3.25rem); }
+}
+
 .org-sheet {
-  margin: 8.25rem 1.5vw 0;
-  min-height: calc(100% - 8.25rem);
+  margin: var(--sheet-gap-top) 1.5vw 0;
+  min-height: calc(100% - var(--sheet-gap-top));
   padding: 1.5rem 1.5rem var(--spacing-tabbar-clearance);
   box-sizing: border-box;
   display: flex;
@@ -200,8 +211,8 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
   /* a card on the ground: rounded at all four corners, and as far above the window's foot at the end
      of the scroll as it stands under the window's top */
   .org-sheet {
-    margin: 7.625rem 3vw;
-    min-height: calc(100% - 2 * 7.625rem);
+    margin: var(--sheet-gap-top) 3vw;
+    min-height: calc(100% - 2 * var(--sheet-gap-top));
     border-radius: var(--radius-card);
     padding: 3rem max(6rem, calc((100% - 6vw - 71.25rem) / 2)) 6rem;
     display: grid;
@@ -210,6 +221,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
     align-items: start;
     align-content: start;
   }
+  .org-sheet.is-solo { grid-template-columns: minmax(0, 1fr); width: min(58rem, 100% - 6vw); margin-inline: auto; padding-inline: 4rem; }
   .org-photo { height: 26rem; }
   .org-title { font-size: var(--text-display-desktop); line-height: var(--text-display-desktop--line-height); letter-spacing: var(--text-display-desktop--letter-spacing); }
   .org-h2 { margin-top: 2.5rem; }
@@ -226,9 +238,10 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
   .org > .org-top > .org-actions {
     position: absolute;
     z-index: 2;
-    top: calc(7.625rem + 2rem);
+    top: calc(var(--sheet-gap-top) + 2rem);
     right: calc(3vw + max(6rem, calc((100% - 6vw - 71.25rem) / 2)));
   }
+  .org:has(> .org-sheet.is-solo) > .org-top > .org-actions { right: calc(50% - 25rem); }
   .org.ln > .org-top > .org-actions { right: calc(3vw + max(6rem, calc((100% - 6vw - 78rem) / 2))); }
   .org:has(> .org-top > .org-actions) > .org-sheet { padding-top: calc(var(--spacing-chrome-edge) + 3.25rem + 1.5rem); }
 }

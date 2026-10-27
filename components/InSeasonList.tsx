@@ -8,8 +8,11 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import Link from "next/link";
+
 import { GroupIcon, PinIcon } from "@/components/Icons";
 import { SpotMark } from "@/components/SpotParts";
+import { organismHref } from "@/lib/organisms";
 import { organismPhoto } from "@/lib/photos";
 import { RECORDED } from "@/lib/records";
 import type { Group } from "@/lib/routes";
@@ -30,6 +33,7 @@ export function InSeasonList({ routeId, groups = [] }: { routeId: string; groups
       <ul key={groups.join()} className="fb-org-tiles" aria-labelledby="in-season-label" aria-live="polite">
         {shown.map((o) => {
           const photo = organismPhoto(o.name);
+          const href = organismHref(o.name);
           return (
             <li key={o.latin}>
               <span className="fb-org-photo">
@@ -50,6 +54,7 @@ export function InSeasonList({ routeId, groups = [] }: { routeId: string; groups
                 {o.records} record{o.records > 1 ? "s" : ""}
               </small>
               {o.spots.length > 0 && <Where spots={o.spots} />}
+              {href && <Link href={href} className="org-link" aria-label={o.name} />}
             </li>
           );
         })}
