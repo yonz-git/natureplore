@@ -399,8 +399,6 @@
   .sg.is-map .sg-list { display: none; }
   .sg.is-map .sg-map-note { display: block; animation: sheet-in var(--enter) var(--ease-enter) backwards; }
   .sg:not(.is-map) .sg-list { animation: sheet-in var(--enter) var(--ease-enter) backwards; }
-  /* the route labels only show on the map view: over the list they would crowd the strip above it */
-  .sg:not(.is-map) .map-route { display: none; }
 }
 
 /* a route on the map: its name, and how many of its spots are in season */
