@@ -30,7 +30,8 @@ body:has(.org.is-walk) .tabbar { display: none; }
 .org.is-walk .org-sheet { padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px)); }
 
 /* every sheet stands in from each side so the ground shows down both edges: 1.5vw on the phone,
-   3vw from the tablet up (app/tablet.css, and the desktop below) */
+   3vw on the tablet (app/tablet.css), and on the desktop the logo's width plus its own distance from the
+   edge, twice (--sheet-side, below) */
 /* From 64rem the sheet stands twice the nav's distance from the top of the window below the nav: the nav is
    chrome-edge from the top and 3.25rem tall, so the sheet starts 3 chrome-edges plus the nav down, and
    ends as far above the foot of the window. Every wide sheet (organism, Learn, Saved) reads this one value. */
@@ -39,7 +40,12 @@ body:has(.org.is-walk) .tabbar { display: none; }
   --sheet-gap-top: calc(3 * (var(--top-chrome) + 0.5rem) + 2.75rem);
 }
 @media (min-width: 64rem) {
-  :root { --sheet-gap-top: calc(3 * var(--spacing-chrome-edge) + 3.25rem); }
+  :root {
+    --sheet-gap-top: calc(3 * var(--spacing-chrome-edge) + 3.25rem);
+    /* the sheet starts where the corner logo (2.44375rem tall, 1.0696 wide to tall) ends plus the logo's own distance
+       from the window's edge, so the gap between the logo and the sheet is the gap left of the logo */
+    --sheet-side: calc(2 * var(--spacing-chrome-edge) + 2.44375rem * 1.0696);
+  }
 }
 
 .org-sheet {
@@ -164,7 +170,7 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
 .org-doc-thumb { flex-shrink: 0; width: 7.5rem; height: 4.5rem; border-radius: var(--radius-tile); border: 0.5px solid var(--color-inner-edge); background: rgb(255 255 255 / 0.06); }
 .org-doc > span:nth-child(2) { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
 .org-doc > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
-.org-doc b { font-size: var(--text-title-sm); line-height: var(--text-title-sm--line-height); font-weight: 400; }
+.org-doc b { font-size: var(--text-h3); line-height: var(--text-h3--line-height); font-weight: 400; }
 .org-doc > span:nth-child(2) > span { font-size: var(--text-caption); line-height: var(--text-caption--line-height); color: var(--color-on-ground-soft); }
 
 /* B5: the area on a map, never a point */
@@ -211,17 +217,17 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
   /* a card on the ground: rounded at all four corners, and as far above the window's foot at the end
      of the scroll as it stands under the window's top */
   .org-sheet {
-    margin: var(--sheet-gap-top) 3vw;
+    margin: var(--sheet-gap-top) var(--sheet-side);
     min-height: calc(100% - 2 * var(--sheet-gap-top));
     border-radius: var(--radius-card);
-    padding: 3rem max(6rem, calc((100% - 6vw - 71.25rem) / 2)) 6rem;
+    padding: 3rem max(6rem, calc((100% - 2 * var(--sheet-side) - 71.25rem) / 2)) 6rem;
     display: grid;
     grid-template-columns: minmax(0, 50rem) minmax(0, 23.75rem);
     column-gap: 4.25rem;
     align-items: start;
     align-content: start;
   }
-  .org-sheet.is-solo { grid-template-columns: minmax(0, 1fr); width: min(58rem, 100% - 6vw); margin-inline: auto; padding-inline: 4rem; }
+  .org-sheet.is-solo { grid-template-columns: minmax(0, 1fr); width: min(58rem, 100% - 2 * var(--sheet-side)); margin-inline: auto; padding-inline: 4rem; }
   .org-photo { height: 26rem; }
   .org-title { font-size: var(--text-display-desktop); line-height: var(--text-display-desktop--line-height); letter-spacing: var(--text-display-desktop--letter-spacing); }
   .org-h2 { margin-top: 2.5rem; }
@@ -239,9 +245,9 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
     position: absolute;
     z-index: 2;
     top: calc(var(--sheet-gap-top) + 2rem);
-    right: calc(3vw + max(6rem, calc((100% - 6vw - 71.25rem) / 2)));
+    right: calc(var(--sheet-side) + max(6rem, calc((100% - 2 * var(--sheet-side) - 71.25rem) / 2)));
   }
   .org:has(> .org-sheet.is-solo) > .org-top > .org-actions { right: calc(50% - 25rem); }
-  .org.ln > .org-top > .org-actions { right: calc(3vw + max(6rem, calc((100% - 6vw - 78rem) / 2))); }
+  .org.ln > .org-top > .org-actions { right: calc(var(--sheet-side) + max(6rem, calc((100% - 2 * var(--sheet-side) - 78rem) / 2))); }
   .org:has(> .org-top > .org-actions) > .org-sheet { padding-top: calc(var(--spacing-chrome-edge) + 3.25rem + 1.5rem); }
 }
