@@ -22,7 +22,7 @@ function Actions({ o }: { o: Organism }) {
   const { isSaved, toggle } = useSaved();
   const saved = isSaved(`org:${o.id}`);
   const share = async () => {
-    const data = { title: `${o.name} ${o.close}`, url: location.href };
+    const data = { title: `${o.name} ${o.close}`.trim(), url: location.href };
     try {
       if (navigator.share) await navigator.share(data);
       else await navigator.clipboard.writeText(location.href);
@@ -50,10 +50,10 @@ function Actions({ o }: { o: Organism }) {
 
 /** `walk` is set when the page was opened from the walk: the tab bar stays hidden, as on the walk. */
 export default function OrganismPage({ o, back, walk = false }: { o: Organism; back: { href: string; label: string }; walk?: boolean }) {
-  const photo = organismPhoto(`${o.name} ${o.close}`);
+  const photo = organismPhoto(`${o.name} ${o.close}`.trim());
   // nothing for the right column (no claim, impact or documentary): the sheet narrows to one column
   const side = Boolean(o.claim || o.impact || o.docs);
-  const name = `${o.name} ${o.close}`;
+  const name = `${o.name} ${o.close}`.trim();
 
   return (
     <section className={`org${walk ? " is-walk" : ""}`} aria-labelledby="org-title">
@@ -73,7 +73,7 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
             <div className="org-photo" role="img" aria-label={`Photograph of the ${name.toLowerCase()} to come`} />
           )}
           <h1 id="org-title" className="org-title">
-            {o.name} <em>{o.close}</em>
+            {o.name && `${o.name} `}<em>{o.close}</em>
           </h1>
           <p className="org-kind">
             {o.kind}, <i>{o.latin}</i>
@@ -131,7 +131,7 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
               <ol className="fb-card fb-rows">
                 {o.where.map((w) => (
                   <li key={w.n}>
-                    <Link href={`/map/route/linum?spot=${w.n}`} className="fb-row">
+                    <Link href={`/map/route/${w.route ?? "linum"}?spot=${w.n}`} className="fb-row">
                       <SpotMark n={w.n} />
                       <span className="fb-row-text">
                         <b>

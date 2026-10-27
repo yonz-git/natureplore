@@ -12,7 +12,7 @@ import { spotOf } from "@/lib/spots";
 export async function generateMetadata({ params }: PageProps<"/map/organism/[id]">): Promise<Metadata> {
   const { id } = await params;
   const o = organismById(id);
-  return { title: o && `${o.name} ${o.close}` };
+  return { title: o && `${o.name} ${o.close}`.trim() };
 }
 
 export default async function Organism({ params, searchParams }: PageProps<"/map/organism/[id]">) {
@@ -20,7 +20,8 @@ export default async function Organism({ params, searchParams }: PageProps<"/map
   const { from, spot } = await searchParams;
   const o = organismById(id);
   if (!o) notFound();
-  const at = spotOf("linum", Number(spot));
+  // the spot in the link is a Linum spot: only a species recorded there goes back to it
+  const at = o.where?.some((w) => (w.route ?? "linum") === "linum" && w.n === Number(spot)) ? spotOf("linum", Number(spot)) : undefined;
   const back =
     from === "walk"
       ? { href: `/walk/linum${at ? `?spot=${at.n}` : ""}`, label: at ? `Back to the walk, spot ${at.n}` : "Back to the walk" }
