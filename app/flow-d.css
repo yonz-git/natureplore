@@ -24,12 +24,10 @@
   scroll-padding-bottom: var(--spacing-tabbar-clearance);
 }
 .ln-home .org-sheet::-webkit-scrollbar { display: none; }
-/* the jump chips glide to their section rather than cut to it, on every size */
+/* the jump chips glide to their section, eased (components/LearnScreen.tsx); what a section holds
+   fades up as it scrolls into view, so nothing arrives with a snap. Only opacity and translate, on
+   items with no frosted glass inside, so no frost is switched off */
 @media (prefers-reduced-motion: no-preference) {
-  .ln-home,
-  .ln-home .org-sheet { scroll-behavior: smooth; }
-  /* and what a section holds fades up as it scrolls into view, so nothing arrives with a snap. Only
-     opacity and translate, on items with no frosted glass inside, so no frost is switched off */
   @supports (animation-timeline: view()) {
     .ln-part > * {
       animation: ln-rise linear both;
@@ -43,14 +41,36 @@
   to { opacity: 1; translate: 0 0; }
 }
 /* with the head above the sheet, the first section starts at the sheet's top */
-.ln-head-desk + .ln-part > .ln-sec { margin-top: 0.5rem; }
+.ln-stick + .ln-part > .ln-sec { margin-top: 0.5rem; }
 .ln-title { margin-top: 0; }
 /* the place line (components/RegionLine.tsx) at the map's size and pin; only the space around it is Learn's */
 .ln-sub.sg-scope { margin: 0.675rem 0 0; padding-top: 0; }
 .ln-intro { margin-top: 1.0125rem; max-width: 40rem; color: var(--color-on-ground-soft); }
-.ln-jump,
+.ln-jump { margin-top: 2.5rem; }
 .ln-filter { margin-top: 1.25rem; }
+/* the jump chips stay at the top of the window from 64rem, and only then */
+.ln-stick { display: none; }
 .ln-jump .chip { text-decoration: none; }
+/* the chip for the section under the chips is the current one, in the route page's dark forest green
+   (.fb-strip, app/flow-b.css) and the heavier weight; each chip holds that width so none nudges. The
+   green is an inset layer in the same list as the resting chip's, so it fades from chip to chip */
+.ln-jump .chip {
+  display: inline-grid;
+  place-items: center;
+  transition: transform 160ms var(--ease-out), box-shadow 480ms var(--ease-move), border-color 480ms var(--ease-move);
+}
+.ln-jump .chip > span,
+.ln-jump .chip::after { grid-area: 1 / 1; }
+.ln-jump .chip::after { content: attr(data-text); visibility: hidden; font-weight: 500; }
+.ln-jump .chip[aria-current],
+.ln-jump .chip[aria-current]:hover {
+  font-weight: 500;
+  border-color: rgb(255 255 255 / 0.3);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(from var(--color-picked) r g b / 0.72);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .ln-jump .chip[aria-current] { background: var(--color-ground); }
+}
 .ln-filter .chip { gap: 0.375rem; }
 /* with large text a chip's label wraps inside it rather than running off the sheet */
 .ln-jump .chip,
@@ -121,7 +141,7 @@
   line-height: 1;
 }
 .dc-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
-.dc-text b { font-size: var(--text-body); line-height: 1.15; font-weight: 400; }
+.dc-text b { font-size: var(--text-title); line-height: 1.15; font-weight: 400; }
 .dc-text > span:not(.fb-pill) { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 300; color: var(--color-on-ground-soft); }
 .dc-text .fb-pill { align-self: flex-start; margin-top: 0.50625rem; height: auto; min-height: 1.75rem; padding-block: 0.3125rem; white-space: normal; line-height: 1.2; }
 
@@ -224,7 +244,17 @@ img.cp-icon { padding: 0; object-fit: cover; }
   .ln-home { display: block; overflow-y: auto; }
   .ln-top { display: none; }
   .ln-head-desk { display: block; }
-  .ln-head-desk + .ln-part > .ln-sec { margin-top: 3rem; }
+  /* stuck, the chips sit on the nav's line at the top of the window, centred on the 3.25rem nav pill
+     (a chip is its line, its 0.4375rem padding and its 1px edge, each twice), and frost what passes
+     under them */
+  .ln-stick {
+    display: flex;
+    position: sticky;
+    top: calc(var(--spacing-chrome-edge) + (3.25rem - var(--text-chip) * 1.2 - 0.875rem - 2px) / 2);
+    z-index: 2;
+  }
+  .ln-stick .chip { backdrop-filter: blur(1.875rem) saturate(1.4); }
+  .ln-stick + .ln-part > .ln-sec { margin-top: 3rem; }
   .ln-home .org-sheet { flex: none; overflow: visible; margin-block: 7.625rem; min-height: calc(100% - 2 * 7.625rem); }
   .ln-home .ln-title { margin-top: 0.675rem; }
   .ln-claims { grid-template-columns: repeat(2, minmax(0, 1fr)); }

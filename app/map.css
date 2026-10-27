@@ -555,8 +555,8 @@ button.float-pill,
 .ms-search-top {
   position: absolute;
   z-index: 3;
-  top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 3.25rem) / 2);
-  left: var(--spacing-nav-side-desktop);
+  top: calc(var(--spacing-chrome-edge) + (3.25rem - 3.25rem) / 2);
+  left: var(--spacing-chrome-edge);
   width: var(--panel-w, 27.75rem);
   display: flex;
   align-items: center;
@@ -1401,5 +1401,5 @@ button.float-pill,
 
 /* phone: the bar over the map sits half as far from the top as elsewhere */
 @media (max-width: 35.74rem) {
-  .ms-bar { top: calc((var(--spacing-nav-top-desktop) / 2) + env(safe-area-inset-top, 0px)); }
+  .ms-bar { top: calc(0.35rem + env(safe-area-inset-top, 0px)); }
 }

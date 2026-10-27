@@ -92,12 +92,12 @@
 /* The logo. Without the scroll choreography it is simply in its corner, the place A0 keeps it and
    the box components/WelcomeLogo.tsx sends it to; the scroll media query below puts it in the middle
    of the page instead and hands it to the scroll. The corner is as far from the top as from the
-   left, at every size. */
+   left, at every size: the chrome's one edge inset, as the nav's. */
 .a0-mark,
 .a0-mark-corner {
   position: absolute;
   top: var(--mark-top);
-  left: var(--spacing-inset-screen);
+  left: var(--spacing-chrome-edge);
   height: 2rem;
   width: auto;
   pointer-events: none;
@@ -389,9 +389,6 @@
 @media (min-width: 64rem) {
   /* the desktop corner: the same inset from the top and the left as on the phone, a size larger */
   .a0-mark,
-  .a0-mark-corner {
-    left: var(--spacing-inset-screen); /* the same inset as the tablet, 2rem from 64rem */
-    height: 2.125rem;
-  }
+  .a0-mark-corner { height: 2.125rem; }
   .a0-mark-corner { height: 2.44375rem; } /* the corner symbol 15% larger than the tablet's */
 }

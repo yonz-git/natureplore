@@ -1,6 +1,6 @@
 // The documentaries of Flow D: curated links, with what each covers and where it can be watched.
-// Watching happens on the maker's site, so nothing here plays a film. Titles and makers are
-// placeholders on the boards too ("Documentary title", "Maker name"); the page fields past the
+// Watching happens on the maker's site, so nothing here plays a film. The titles are invented and
+// the makers are placeholders, as on the boards ("Maker name"); the page fields past the
 // list line are written for the one documentary the D3 board shows and the one D4 shows, and the
 // rest open the same page with what is known. Saving one to watch later keeps it on the device
 // in lib/saved.ts, as `doc:<id>`.
@@ -41,7 +41,7 @@ export type Doc = {
 export const DOCS: Doc[] = [
   {
     id: "drainage",
-    title: "Documentary title",
+    title: "When the meadow dries",
     year: "2021",
     minutes: 52,
     covers: "wetland drainage in northern Germany",
@@ -73,7 +73,7 @@ export const DOCS: Doc[] = [
   },
   {
     id: "tegel",
-    title: "Documentary title",
+    title: "A year on the Fließ",
     year: "2023",
     minutes: 28,
     covers: "a year on the Tegeler Fließ",
@@ -86,7 +86,7 @@ export const DOCS: Doc[] = [
   },
   {
     id: "roost",
-    title: "Documentary title",
+    title: "Ten thousand cranes",
     year: "2018",
     minutes: 44,
     covers: "cranes at the Linum roost",
@@ -102,7 +102,7 @@ export const DOCS: Doc[] = [
   },
   {
     id: "peatland",
-    title: "Documentary title",
+    title: "The carbon under the moor",
     year: "2020",
     minutes: 90,
     covers: "peatland and the carbon it holds",
@@ -115,7 +115,7 @@ export const DOCS: Doc[] = [
   },
   {
     id: "fungi",
-    title: "Documentary title",
+    title: "Beneath the pines",
     year: "2022",
     minutes: 50,
     covers: "fungi of the Baltic pine forests",
@@ -128,7 +128,7 @@ export const DOCS: Doc[] = [
   },
   {
     id: "migration",
-    title: "Documentary title",
+    title: "The long way south",
     year: "2019",
     minutes: 45,
     covers: "crane migration across Europe",
@@ -142,7 +142,7 @@ export const DOCS: Doc[] = [
   },
   {
     id: "orchids",
-    title: "Documentary title",
+    title: "Orchids of the wet meadow",
     year: "2017",
     minutes: 58,
     covers: "orchids of the wet meadows",

@@ -22,23 +22,14 @@
 /* The room a screen leaves above its first element. A status bar only exists when the app is
    installed, so the allowance comes from the safe area rather than a fixed value: in a browser,
    on a laptop or a phone, this is the same offset the desktop layout uses and nothing is wasted.
-   The top controls sit 0.5rem under it, at the desktop's nav-top-desktop, at every size. */
+   The phone's top controls sit 0.5rem under it. */
 :root {
-  --top-chrome: calc(var(--spacing-nav-top-desktop) - 0.5rem + env(safe-area-inset-top, 0px));
+  --top-chrome: calc(0.2rem + env(safe-area-inset-top, 0px));
 
   /* The two families from docs/design.md, with the copies Next self-hosts in front of them.
      The stacks themselves stay in tokens.css so the system reads the same outside this app. */
   --font-heading: var(--font-comfortaa), "Comfortaa", "Trebuchet MS", sans-serif;
   --font-text: var(--font-text-face), "Cabinet Grotesk", "Helvetica Neue", Arial, sans-serif;
-}
-
-/* the desktop's nav, search and switch sit closer to the top than nav-top-desktop, which the phone's
-   top-chrome is built on; top-chrome keeps its 0.7rem-based value here */
-@media (min-width: 64rem) {
-  :root {
-    --spacing-nav-top-desktop: 0.4rem;
-    --top-chrome: calc(0.2rem + env(safe-area-inset-top, 0px));
-  }
 }
 
 html,
