@@ -800,16 +800,16 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 @media (min-width: 64rem) {
   /* one panel frame for every Routes screen: it stays in place from the suggestions into search,
      and ends as far above the bottom edge as the nav sits below the top */
-  .ms-panel { inset: 2.5rem auto var(--spacing-nav-top-desktop) 1.5rem; }
+  .ms-panel { inset: 2.5rem auto var(--spacing-chrome-edge) var(--spacing-chrome-edge); }
   /* the panel's width, one value per desktop size, shared with the search row */
   :root { --panel-w: 27.75rem; }
   /* where the search field or B1's back sits over the panel, on the nav pill's line, the panel
      starts under it: both are 3.25rem */
-  .ms:has(.ms-search-top) .ms-panel { top: calc(var(--spacing-nav-top-desktop) + 3.25rem + var(--spacing-control-stack)); }
+  .ms:has(.ms-search-top) .ms-panel { top: calc(var(--spacing-chrome-edge) + 3.25rem + var(--spacing-control-stack)); }
   /* B1's back is 2.75rem, centred on the 3.25rem line: the same control-stack gap under it */
-  .b1 .ms-panel { top: calc(var(--spacing-nav-top-desktop) + (3.25rem - 2.75rem) / 2 + 2.75rem + var(--spacing-control-stack)); }
+  .b1 .ms-panel { top: calc(var(--spacing-chrome-edge) + (3.25rem - 2.75rem) / 2 + 2.75rem + var(--spacing-control-stack)); }
   /* and it ends as far above the bottom edge as the back control stands below the top (.back-top) */
-  .b1 .ms-panel { bottom: calc(var(--spacing-nav-top-desktop) + (3.25rem - 2.75rem) / 2); }
+  .b1 .ms-panel { bottom: calc(var(--spacing-chrome-edge) + (3.25rem - 2.75rem) / 2); }
 
   .sg-toggle,
   .sg-map-note,

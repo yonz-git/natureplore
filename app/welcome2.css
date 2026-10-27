@@ -14,7 +14,7 @@
   /* the same photograph the logo intro opens on, app/intro.css */
   --a02-photo: url(/img/intro-waterfall.webp);
   /* the corner symbol stands as far from the top as from the left, at every size (app/welcome.css) */
-  --mark-top: calc(var(--spacing-inset-screen) + env(safe-area-inset-top, 0px));
+  --mark-top: calc(var(--spacing-chrome-edge) + env(safe-area-inset-top, 0px));
 }
 /* the lens is only a plain full-size box here, app/welcome.css turns it into the growing circle */
 .a0-lens { position: absolute; inset: 0; z-index: -1; }

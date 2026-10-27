@@ -250,7 +250,7 @@ img.cp-icon { padding: 0; object-fit: cover; }
   .ln-stick {
     display: flex;
     position: sticky;
-    top: calc(var(--spacing-nav-top-desktop) + (3.25rem - var(--text-chip) * 1.2 - 0.875rem - 2px) / 2);
+    top: calc(var(--spacing-chrome-edge) + (3.25rem - var(--text-chip) * 1.2 - 0.875rem - 2px) / 2);
     z-index: 2;
   }
   .ln-stick .chip { backdrop-filter: blur(1.875rem) saturate(1.4); }
