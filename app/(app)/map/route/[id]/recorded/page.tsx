@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import RecordedScreen from "@/components/RecordedScreen";
+import { GRUMSIN_RECORDED } from "@/lib/recorded";
 import { routeById } from "@/lib/routes";
 
 // A8 · Recorded along this route, opened from B1's "Recorded organisms". Only Grumsin
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }: PageProps<"/map/route/[id]/re
 
 export default async function Recorded({ params }: PageProps<"/map/route/[id]/recorded">) {
   const { id } = await params;
-  if (id !== "grumsin") notFound();
-  return <RecordedScreen routeName="Grumsin beech forest" routeHref="/map/route/grumsin" />;
+  const route = routeById(id);
+  if (id !== "grumsin" || !route) notFound();
+  return <RecordedScreen routeId={route.id} routeName={route.name} recorded={GRUMSIN_RECORDED} />;
 }

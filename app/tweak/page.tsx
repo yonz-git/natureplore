@@ -139,6 +139,8 @@ export default function Tweak() {
       if (saved) {
         // only what was moved comes back, so new starting values show for the rest
         const kept = Object.fromEntries(Object.entries((saved.vals ?? {}) as Record<string, string>).filter(([id]) => saved.touched?.[id]));
+        // localStorage is only readable in the browser, so the saved values cannot be the initial state
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setVals((v) => ({ ...v, ...kept }));
         setTouched(saved.touched ?? {});
       }

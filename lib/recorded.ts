@@ -4,12 +4,26 @@
 
 import type { Group } from "@/lib/routes";
 
-export type Recorded = { name: string; latin: string; last: string; where?: string };
+export type Recorded = {
+  name: string;
+  latin: string;
+  last: string;
+  where?: string;
+  /** the spots in `where`, as numbers */
+  spots: number[];
+};
+export type RecordedGroup = { group: Group; total: number; rows: Recorded[] };
 
 const rows = (list: [string, string, string, string?][]): Recorded[] =>
-  list.map(([name, latin, last, where]) => ({ name, latin, last, where }));
+  list.map(([name, latin, last, where]) => ({
+    name,
+    latin,
+    last,
+    where,
+    spots: where?.match(/\d+/g)?.map(Number) ?? [],
+  }));
 
-export const LINUM_RECORDED: { group: Group; total: number; rows: Recorded[] }[] = [
+export const LINUM_RECORDED: RecordedGroup[] = [
   {
     group: "plants",
     total: 19,
@@ -69,7 +83,7 @@ export const LINUM_RECORDED: { group: Group; total: number; rows: Recorded[] }[]
 ];
 
 // Grumsin beech forest loop: everything recorded within 250 m of the line. Sample records, as for Linum.
-export const GRUMSIN_RECORDED: { group: Group; total: number; rows: Recorded[] }[] = [
+export const GRUMSIN_RECORDED: RecordedGroup[] = [
   {
     group: "plants",
     total: 31,

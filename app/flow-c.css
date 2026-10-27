@@ -115,6 +115,8 @@
 }
 
 .cp-rows { margin: 0; }
+/* the action's title is as large as the claim it answers (.fb-claim-text) */
+.cp-rows .fb-row-text b { font-size: var(--text-h3); line-height: var(--text-h3--line-height); }
 .cp-date,
 .cp-icon {
   flex-shrink: 0;
