@@ -19,7 +19,7 @@ import { backLabel, useBack } from "@/lib/back";
 import { type Doc, docById, watchFacts } from "@/lib/docs";
 import { useSaved } from "@/lib/saved";
 
-/** "Documentary title" with its last word in the lime of the titles */
+/** "When the meadow dries" with its last word in the lime of the titles */
 function Title({ id, text }: { id: string; text: string }) {
   const cut = text.lastIndexOf(" ");
   return (

@@ -230,5 +230,5 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
     right: calc(3vw + max(6rem, calc((100% - 6vw - 71.25rem) / 2)));
   }
   .org.ln > .org-top > .org-actions { right: calc(3vw + max(6rem, calc((100% - 6vw - 78rem) / 2))); }
-  .org:has(> .org-top > .org-actions) > .org-sheet { padding-top: calc(var(--spacing-nav-top-desktop) + 3.25rem + 1.5rem); }
+  .org:has(> .org-top > .org-actions) > .org-sheet { padding-top: calc(var(--spacing-chrome-edge) + 3.25rem + 1.5rem); }
 }

@@ -143,21 +143,24 @@ export default function TabBar() {
                 aria-current={current ? "page" : undefined}
                 className={`tabbar-tab${current ? " is-current" : ""}`}
               >
-                <svg
-                  className={`tabbar-icon-${tab.label.toLowerCase()}${"big" in tab ? " tabbar-icon-big" : ""}`}
-                  width="1.375rem"
-                  height="1.375rem"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  {tab.icon}
-                </svg>
-                {tab.label}
+                {/* the icon and its label as one group, centred in the tab as a piece */}
+                <span className="tabbar-in">
+                  <svg
+                    className={`tabbar-icon-${tab.label.toLowerCase()}${"big" in tab ? " tabbar-icon-big" : ""}`}
+                    width="1.375rem"
+                    height="1.375rem"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    {tab.icon}
+                  </svg>
+                  <span className="tabbar-label">{tab.label}</span>
+                </span>
               </Link>
             </li>
           );
