@@ -12,6 +12,7 @@ import Link from "next/link";
 
 import { ArrowIcon, BackIcon, BookmarkIcon, ChevronIcon, EyeOffIcon, ShareIcon } from "@/components/Icons";
 import { ActionRow, ClaimCard, MonthGrid, SpotMark } from "@/components/SpotParts";
+import { OrganismSiblings } from "@/components/OrganismSiblings";
 import type { Organism } from "@/lib/organisms";
 import { leaveFor } from "@/lib/back";
 import { docById, docLine } from "@/lib/docs";
@@ -148,6 +149,8 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
           )}
 
           {o.generalised && <p className="org-small org-note">{o.generalised.note}</p>}
+
+          <OrganismSiblings o={o} />
         </div>
 
         {side && <aside className="org-side">
