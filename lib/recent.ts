@@ -18,7 +18,8 @@ function read(): Recent[] {
   if (list) return list;
   try {
     const raw = localStorage.getItem(KEY);
-    list = raw ? (JSON.parse(raw) as Recent[]) : NONE;
+    const parsed: unknown = raw ? JSON.parse(raw) : NONE;
+    list = Array.isArray(parsed) ? (parsed as Recent[]) : NONE;
   } catch {
     list = NONE;
   }

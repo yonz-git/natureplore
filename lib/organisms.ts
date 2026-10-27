@@ -14,6 +14,8 @@ export type Organism = {
   group: Group;
   kind: string;
   latin: string;
+  /** the other names the route lists give it, which open the same page */
+  alias?: string[];
   /** where the page was opened from when nothing else is known: spot 4 for the crane */
   back: { href: string; label: string };
   /** the spot and route it was recorded at, under the name */
@@ -45,7 +47,10 @@ const HAND: Organism[] = [
     group: "birds",
     kind: "Bird",
     latin: "Grus grus",
-    back: { href: "/map/route/linum?spot=4", label: "Back to Linum wet meadows" },
+    back: {
+      href: "/map/route/linum?spot=4",
+      label: "Back to Linum wet meadows",
+    },
     scope: "Recorded at The dam between the ponds, Linum wet meadows",
     record: {
       title: "Recorded here, last 11 Sep 2026",
@@ -55,30 +60,20 @@ const HAND: Organism[] = [
     season: [8, 9, 10],
     when: "Most records at dawn and dusk, late September to early November",
     where: [
-      { n: 4, name: "The dam between the ponds", line: "Linum wet meadows. Sep to Nov, last recorded 11 Sep" },
-      { n: 1, name: "The flooded ditch", line: "Linum wet meadows. Sep to Oct, last recorded 11 Sep" },
+      {
+        n: 4,
+        name: "The dam between the ponds",
+        line: "Linum wet meadows. Sep to Nov, last recorded 11 Sep",
+      },
+      {
+        n: 1,
+        name: "The flooded ditch",
+        line: "Linum wet meadows. Sep to Oct, last recorded 11 Sep",
+      },
     ],
     claim: CLAIMS.c1a,
     rule: spotOf("linum", 4),
     docs: ["migration"],
-  },
-  {
-    id: "european-buckthorn",
-    name: "European",
-    close: "buckthorn",
-    group: "plants",
-    kind: "Plant",
-    latin: "Rhamnus cathartica",
-    back: { href: "/map/route/grumsin?spot=3", label: "Back to Grumsin Orange Beech Leaf loop" },
-    scope: "Recorded at Schwarzer See, Grumsin Orange Beech Leaf loop",
-    record: {
-      title: "Recorded here, last 19 Sep 2020",
-      lines: ["3 records in Grumsiner Forst. Regional plant survey, CC BY"],
-    },
-    why: "A shrub of woodland edges and damp scrub. Its dark berries ripen late in the year and are eaten by birds, which carry the seeds on.",
-    season: [8],
-    when: "Recorded in September, berries on the branch in early autumn",
-    where: [{ n: 3, route: "grumsin", name: "Schwarzer See", line: "Grumsin Orange Beech Leaf loop. Sep, last recorded 19 Sep 2020" }],
   },
   {
     id: "early-marsh-orchid",
@@ -95,18 +90,31 @@ const HAND: Organism[] = [
       note: "No nearby spots and no Show on map for a generalised species: a list of areas would narrow the location down again.",
     },
     when: "Flowers late May to early July, in wet, nutrient-poor meadow",
-    impact: { text: "Drainage and fertiliser run-off shrink the wet, poor ground it needs.", source: "Source: publisher name, 2023" },
-    actions: [{ title: "Stay on paths in June and July", sub: "Trampling damages the plants and the ground" }],
+    impact: {
+      text: "Drainage and fertiliser run-off shrink the wet, poor ground it needs.",
+      source: "Source: publisher name, 2023",
+    },
+    actions: [
+      {
+        title: "Stay on paths in June and July",
+        sub: "Trampling damages the plants and the ground",
+      },
+    ],
   },
 ];
 
 /** The hand-written pages first, then one for every species the routes list, from GBIF. */
 export const ORGANISMS: Organism[] = [...HAND, ...GENERATED.filter((g) => !HAND.some((h) => h.id === g.id))];
 
+const fold = (name: string) => name.trim().toLowerCase();
+// every name a list may write for a page, once, so a lookup is not a scan of all of them
+const BY_NAME = new Map<string, string>();
+for (const o of ORGANISMS) for (const n of [`${o.name} ${o.close}`, ...(o.alias ?? [])]) BY_NAME.set(fold(n), o.id);
+
 /** The page of an organism by its common name as the lists write it ("Common crane"), when it has one. */
 export const organismHref = (name: string) => {
-  const o = ORGANISMS.find((x) => `${x.name} ${x.close}`.trim().toLowerCase() === name.toLowerCase());
-  return o && `/map/organism/${o.id}`;
+  const id = BY_NAME.get(fold(name));
+  return id && `/map/organism/${id}`;
 };
 
 export const organismById = (id: string) => ORGANISMS.find((o) => o.id === id);

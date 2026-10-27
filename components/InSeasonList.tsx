@@ -54,7 +54,7 @@ export function InSeasonList({ routeId, groups = [] }: { routeId: string; groups
                 {o.records} record{o.records > 1 ? "s" : ""}
               </small>
               {o.spots.length > 0 && <Where spots={o.spots} />}
-              {href && <Link href={href} className="org-link" aria-label={o.name} />}
+              {href && <Link href={`${href}?route=${routeId}`} className="org-link" aria-label={o.name} />}
             </li>
           );
         })}

@@ -17,7 +17,8 @@ function read(): string[] {
   if (ids) return ids;
   try {
     const raw = localStorage.getItem(KEY);
-    ids = raw ? (JSON.parse(raw) as string[]) : START;
+    const parsed: unknown = raw ? JSON.parse(raw) : START;
+    ids = Array.isArray(parsed) ? parsed.filter((x): x is string => typeof x === "string") : START;
   } catch {
     ids = START;
   }
@@ -36,7 +37,17 @@ function write(next: string[]) {
 
 function subscribe(l: () => void) {
   listeners.add(l);
-  return () => listeners.delete(l);
+  // another tab saved or removed something: read the store again
+  const onStorage = (e: StorageEvent) => {
+    if (e.key !== KEY && e.key !== null) return;
+    ids = null;
+    l();
+  };
+  addEventListener("storage", onStorage);
+  return () => {
+    listeners.delete(l);
+    removeEventListener("storage", onStorage);
+  };
 }
 
 export function useSaved() {
@@ -44,10 +55,13 @@ export function useSaved() {
   return {
     ids: list,
     isSaved: (id: string) => list.includes(id),
-    toggle: (id: string) => write(list.includes(id) ? list.filter((x) => x !== id) : [...list, id]),
+    toggle: (id: string) => {
+      const now = read();
+      write(now.includes(id) ? now.filter((x) => x !== id) : [...now, id]);
+    },
     /** Removes several at once (E4 and E5 in edit), and `restore` puts them back for Undo. */
-    remove: (gone: string[]) => write(list.filter((x) => !gone.includes(x))),
-    restore: (back: string[]) => write([...list, ...back.filter((x) => !list.includes(x))]),
+    remove: (gone: string[]) => write(read().filter((x) => !gone.includes(x))),
+    restore: (back: string[]) => write([...read(), ...back.filter((x) => !read().includes(x))]),
   };
 }
 

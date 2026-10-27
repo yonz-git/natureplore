@@ -21,9 +21,10 @@ import { organismPhoto } from "@/lib/photos";
 
 function Actions({ o }: { o: Organism }) {
   const { isSaved, toggle } = useSaved();
+  const name = `${o.name} ${o.close}`.trim();
   const saved = isSaved(`org:${o.id}`);
   const share = async () => {
-    const data = { title: `${o.name} ${o.close}`.trim(), url: location.href };
+    const data = { title: name, url: location.href };
     try {
       if (navigator.share) await navigator.share(data);
       else await navigator.clipboard.writeText(location.href);
@@ -37,7 +38,7 @@ function Actions({ o }: { o: Organism }) {
         type="button"
         className="round glass glass-pin"
         aria-pressed={saved}
-        aria-label={saved ? `Remove ${o.name} ${o.close} from saved` : "Save species"}
+        aria-label={`Save ${name}`}
         onClick={() => toggle(`org:${o.id}`)}
       >
         <BookmarkIcon size={20} filled={saved} />
@@ -131,7 +132,7 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
               </h2>
               <ol className="fb-card fb-rows">
                 {o.where.map((w) => (
-                  <li key={w.n}>
+                  <li key={`${w.route ?? "linum"}-${w.n}`}>
                     <Link href={`/map/route/${w.route ?? "linum"}?spot=${w.n}`} className="fb-row">
                       <SpotMark n={w.n} />
                       <span className="fb-row-text">
