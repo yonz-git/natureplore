@@ -196,7 +196,7 @@ function PracticeSide({ saved, toggle }: { saved: boolean; toggle: () => void })
         {saved ? "Saved" : "Save"}
       </button>
       <p className="org-small" aria-live="polite">
-        {saved ? "Saved. Kept on this device, in Saved under Actions" : "Kept on this device, in Saved under Actions"}
+        {saved ? "Saved. Kept on this device, under You, in Your actions" : "Kept on this device, under You, in Your actions"}
       </p>
     </div>
   );

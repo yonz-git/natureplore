@@ -74,7 +74,7 @@ function WatchBox({ doc }: { doc: Doc }) {
           {saved ? "Saved to watch later" : "Save to watch later"}
         </button>
         <p className="org-small" aria-live="polite">
-          {saved ? "Saved. Kept on this device, in Saved" : "Kept on this device, in Saved"}
+          {saved ? "Saved. Kept on this device, under You, in Documentaries" : "Kept on this device, under You, in Documentaries"}
         </p>
       </div>
     </div>
