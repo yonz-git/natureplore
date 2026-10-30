@@ -215,7 +215,7 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
         <BookmarkIcon size={20} filled={saved} />
       </button>
       <p className="sr-only" role="status">
-        {saved && "Saved and downloaded. Find it in Saved."}
+        {saved && "Saved and downloaded. Find it under You, in Routes."}
       </p>
     </article>
   );
