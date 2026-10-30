@@ -159,7 +159,7 @@ function Pin({ save }: { save: RouteSave }) {
   const { saved, removed } = save;
   const live = (
     <p className="sr-only" aria-live="polite">
-      {saved ? "Saved and downloaded. Find it in Saved." : removed ? "Removed from Saved, and its download deleted." : ""}
+      {saved ? "Saved and downloaded. Find it under You, in Routes." : removed ? "Removed from Saved, and its download deleted." : ""}
     </p>
   );
   if (saved || !removed) return live;

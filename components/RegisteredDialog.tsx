@@ -70,7 +70,7 @@ export default function RegisteredDialog({ action: a }: { action: CleanUp }) {
               Add to calendar
             </button>
           </div>
-          <p className="org-small">Kept on this device, in Saved under Actions</p>
+          <p className="org-small">Kept on this device, under You, in Your actions</p>
           <div className="cp-out">
             <Link href={`/learn/claim/${a.claimId}`} className="btn btn-primary">
               Back to the claim

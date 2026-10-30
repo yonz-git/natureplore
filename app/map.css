@@ -1394,10 +1394,6 @@ button.float-pill,
   .ms.search { overflow: hidden; padding-bottom: 0; }
 }
 
-/* desktop map panel: a lighter frost than the glass recipe (30), so the map shows through more */
-@media (min-width: 64rem) and (prefers-reduced-transparency: no-preference) {
-  .ms-panel.glass-desk { backdrop-filter: blur(0.8rem) saturate(1.4); }
-}
 
 /* phone: the bar over the map sits half as far from the top as elsewhere */
 @media (max-width: 35.74rem) {
