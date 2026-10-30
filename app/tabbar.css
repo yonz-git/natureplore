@@ -28,8 +28,6 @@
 /* an even edge all round: no 150 degree rim or top highlight, which read as off centre */
 .tabbar-pill.glass { box-shadow: inset 0 0 0 100vmax rgb(255 255 255 / 0), 0 1.5rem 3.75rem rgb(6 18 9 / 0.35); }
 .tabbar-pill.glass::after { content: none; }
-/* half the glass blur: the map reads through the bar */
-.tabbar-pill.glass { backdrop-filter: blur(0.9375rem) saturate(1.4); }
 .tabbar-pill > li { min-width: 0; flex: 0 1 auto; }
 /* the lime pill of the current tab: one element under the tabs, moved to the current one by
    components/TabBar.tsx, so it slides from tab to tab. Its own transform, not an ancestor's, so the
