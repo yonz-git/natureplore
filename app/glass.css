@@ -122,10 +122,14 @@
   }
 }
 
-/* Sheets and panels: a denser flat fill and a lighter blur than the recipe above (design.md, sheet-fill).
-   Under reduced transparency the solid fill below still wins. */
+/* Sheets and panels take the search bar's tint (fill-search) under a 15 blur; the nav pill and the
+   Routes and Organisms switch take sheet-fill under the same blur (design.md). Under reduced
+   transparency the solid fill below still wins. */
 @media (prefers-reduced-transparency: no-preference) {
-  .glass.glass-top,
+  .glass.glass-top {
+    background: var(--fill-search);
+    backdrop-filter: blur(0.9375rem) saturate(1.2);
+  }
   .tabbar-pill.glass,
   .seg.glass {
     background: var(--color-sheet-fill);
@@ -133,13 +137,13 @@
   }
   @media (max-width: 63.99rem) {
     .glass-phone {
-      background: var(--color-sheet-fill);
+      background: var(--fill-search);
       backdrop-filter: blur(0.9375rem) saturate(1.2);
     }
   }
   @media (min-width: 64rem) {
     .glass-desk {
-      background: var(--color-sheet-fill);
+      background: var(--fill-search);
       backdrop-filter: blur(0.9375rem) saturate(1.2);
     }
   }
