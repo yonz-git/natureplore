@@ -55,7 +55,7 @@
   justify-content: center;
   gap: 0.375rem;
   border-radius: var(--radius-pill);
-  color: var(--color-on-ground);
+  color: var(--color-on-primary);
   font-size: var(--text-tab);
   line-height: 1;
   font-weight: var(--text-tab--font-weight);
@@ -124,7 +124,7 @@
     padding: 0 1rem;
     flex-direction: row;
     gap: 0.40625rem;
-    color: var(--color-on-ground);
+    color: var(--color-on-primary);
     font-size: 1.05rem;
     font-weight: var(--text-chip--font-weight);
     letter-spacing: 0;

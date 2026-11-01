@@ -937,8 +937,12 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
 .sg .seg-opt > svg circle { fill: rgb(from currentColor r g b / 0); transition: fill 540ms var(--ease-move), stroke-width 540ms var(--ease-move); }
 .sg .seg-opt[aria-pressed="true"] > svg { stroke-width: 2.1; }
 .sg .seg-opt[aria-pressed="true"] > svg g { stroke-width: 3.64; }
-.sg .seg-opt > svg.seg-orgs g { stroke-width: 2.23; }
-.sg .seg-opt[aria-pressed="true"] > svg.seg-orgs g { stroke-width: 3.12; }
+/* the capsule icon is drawn on an 80 box, so its line is in those units: 3.7 is the 1.14px the
+   other icons carry, 5.2 the 1.6px of the picked one; the capsule takes a 25% fill when picked */
+.sg .seg-opt > svg.seg-orgs g { stroke-width: 3.7; }
+.sg .seg-opt[aria-pressed="true"] > svg.seg-orgs g { stroke-width: 5.2; }
+.sg .seg-opt > svg .orgs-body { fill: rgb(from currentColor r g b / 0); transition: fill 540ms var(--ease-move); }
+.sg .seg-opt[aria-pressed="true"] > svg .orgs-body { fill: rgb(from currentColor r g b / 0.25); }
 .sg .seg-opt[aria-pressed="true"] > svg circle { fill: currentColor; }
 /* the top row, outside the sheet: a search circle, then Routes or Organisms, matching the search
    field's 3.25rem */
@@ -959,7 +963,7 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-pill);
-  color: var(--color-on-ground);
+  color: var(--color-primary);
 }
 /* Search opened: the circle and the switch slide out to the left and fade, and the field
    slides in over the whole row from the circle's side, its icon now Back. Each glass part moves on its

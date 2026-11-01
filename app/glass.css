@@ -4,6 +4,16 @@
    Both carry a 0.5px rim of light, drawn on ::after so ::before stays free for hit areas.
    Add .glass plus one tier; the tier only says where the surface sits. */
 
+/* the lime fill (--fill-lime) at 75% opacity, 25% less than solid: the nav pill, the Routes and
+   Organisms switch */
+:root {
+  --fill-lime-soft: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary) 75%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary-deep) 75%, transparent) 100%
+  );
+}
+
 .glass {
   position: relative;
   background:
@@ -130,9 +140,10 @@
     background: var(--fill-search);
     backdrop-filter: blur(0.9375rem) saturate(1.2);
   }
+  /* the nav pill and the Routes and Organisms switch take the soft lime */
   .tabbar-pill.glass,
   .seg.glass {
-    background: var(--color-sheet-fill);
+    background: var(--fill-lime-soft);
     backdrop-filter: blur(0.9375rem) saturate(1.2);
   }
   @media (max-width: 63.99rem) {
