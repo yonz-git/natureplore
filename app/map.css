@@ -43,7 +43,7 @@
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 0.875rem 2rem rgb(6 18 9 / 0.35);
   color: var(--color-on-primary);
   font-family: var(--text-button--font-family);
-  font-size: var(--text-button);
+  font-size: var(--text-body-lg);
   font-weight: var(--text-button--font-weight);
   line-height: 1.15;
 }
@@ -53,7 +53,7 @@
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
   color: var(--color-on-ground);
   font-family: var(--text-button-secondary--font-family);
-  font-size: var(--text-button-secondary);
+  font-size: var(--text-body-lg);
   font-weight: var(--text-button-secondary--font-weight);
   line-height: 1.15;
 }
@@ -107,7 +107,7 @@
   background: transparent;
   color: var(--color-on-ground);
   font-family: var(--text-field--font-family);
-  font-size: var(--text-field);
+  font-size: var(--text-body-lg);
   font-weight: var(--text-field--font-weight);
   outline: none;
 }
@@ -128,7 +128,7 @@
   min-width: 0;
   color: var(--color-on-ground-soft);
   font-family: var(--text-field--font-family);
-  font-size: var(--text-field);
+  font-size: var(--text-body-lg);
   font-weight: var(--text-field--font-weight);
   pointer-events: none;
 }
@@ -206,7 +206,7 @@
   background: none;
   color: var(--color-on-primary);
   font-family: var(--text-chip--font-family);
-  font-size: var(--text-chip);
+  font-size: var(--text-body-lg);
   font-weight: var(--text-chip--font-weight);
   line-height: 1;
   text-decoration: none;
@@ -244,7 +244,7 @@
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 100vmax rgb(255 255 255 / 0);
   color: var(--color-on-ground);
   font-family: var(--text-chip--font-family);
-  font-size: var(--text-chip);
+  font-size: var(--text-body-lg);
   font-weight: var(--text-chip--font-weight);
   line-height: 1;
   white-space: nowrap;
@@ -262,7 +262,7 @@
   font-weight: var(--text-chip-active--font-weight);
 }
 .chips-desk { display: none; }
-.chips-label { display: none; margin: 0; flex-basis: 100%; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
+.chips-label { display: none; margin: 0; flex-basis: 100%; font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); color: var(--color-on-ground-soft); }
 
 /* a 40 glass pill over the map: "Use my location instead", "Location off" */
 .float-pill {
@@ -276,7 +276,7 @@
   gap: 0.5rem;
   border-radius: var(--radius-pill);
   color: var(--color-on-ground);
-  font-size: var(--text-chip);
+  font-size: var(--text-body-lg);
   font-weight: var(--text-chip-active--font-weight);
   line-height: 1;
   text-decoration: none;
@@ -431,8 +431,8 @@ button.float-pill,
 }
 .card-rich .card-photo { height: 10.5rem; }
 .card-text { display: flex; flex-direction: column; gap: 0.3375rem; min-width: 0; }
-.card-name { margin: 0; font-family: var(--text-title--font-family); font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: var(--text-title--font-weight); }
-.card-meta { margin: 0; font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
+.card-name { margin: 0; font-family: var(--text-title--font-family); font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); font-weight: var(--text-title--font-weight); }
+.card-meta { margin: 0; font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .card-rich .card-line,
 .card:not(.card-rich) .card-where { display: none; }
 
@@ -481,8 +481,8 @@ button.float-pill,
 }
 .card-stat dt { font-size: var(--text-stat-label); line-height: 1; font-weight: 400; color: var(--color-on-ground-soft); }
 .card-stat dd { margin: 0; display: flex; justify-content: center; align-items: baseline; gap: 0.25rem; }
-.card-stat dd b { font-family: var(--text-stat-sm--font-family); font-size: var(--text-stat-sm); font-weight: var(--text-stat-sm--font-weight); line-height: 1; font-variant-numeric: tabular-nums; }
-.card-stat dd > span { font-size: var(--text-caption); line-height: 1; font-weight: 400; color: var(--color-on-ground); }
+.card-stat dd b { font-family: var(--text-stat-sm--font-family); font-size: var(--text-lead); font-weight: var(--text-stat-sm--font-weight); line-height: 1; font-variant-numeric: tabular-nums; }
+.card-stat dd > span { font-size: var(--text-body-lg); line-height: 1; font-weight: 400; color: var(--color-on-ground); }
 /* the figures in a stat value sit a weight above its words and units, here and on the impact tiles */
 .stat-num { font-weight: 400; }
 .card:not(.card-rich) .card-stats { display: none; }
@@ -526,10 +526,10 @@ button.float-pill,
   color: var(--color-mist);
 }
 .row-text { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3375rem; }
-.row-name { font-size: var(--text-title); line-height: var(--text-title--line-height); font-weight: 400; }
-.row-meta { font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
+.row-name { font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); font-weight: 400; }
+.row-meta { font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 .row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
-.rows-label { margin: 0 0 0.5rem; font-family: var(--font-text); font-size: var(--text-caption); line-height: var(--text-caption--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
+.rows-label { margin: 0 0 0.5rem; font-family: var(--font-text); font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); font-weight: 400; color: var(--color-on-ground-soft); }
 
 /* ── the screen ────────────────────────────────────────────────────────────────────────────── */
 
@@ -688,8 +688,8 @@ button.float-pill,
 .ms-title {
   margin: 0;
   font-family: var(--text-h2--font-family);
-  font-size: var(--text-h2);
-  line-height: var(--text-h2--line-height);
+  font-size: var(--text-lead);
+  line-height: var(--text-lead--line-height);
   font-weight: var(--text-h2--font-weight);
   letter-spacing: var(--text-h2--letter-spacing);
 }
@@ -702,9 +702,9 @@ button.float-pill,
   -webkit-text-fill-color: transparent;
 }
 /* full white: over a bright map the soft white fell under 4.5:1 (accessibility review #2) */
-.ms-lead { margin: 0.3375rem 0 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground); }
+.ms-lead { margin: 0.3375rem 0 0; font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); color: var(--color-on-ground); }
 .ms-lead-desk { display: none; }
-.ms-note { margin: 0; font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); color: var(--color-on-ground-soft); }
+.ms-note { margin: 0; font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); color: var(--color-on-ground-soft); }
 .ms-list { display: flex; flex-direction: column; gap: 1.25rem; }
 .ms-stack { display: flex; flex-direction: column; gap: var(--spacing-control-stack); }
 
@@ -779,7 +779,7 @@ button.float-pill,
 .search-results.is-compact { padding: 1.25rem; }
 .search-miss { margin-top: 1.5rem; margin-bottom: 0.5rem; }
 .search-miss .ms-title { font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
-.search-miss .ms-lead { margin-top: 0.675rem; font-size: var(--text-body); line-height: var(--text-body--line-height); }
+.search-miss .ms-lead { margin-top: 0.675rem; font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); }
 .search .float-pill.is-after { margin-top: 1rem; }
 
 /* ── A5: the suggestions for a region ─────────────────────────────────────────────────────── */
@@ -799,7 +799,7 @@ button.float-pill,
 .a6 .ms-sheet { gap: 0; }
 .a6 .ms-title { margin-top: 1.6875rem; }
 .a6 .ms-lead { margin-top: 1.0125rem; }
-.a6 .ms-lead + .ms-lead { margin-top: 0.675rem; font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
+.a6 .ms-lead + .ms-lead { margin-top: 0.675rem; font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); }
 .a6 .btn { margin-top: 1.5rem; }
 
 /* ── B1: the route detail, on the map ─────────────────────────────────────────────────────── */
@@ -825,7 +825,7 @@ button.float-pill,
   color: var(--color-on-primary);
   /* the number in the text face's bold, the one place that weight is used, so it reads at 11 to 15px */
   font-family: var(--font-text);
-  font-size: calc(var(--text-count) * 1.35);
+  font-size: var(--text-body-lg);
   font-weight: 700;
   line-height: 1;
 }
@@ -848,7 +848,7 @@ button.float-pill,
   transform: translateY(-50%);
   white-space: nowrap;
   color: var(--color-on-ground);
-  font-size: var(--text-secondary);
+  font-size: var(--text-body-lg);
   font-weight: 400;
   line-height: 1;
   text-shadow: 0 0 3px var(--color-ground), 0 0 6px var(--color-ground), 0 1px 8px rgb(6 18 9 / 0.8);
@@ -932,7 +932,7 @@ button.float-pill,
 .b1-about { position: relative; margin-top: 0.875rem; }
 .b1-about p {
   margin: 0;
-  font-size: var(--text-secondary);
+  font-size: var(--text-body-lg);
   line-height: var(--b1-line);
   font-weight: 300;
   color: var(--color-on-ground-soft);
@@ -957,7 +957,7 @@ button.float-pill,
 .b1-bar .is-mushrooms { background: var(--color-group-mushrooms); }
 .b1-bar .is-birds { background: var(--color-group-birds); }
 .b1-bar .is-mammals { background: var(--color-group-mammals); }
-.b1-foot { font-size: var(--text-caption); line-height: var(--text-caption--line-height); }
+.b1-foot { font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); }
 
 
 /* ── offline ───────────────────────────────────────────────────────────────────────────────── */
@@ -974,7 +974,7 @@ button.float-pill,
   gap: 0.75rem;
   background: var(--color-scrim);
   color: var(--color-on-ground-soft);
-  font-size: var(--text-secondary);
+  font-size: var(--text-body-lg);
   font-weight: 500;
 }
 .offline .ms-sheet { gap: 0; }
@@ -1065,7 +1065,7 @@ button.float-pill,
   background: var(--color-glass-solid);
   border: 0.5px solid var(--color-glass-edge);
   color: var(--color-on-ground);
-  font-size: var(--text-caption);
+  font-size: var(--text-body-lg);
   font-weight: 400;
   line-height: 1;
 }
@@ -1077,14 +1077,14 @@ button.float-pill,
   top: 0;
   transform: translate(-50%, -50%);
   white-space: nowrap;
-  font-size: var(--text-caption);
+  font-size: var(--text-body-lg);
   line-height: 1;
   font-weight: 500;
   color: var(--color-basemap-label);
   text-shadow: 0 0 2px var(--color-basemap-halo), 0 0 3px var(--color-basemap-halo), 0 0 4px var(--color-basemap-halo);
   pointer-events: none;
 }
-.a1-lbl-city { font-size: var(--text-body); font-weight: 500; color: var(--color-basemap-label-strong); }
+.a1-lbl-city { font-size: var(--text-body-lg); font-weight: 500; color: var(--color-basemap-label-strong); }
 .a1-lbl-nature { transform: translate(-50%, 1.7rem); font-style: italic; color: var(--color-basemap-label-nature); }
 .a1-lbl-water { font-style: italic; font-weight: 400; color: var(--color-basemap-label-water); }
 .a1-lbl.is-hidden { display: none; }
@@ -1237,7 +1237,7 @@ button.float-pill,
     gap: 0;
     overflow: visible;
   }
-  .ms-title { font-size: var(--text-h2); }
+  .ms-title { font-size: var(--text-lead); }
   .ms-lead-phone { display: none; }
   .ms-lead-desk { display: block; }
 
@@ -1315,7 +1315,7 @@ button.float-pill,
     gap: 0.5rem;
     border-radius: var(--radius-pill);
     color: var(--color-on-ground);
-    font-size: var(--text-chip);
+    font-size: var(--text-body-lg);
     font-weight: 500;
     line-height: 1;
     text-decoration: none;
@@ -1332,7 +1332,7 @@ button.float-pill,
   .a1 .ms-sheet { position: absolute; inset: 0; padding: var(--spacing-inset-screen); }
   /* the start screen's title and line 20% over h1 and body, the first words a visitor reads */
   .a1 .ms-title { font-size: calc(var(--text-h1) * 1.2); line-height: 1.15; }
-  .a1 .ms-lead { font-size: calc(var(--text-body) * 1.2); line-height: 1.15; } /* the leading between lines, 40% less */
+  .a1 .ms-lead { font-size: var(--text-lead); line-height: var(--text-lead--line-height); } /* the leading between lines, 40% less */
   .a1 .ms-stack { margin-top: 2.5rem; }
   .a1 .ms-note-phone { display: none; }
   .a1 .ms-note-desk { display: block; margin-top: 1.5rem; }
@@ -1347,8 +1347,8 @@ button.float-pill,
   .search-results,
   .search-results.is-compact { margin-top: 0; padding: 0; border-radius: 0; }
   .search-miss { margin-top: 0; margin-bottom: 1.25rem; }
-  .search-miss .ms-title { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
-  .search-miss .ms-lead { font-size: var(--text-secondary); line-height: var(--text-secondary--line-height); }
+  .search-miss .ms-title { font-size: var(--text-lead); line-height: var(--text-lead--line-height); }
+  .search-miss .ms-lead { font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); }
   .ms-back-phone { display: none; }
   .ms-back-desk {
     display: inline-flex;
@@ -1358,7 +1358,7 @@ button.float-pill,
     min-height: 2.75rem;
     margin: -0.75rem 0 0 -0.25rem;
     color: var(--color-on-ground);
-    font-size: var(--text-chip);
+    font-size: var(--text-body-lg);
     font-weight: 400;
     text-decoration: none;
   }

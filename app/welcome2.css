@@ -68,14 +68,14 @@
   top: 50%;
   translate: 0 -50%;
   white-space: nowrap;
-  font-size: calc(var(--text-secondary) * 1.3);
+  font-size: 1.56rem;
   line-height: 1.15;
   font-weight: 400;
   text-shadow: 0 1px 0.5rem rgb(0 0 0 / 0.45);
 }
 /* phone: the stop labels a fifth smaller than on the tablet */
 @media (max-width: 35.74rem) {
-  .a02-label { font-size: calc(var(--text-secondary) * 1.04); line-height: 1.15; }
+  .a02-label { font-size: var(--text-body-lg); line-height: 1.15; }
 }
 /* odd stops label to the left of the dot, even stops to the right */
 .a02-stop-1 .a02-label, .a02-stop-3 .a02-label { right: calc(100% + var(--a0-gap)); }
@@ -119,7 +119,7 @@
 .a02-lead {
   margin: 0.875rem 0 0;
   max-width: 23.75rem;
-  font-size: 1.25rem;
+  font-size: var(--text-body-lg);
   line-height: 1.15;
   font-weight: 300;
   /* full white: at the soft 78% the light weight sank into the photograph */
@@ -140,7 +140,7 @@
   background: var(--fill-primary);
   color: var(--color-on-primary);
   font-family: var(--text-button--font-family);
-  font-size: var(--text-body); /* the front door's button reads two steps larger than a standard button, at every size */
+  font-size: var(--text-body-lg); /* the front door's button reads two steps larger than a standard button, at every size */
   font-weight: 600;
   /* dark on the lime, drawn as the other lime buttons are: system smoothing and 2% tighter */
   -webkit-font-smoothing: auto;
@@ -222,7 +222,7 @@
    full-width button */
 /* tablet: the lead a step larger, between the phone and the desktop */
 @media (min-width: 35.75rem) {
-  .a02-lead { max-width: 30rem; font-size: 1.5rem; line-height: 1.15; }
+  .a02-lead { max-width: 30rem; font-size: var(--text-lead); line-height: 1.15; }
 }
 
 @media (min-width: 30rem) { /* phone-max */
@@ -249,7 +249,7 @@
      left of 41rem. From about 1150 wide the box is the whole screen again. */
   .a02-route { inset: 0; height: auto; left: max(0rem, 95.2rem - 132.2vw); }
   .a02-stop { width: 0.84375rem; height: 0.84375rem; --a0-gap: 0.9375rem; }
-  .a02-label { font-size: calc(var(--text-body) * 1.3); line-height: 1.15; }
+  .a02-label { font-size: 1.56rem; line-height: 1.15; }
   .a02-stop-1 { left: 86.11%; top: 19%; }
   .a02-stop-2 { left: 56.94%; top: 34.56%; }
   .a02-stop-3 { left: 81.94%; top: 51.22%; }

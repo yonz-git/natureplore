@@ -10,8 +10,8 @@
 .se-h2 {
   margin: 2.5rem 0 0.75rem;
   font-family: var(--text-h2--font-family);
-  font-size: var(--text-h2);
-  line-height: var(--text-h2--line-height);
+  font-size: var(--text-lead);
+  line-height: var(--text-lead--line-height);
   font-weight: var(--text-h2--font-weight);
   letter-spacing: var(--text-h2--letter-spacing);
 }
@@ -51,8 +51,8 @@
 .se-dl { margin: 0; }
 .se-dl > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.75rem 0; }
 .se-dl > div + div { border-top: 1px solid var(--color-divider); }
-.se-dl dt { font-size: var(--text-body); font-weight: 300; color: var(--color-on-ground-soft); }
-.se-dl dd { margin: 0; font-size: var(--text-body); text-align: right; }
+.se-dl dt { font-size: var(--text-body-lg); font-weight: 300; color: var(--color-on-ground-soft); }
+.se-dl dd { margin: 0; font-size: var(--text-body-lg); text-align: right; }
 .se-detail .cp-link { align-self: center; }
 
 .se-bar {
@@ -62,7 +62,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  font-size: var(--text-body);
+  font-size: var(--text-body-lg);
   font-weight: 300;
   color: var(--color-on-ground-soft);
 }
@@ -71,20 +71,20 @@
 .se-more { margin-top: 1rem; }
 
 .se-checks { margin: 0; list-style: none; gap: 1.18125rem; }
-.se-checks li { display: flex; gap: 0.75rem; align-items: flex-start; font-size: var(--text-body); line-height: 1.15; }
+.se-checks li { display: flex; gap: 0.75rem; align-items: flex-start; font-size: var(--text-body-lg); line-height: 1.15; }
 .se-checks svg { flex-shrink: 0; color: var(--color-mist); }
 .se-actions { margin-top: 2rem; display: flex; flex-direction: column; }
 .se-actions > .fb-small { display: flex; gap: 0.375rem; align-items: center; min-height: 1.125rem; }
 .se-actions > .fb-small svg { color: var(--color-mist); }
 .se-confirm { margin-top: 1.0125rem; gap: 1.0125rem; }
-.se-confirm p { margin: 0; font-size: var(--text-body); line-height: 1.15; }
+.se-confirm p { margin: 0; font-size: var(--text-body-lg); line-height: 1.15; }
 .se-confirm div { display: flex; flex-wrap: wrap; align-items: center; gap: 0.675rem 1.5rem; }
 .se-confirm .cp-link { margin: 0; }
 
 /* E1: the section heads open their page; the counts are pills, not lime */
 .saved-head { margin: 2.5rem 0 0.75rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 0.75rem; }
 .saved-sheet .saved-head h2 { margin: 0; min-width: 0; }
-.saved-head a { min-height: 2.75rem; margin-right: -0.5rem; padding-inline: 0.5rem; display: inline-flex; align-items: center; font-size: var(--text-caption); color: var(--color-on-ground); text-underline-offset: 0.1875rem; }
+.saved-head a { min-height: 2.75rem; margin-right: -0.5rem; padding-inline: 0.5rem; display: inline-flex; align-items: center; font-size: var(--text-body-lg); color: var(--color-on-ground); text-underline-offset: 0.1875rem; }
 .saved-device .fb-pill { font-variant-numeric: tabular-nums; }
 
 @media (min-width: 64rem) {
