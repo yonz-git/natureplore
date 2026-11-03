@@ -458,7 +458,10 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
             <div className="card-stat">
               <dt>Time</dt>
               <dd>
-                <StatValue value={route.time.replace(":", " h ")} />
+                {/* the hours as the figure and the h as a unit, the size of km beside Distance; minutes only when there are some */}
+                <StatValue value={route.time.split(":")[0]} />
+                <span>h</span>
+                {route.time.split(":")[1] !== "00" && <StatValue value={route.time.split(":")[1]} />}
               </dd>
             </div>
             <div className="card-stat">
