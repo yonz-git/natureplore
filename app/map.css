@@ -681,8 +681,12 @@ button.float-pill,
 .ms-grab:focus-visible { outline: 2px solid var(--color-mist); outline-offset: -2px; }
 @media (max-width: 63.99rem) {
   .ms-sheet.is-open { --sheet-top: var(--sheet-open, calc(var(--top-chrome) + 4rem)); }
-  /* down: only the sheet's head shows above the tab bar, the map has the rest of the screen */
-  .ms-sheet.is-down { --sheet-top: calc(100dvh - var(--spacing-tabbar-clearance) - 5rem); }
+  /* down, completely: only the sheet's lip with its handle shows, its handle just above the tab bar, the map has the rest of
+     the screen. What is in the sheet fades out as it goes, so nothing shows through the tab bar. */
+  .ms-sheet.is-down { --sheet-top: calc(100dvh - var(--spacing-tabbar-clearance) + 1.5rem); }
+  .ms-sheet > :not(.ms-grab) { transition: opacity 400ms var(--ease-move); }
+  .ms-sheet.is-down > :not(.ms-grab) { opacity: 0; pointer-events: none; }
+  .ms-sheet.is-down.is-lifting > :not(.ms-grab) { opacity: 1; }
 }
 
 .ms-title {
@@ -744,6 +748,10 @@ button.float-pill,
 .a1 .ms-lead { margin-top: 1.0125rem; }
 .a1 .ms-stack { width: 100%; margin-top: 1.5rem; align-items: center; gap: calc(var(--spacing-control-stack) * 2); } /* a wider gap between the field and the two ways in */
 .a1 .ms-stack > form { width: 100%; }
+/* the start page's search icon in the lime: the one pinned left on tablet and desktop, and the one
+   that joins the hint on the phone */
+.a1 .field > svg,
+.a1 .field-hint-search { color: var(--color-primary); }
 .a1 .ms-stack .btn { align-self: center; }
 /* the two ways in share one row under the field, side by side, and wrap only when there is no room */
 /* half the control stack: the two ways in read as one pair */
