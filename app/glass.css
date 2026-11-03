@@ -4,6 +4,24 @@
    Both carry a 0.5px rim of light, drawn on ::after so ::before stays free for hit areas.
    Add .glass plus one tier; the tier only says where the surface sits. */
 
+/* The one system for the nav pill (Map, Learn, You) and the Routes and Organisms switch: change it here
+   and both follow. The lime fill at 40%, a 10 blur, one height, and one ink that rests at 80% and comes
+   to full on hover. The open option keeps the lime and the forest ink (tabbar.css, flow-a.css). */
+:root {
+  --fill-lime-nav: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary) 40%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary-deep) 40%, transparent) 100%
+  );
+  --nav-blur: 0.625rem;
+  --nav-pill-height: 3.25rem;
+  --nav-pill-pad: 0.25rem;
+  --nav-item-height: 2.75rem;
+  --nav-ink: rgb(from var(--color-on-ground) r g b / 0.8);
+  --nav-ink-hover: var(--color-on-ground);
+  --nav-icon-rest: 0.8;
+}
+
 .glass {
   position: relative;
   background:
@@ -122,18 +140,35 @@
   }
 }
 
+/* The items that are not open, in both: the ink at 80%, the icon solid and faded as one piece so its
+   overlapping strokes keep one tone, both to full on hover. Colour and opacity fade with the system's
+   ease; the switch's own drawing transitions are kept beside the opacity. */
+.tabbar-tab:not(.is-current),
+.seg-opt[aria-pressed="false"] { color: var(--nav-ink); }
+.tabbar-tab:not(.is-current) svg,
+.sg .seg-opt[aria-pressed="false"] > svg { color: var(--color-on-ground); opacity: var(--nav-icon-rest); }
+.tabbar-tab:not(.is-current) svg { transition: opacity 280ms var(--ease-out); }
+.sg .seg-opt[aria-pressed="false"] > svg { transition: opacity 280ms var(--ease-out), stroke-width 540ms var(--ease-move); }
+@media (hover: hover) and (pointer: fine) {
+  .tabbar-tab:not(.is-current):hover,
+  .seg-opt[aria-pressed="false"]:hover { background-color: rgb(255 255 255 / 0.08); color: var(--nav-ink-hover); }
+  .tabbar-tab:not(.is-current):hover svg,
+  .sg .seg-opt[aria-pressed="false"]:hover > svg { opacity: 1; }
+}
+
 /* Sheets and panels take the search bar's tint (fill-search) under a 15 blur; the nav pill and the
-   Routes and Organisms switch take sheet-fill under the same blur (design.md). Under reduced
+   Routes and Organisms switch share one lime surface (the nav system above). Under reduced
    transparency the solid fill below still wins. */
 @media (prefers-reduced-transparency: no-preference) {
   .glass.glass-top {
     background: var(--fill-search);
     backdrop-filter: blur(0.9375rem) saturate(1.2);
   }
+  /* the nav pill and the Routes and Organisms switch: one surface */
   .tabbar-pill.glass,
   .seg.glass {
-    background: var(--color-sheet-fill);
-    backdrop-filter: blur(0.9375rem) saturate(1.2);
+    background: var(--fill-lime-nav);
+    backdrop-filter: blur(var(--nav-blur)) saturate(1.2);
   }
   @media (max-width: 63.99rem) {
     .glass-phone {

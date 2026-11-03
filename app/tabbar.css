@@ -117,10 +117,10 @@
     left: var(--spacing-chrome-edge);
   }
   /* the search field's 3.25rem, padding trimmed so the tabs keep 44 */
-  .tabbar-pill { height: 3.25rem; padding: 0.25rem; gap: 0.125rem; }
+  .tabbar-pill { height: var(--nav-pill-height); padding: var(--nav-pill-pad); gap: 0.125rem; }
   .tabbar-tab {
     width: auto;
-    height: 2.75rem;
+    height: var(--nav-item-height);
     padding: 0 1rem;
     flex-direction: row;
     gap: 0.40625rem;
@@ -163,10 +163,6 @@
 /* 44 to click, whatever the symbol's own size */
 .app-logo::before { content: ""; position: absolute; inset: -0.125rem; }
 body:has(.back-top, .ms-search-top, .ms-bar) .app-logo { opacity: 0; visibility: hidden; }
-
-@media (hover: hover) and (pointer: fine) {
-  .tabbar-tab:not(.is-current):hover { background: rgb(255 255 255 / 0.08); }
-}
 
 @media (prefers-reduced-motion: reduce) {
   /* no slide and no press: the thumb moves at once, colours still fade, shorter */

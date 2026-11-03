@@ -122,16 +122,16 @@ export const RoutesIcon = ({ size = 18, className }: P) => (
   </svg>
 );
 
-// a round tree crown with its trunk running up into it and two branches, set in Figma on a 33 by 41
-// grid with a 2.6 line
+// a capsule seed with its stem running down and two chevrons, drawn on an 80 box and cut to its ink
+// (x 21 to 59, y 5 to 75). The capsule takes a 25% fill when the option is picked (.orgs-body, in
+// app/flow-a.css); the line weight is set there too.
 export const OrganismsIcon = ({ size = 21.5, className }: P) => (
-  <svg width={`${(size * 33.64) / 41.97 / 16}rem`} height={`${size / 16}rem`} viewBox="-0.32 -0.49 33.64 41.97" aria-hidden="true" className={className}
+  <svg width={`${(size * 38) / 70 / 16}rem`} height={`${size / 16}rem`} viewBox="21 5 38 70" aria-hidden="true" className={className} overflow="visible"
     fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-    <g strokeWidth="2.6">
-      <path d="M31.5 16.6666C31.5 25.135 24.7843 32 16.5 32C8.21573 32 1.5 25.135 1.5 16.6666C1.5 8.19828 8.21573 1.33331 16.5 1.33331C24.7843 1.33331 31.5 8.19828 31.5 16.6666Z" />
-      <path d="M16.5 10.9166V32" />
-      <path d="M22.5 30.7244C20.6217 31.5657 18.5734 32.0012 16.5 32C14.4268 31.9996 12.3789 31.5643 10.5 30.7244" strokeLinecap="butt" />
-      <path d="M16.5 32V39.6666M16.5 18.5833L22.5 12.8333M16.5 25.2916L10.5 19.5416" />
+    <g strokeWidth="3.7">
+      <path className="orgs-body" d="M24 24c0-8.837 7.163-16 16-16s16 7.163 16 16v16c0 8.837-7.163 16-16 16s-16-7.163-16-16z" />
+      <path d="M40 24v48" />
+      <path d="m48 39l-8 8l-8-8m12-8l-4 4l-4-4" />
     </g>
   </svg>
 );
