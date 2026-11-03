@@ -10,8 +10,8 @@ colors:
   picked: "#062A1C"
   scrim: "#061209"
   glass-solid: "#23402A"
-  glass-fill: "rgb(24 44 30 / 0.34)"
-  sheet-fill: "rgb(35 64 42 / 0.66)"
+  glass-fill: "rgb(24 44 30 / 0.17)"
+  sheet-fill: "rgb(35 64 42 / 0.34)"
   glass-edge: "rgb(255 255 255 / 0.16)"
   inner-fill: "rgb(255 255 255 / 0.09)"
   inner-edge: "rgb(255 255 255 / 0.14)"
@@ -516,7 +516,7 @@ Chip rows scroll sideways and bleed to the screen edge through negative margins 
 
 ## Elevation & Depth
 
-A sheet or panel (the page sheets, the map's sheet and its desktop panel) is the one place the glass is denser: a flat `sheet-fill` with no white wash, `backdrop-filter: blur(15px) saturate(1.2)`, and the same edge and shadow (30 Oct 2026). The tab bar pill and the Routes and Organisms switch are one system, set once in app/glass.css: the lime at 40% under a 10 blur, 52 tall with 44 options, and an ink that rests at 80% and comes to full on hover, the open option keeping the lime and forest ink. Everything else below is unchanged. There is one material, frosted glass, in two strengths. Glass: `backdrop-filter: blur(30px) saturate(1.4)`, fill `linear-gradient(160deg, white 16% to white 5%)` over `glass-fill`, a 0.5px `glass-edge` border, an inner top highlight `inset 0 1px 0 white 11%`, and a float shadow `0 24px 60px scrim 35%`. Inner glass, for anything on glass: no blur, fill `linear-gradient(160deg, white 14% to white 4%)`, a 0.5px `inner-edge` border and `inset 0 1px 0 white 9%`. Never put a blurred surface on a blurred surface: fields, chips, segments, round controls and buttons on a sheet or panel are all inner glass. The one exception is `control-on-photo`, whose 20 blur frosts the photograph it sits on, even when that photograph is inside a card. Every inner edge is the same `inner-edge`, white 14%.
+A sheet or panel (the page sheets, the map's sheet and its desktop panel) is the one place the glass is denser: a flat `sheet-fill` with no white wash, `backdrop-filter: blur(10px) saturate(1.2)`, and the same edge and shadow. From 5 Nov 2026 the sheet and the round glass button (search circle, bookmark) run a 10 blur and half the opacity: `sheet-fill`, `glass-fill` and the glass wash are 0.51 of what they were. The tab bar pill and the Routes and Organisms switch are one system, set once in app/glass.css: the lime at 32% under the same 10 blur, 52 tall with 44 options, and an ink that rests at 80% and comes to full on hover, the open option keeping the lime and forest ink. Everything else below is unchanged. There is one material, frosted glass, in two strengths. Glass: `backdrop-filter: blur(30px) saturate(1.4)`, fill `linear-gradient(160deg, white 16% to white 5%)` over `glass-fill`, a 0.5px `glass-edge` border, an inner top highlight `inset 0 1px 0 white 11%`, and a float shadow `0 24px 60px scrim 35%`. Inner glass, for anything on glass: no blur, fill `linear-gradient(160deg, white 14% to white 4%)`, a 0.5px `inner-edge` border and `inset 0 1px 0 white 9%`. Never put a blurred surface on a blurred surface: fields, chips, segments, round controls and buttons on a sheet or panel are all inner glass. The one exception is `control-on-photo`, whose 20 blur frosts the photograph it sits on, even when that photograph is inside a card. Every inner edge is the same `inner-edge`, white 14%.
 
 Both carry a rim of light: a 0.5px gradient ring at 150 degrees, laid over the 0.5px border, white 15% at the top left fading to 3.4%, 1.1% and back to 6.2% at the bottom right, drawn with a mask so it follows the radius. It should read as a glint, not a border.
 

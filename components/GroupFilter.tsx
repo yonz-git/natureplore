@@ -26,7 +26,7 @@ export function GroupFilter({
         <li key={g.id}>
           <button
             type="button"
-            className={`fb-pill${counts[g.id] ? "" : " is-none"}`}
+            className={`fb-pill is-${g.id}${counts[g.id] ? "" : " is-none"}`}
             title={g.label}
             aria-label={`${g.label}, ${counts[g.id] ?? 0}`}
             aria-pressed={picked.includes(g.id)}

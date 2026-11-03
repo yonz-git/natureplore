@@ -4,8 +4,8 @@
   --color-picked: #062A1C;
   --color-scrim: #061209;
   --color-glass-solid: #23402A;
-  --color-glass-fill: rgb(24 44 30 / 0.34);
-  --color-sheet-fill: rgb(35 64 42 / 0.66);
+  --color-glass-fill: rgb(24 44 30 / 0.17);
+  --color-sheet-fill: rgb(35 64 42 / 0.34);
   --color-glass-edge: rgb(255 255 255 / 0.16);
   --color-inner-fill: rgb(255 255 255 / 0.09);
   --color-inner-edge: rgb(255 255 255 / 0.14);

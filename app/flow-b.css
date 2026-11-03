@@ -150,9 +150,20 @@ a.fb-row:active { transform: scale(0.985); }
 /* 28 tall, 44 to touch */
 .fb-legend button.fb-pill::before { content: ""; position: absolute; inset: -0.5rem 0; }
 .fb-legend button.fb-pill:active { transform: scale(0.97); }
+/* the same system as the map's group toggles (.sg-group, app/flow-a.css): picked, the dark forest green at 55%
+   and a 0.5px ring in the group's own colour, in the colour of its word for All; the pills 0.25rem apart.
+   The ring is half the 1px edge, so the padding takes the difference back and a pill is as wide picked
+   as not. */
+.fb-legend button.fb-pill { --ring: currentColor; }
+.fb-legend button.fb-pill.is-plants { --ring: var(--color-group-plants); }
+.fb-legend button.fb-pill.is-herbs { --ring: var(--color-group-herbs); }
+.fb-legend button.fb-pill.is-mushrooms { --ring: var(--color-group-mushrooms); }
+.fb-legend button.fb-pill.is-birds { --ring: var(--color-group-birds); }
+.fb-legend button.fb-pill.is-mammals { --ring: var(--color-group-mammals); }
 .fb-legend button.fb-pill[aria-pressed="true"] {
-  border-color: rgb(255 255 255 / 0.3);
-  box-shadow: inset 0 0 0 10rem rgb(from var(--color-picked) r g b / 0.72), inset 0 0 0 10rem rgb(255 255 255 / 0);
+  border: 0.5px solid var(--ring);
+  padding-inline: calc(0.625rem + 0.5px);
+  box-shadow: inset 0 0 0 10rem rgb(from var(--color-picked) r g b / 0.55), inset 0 0 0 10rem rgb(255 255 255 / 0);
 }
 .fb-legend button.fb-pill:disabled { cursor: default; color: var(--color-on-ground-soft); }
 .fb-legend button.fb-pill:disabled:active { transform: none; }
@@ -386,6 +397,10 @@ a.fb-claim-act:active { transform: scale(0.985); }
   scrollbar-width: none;
 }
 .fb-strip::-webkit-scrollbar { display: none; }
+/* the chips to the first section's title, measured by the title's ink: the same 2.5rem as the facts card
+   above the rule is from the rule. The strip's padding (1rem) and the sheet's gap (1.25rem) are part of
+   it, and the title's caps start 0.1725rem inside its box, so the section's margin takes the rest. */
+.b1 .ms-sheet > .fb-strip + section { margin-top: calc(2.5rem - 1rem - 1.25rem - 0.1725rem); }
 /* the chips stuck at the top of the sheet take the handle's place: the handle fades away while they are */
 .b1 .ms-sheet .ms-grab .ms-handle { transition: opacity 400ms var(--ease-move), background-color var(--hover-fade) var(--ease-hover); }
 .b1 .ms-sheet.is-pinned .ms-grab .ms-handle { opacity: 0; }
@@ -453,7 +468,7 @@ a.fb-claim-act:active { transform: scale(0.985); }
 /* the heading, bar and pills are one summary, held close; the tiles and the button below it stand apart */
 .fb-recorded .fb-in-season { margin-top: 0.75rem; }
 .fb-recorded .btn { margin-top: 0.75rem; width: auto; align-self: center; }
-.fb-legend { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.fb-legend { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.25rem; }
 
 
 /* when each group is active (components/YearChart.tsx): a heatmap, a row a group in its own colour, a column a
