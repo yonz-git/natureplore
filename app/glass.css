@@ -156,12 +156,13 @@
   .sg .seg-opt[aria-pressed="false"]:hover > svg { opacity: 1; }
 }
 
-/* Sheets and panels take the search bar's tint (fill-search) under a 15 blur; the nav pill and the
+/* Sheets and panels take sheet-fill under a 15 blur; the nav pill and the
    Routes and Organisms switch share one lime surface (the nav system above). Under reduced
    transparency the solid fill below still wins. */
 @media (prefers-reduced-transparency: no-preference) {
-  .glass.glass-top {
-    background: var(--fill-search);
+  .glass.glass-top,
+  .saved-sheet.glass {
+    background: var(--color-sheet-fill);
     backdrop-filter: blur(0.9375rem) saturate(1.2);
   }
   /* the nav pill and the Routes and Organisms switch: one surface */
@@ -172,13 +173,13 @@
   }
   @media (max-width: 63.99rem) {
     .glass-phone {
-      background: var(--fill-search);
+      background: var(--color-sheet-fill);
       backdrop-filter: blur(0.9375rem) saturate(1.2);
     }
   }
   @media (min-width: 64rem) {
     .glass-desk {
-      background: var(--fill-search);
+      background: var(--color-sheet-fill);
       backdrop-filter: blur(0.9375rem) saturate(1.2);
     }
   }
