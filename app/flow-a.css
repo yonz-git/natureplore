@@ -914,9 +914,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .seg[data-thumb] .seg-thumb { transition: none; }
   .sg .seg-opt { transition: none; }
 }
-@media (hover: hover) and (pointer: fine) {
-  .seg-opt[aria-pressed="false"]:hover { background-color: rgb(255 255 255 / 0.08); }
-}
 .sg .seg { flex-shrink: 0; }
 /* the icons sit as far from the edge and from the ink of their label's first letter as the nav's
    (app/tabbar.css): each icon's own empty margin cancelled, and the room R and O leave before
@@ -948,10 +945,10 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
    field's 3.25rem */
 /* half the usual control gap between the circle, the switch and the filters */
 .sg .ms-bar-row { position: relative; align-items: center; gap: calc(var(--spacing-control-stack) / 2); }
-.sg .ms-bar-row > .seg { position: relative; z-index: 1; flex-shrink: 0; min-height: 3.25rem; align-items: center; }
+.sg .ms-bar-row > .seg { position: relative; z-index: 1; flex-shrink: 0; min-height: var(--nav-pill-height); align-items: center; }
 /* the options as tall as the tab bar's, 44 inside the 52 pill: the padding gives up the switch's 1px border */
-.sg .ms-bar-row > .seg { padding: calc(0.25rem - 1px); }
-.sg .ms-bar-row > .seg .seg-opt { min-height: 2.75rem; }
+.sg .ms-bar-row > .seg { padding: calc(var(--nav-pill-pad) - 1px); }
+.sg .ms-bar-row > .seg .seg-opt { min-height: var(--nav-item-height); }
 /* the magnifier's drawing sits 0.2px low and right in its box: nudged onto the circle's centre */
 .sg-search > svg { translate: -0.013rem -0.013rem; }
 .sg-search {
