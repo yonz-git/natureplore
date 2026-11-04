@@ -22,37 +22,62 @@ const clamp = (n: number) => Math.max(0, Math.min(2, n)) as Place;
 /** past where the sheet can go, it follows the finger at a third of the distance */
 const follow = (dy: number, at: Place) => ((at === 2 && dy < 0) || (at === 0 && dy > 0) ? dy / 3 : dy);
 
+// The sheet runs from its top to the screen's bottom edge, so moved up by a transform its bottom edge
+// would lift off the screen and show the map under it. Moved up, it grows below by as much (a
+// negative bottom margin on an absolute box adds to its height), so it always reaches the bottom.
+const shift = (el: HTMLElement, dy: number) => {
+  el.style.transform = dy ? `translateY(${dy}px)` : "";
+  el.style.marginBottom = dy < 0 ? `${dy}px` : "";
+};
+const sliding = new WeakMap<HTMLElement, Animation>();
+/** Slides the sheet from dy above or below where it sits back into place, still reaching the bottom. */
+const settle = (el: HTMLElement, dy: number, duration: number) => {
+  sliding.get(el)?.cancel();
+  shift(el, 0);
+  if (!dy || still()) return;
+  if (dy < 0) el.style.marginBottom = `${dy}px`;
+  const a = el.animate([{ transform: `translateY(${dy}px)` }, { transform: "translateY(0)" }], {
+    duration,
+    easing: "cubic-bezier(0.23, 1, 0.32, 1)",
+  });
+  sliding.set(el, a);
+  a.onfinish = a.oncancel = () => {
+    if (sliding.get(el) !== a) return;
+    sliding.delete(el);
+    el.style.marginBottom = "";
+  };
+};
+
 export function useSheet(ref: RefObject<HTMLElement | null>, enabled = true) {
   const [wanted, setWanted] = useState<Place>(1);
   const place: Place = enabled ? wanted : 1;
   // where the sheet was on screen before it changed height, so it can slide from there
   const from = useRef<number | null>(null);
   const drag = useRef<{ y: number; dy: number; moved: boolean } | null>(null);
+  // how far a drag, by the handle or a pull on the list, has moved the sheet from where it sits
+  const lifted = useRef(0);
   const skipClick = useRef(false);
 
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el || from.current === null) return;
-    el.style.transform = "";
+    shift(el, 0);
     const dy = from.current - el.getBoundingClientRect().top;
     from.current = null;
-    if (!dy || still()) return;
-    el.animate([{ transform: `translateY(${dy}px)` }, { transform: "translateY(0)" }], {
-      duration: 360,
-      easing: "cubic-bezier(0.23, 1, 0.32, 1)",
-    });
+    settle(el, dy, 360);
   }, [place, ref]);
 
   const set = (next: Place) => {
     const el = ref.current;
     if (!el) return;
+    el.classList.remove("is-lifting");
     if (next === place) {
       // a drag that did not go far enough: back to where the sheet is
-      const was = el.style.transform;
-      el.style.transform = "";
-      if (was && !still()) el.animate([{ transform: was }, { transform: "translateY(0)" }], { duration: 240, easing: "cubic-bezier(0.23, 1, 0.32, 1)" });
+      settle(el, lifted.current, 240);
+      lifted.current = 0;
       return;
     }
+    lifted.current = 0;
     from.current = el.getBoundingClientRect().top;
     if (next === 0) el.scrollTop = 0;
     setWanted(next);
@@ -86,7 +111,8 @@ export function useSheet(ref: RefObject<HTMLElement | null>, enabled = true) {
       t.on = true;
       e.preventDefault();
       t.dy = follow(dy, placeRef.current);
-      el.style.transform = `translateY(${t.dy}px)`;
+      lifted.current = t.dy;
+      shift(el, t.dy);
     };
     const up = () => {
       if (t?.on) setRef.current(t.dy > 60 ? clamp(placeRef.current - 1) : placeRef.current);
@@ -130,7 +156,10 @@ export function useSheet(ref: RefObject<HTMLElement | null>, enabled = true) {
           const dy = e.clientY - d.y;
           if (Math.abs(dy) > 4) d.moved = true;
           d.dy = follow(dy, place);
-          el.style.transform = `translateY(${d.dy}px)`;
+          lifted.current = d.dy;
+          shift(el, d.dy);
+          // pulled up from down, what is in the sheet comes back as it rises, not after it lands
+          el.classList.toggle("is-lifting", place === 0 && d.dy < -4);
         }}
         onPointerUp={() => {
           const d = drag.current;

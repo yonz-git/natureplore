@@ -10,8 +10,8 @@ colors:
   picked: "#062A1C"
   scrim: "#061209"
   glass-solid: "#23402A"
-  glass-fill: "rgb(24 44 30 / 0.34)"
-  sheet-fill: "rgb(35 64 42 / 0.66)"
+  glass-fill: "rgb(24 44 30 / 0.17)"
+  sheet-fill: "rgb(35 64 42 / 0.34)"
   glass-edge: "rgb(255 255 255 / 0.16)"
   inner-fill: "rgb(255 255 255 / 0.09)"
   inner-edge: "rgb(255 255 255 / 0.14)"
@@ -98,23 +98,23 @@ typography:
     letterSpacing: -0.01em
   h2:
     fontFamily: Comfortaa
-    fontSize: 1.5rem
+    fontSize: 1.44rem
     fontWeight: 300
     lineHeight: 1.15
     letterSpacing: -0.01em
   h3:
     fontFamily: Comfortaa
-    fontSize: 1.375rem
+    fontSize: 1.44rem
     fontWeight: 300
     lineHeight: 1.15
   stat:
     fontFamily: Comfortaa
-    fontSize: 1.5rem
+    fontSize: 1.44rem
     fontWeight: 300
     lineHeight: 1
   stat-sm:
     fontFamily: Comfortaa
-    fontSize: 1.375rem
+    fontSize: 1.44rem
     fontWeight: 300
     lineHeight: 1
   count:
@@ -127,9 +127,19 @@ typography:
     fontSize: 1.725rem
     fontWeight: 300
     lineHeight: 1.15
+  lead:
+    fontFamily: Cabinet Grotesk
+    fontSize: 1.44rem
+    fontWeight: 300
+    lineHeight: 1.15
+  body-lg:
+    fontFamily: Cabinet Grotesk
+    fontSize: 1.25rem
+    fontWeight: 300
+    lineHeight: 1.15
   body:
     fontFamily: Cabinet Grotesk
-    fontSize: 1.2rem
+    fontSize: 1.25rem
     fontWeight: 300
     lineHeight: 1.15
   body-sm:
@@ -139,27 +149,27 @@ typography:
     lineHeight: 1.15
   secondary:
     fontFamily: Cabinet Grotesk
-    fontSize: 1.2rem
+    fontSize: 1.25rem
     fontWeight: 300
     lineHeight: 1.15
   caption:
     fontFamily: Cabinet Grotesk
-    fontSize: 1.2rem
+    fontSize: 1.25rem
     fontWeight: 300
     lineHeight: 1.15
   title:
     fontFamily: Cabinet Grotesk
-    fontSize: 1.275rem
+    fontSize: 1.25rem
     fontWeight: 400
     lineHeight: 1.15
   title-sm:
     fontFamily: Cabinet Grotesk
-    fontSize: 1.2rem
+    fontSize: 1.25rem
     fontWeight: 400
     lineHeight: 1.15
   meta:
     fontFamily: Cabinet Grotesk
-    fontSize: 1.2rem
+    fontSize: 1.25rem
     fontWeight: 400
     lineHeight: 1.15
   label:
@@ -169,17 +179,17 @@ typography:
     lineHeight: 1.15
   field:
     fontFamily: Cabinet Grotesk
-    fontSize: 1.2rem
+    fontSize: 1.25rem
     fontWeight: 300
     lineHeight: 1.56
   button:
     fontFamily: Cabinet Grotesk
-    fontSize: 1.2rem
+    fontSize: 1.25rem
     fontWeight: 400
     lineHeight: 1
   button-secondary:
     fontFamily: Cabinet Grotesk
-    fontSize: 1.2rem
+    fontSize: 1.25rem
     fontWeight: 400
     lineHeight: 1
   button-small:
@@ -189,12 +199,12 @@ typography:
     lineHeight: 1
   chip:
     fontFamily: Cabinet Grotesk
-    fontSize: 1.2rem
+    fontSize: 1.25rem
     fontWeight: 400
     lineHeight: 1.2
   chip-active:
     fontFamily: Cabinet Grotesk
-    fontSize: 1.2rem
+    fontSize: 1.25rem
     fontWeight: 500
     lineHeight: 1.2
   pill:
@@ -247,7 +257,7 @@ spacing:
   phone-max: 30rem
   card-gap: 1.5rem
   bar-clearance: 2.5rem
-  tabbar-clearance: 7.375rem
+  tabbar-clearance: 6.25rem
   screen-phone: 1rem
   screen-tablet: 2rem
   sheet-tablet: 3rem
@@ -502,13 +512,13 @@ The five group colours (`group-plants`, `group-herbs`, `group-mushrooms`, `group
 
 Two faces with separate jobs. Comfortaa 300 is the voice: headings, stat numbers and map counts, round and light so large sizes stay friendly rather than loud. Cabinet Grotesk (Indian Type Foundry, Fontshare) carries everything you read or tap, in 300 for running text and 400 for titles, labels and controls, stepping to 500 only on the active tab or segment, and counts in pills. Nothing is heavier than 500 and nothing is set in capitals.
 
-Headings run `display-desktop` 56, `display-desktop-sm` 44 (the title of a desktop page, from 27 Oct 2026), `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, the figures themselves at weight 400 and any word between them (the h in 3 h 00) left at 300, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 27.6/31.7 for the one desktop subline, `body` 19.2/22.1, `body-sm` 18/20.7 for notes under a section, `secondary` 19.2/22.1, `caption` 19.2/22.1, raised two steps on 17 Oct 2026 so no reading text is under 18 and one more on 26 Oct 2026 to sit with `body`. Since 26 Oct 2026 every note that took `body-sm` takes `body`, and a figure's label takes 18. `title` 20.4/23.5 names a route, spot or organism; `title-sm` 19.2/22.1 names a search result or a fact. Every text line height is `1.15`, unitless, so it follows the font size wherever that changes: 1rem text sits on 1.15rem, 18 on 20.7, a 34 heading on 39.1 (20 Oct 2026). Reading text was raised a fifth over the headings: headings, stats, spot numbers and buttons kept their size. Controls follow: `field` 19.2, `chip` 19.2, `tab` 14.4, `pill` 18, `stat-label` 14.4. `button-small` 14 is a small inner glass button on a sheet, such as Show on map. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
+Headings run `display-desktop` 56, `display-desktop-sm` 44 (the title of a desktop page, from 27 Oct 2026), `display` 34 (phone welcome), `h1` 32 (tablet page), `h2` 24 (phone sheet and card heading), `h3` 22 (section inside a card). Headings track at minus 1% and the desktop display at minus 1.5%. `stat` 24 and `stat-sm` 22 are the numbers in stat tiles, the figures themselves at weight 400 and any word between them (the h in 3 h 00) left at 300, with tabular figures and a 13px unit in `on-ground-soft` on the same baseline. Text runs `lead-desktop` 27.6/31.7 for the one desktop subline, `lead` 23.04/26.5 for the start page's subline, the sheet's heading on the map ("In season in September") and a route card's title (30 Oct 2026, so those three share one size at every width), `body-lg` 20/23 for a route card's distance line, the region line above the sheet's heading, the route name on the map and the map's place names (same date), `body` 19.2/22.1, `body-sm` 18/20.7 for notes under a section, `secondary` 19.2/22.1, `caption` 19.2/22.1, raised two steps on 17 Oct 2026 so no reading text is under 18 and one more on 26 Oct 2026 to sit with `body`. Since 26 Oct 2026 every note that took `body-sm` takes `body`, and a figure's label takes 18. `title` 20.4/23.5 names a route, spot or organism; `title-sm` 19.2/22.1 names a search result or a fact. Every text line height is `1.15`, unitless, so it follows the font size wherever that changes: 1rem text sits on 1.15rem, 18 on 20.7, a 34 heading on 39.1 (20 Oct 2026). Reading text was raised a fifth over the headings: headings, stats, spot numbers and buttons kept their size. Controls follow: `field` 19.2, `chip` 19.2, `tab` 14.4, `pill` 18, `stat-label` 14.4. `button-small` 14 is a small inner glass button on a sheet, such as Show on map. Latin names are `secondary` in italic and dates are `caption`. In a spot row the organism, its Latin name and the date each take their own line; a short pair such as a group and its Latin name keeps a comma.
 
 ## Layout
 
 Tokens are in rem so screens follow the reader's font size, and so are icons: an icon's size is written in pixels at the default root and drawn in rem (`components/Icons.tsx`). The only px left are the 0.5 and 1 hairlines, the 2 focus ring, two 2 rules and the map label halos; the numbers in this prose are pixels at the default 16px root. Layout sits on a 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 80, 120. Inside a component, 2px half-steps (2, 6, 10, 14) are allowed for icon to label gaps and optical padding, never for gaps between components. Element gaps are 16 to 24, card padding 32, and page sections on desktop are 80 to 120 apart with content capped at 1200. Two tighter rules come from the boards: a control stack (search bar over a chip, button or segment) is 12, and a stack of cards on tablet is 24.
 
-Screen margins are 16 on phone, 32 on tablet, 40 for desktop chrome (logo and nav) and 120 for the desktop welcome's main block. Margins are equal left and right: a column is pinned to both sides, never left to size itself. Between the two, `inset-screen` runs from 16 at 390 wide to 32 at 834, so one inset serves every phone and tablet. Scrolling content ends 40 above the tab bar or bottom bar, which on phone makes `tabbar-clearance` 118: the 8 float, the 70 bar and the 40 gap. On tablet the bar floats 28 up, so the clearance is 138. The tab bar floats 8 from the bottom on phone and 28 on tablet; the tablet bottom bar also sits 28 up.
+Screen margins are 16 on phone, 32 on tablet, 40 for desktop chrome (logo and nav) and 120 for the desktop welcome's main block. Margins are equal left and right: a column is pinned to both sides, never left to size itself. Between the two, `inset-screen` runs from 16 at 390 wide to 32 at 834, so one inset serves every phone and tablet. Scrolling content ends 40 above the tab bar or bottom bar, which on phone makes `tabbar-clearance` 100: the 8 float, the 52 bar and the 40 gap. On tablet the bar floats 28 up, so the clearance is 120. The tab bar floats 8 from the bottom on phone and 28 on tablet; the tablet bottom bar also sits 28 up.
 
 On tablet, from 768 wide and at least 576 tall, the screens follow the tablet boards. The suggestions and search become a 420 panel down the left beside the map (`panel-tablet`). Every other screen keeps the phone's shape with 48 side padding on its sheet (`sheet-tablet`). Reading text is capped at 640 (`measure`, about 70 characters), left-aligned, while photographs, stat tiles, maps and card grids keep the sheet's width. Buttons hug their label as on the desktop, centred, and the route's pinned bar is 362 (`pin-tablet`). A phone turned sideways is not a tablet: under 576 tall it keeps the phone layout.
 
@@ -516,7 +526,7 @@ Chip rows scroll sideways and bleed to the screen edge through negative margins 
 
 ## Elevation & Depth
 
-A sheet or panel (the page sheets, the map's sheet and its desktop panel) is the one place the glass is denser: a flat `sheet-fill` with no white wash, `backdrop-filter: blur(15px) saturate(1.2)`, and the same edge and shadow (30 Oct 2026). The tab bar pill and the Routes and Organisms switch are one system, set once in app/glass.css: the lime at 40% under a 10 blur, 52 tall with 44 options, and an ink that rests at 80% and comes to full on hover, the open option keeping the lime and forest ink. Everything else below is unchanged. There is one material, frosted glass, in two strengths. Glass: `backdrop-filter: blur(30px) saturate(1.4)`, fill `linear-gradient(160deg, white 16% to white 5%)` over `glass-fill`, a 0.5px `glass-edge` border, an inner top highlight `inset 0 1px 0 white 11%`, and a float shadow `0 24px 60px scrim 35%`. Inner glass, for anything on glass: no blur, fill `linear-gradient(160deg, white 14% to white 4%)`, a 0.5px `inner-edge` border and `inset 0 1px 0 white 9%`. Never put a blurred surface on a blurred surface: fields, chips, segments, round controls and buttons on a sheet or panel are all inner glass. The one exception is `control-on-photo`, whose 20 blur frosts the photograph it sits on, even when that photograph is inside a card. Every inner edge is the same `inner-edge`, white 14%.
+A sheet or panel (the page sheets, the map's sheet and its desktop panel) is the one place the glass is denser: a flat `sheet-fill` with no white wash, `backdrop-filter: blur(10px) saturate(1.2)`, and the same edge and shadow. From 5 Nov 2026 the sheet and the round glass button (search circle, bookmark) run a 10 blur and half the opacity: `sheet-fill`, `glass-fill` and the glass wash are 0.51 of what they were. The tab bar pill and the Routes and Organisms switch are one system, set once in app/glass.css: the lime at 32% under the same 10 blur, 52 tall with 44 options, and an ink that rests at 80% and comes to full on hover, the open option keeping the lime and forest ink. Everything else below is unchanged. There is one material, frosted glass, in two strengths. Glass: `backdrop-filter: blur(30px) saturate(1.4)`, fill `linear-gradient(160deg, white 16% to white 5%)` over `glass-fill`, a 0.5px `glass-edge` border, an inner top highlight `inset 0 1px 0 white 11%`, and a float shadow `0 24px 60px scrim 35%`. Inner glass, for anything on glass: no blur, fill `linear-gradient(160deg, white 14% to white 4%)`, a 0.5px `inner-edge` border and `inset 0 1px 0 white 9%`. Never put a blurred surface on a blurred surface: fields, chips, segments, round controls and buttons on a sheet or panel are all inner glass. The one exception is `control-on-photo`, whose 20 blur frosts the photograph it sits on, even when that photograph is inside a card. Every inner edge is the same `inner-edge`, white 14%.
 
 Both carry a rim of light: a 0.5px gradient ring at 150 degrees, laid over the 0.5px border, white 15% at the top left fading to 3.4%, 1.1% and back to 6.2% at the bottom right, drawn with a mask so it follows the radius. It should read as a glint, not a border.
 
@@ -548,7 +558,7 @@ Each organism group has one line icon, drawn on a 24 grid with a 1.5 stroke and 
 
 `card` is glass at 28 with 32 padding and a 24 gap inside; `card-compact` pads 20 for a results list. `inner-card` is 18 with 16 padding (20 for a fact or a route card). Stat tiles show a `stat-label`, then the value in `stat` with its unit; nested in a route card they become `stat-tile-nested`, 12 radius, 14 by 12 padding, `stat-sm`. A route card opens with a 168 photo at 12 radius, a save orb top right, the title and a `caption` line, three stat tiles, a divider, then organism pills. An organism card puts a 117 by 105 photo beside the name, Latin name, date and a spot pill.
 
-`list-row` is 68 tall with a 40 icon disc, a `title-sm` over a `caption`, and a chevron or tag; rows are divided by a 1px line that starts after the disc and fades to the right. `sheet` rises to 196 from the top on phone with a 36 by 5 handle, a heading, chips and cards. `bottom-bar` holds a short note and the primary button with a 54 round companion. `tab-bar` is 70 tall with 6 padding and three 84 by 56 items, icon over label; the active item is a lime pill. On desktop, `nav-desktop` is a 52 glass pill at the top, with 44 tall items, icon beside label; the back controls and search bar sit centred on its line. `chrome-edge` is the one inset for the chrome on every page: half of `inset-screen`, 16 from 64rem. The nav stands `chrome-edge` below the top and in from the right edge, every page's back control and the search bar stand the same distance in from the left, and the welcome's logo sits `chrome-edge` from the top and the left at every size. Data: the proportion bar is 12 tall, 4 gaps, radius 6, in group colours; month bars are white 30% with the current month in lime.
+`list-row` is 68 tall with a 40 icon disc, a `title-sm` over a `caption`, and a chevron or tag; rows are divided by a 1px line that starts after the disc and fades to the right. `sheet` rises to 196 from the top on phone with a 36 by 5 handle, a heading, chips and cards. `bottom-bar` holds a short note and the primary button with a 54 round companion. `tab-bar` and `nav-desktop` are one 52 glass pill with 4 padding and 44 tall items, icon beside label; the active item is a lime pill. It floats at the foot of the phone and tablet and at the top from 64rem; the back controls and search bar sit centred on its line. `chrome-edge` is the one inset for the chrome on every page: half of `inset-screen`, 16 from 64rem. The nav stands `chrome-edge` below the top and in from the right edge, every page's back control and the search bar stand the same distance in from the left, and the welcome's logo sits `chrome-edge` from the top and the left at every size. Data: the proportion bar is 12 tall, 4 gaps, radius 6, in group colours; month bars are white 30% with the current month in lime.
 
 Route detail (B1) is the page a route opens to, over the map, modelled on how Komoot shows a route, without editing and without elevation. The map carries the route: `route-line`, a 4.5 lime line with round caps on a 9 `ground` casing at 85%, so it reads over water and land alike; `spot-marker` pins on the line in walking order; and `start-marker`, a 40 white disc with a forest flag and a 4 forest halo, labelled "Start and finish". On the desktop each spot takes a `spot-label` beside it, `label` 500 in white with a `ground` halo, on the side that does not cover the line; on the phone the names live in the list instead. Beside the map (desktop panel) or under it (phone sheet) come, in this order: `photo-group` (one large photograph and two small in a 2 to 1 grid, 4 apart, radius 18, 180 tall on phone and 200 on desktop, with a close control on the photograph on desktop), the title with its closing word in lime and the start place in `secondary`, three `stat-tile-nested` tiles (Distance, Time, Spots), a `body` description, `recorded-box`, the notable line (a 20 calendar icon in `mist`, `meta` 500, linked to the organism it is about), "Spots along the route" as `list-row`s led by a `spot-marker`, a `caption` footnote, and the actions. `recorded-box` is an `inner-card` holding an `h3` "What is recorded along this route" with "Within 250 m of the line" in `secondary`, a `proportion-bar` (12 tall, 4 gaps, radius 6, group colours, empty groups left out), five `group-row`s (48, group icon 20 in its colour, name in `body-sm`, count in Comfortaa 20, a group with none at 60%), and `button-secondary` "See all organisms" with a chevron. On the tablet the rows become five group tiles. The actions: on the phone Save and Share side by side as `button-secondary` and the primary "Navigate" hugging its label in the pinned bar; on the desktop `detail-footer` pins them to the foot of the panel under a 1px rule, Save and Share as text links with icons, "Navigate" hugging its label at the right. The panel scrolls, the footer does not.
 

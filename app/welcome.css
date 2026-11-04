@@ -139,8 +139,8 @@
   text-align: center;
   /* the title step at every width, size and weight, so the one instruction on the page is easy
      to read */
-  font-size: var(--text-title);
-  line-height: var(--text-title--line-height);
+  font-size: var(--text-body-lg);
+  line-height: var(--text-body-lg--line-height);
   font-weight: var(--text-title--font-weight);
 }
 .a0-cue span { display: inline-block; }

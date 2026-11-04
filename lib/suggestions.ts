@@ -1,7 +1,7 @@
 // The routes in season this month, the suggestion cards on A5 and A4, and what search finds.
 // Content comes from the flow and IA redesign (.forge/briefs/flow-ia-redesign-final.md, section 3)
-// and the Flow A boards on the redesign canvas. Prototype date: Thursday 24 September 2026, so
-// "this month" is September. Only Grumsin beech forest loop has its route page built.
+// and the Flow A boards on the redesign canvas. "This month" is the prototype's month (lib/now.ts).
+// Only Grumsin beech forest loop has its route page built.
 
 import { organismHref } from "@/lib/organisms";
 import type { MapPoint } from "@/components/RegionMap";
@@ -9,6 +9,7 @@ import type { Group } from "@/lib/routes";
 
 import { MONTH } from "@/lib/now";
 import { RECORDED, RECORDED_COUNTS } from "@/lib/records";
+import { routeDetail } from "@/lib/spots";
 
 export { MONTH };
 
@@ -30,7 +31,7 @@ export type Suggestion = {
   /** the short line A3 uses for "Did you mean" */
   place: string;
   spots: number;
-  /** the spots in season this month, in walking order */
+  /** the spots in season this month, in walking order: worked out from each spot's months (lib/spots.ts) */
   lit: number[];
   /** the route's photograph, from lib/photos.ts */
   image?: string;
@@ -41,16 +42,13 @@ export type Suggestion = {
   inSeason: InSeason[];
 };
 
-// Sorted by the share of spots in season this month, then by name: a sort, not a recommendation.
-// Grumsin 4 of 5, Linum 4 of 6, Tegeler Fließ 3 of 7, Tempelhofer Feld 2 of 5.
-export const SUGGESTIONS: Suggestion[] = [
+const ROUTES: Omit<Suggestion, "lit">[] = [
   {
     id: "grumsin",
     name: "Grumsin beech forest loop",
     meta: "10.2 km loop · 3 h",
     place: "10.2 km loop in Grumsin, Brandenburg",
     spots: 5,
-    lit: [1, 2, 3, 5],
     image: "/img/routes/grumsin.jpg",
     href: "/map/route/grumsin",
     lat: 53.01237,
@@ -67,7 +65,6 @@ export const SUGGESTIONS: Suggestion[] = [
     meta: "6.3 km loop · 1 h 50",
     place: "6.3 km loop in Linum, Brandenburg",
     spots: 6,
-    lit: [2, 3, 4],
     image: "/img/routes/linum.jpg",
     href: "/map/route/linum",
     lat: 52.75773,
@@ -84,7 +81,6 @@ export const SUGGESTIONS: Suggestion[] = [
     meta: "4.9 km one way · 1 h 25",
     place: "4.9 km in Reinickendorf, Berlin",
     spots: 7,
-    lit: [1, 2, 3, 5, 6],
     image: "/img/routes/tegel.jpg",
     href: "/map/route/tegel",
     lat: 52.61804,
@@ -101,7 +97,6 @@ export const SUGGESTIONS: Suggestion[] = [
     meta: "5.7 km loop · 1 h 40",
     place: "5.7 km loop in Tempelhof, Berlin",
     spots: 5,
-    lit: [1, 2, 3, 4, 5],
     image: "/img/routes/tempelhof.jpg",
     href: "/map/route/tempelhof",
     lat: 52.48228,
@@ -112,6 +107,15 @@ export const SUGGESTIONS: Suggestion[] = [
     ],
   },
 ];
+
+/** A route's spots in season this month, as its page decides them (lib/spots.ts), so the count on a card always
+    agrees with the spots its page mutes. */
+const litOf = (id: string) => routeDetail(id)?.spots.filter((s) => !s.out).map((s) => s.n) ?? [];
+
+// Sorted by the share of spots in season this month, then by name: a sort, not a recommendation.
+export const SUGGESTIONS: Suggestion[] = ROUTES.map((s) => ({ ...s, lit: litOf(s.id) })).sort(
+  (a, b) => b.lit.length / b.spots - a.lit.length / a.spots || a.name.localeCompare(b.name),
+);
 
 /** The four routes on the map with their names, a constant so the map is built once. */
 export const ROUTE_POINTS: MapPoint[] = SUGGESTIONS.map((s) => ({
@@ -127,7 +131,7 @@ export const ROUTE_POINTS: MapPoint[] = SUGGESTIONS.map((s) => ({
 export const suggestionById = (id: string) => SUGGESTIONS.find((s) => s.id === id);
 
 
-/** "4 of 6 spots in season in September" */
+/** "4 of 6 spots in season in November" */
 export const inSeasonLine = (s: Suggestion) => `${s.lit.length} of ${s.spots} spots in season in ${MONTH}`;
 
 // ── search ──────────────────────────────────────────────────────────────────────────────────

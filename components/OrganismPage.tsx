@@ -51,7 +51,22 @@ function Actions({ o }: { o: Organism }) {
 }
 
 /** `walk` is set when the page was opened from the walk: the tab bar stays hidden, as on the walk. */
-export default function OrganismPage({ o, back, walk = false }: { o: Organism; back: { href: string; label: string }; walk?: boolean }) {
+/** A "Where it's recorded" line, "Tegeler Fließ valley path. Nov, last recorded 7 Nov 2021", with the date on
+    a line of its own: "Last recorded 7 Nov 2021" under the route and months. */
+function lastOnItsLine(line: string) {
+  const at = line.lastIndexOf(", last recorded ");
+  if (at < 0) return line;
+  return (
+    <>
+      {line.slice(0, at)}
+      <br />
+      Last recorded {line.slice(at + ", last recorded ".length)}
+    </>
+  );
+}
+
+/** `route`, when the page was opened from a route, keeps "More <group>" to that route's organisms */
+export default function OrganismPage({ o, back, walk = false, route }: { o: Organism; back: { href: string; label: string }; walk?: boolean; route?: string }) {
   const photo = organismPhoto(`${o.name} ${o.close}`.trim());
   // nothing for the right column (no claim, impact or documentary): the sheet narrows to one column
   const side = Boolean(o.claim || o.impact || o.docs);
@@ -100,11 +115,13 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
           ) : (
             <div className="org-box org-record">
               <p className="org-record-title">{o.record.title}</p>
-              {o.record.lines.map((l) => (
-                <p key={l} className="org-small">
-                  {l}
-                </p>
-              ))}
+              <ul className="org-record-lines">
+                {o.record.lines.map((l) => (
+                  <li key={l} className="org-small">
+                    {l}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
 
@@ -139,7 +156,7 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
                         <b>
                           Spot {w.n}, {w.name}
                         </b>
-                        <span>{w.line}</span>
+                        <span>{lastOnItsLine(w.line)}</span>
                       </span>
                       <ChevronIcon size={18} />
                     </Link>
@@ -151,7 +168,7 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
 
           {o.generalised && <p className="org-small org-note">{o.generalised.note}</p>}
 
-          <OrganismSiblings o={o} />
+          <OrganismSiblings o={o} route={route} />
         </div>
 
         {side && <aside className="org-side">
