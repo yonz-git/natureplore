@@ -1,6 +1,6 @@
 "use client";
 
-// B1's Recorded organisms card, under the September bar and pills: what GBIF has recorded along the route this month
+// B1's Recorded organisms card, under the month's bar and pills: what GBIF has recorded along the route this month
 // (lib/records.ts), most records first, the first ten in two columns. Each tile is the photograph with the name
 // on its foot (the group icon on a tinted tile when there is no photograph), then the group and Latin name, the
 // records, and behind a pin the spots it was recorded within 300 m of, as their numbered marks, or the one spot
