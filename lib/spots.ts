@@ -377,7 +377,7 @@ const DETAILS: Record<string, RouteDetail> = {
       ["Surface", "Forest path, gravel track and a short stretch of village road"],
     ],
     claims: [],
-    foot: "Route last checked 23 September 2026. 1,060 records within 250 m of the line.",
+    foot: "Route last checked 23 Sep 2026. 1,060 records within 250 m of the line.",
   },
   linum: {
     spots: LINUM_SPOTS.map(asOfNow("linum")),
@@ -387,7 +387,7 @@ const DETAILS: Record<string, RouteDetail> = {
       ["Surface", "Village street, farm track and grass path on the pond dams"],
     ],
     claims: [CLAIMS.c1a, CLAIMS.c1b],
-    foot: "Route last checked 23 September 2026. 14,769 records within 250 m of the line.",
+    foot: "Route last checked 23 Sep 2026. 14,769 records within 250 m of the line.",
   },
   tegel: {
     spots: TEGEL_SPOTS.map(asOfNow("tegel")),
@@ -397,7 +397,7 @@ const DETAILS: Record<string, RouteDetail> = {
       ["Surface", "Village street, forest path, a boardwalk and field track"],
     ],
     claims: [CLAIMS.c6],
-    foot: "Route last checked 23 September 2026. 6,865 records within 250 m of the line.",
+    foot: "Route last checked 23 Sep 2026. 6,865 records within 250 m of the line.",
   },
   tempelhof: {
     spots: TEMPELHOF_SPOTS.map(asOfNow("tempelhof")),
@@ -408,7 +408,7 @@ const DETAILS: Record<string, RouteDetail> = {
       ["Opening", "The field closes at night and opens again at sunrise"],
     ],
     claims: [],
-    foot: "Route last checked 23 September 2026. 31,671 records within 250 m of the line.",
+    foot: "Route last checked 23 Sep 2026. 31,671 records within 250 m of the line.",
   },
 };
 
