@@ -60,8 +60,9 @@
 .fb-rows > li:first-child .fb-at::before,
 .fb-spot-end .fb-at::after { visibility: hidden; }
 .fb-at-km { font-size: 1.02rem; line-height: 1.2; font-weight: 300; white-space: nowrap; color: var(--color-on-ground-soft); }
-/* the finish: the map's start flag, a light disc with the dark flag on it */
-.fb-row .fb-mark-end { display: grid; place-items: center; background: var(--color-on-ground); color: var(--color-ground); box-shadow: 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
+/* the finish: the map's start flag, a light disc with the dark flag on it. No padding: the spot mark's
+   padding centres a digit on its cap height, and left on the flag it pushed the drawing 2px low */
+.fb-row .fb-mark-end { display: grid; place-items: center; padding-block: 0; background: var(--color-on-ground); color: var(--color-ground); box-shadow: 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
 .fb-spot-end .fb-row { min-height: 0; }
 
 /* a heading with its closing words in the lime of the titles */
@@ -794,8 +795,8 @@ button.fb-row:active { transform: scale(0.985); }
    their marks at three quarters of the map's size; it rolls in and the ring opens once the line is on screen
    (components/InSeasonList.tsx adds is-seen), until then both wait unseen. The same line on a claim card. */
 :is(.fb-org-tiles, .fb-claim, .a8-rows) small.fb-in-season-where { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.43rem; font-size: 1.125rem; line-height: 1.15; font-weight: 400; color: var(--color-on-ground); }
-/* beside the marks the pin stands 18 tall to their 24 (its drawing fills 0.754 of its box), centred on them */
-:is(.fb-org-tiles, .fb-claim, .a8-rows) .fb-in-season-where .sg-pin { --pin: calc(1.125rem / 0.754); top: -0.075rem; margin-left: -0.299rem; }
+/* beside the marks the pin stands 14 tall to their 24 (its drawing fills 0.754 of its box), centred on them */
+:is(.fb-org-tiles, .fb-claim, .a8-rows) .fb-in-season-where .sg-pin { --pin: calc(0.875rem / 0.754); top: -0.075rem; margin-left: -0.239rem; margin-right: 0.06rem; }
 .fb-org-spots { margin-left: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .fb-org-spots .spot-mark { --mark: 1.5rem; font-size: calc(var(--text-count) * 1.35 * 0.75); box-shadow: 0 0 0 0.125rem rgb(from var(--color-primary) r g b / 0.6); }
 .fb-in-season-where:not(.is-seen) :is(.sg-pin-icon, .sg-pin-ring) { animation: none; opacity: 0; }
