@@ -17,6 +17,7 @@ import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap
 import { StatValue } from "@/components/CParts";
 import { ActionRow, ClaimCard, SpotMark } from "@/components/SpotParts";
 import { InSeasonList } from "@/components/InSeasonList";
+import { PhotoGallery, type Photo } from "@/components/PhotoGallery";
 import { GroupFilter } from "@/components/GroupFilter";
 import { RECORDED_COUNTS } from "@/lib/records";
 import { YearChart } from "@/components/YearChart";
@@ -112,8 +113,9 @@ function SpotAt({ n, km }: { n?: number; km: string }) {
       ) : (
         <span className="spot-mark fb-mark fb-mark-end" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M7 20.5V3.5" />
-            <path d="M7 3.5h11l-2 4 2 4H7" />
+            {/* the ink, pole to the flag's tip, centred on the box: 5.5 to 18.5 */}
+            <path d="M6.5 20.5V3.5" />
+            <path d="M6.5 3.5h11l-2 4 2 4H6.5" />
           </svg>
         </span>
       )}
@@ -305,6 +307,12 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   const spots = useMemo(() => spotsOf(route), [route]);
   const save = useRouteSave(route.id);
   const inSeasonPhotos = (suggestionById(route.id)?.inSeason ?? []).map((o) => organismPhoto(o.name)?.src).slice(0, 2);
+  const photoNames = [route.name, ...(suggestionById(route.id)?.inSeason ?? []).slice(0, 2).map((o) => o.name)];
+  const frames = [route.image, ...inSeasonPhotos].slice(0, 3);
+  // the frames that have a photograph, in order: what the gallery steps through
+  const photos: Photo[] = frames.flatMap((src, i) => (src ? [{ src, alt: photoNames[i] }] : []));
+  const [gallery, setGallery] = useState<number | null>(null);
+  const opener = useRef<HTMLButtonElement | null>(null);
   // back goes to the list the route was opened from, A5, A4 or Saved, read once the page is in the browser
   const back = useSyncExternalStore(noop, lastList, () => "/map");
   const backLabel = back === "/you" ? "Back to You" : "Back to the suggestions";
@@ -384,7 +392,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detail]);
 
-  // the card says what is in season this month: the bar, the pills and the tiles all count September, from GBIF
+  // the card says what is in season this month: the bar, the pills and the tiles all count the prototype's month (lib/now.ts), from GBIF
   const counts = RECORDED_COUNTS[route.id] ?? route.counts;
   // the legend's pills filter the in-season tiles to their groups; none picked shows every group. The pick
   // is kept with its route, so another route opens with every group
@@ -426,11 +434,23 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
           {sheet.grab("route")}
 
           <div className="b1-photos">
-            {/* the route, then two of what is in season along it; a frame stays blank where there is no photo */}
-            {[route.image, ...inSeasonPhotos].slice(0, 3).map((src, i) =>
+            {/* the route, then two of what is in season along it; a frame stays blank where there is no photo.
+                Each photo opens the gallery on itself (components/PhotoGallery.tsx) */}
+            {frames.map((src, i) =>
               src ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img key={i} src={src} alt={i ? "" : `${route.name}`} />
+                <button
+                  key={i}
+                  type="button"
+                  className="b1-photo"
+                  aria-label={`Open the photos, ${photoNames[i]}`}
+                  onClick={(e) => {
+                    opener.current = e.currentTarget;
+                    setGallery(photos.findIndex((p) => p.src === src));
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt="" />
+                </button>
               ) : (
                 <span key={i} />
               ),
@@ -438,6 +458,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
             <SaveToggle route={route} save={save} />
             <DownloadedMark saved={save.saved} />
           </div>
+          <PhotoGallery photos={photos} title={route.name} at={gallery} onClose={() => setGallery(null)} opener={opener} />
 
           <div className="b1-head">
             <h1 id="route-title" className="ms-title">
