@@ -51,7 +51,8 @@ function Actions({ o }: { o: Organism }) {
 }
 
 /** `walk` is set when the page was opened from the walk: the tab bar stays hidden, as on the walk. */
-export default function OrganismPage({ o, back, walk = false }: { o: Organism; back: { href: string; label: string }; walk?: boolean }) {
+/** `route`, when the page was opened from a route, keeps "More <group>" to that route's organisms */
+export default function OrganismPage({ o, back, walk = false, route }: { o: Organism; back: { href: string; label: string }; walk?: boolean; route?: string }) {
   const photo = organismPhoto(`${o.name} ${o.close}`.trim());
   // nothing for the right column (no claim, impact or documentary): the sheet narrows to one column
   const side = Boolean(o.claim || o.impact || o.docs);
@@ -151,7 +152,7 @@ export default function OrganismPage({ o, back, walk = false }: { o: Organism; b
 
           {o.generalised && <p className="org-small org-note">{o.generalised.note}</p>}
 
-          <OrganismSiblings o={o} />
+          <OrganismSiblings o={o} route={route} />
         </div>
 
         {side && <aside className="org-side">

@@ -48,5 +48,5 @@ export default async function Organism({ params, searchParams }: PageProps<"/map
         : opened
           ? opened
           : o.back;
-  return <OrganismPage o={o} back={back} walk={from === "walk"} />;
+  return <OrganismPage o={o} back={back} walk={from === "walk"} route={source?.id} />;
 }

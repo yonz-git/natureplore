@@ -10,13 +10,14 @@ import { useState } from "react";
 import { BackIcon, ChevronIcon } from "@/components/Icons";
 import { ORGANISMS, type Organism } from "@/lib/organisms";
 import { organismPhoto } from "@/lib/photos";
+import { RECORDED } from "@/lib/records";
 import { GROUPS } from "@/lib/routes";
 
 const FIRST = 5;
 const fullName = (o: Organism) => `${o.name} ${o.close}`.trim();
 
 /** One half of previous and next: the step's name under what it is; at the end of the group it stays, dashed. */
-function Step({ to, kicker, end, back = false }: { to?: Organism; kicker: string; end: string; back?: boolean }) {
+function Step({ to, at = "", kicker, end, back = false }: { to?: Organism; at?: string; kicker: string; end: string; back?: boolean }) {
   const body = (
     <>
       {back && <BackIcon size={20} />}
@@ -28,7 +29,7 @@ function Step({ to, kicker, end, back = false }: { to?: Organism; kicker: string
     </>
   );
   return to ? (
-    <Link href={`/map/organism/${to.id}`} className={`fb-nav-next${back ? " is-back" : ""}`}>
+    <Link href={`/map/organism/${to.id}${at}`} className={`fb-nav-next${back ? " is-back" : ""}`}>
       {body}
     </Link>
   ) : (
@@ -38,9 +39,13 @@ function Step({ to, kicker, end, back = false }: { to?: Organism; kicker: string
   );
 }
 
-export function OrganismSiblings({ o }: { o: Organism }) {
+/** Opened from a route (`route`), the group is that route's organisms only, as its tiles list them, and the
+    links keep the route, so stepping through stays on it. Otherwise the group across every route. */
+export function OrganismSiblings({ o, route }: { o: Organism; route?: string }) {
   const [all, setAll] = useState(false);
-  const group = ORGANISMS.filter((x) => x.group === o.group);
+  const onRoute = route ? new Set((RECORDED[route] ?? []).map((r) => r.latin)) : undefined;
+  const group = ORGANISMS.filter((x) => x.group === o.group && (!onRoute || onRoute.has(x.latin)));
+  const at = route ? `?route=${route}` : "";
   const i = group.findIndex((x) => x.id === o.id);
   const prev = group[i - 1];
   const next = group[i + 1];
@@ -73,7 +78,7 @@ export function OrganismSiblings({ o }: { o: Organism }) {
                     <i>{x.latin}</i>
                   </small>
                 </span>
-                <Link href={`/map/organism/${x.id}`} className="org-link" aria-label={fullName(x)} />
+                <Link href={`/map/organism/${x.id}${at}`} className="org-link" aria-label={fullName(x)} />
               </li>
             );
           })}
@@ -95,8 +100,8 @@ export function OrganismSiblings({ o }: { o: Organism }) {
       </div>
 
       <nav aria-label={`Other ${label}`} className="fb-nav org-nav">
-        <Step to={prev} kicker={`Previous ${one}`} end={`First ${one}`} back />
-        <Step to={next} kicker={`Next ${one}`} end={`Last ${one}`} />
+        <Step to={prev} at={at} kicker={`Previous ${one}`} end={`First ${one}`} back />
+        <Step to={next} at={at} kicker={`Next ${one}`} end={`Last ${one}`} />
       </nav>
     </>
   );
