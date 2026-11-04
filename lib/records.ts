@@ -812,3 +812,3495 @@ export const RECORDED: Record<string, Recorded[]> = {
     }
   ]
 };
+
+/** Every species recorded along each route, by group, most records first: the Recorded page (A8). */
+export const RECORDED_ALL: Record<string, Omit<Recorded, "where">[]> = {
+ "grumsin": [
+  {
+   "name": "European spindletree",
+   "latin": "Euonymus europaeus",
+   "group": "plants",
+   "records": 1,
+   "last": "15 Nov 2020",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Indian pokeweed",
+   "latin": "Phytolacca acinosa",
+   "group": "herbs",
+   "records": 1,
+   "last": "2 Nov 2024",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Sweet woodruff",
+   "latin": "Galium odoratum",
+   "group": "herbs",
+   "records": 1,
+   "last": "15 Nov 2020",
+   "spots": [
+    3
+   ]
+  },
+  {
+   "name": "Hop",
+   "latin": "Humulus lupulus",
+   "group": "herbs",
+   "records": 1,
+   "last": "15 Nov 2020",
+   "spots": [
+    3
+   ]
+  },
+  {
+   "name": "Shaggy scalycap",
+   "latin": "Pholiota squarrosa",
+   "group": "mushrooms",
+   "records": 1,
+   "last": "1 Nov 2024",
+   "spots": [
+    3
+   ]
+  },
+  {
+   "name": "Wood woolly-foot",
+   "latin": "Collybiopsis peronata",
+   "group": "mushrooms",
+   "records": 1,
+   "last": "8 Nov 2024",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Late fall oyster mushroom",
+   "latin": "Sarcomyxa serotina",
+   "group": "mushrooms",
+   "records": 1,
+   "last": "1 Nov 2024",
+   "spots": [
+    3
+   ]
+  },
+  {
+   "name": "Common puffball",
+   "latin": "Lycoperdon perlatum",
+   "group": "mushrooms",
+   "records": 1,
+   "last": "15 Nov 2020",
+   "spots": [
+    3
+   ]
+  },
+  {
+   "name": "Clouded funnel",
+   "latin": "Clitocybe nebularis",
+   "group": "mushrooms",
+   "records": 1,
+   "last": "15 Nov 2020",
+   "spots": [
+    3
+   ]
+  },
+  {
+   "name": "European green woodpecker",
+   "latin": "Picus viridis",
+   "group": "birds",
+   "records": 3,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Great tit",
+   "latin": "Parus major",
+   "group": "birds",
+   "records": 3,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Eurasian nuthatch",
+   "latin": "Sitta europaea",
+   "group": "birds",
+   "records": 3,
+   "last": "3 Nov 2024",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Great spotted woodpecker",
+   "latin": "Dendrocopos major",
+   "group": "birds",
+   "records": 3,
+   "last": "3 Nov 2024",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Blue tit",
+   "latin": "Cyanistes caeruleus",
+   "group": "birds",
+   "records": 3,
+   "last": "3 Nov 2024",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "European robin",
+   "latin": "Erithacus rubecula",
+   "group": "birds",
+   "records": 2,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Hooded crow",
+   "latin": "Corvus cornix",
+   "group": "birds",
+   "records": 2,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Common buzzard",
+   "latin": "Buteo buteo",
+   "group": "birds",
+   "records": 2,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Great cormorant",
+   "latin": "Phalacrocorax carbo",
+   "group": "birds",
+   "records": 2,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Mute swan",
+   "latin": "Cygnus olor",
+   "group": "birds",
+   "records": 2,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Common raven",
+   "latin": "Corvus corax",
+   "group": "birds",
+   "records": 2,
+   "last": "3 Nov 2024",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Eurasian jay",
+   "latin": "Garrulus glandarius",
+   "group": "birds",
+   "records": 2,
+   "last": "28 Nov 2021",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Marsh tit",
+   "latin": "Poecile palustris",
+   "group": "birds",
+   "records": 2,
+   "last": "28 Nov 2021",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Common merganser",
+   "latin": "Mergus merganser",
+   "group": "birds",
+   "records": 2,
+   "last": "28 Nov 2021",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Eurasian magpie",
+   "latin": "Pica pica",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Peregrine falcon",
+   "latin": "Falco peregrinus",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "European goldfinch",
+   "latin": "Carduelis carduelis",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Great grey shrike",
+   "latin": "Lanius excubitor",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Eurasian sparrowhawk",
+   "latin": "Accipiter nisus",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "European greenfinch",
+   "latin": "Chloris chloris",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Black redstart",
+   "latin": "Phoenicurus ochruros",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "House sparrow",
+   "latin": "Passer domesticus",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Western jackdaw",
+   "latin": "Coloeus monedula",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Common crane",
+   "latin": "Grus grus",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Brambling",
+   "latin": "Fringilla montifringilla",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Great crested grebe",
+   "latin": "Podiceps cristatus",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Chaffinch",
+   "latin": "Fringilla coelebs",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Winter wren",
+   "latin": "Troglodytes troglodytes",
+   "group": "birds",
+   "records": 1,
+   "last": "28 Nov 2021",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Carrion crow",
+   "latin": "Corvus corone",
+   "group": "birds",
+   "records": 1,
+   "last": "28 Nov 2021",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Yellowhammer",
+   "latin": "Emberiza citrinella",
+   "group": "birds",
+   "records": 1,
+   "last": "28 Nov 2021",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Eurasian siskin",
+   "latin": "Spinus spinus",
+   "group": "birds",
+   "records": 1,
+   "last": "28 Nov 2021",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Long-tailed tit",
+   "latin": "Aegithalos caudatus",
+   "group": "birds",
+   "records": 1,
+   "last": "28 Nov 2021",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Eurasian tree sparrow",
+   "latin": "Passer montanus",
+   "group": "birds",
+   "records": 1,
+   "last": "28 Nov 2021",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Eurasian treecreeper",
+   "latin": "Certhia familiaris",
+   "group": "birds",
+   "records": 1,
+   "last": "28 Nov 2021",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Common goldeneye",
+   "latin": "Bucephala clangula",
+   "group": "birds",
+   "records": 1,
+   "last": "17 Nov 2018",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Black woodpecker",
+   "latin": "Dryocopus martius",
+   "group": "birds",
+   "records": 1,
+   "last": "18 Nov 2018",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Eurasian blackbird",
+   "latin": "Turdus merula",
+   "group": "birds",
+   "records": 1,
+   "last": "18 Nov 2018",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Greylag goose",
+   "latin": "Anser anser",
+   "group": "birds",
+   "records": 1,
+   "last": "18 Nov 2018",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Black-headed gull",
+   "latin": "Chroicocephalus ridibundus",
+   "group": "birds",
+   "records": 1,
+   "last": "18 Nov 2018",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Tufted duck",
+   "latin": "Aythya fuligula",
+   "group": "birds",
+   "records": 1,
+   "last": "18 Nov 2018",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Common kingfisher",
+   "latin": "Alcedo atthis",
+   "group": "birds",
+   "records": 1,
+   "last": "18 Nov 2018",
+   "spots": [
+    4
+   ]
+  }
+ ],
+ "linum": [
+  {
+   "name": "Black alder",
+   "latin": "Alnus glutinosa",
+   "group": "plants",
+   "records": 1,
+   "last": "15 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Mute swan",
+   "latin": "Cygnus olor",
+   "group": "birds",
+   "records": 25,
+   "last": "23 Nov 2025",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Gadwall",
+   "latin": "Mareca strepera",
+   "group": "birds",
+   "records": 21,
+   "last": "23 Nov 2025",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Great cormorant",
+   "latin": "Phalacrocorax carbo",
+   "group": "birds",
+   "records": 20,
+   "last": "23 Nov 2025",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Greylag goose",
+   "latin": "Anser anser",
+   "group": "birds",
+   "records": 20,
+   "last": "23 Nov 2025",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Great egret",
+   "latin": "Ardea alba",
+   "group": "birds",
+   "records": 20,
+   "last": "20 Nov 2025",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Greater white-fronted goose",
+   "latin": "Anser albifrons",
+   "group": "birds",
+   "records": 18,
+   "last": "23 Nov 2025",
+   "spots": [
+    1,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Hooded crow",
+   "latin": "Corvus cornix",
+   "group": "birds",
+   "records": 18,
+   "last": "23 Nov 2025",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Grey heron",
+   "latin": "Ardea cinerea",
+   "group": "birds",
+   "records": 17,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Mallard",
+   "latin": "Anas platyrhynchos",
+   "group": "birds",
+   "records": 17,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian coot",
+   "latin": "Fulica atra",
+   "group": "birds",
+   "records": 16,
+   "last": "20 Nov 2025",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common crane",
+   "latin": "Grus grus",
+   "group": "birds",
+   "records": 16,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Northern shoveler",
+   "latin": "Spatula clypeata",
+   "group": "birds",
+   "records": 15,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Great tit",
+   "latin": "Parus major",
+   "group": "birds",
+   "records": 15,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Winter wren",
+   "latin": "Troglodytes troglodytes",
+   "group": "birds",
+   "records": 14,
+   "last": "29 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "European robin",
+   "latin": "Erithacus rubecula",
+   "group": "birds",
+   "records": 14,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Blue tit",
+   "latin": "Cyanistes caeruleus",
+   "group": "birds",
+   "records": 14,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Bearded reedling",
+   "latin": "Panurus biarmicus",
+   "group": "birds",
+   "records": 13,
+   "last": "22 Nov 2025",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common pochard",
+   "latin": "Aythya ferina",
+   "group": "birds",
+   "records": 13,
+   "last": "20 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Northern pintail",
+   "latin": "Anas acuta",
+   "group": "birds",
+   "records": 13,
+   "last": "23 Nov 2025",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "White-tailed eagle",
+   "latin": "Haliaeetus albicilla",
+   "group": "birds",
+   "records": 13,
+   "last": "13 Nov 2024",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common kingfisher",
+   "latin": "Alcedo atthis",
+   "group": "birds",
+   "records": 13,
+   "last": "13 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian teal",
+   "latin": "Anas crecca",
+   "group": "birds",
+   "records": 12,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common merganser",
+   "latin": "Mergus merganser",
+   "group": "birds",
+   "records": 12,
+   "last": "20 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Great spotted woodpecker",
+   "latin": "Dendrocopos major",
+   "group": "birds",
+   "records": 12,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian siskin",
+   "latin": "Spinus spinus",
+   "group": "birds",
+   "records": 11,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Water rail",
+   "latin": "Rallus aquaticus",
+   "group": "birds",
+   "records": 11,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common starling",
+   "latin": "Sturnus vulgaris",
+   "group": "birds",
+   "records": 11,
+   "last": "20 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common raven",
+   "latin": "Corvus corax",
+   "group": "birds",
+   "records": 11,
+   "last": "13 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "European greenfinch",
+   "latin": "Chloris chloris",
+   "group": "birds",
+   "records": 10,
+   "last": "29 Nov 2025",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian blackbird",
+   "latin": "Turdus merula",
+   "group": "birds",
+   "records": 10,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Tundra bean goose",
+   "latin": "Anser serrirostris",
+   "group": "birds",
+   "records": 10,
+   "last": "6 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common wood pigeon",
+   "latin": "Columba palumbus",
+   "group": "birds",
+   "records": 9,
+   "last": "20 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common goldeneye",
+   "latin": "Bucephala clangula",
+   "group": "birds",
+   "records": 9,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Tufted duck",
+   "latin": "Aythya fuligula",
+   "group": "birds",
+   "records": 9,
+   "last": "13 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian jay",
+   "latin": "Garrulus glandarius",
+   "group": "birds",
+   "records": 9,
+   "last": "13 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Black-headed gull",
+   "latin": "Chroicocephalus ridibundus",
+   "group": "birds",
+   "records": 9,
+   "last": "13 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian magpie",
+   "latin": "Pica pica",
+   "group": "birds",
+   "records": 9,
+   "last": "6 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common buzzard",
+   "latin": "Buteo buteo",
+   "group": "birds",
+   "records": 8,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Western jackdaw",
+   "latin": "Coloeus monedula",
+   "group": "birds",
+   "records": 8,
+   "last": "20 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Chaffinch",
+   "latin": "Fringilla coelebs",
+   "group": "birds",
+   "records": 8,
+   "last": "13 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Ferruginous duck",
+   "latin": "Aythya nyroca",
+   "group": "birds",
+   "records": 8,
+   "last": "13 Nov 2024",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "European goldfinch",
+   "latin": "Carduelis carduelis",
+   "group": "birds",
+   "records": 8,
+   "last": "6 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Pygmy cormorant",
+   "latin": "Microcarbo pygmaeus",
+   "group": "birds",
+   "records": 7,
+   "last": "23 Nov 2024",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian sparrowhawk",
+   "latin": "Accipiter nisus",
+   "group": "birds",
+   "records": 7,
+   "last": "13 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian wigeon",
+   "latin": "Mareca penelope",
+   "group": "birds",
+   "records": 7,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common kestrel",
+   "latin": "Falco tinnunculus",
+   "group": "birds",
+   "records": 6,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Twite",
+   "latin": "Linaria flavirostris",
+   "group": "birds",
+   "records": 5,
+   "last": "23 Nov 2024",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Caspian gull",
+   "latin": "Larus cachinnans",
+   "group": "birds",
+   "records": 5,
+   "last": "23 Nov 2024",
+   "spots": [
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian tree sparrow",
+   "latin": "Passer montanus",
+   "group": "birds",
+   "records": 5,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Long-tailed tit",
+   "latin": "Aegithalos caudatus",
+   "group": "birds",
+   "records": 5,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Reed bunting",
+   "latin": "Emberiza schoeniclus",
+   "group": "birds",
+   "records": 5,
+   "last": "10 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "House sparrow",
+   "latin": "Passer domesticus",
+   "group": "birds",
+   "records": 5,
+   "last": "6 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Northern lapwing",
+   "latin": "Vanellus vanellus",
+   "group": "birds",
+   "records": 5,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Egyptian goose",
+   "latin": "Alopochen aegyptiaca",
+   "group": "birds",
+   "records": 4,
+   "last": "6 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Red kite",
+   "latin": "Milvus milvus",
+   "group": "birds",
+   "records": 4,
+   "last": "13 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Rook",
+   "latin": "Corvus frugilegus",
+   "group": "birds",
+   "records": 4,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Fieldfare",
+   "latin": "Turdus pilaris",
+   "group": "birds",
+   "records": 4,
+   "last": "13 Nov 2021",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Short-toed treecreeper",
+   "latin": "Certhia brachydactyla",
+   "group": "birds",
+   "records": 3,
+   "last": "20 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common pheasant",
+   "latin": "Phasianus colchicus",
+   "group": "birds",
+   "records": 3,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Marsh tit",
+   "latin": "Poecile palustris",
+   "group": "birds",
+   "records": 3,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Rough-legged buzzard",
+   "latin": "Buteo lagopus",
+   "group": "birds",
+   "records": 3,
+   "last": "13 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Great grey shrike",
+   "latin": "Lanius excubitor",
+   "group": "birds",
+   "records": 3,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Redwing",
+   "latin": "Turdus iliacus",
+   "group": "birds",
+   "records": 3,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Little grebe",
+   "latin": "Tachybaptus ruficollis",
+   "group": "birds",
+   "records": 3,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Yellowhammer",
+   "latin": "Emberiza citrinella",
+   "group": "birds",
+   "records": 3,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Whooper swan",
+   "latin": "Cygnus cygnus",
+   "group": "birds",
+   "records": 3,
+   "last": "13 Nov 2024",
+   "spots": [
+    3,
+    4,
+    5
+   ]
+  },
+  {
+   "name": "Willow tit",
+   "latin": "Poecile montanus",
+   "group": "birds",
+   "records": 3,
+   "last": "13 Nov 2021",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Lesser spotted woodpecker",
+   "latin": "Dryobates minor",
+   "group": "birds",
+   "records": 3,
+   "last": "9 Nov 2021",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common snipe",
+   "latin": "Gallinago gallinago",
+   "group": "birds",
+   "records": 2,
+   "last": "23 Nov 2025",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Spotted redshank",
+   "latin": "Tringa erythropus",
+   "group": "birds",
+   "records": 2,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Hen harrier",
+   "latin": "Circus cyaneus",
+   "group": "birds",
+   "records": 2,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Meadow pipit",
+   "latin": "Anthus pratensis",
+   "group": "birds",
+   "records": 2,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian collared dove",
+   "latin": "Streptopelia decaocto",
+   "group": "birds",
+   "records": 2,
+   "last": "6 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Water pipit",
+   "latin": "Anthus spinoletta",
+   "group": "birds",
+   "records": 2,
+   "last": "13 Nov 2021",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Brambling",
+   "latin": "Fringilla montifringilla",
+   "group": "birds",
+   "records": 2,
+   "last": "13 Nov 2021",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Goldcrest",
+   "latin": "Regulus regulus",
+   "group": "birds",
+   "records": 2,
+   "last": "13 Nov 2021",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "White wagtail",
+   "latin": "Motacilla alba",
+   "group": "birds",
+   "records": 2,
+   "last": "9 Nov 2020",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common moorhen",
+   "latin": "Gallinula chloropus",
+   "group": "birds",
+   "records": 2,
+   "last": "9 Nov 2020",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian treecreeper",
+   "latin": "Certhia familiaris",
+   "group": "birds",
+   "records": 2,
+   "last": "17 Nov 2018",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "European green woodpecker",
+   "latin": "Picus viridis",
+   "group": "birds",
+   "records": 1,
+   "last": "6 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Barnacle goose",
+   "latin": "Branta leucopsis",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian skylark",
+   "latin": "Alauda arvensis",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Western marsh harrier",
+   "latin": "Circus aeruginosus",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Merlin",
+   "latin": "Falco columbarius",
+   "group": "birds",
+   "records": 1,
+   "last": "1 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common linnet",
+   "latin": "Linaria cannabina",
+   "group": "birds",
+   "records": 1,
+   "last": "3 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Herring gull",
+   "latin": "Larus argentatus",
+   "group": "birds",
+   "records": 1,
+   "last": "13 Nov 2024",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Peregrine falcon",
+   "latin": "Falco peregrinus",
+   "group": "birds",
+   "records": 1,
+   "last": "7 Nov 2022",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Little gull",
+   "latin": "Hydrocoloeus minutus",
+   "group": "birds",
+   "records": 1,
+   "last": "5 Nov 2021",
+   "spots": [
+    3
+   ]
+  },
+  {
+   "name": "Dunnock",
+   "latin": "Prunella modularis",
+   "group": "birds",
+   "records": 1,
+   "last": "13 Nov 2021",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common chiffchaff",
+   "latin": "Phylloscopus collybita",
+   "group": "birds",
+   "records": 1,
+   "last": "13 Nov 2021",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common firecrest",
+   "latin": "Regulus ignicapilla",
+   "group": "birds",
+   "records": 1,
+   "last": "13 Nov 2021",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian bullfinch",
+   "latin": "Pyrrhula pyrrhula",
+   "group": "birds",
+   "records": 1,
+   "last": "13 Nov 2021",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian penduline tit",
+   "latin": "Remiz pendulinus",
+   "group": "birds",
+   "records": 1,
+   "last": "13 Nov 2021",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Common sandpiper",
+   "latin": "Actitis hypoleucos",
+   "group": "birds",
+   "records": 1,
+   "last": "30 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Common redpoll",
+   "latin": "Acanthis flammea",
+   "group": "birds",
+   "records": 1,
+   "last": "20 Nov 2018",
+   "spots": [
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Eurasian curlew",
+   "latin": "Numenius arquata",
+   "group": "birds",
+   "records": 1,
+   "last": "6 Nov 2017",
+   "spots": [
+    3
+   ]
+  },
+  {
+   "name": "Eurasian beaver",
+   "latin": "Castor fiber",
+   "group": "mammals",
+   "records": 1,
+   "last": "22 Nov 2025",
+   "spots": [
+    2
+   ]
+  }
+ ],
+ "tegel": [
+  {
+   "name": "European spindletree",
+   "latin": "Euonymus europaeus",
+   "group": "plants",
+   "records": 2,
+   "last": "7 Nov 2021",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Stag's-horn sumach",
+   "latin": "Rhus typhina",
+   "group": "herbs",
+   "records": 1,
+   "last": "12 Nov 2020",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Great spotted woodpecker",
+   "latin": "Dendrocopos major",
+   "group": "birds",
+   "records": 9,
+   "last": "23 Nov 2025",
+   "spots": [
+    2,
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Gadwall",
+   "latin": "Mareca strepera",
+   "group": "birds",
+   "records": 7,
+   "last": "16 Nov 2025",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Mute swan",
+   "latin": "Cygnus olor",
+   "group": "birds",
+   "records": 7,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Eurasian jay",
+   "latin": "Garrulus glandarius",
+   "group": "birds",
+   "records": 6,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "European robin",
+   "latin": "Erithacus rubecula",
+   "group": "birds",
+   "records": 6,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Great cormorant",
+   "latin": "Phalacrocorax carbo",
+   "group": "birds",
+   "records": 5,
+   "last": "16 Nov 2025",
+   "spots": [
+    2,
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Grey heron",
+   "latin": "Ardea cinerea",
+   "group": "birds",
+   "records": 5,
+   "last": "21 Nov 2025",
+   "spots": [
+    3,
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Mallard",
+   "latin": "Anas platyrhynchos",
+   "group": "birds",
+   "records": 5,
+   "last": "16 Nov 2025",
+   "spots": [
+    1,
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Great tit",
+   "latin": "Parus major",
+   "group": "birds",
+   "records": 5,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Common crane",
+   "latin": "Grus grus",
+   "group": "birds",
+   "records": 5,
+   "last": "16 Nov 2022",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Marsh tit",
+   "latin": "Poecile palustris",
+   "group": "birds",
+   "records": 4,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Hooded crow",
+   "latin": "Corvus cornix",
+   "group": "birds",
+   "records": 4,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "European goldfinch",
+   "latin": "Carduelis carduelis",
+   "group": "birds",
+   "records": 4,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Chaffinch",
+   "latin": "Fringilla coelebs",
+   "group": "birds",
+   "records": 4,
+   "last": "21 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Great egret",
+   "latin": "Ardea alba",
+   "group": "birds",
+   "records": 3,
+   "last": "26 Nov 2025",
+   "spots": [
+    5,
+    6,
+    7
+   ]
+  },
+  {
+   "name": "Common raven",
+   "latin": "Corvus corax",
+   "group": "birds",
+   "records": 3,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Eurasian magpie",
+   "latin": "Pica pica",
+   "group": "birds",
+   "records": 3,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Goldcrest",
+   "latin": "Regulus regulus",
+   "group": "birds",
+   "records": 3,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Eurasian siskin",
+   "latin": "Spinus spinus",
+   "group": "birds",
+   "records": 3,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Long-tailed tit",
+   "latin": "Aegithalos caudatus",
+   "group": "birds",
+   "records": 3,
+   "last": "21 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Winter wren",
+   "latin": "Troglodytes troglodytes",
+   "group": "birds",
+   "records": 3,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Blue tit",
+   "latin": "Cyanistes caeruleus",
+   "group": "birds",
+   "records": 3,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Common wood pigeon",
+   "latin": "Columba palumbus",
+   "group": "birds",
+   "records": 3,
+   "last": "21 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Eurasian blackbird",
+   "latin": "Turdus merula",
+   "group": "birds",
+   "records": 3,
+   "last": "21 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "European greenfinch",
+   "latin": "Chloris chloris",
+   "group": "birds",
+   "records": 3,
+   "last": "21 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Eurasian nuthatch",
+   "latin": "Sitta europaea",
+   "group": "birds",
+   "records": 3,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Common buzzard",
+   "latin": "Buteo buteo",
+   "group": "birds",
+   "records": 3,
+   "last": "23 Nov 2020",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Common moorhen",
+   "latin": "Gallinula chloropus",
+   "group": "birds",
+   "records": 2,
+   "last": "27 Nov 2025",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "House sparrow",
+   "latin": "Passer domesticus",
+   "group": "birds",
+   "records": 2,
+   "last": "21 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Black woodpecker",
+   "latin": "Dryocopus martius",
+   "group": "birds",
+   "records": 2,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Short-toed treecreeper",
+   "latin": "Certhia brachydactyla",
+   "group": "birds",
+   "records": 2,
+   "last": "21 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Bohemian waxwing",
+   "latin": "Bombycilla garrulus",
+   "group": "birds",
+   "records": 2,
+   "last": "10 Nov 2022",
+   "spots": [
+    3
+   ]
+  },
+  {
+   "name": "European green woodpecker",
+   "latin": "Picus viridis",
+   "group": "birds",
+   "records": 2,
+   "last": "16 Nov 2020",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Eurasian coot",
+   "latin": "Fulica atra",
+   "group": "birds",
+   "records": 1,
+   "last": "16 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Eurasian treecreeper",
+   "latin": "Certhia familiaris",
+   "group": "birds",
+   "records": 1,
+   "last": "16 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Common kestrel",
+   "latin": "Falco tinnunculus",
+   "group": "birds",
+   "records": 1,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Water rail",
+   "latin": "Rallus aquaticus",
+   "group": "birds",
+   "records": 1,
+   "last": "21 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Greylag goose",
+   "latin": "Anser anser",
+   "group": "birds",
+   "records": 1,
+   "last": "16 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Common pheasant",
+   "latin": "Phasianus colchicus",
+   "group": "birds",
+   "records": 1,
+   "last": "21 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "European crested tit",
+   "latin": "Lophophanes cristatus",
+   "group": "birds",
+   "records": 1,
+   "last": "16 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Yellowhammer",
+   "latin": "Emberiza citrinella",
+   "group": "birds",
+   "records": 1,
+   "last": "16 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Common starling",
+   "latin": "Sturnus vulgaris",
+   "group": "birds",
+   "records": 1,
+   "last": "23 Nov 2025",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Northern goshawk",
+   "latin": "Accipiter gentilis",
+   "group": "birds",
+   "records": 1,
+   "last": "14 Nov 2022",
+   "spots": [
+    3
+   ]
+  },
+  {
+   "name": "Common redpoll",
+   "latin": "Acanthis flammea",
+   "group": "birds",
+   "records": 1,
+   "last": "10 Nov 2022",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Tawny owl",
+   "latin": "Strix aluco",
+   "group": "birds",
+   "records": 1,
+   "last": "23 Nov 2020",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Eurasian sparrowhawk",
+   "latin": "Accipiter nisus",
+   "group": "birds",
+   "records": 1,
+   "last": "16 Nov 2020",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Eurasian wigeon",
+   "latin": "Mareca penelope",
+   "group": "birds",
+   "records": 1,
+   "last": "8 Nov 2020",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Common goldeneye",
+   "latin": "Bucephala clangula",
+   "group": "birds",
+   "records": 1,
+   "last": "28 Nov 2020",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Great crested grebe",
+   "latin": "Podiceps cristatus",
+   "group": "birds",
+   "records": 1,
+   "last": "12 Nov 2020",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Great grey shrike",
+   "latin": "Lanius excubitor",
+   "group": "birds",
+   "records": 1,
+   "last": "19 Nov 2019",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Fieldfare",
+   "latin": "Turdus pilaris",
+   "group": "birds",
+   "records": 1,
+   "last": "10 Nov 2019",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Eurasian tree sparrow",
+   "latin": "Passer montanus",
+   "group": "birds",
+   "records": 1,
+   "last": "10 Nov 2019",
+   "spots": [
+    5,
+    6
+   ]
+  },
+  {
+   "name": "Eurasian red squirrel",
+   "latin": "Sciurus vulgaris",
+   "group": "mammals",
+   "records": 6,
+   "last": "28 Nov 2020",
+   "spots": [
+    6
+   ]
+  },
+  {
+   "name": "Raccoon",
+   "latin": "Procyon lotor",
+   "group": "mammals",
+   "records": 1,
+   "last": "15 Nov 2025",
+   "spots": [
+    2
+   ]
+  }
+ ],
+ "tempelhof": [
+  {
+   "name": "European privet",
+   "latin": "Ligustrum vulgare",
+   "group": "plants",
+   "records": 1,
+   "last": "23 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "European aspen",
+   "latin": "Populus tremula",
+   "group": "plants",
+   "records": 1,
+   "last": "16 Nov 2021",
+   "spots": [
+    1,
+    2
+   ]
+  },
+  {
+   "name": "Dog-rose",
+   "latin": "Rosa canina",
+   "group": "plants",
+   "records": 1,
+   "last": "16 Nov 2021",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Old-man's-beard",
+   "latin": "Clematis vitalba",
+   "group": "plants",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "London plane",
+   "latin": "Platanus hispanica",
+   "group": "plants",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Fragrant grove honeysuckle",
+   "latin": "Lonicera acuminata",
+   "group": "plants",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Duke of argyll's teaplant",
+   "latin": "Lycium barbarum",
+   "group": "plants",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Narrow-leaved ragwort",
+   "latin": "Senecio inaequidens",
+   "group": "herbs",
+   "records": 4,
+   "last": "9 Nov 2025",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Common stork's-bill",
+   "latin": "Erodium cicutarium",
+   "group": "herbs",
+   "records": 2,
+   "last": "8 Nov 2025",
+   "spots": [
+    1,
+    2
+   ]
+  },
+  {
+   "name": "Stinging nettle",
+   "latin": "Urtica dioica",
+   "group": "herbs",
+   "records": 2,
+   "last": "3 Nov 2025",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Mexican aster",
+   "latin": "Cosmos bipinnatus",
+   "group": "herbs",
+   "records": 1,
+   "last": "7 Nov 2022",
+   "spots": [
+    1,
+    2
+   ]
+  },
+  {
+   "name": "Wormwood",
+   "latin": "Artemisia absinthium",
+   "group": "herbs",
+   "records": 1,
+   "last": "13 Nov 2022",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Apple of peru",
+   "latin": "Nicandra physalodes",
+   "group": "herbs",
+   "records": 1,
+   "last": "3 Nov 2022",
+   "spots": [
+    1,
+    2
+   ]
+  },
+  {
+   "name": "Viper's bugloss",
+   "latin": "Echium vulgare",
+   "group": "herbs",
+   "records": 1,
+   "last": "10 Nov 2022",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Shepherd's-purse",
+   "latin": "Capsella bursa-pastoris",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Red dead-nettle",
+   "latin": "Lamium purpureum",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Greater celandine",
+   "latin": "Chelidonium majus",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "English plantain",
+   "latin": "Plantago lanceolata",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Hedge mustard",
+   "latin": "Sisymbrium officinale",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "False london-rocket",
+   "latin": "Sisymbrium loeselii",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Garden pea",
+   "latin": "Lathyrus oleraceus",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Hoary alison",
+   "latin": "Berteroa incana",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Hop",
+   "latin": "Humulus lupulus",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Althaea rosea",
+   "latin": "Althaea rosea",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Common periwinkle",
+   "latin": "Vinca minor",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Sweet alison",
+   "latin": "Lobularia maritima",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Canada goldenrod",
+   "latin": "Solidago canadensis",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Chicory",
+   "latin": "Cichorium intybus",
+   "group": "herbs",
+   "records": 1,
+   "last": "25 Nov 2019",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Clouded funnel",
+   "latin": "Clitocybe nebularis",
+   "group": "mushrooms",
+   "records": 1,
+   "last": "8 Nov 2025",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Scarletina bolete",
+   "latin": "Neoboletus erythropus",
+   "group": "mushrooms",
+   "records": 1,
+   "last": "26 Nov 2024",
+   "spots": [
+    2
+   ]
+  },
+  {
+   "name": "Common kestrel",
+   "latin": "Falco tinnunculus",
+   "group": "birds",
+   "records": 137,
+   "last": "28 Nov 2025",
+   "spots": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  {
+   "name": "Hooded crow",
+   "latin": "Corvus cornix",
+   "group": "birds",
+   "records": 134,
+   "last": "28 Nov 2025",
+   "spots": [
+    1,
+    2,
+    5
+   ]
+  },
+  {
+   "name": "Rook",
+   "latin": "Corvus frugilegus",
+   "group": "birds",
+   "records": 105,
+   "last": "28 Nov 2025",
+   "spots": [
+    3,
+    5
+   ]
+  },
+  {
+   "name": "Great tit",
+   "latin": "Parus major",
+   "group": "birds",
+   "records": 103,
+   "last": "28 Nov 2025",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Eurasian blackbird",
+   "latin": "Turdus merula",
+   "group": "birds",
+   "records": 102,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "House sparrow",
+   "latin": "Passer domesticus",
+   "group": "birds",
+   "records": 97,
+   "last": "28 Nov 2025",
+   "spots": [
+    1,
+    2,
+    4
+   ]
+  },
+  {
+   "name": "Common starling",
+   "latin": "Sturnus vulgaris",
+   "group": "birds",
+   "records": 96,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Blue tit",
+   "latin": "Cyanistes caeruleus",
+   "group": "birds",
+   "records": 94,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Common wood pigeon",
+   "latin": "Columba palumbus",
+   "group": "birds",
+   "records": 94,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "European goldfinch",
+   "latin": "Carduelis carduelis",
+   "group": "birds",
+   "records": 91,
+   "last": "27 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "European robin",
+   "latin": "Erithacus rubecula",
+   "group": "birds",
+   "records": 84,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Eurasian magpie",
+   "latin": "Pica pica",
+   "group": "birds",
+   "records": 79,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "European greenfinch",
+   "latin": "Chloris chloris",
+   "group": "birds",
+   "records": 75,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Rock dove",
+   "latin": "Columba livia",
+   "group": "birds",
+   "records": 72,
+   "last": "28 Nov 2025",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Chaffinch",
+   "latin": "Fringilla coelebs",
+   "group": "birds",
+   "records": 70,
+   "last": "24 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Mew gull",
+   "latin": "Larus canus",
+   "group": "birds",
+   "records": 66,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Fieldfare",
+   "latin": "Turdus pilaris",
+   "group": "birds",
+   "records": 56,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Black-headed gull",
+   "latin": "Chroicocephalus ridibundus",
+   "group": "birds",
+   "records": 47,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Common buzzard",
+   "latin": "Buteo buteo",
+   "group": "birds",
+   "records": 45,
+   "last": "27 Nov 2025",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Eurasian skylark",
+   "latin": "Alauda arvensis",
+   "group": "birds",
+   "records": 42,
+   "last": "24 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Great spotted woodpecker",
+   "latin": "Dendrocopos major",
+   "group": "birds",
+   "records": 41,
+   "last": "27 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Western jackdaw",
+   "latin": "Coloeus monedula",
+   "group": "birds",
+   "records": 40,
+   "last": "18 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Goldcrest",
+   "latin": "Regulus regulus",
+   "group": "birds",
+   "records": 39,
+   "last": "24 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Redwing",
+   "latin": "Turdus iliacus",
+   "group": "birds",
+   "records": 36,
+   "last": "24 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Common raven",
+   "latin": "Corvus corax",
+   "group": "birds",
+   "records": 34,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Meadow pipit",
+   "latin": "Anthus pratensis",
+   "group": "birds",
+   "records": 33,
+   "last": "21 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Brambling",
+   "latin": "Fringilla montifringilla",
+   "group": "birds",
+   "records": 32,
+   "last": "28 Nov 2025",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Dunnock",
+   "latin": "Prunella modularis",
+   "group": "birds",
+   "records": 30,
+   "last": "24 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Winter wren",
+   "latin": "Troglodytes troglodytes",
+   "group": "birds",
+   "records": 30,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Great cormorant",
+   "latin": "Phalacrocorax carbo",
+   "group": "birds",
+   "records": 27,
+   "last": "24 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Reed bunting",
+   "latin": "Emberiza schoeniclus",
+   "group": "birds",
+   "records": 25,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Common redpoll",
+   "latin": "Acanthis flammea",
+   "group": "birds",
+   "records": 22,
+   "last": "12 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Eurasian jay",
+   "latin": "Garrulus glandarius",
+   "group": "birds",
+   "records": 21,
+   "last": "14 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Eurasian siskin",
+   "latin": "Spinus spinus",
+   "group": "birds",
+   "records": 21,
+   "last": "16 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Tundra bean goose",
+   "latin": "Anser serrirostris",
+   "group": "birds",
+   "records": 20,
+   "last": "18 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Greater white-fronted goose",
+   "latin": "Anser albifrons",
+   "group": "birds",
+   "records": 19,
+   "last": "11 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Long-eared owl",
+   "latin": "Asio otus",
+   "group": "birds",
+   "records": 18,
+   "last": "23 Nov 2025",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Eurasian sparrowhawk",
+   "latin": "Accipiter nisus",
+   "group": "birds",
+   "records": 18,
+   "last": "6 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Common crane",
+   "latin": "Grus grus",
+   "group": "birds",
+   "records": 16,
+   "last": "24 Nov 2025",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Eurasian bullfinch",
+   "latin": "Pyrrhula pyrrhula",
+   "group": "birds",
+   "records": 16,
+   "last": "12 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Common linnet",
+   "latin": "Linaria cannabina",
+   "group": "birds",
+   "records": 16,
+   "last": "14 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Hawfinch",
+   "latin": "Coccothraustes coccothraustes",
+   "group": "birds",
+   "records": 15,
+   "last": "27 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Corn bunting",
+   "latin": "Emberiza calandra",
+   "group": "birds",
+   "records": 13,
+   "last": "16 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Herring gull",
+   "latin": "Larus argentatus",
+   "group": "birds",
+   "records": 13,
+   "last": "21 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "White wagtail",
+   "latin": "Motacilla alba",
+   "group": "birds",
+   "records": 13,
+   "last": "1 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Yellowhammer",
+   "latin": "Emberiza citrinella",
+   "group": "birds",
+   "records": 13,
+   "last": "16 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Short-toed treecreeper",
+   "latin": "Certhia brachydactyla",
+   "group": "birds",
+   "records": 12,
+   "last": "21 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Mistle thrush",
+   "latin": "Turdus viscivorus",
+   "group": "birds",
+   "records": 11,
+   "last": "28 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "European stonechat",
+   "latin": "Saxicola rubicola",
+   "group": "birds",
+   "records": 11,
+   "last": "4 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Song thrush",
+   "latin": "Turdus philomelos",
+   "group": "birds",
+   "records": 11,
+   "last": "8 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Long-tailed tit",
+   "latin": "Aegithalos caudatus",
+   "group": "birds",
+   "records": 10,
+   "last": "11 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Great egret",
+   "latin": "Ardea alba",
+   "group": "birds",
+   "records": 9,
+   "last": "6 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Northern lapwing",
+   "latin": "Vanellus vanellus",
+   "group": "birds",
+   "records": 9,
+   "last": "4 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Short-eared owl",
+   "latin": "Asio flammeus",
+   "group": "birds",
+   "records": 8,
+   "last": "2 Nov 2025",
+   "spots": [
+    4
+   ]
+  },
+  {
+   "name": "Grey heron",
+   "latin": "Ardea cinerea",
+   "group": "birds",
+   "records": 8,
+   "last": "24 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "European green woodpecker",
+   "latin": "Picus viridis",
+   "group": "birds",
+   "records": 7,
+   "last": "16 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Stock dove",
+   "latin": "Columba oenas",
+   "group": "birds",
+   "records": 7,
+   "last": "4 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Eurasian tree sparrow",
+   "latin": "Passer montanus",
+   "group": "birds",
+   "records": 7,
+   "last": "12 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Greylag goose",
+   "latin": "Anser anser",
+   "group": "birds",
+   "records": 7,
+   "last": "30 Nov 2024",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Common chiffchaff",
+   "latin": "Phylloscopus collybita",
+   "group": "birds",
+   "records": 7,
+   "last": "5 Nov 2023",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Eurasian nuthatch",
+   "latin": "Sitta europaea",
+   "group": "birds",
+   "records": 6,
+   "last": "27 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Mute swan",
+   "latin": "Cygnus olor",
+   "group": "birds",
+   "records": 6,
+   "last": "1 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Common snipe",
+   "latin": "Gallinago gallinago",
+   "group": "birds",
+   "records": 5,
+   "last": "22 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Eurasian woodcock",
+   "latin": "Scolopax rusticola",
+   "group": "birds",
+   "records": 5,
+   "last": "13 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Woodlark",
+   "latin": "Lullula arborea",
+   "group": "birds",
+   "records": 4,
+   "last": "7 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Carrion crow",
+   "latin": "Corvus corone",
+   "group": "birds",
+   "records": 4,
+   "last": "13 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "European serin",
+   "latin": "Serinus serinus",
+   "group": "birds",
+   "records": 4,
+   "last": "4 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Hen harrier",
+   "latin": "Circus cyaneus",
+   "group": "birds",
+   "records": 4,
+   "last": "16 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Whooper swan",
+   "latin": "Cygnus cygnus",
+   "group": "birds",
+   "records": 4,
+   "last": "29 Nov 2024",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Peregrine falcon",
+   "latin": "Falco peregrinus",
+   "group": "birds",
+   "records": 3,
+   "last": "12 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Middle spotted woodpecker",
+   "latin": "Dendrocoptes medius",
+   "group": "birds",
+   "records": 3,
+   "last": "29 Nov 2024",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Black redstart",
+   "latin": "Phoenicurus ochruros",
+   "group": "birds",
+   "records": 3,
+   "last": "2 Nov 2022",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Rose-ringed parakeet",
+   "latin": "Psittacula krameri",
+   "group": "birds",
+   "records": 2,
+   "last": "13 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Caspian gull",
+   "latin": "Larus cachinnans",
+   "group": "birds",
+   "records": 2,
+   "last": "18 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Ring ouzel",
+   "latin": "Turdus torquatus",
+   "group": "birds",
+   "records": 2,
+   "last": "7 Nov 2023",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Eurasian collared dove",
+   "latin": "Streptopelia decaocto",
+   "group": "birds",
+   "records": 2,
+   "last": "7 Nov 2023",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Red crossbill",
+   "latin": "Loxia curvirostra",
+   "group": "birds",
+   "records": 2,
+   "last": "16 Nov 2023",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Red kite",
+   "latin": "Milvus milvus",
+   "group": "birds",
+   "records": 2,
+   "last": "13 Nov 2023",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Horned lark",
+   "latin": "Eremophila alpestris",
+   "group": "birds",
+   "records": 1,
+   "last": "9 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Mallard",
+   "latin": "Anas platyrhynchos",
+   "group": "birds",
+   "records": 1,
+   "last": "11 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Egyptian goose",
+   "latin": "Alopochen aegyptiaca",
+   "group": "birds",
+   "records": 1,
+   "last": "16 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Marsh tit",
+   "latin": "Poecile palustris",
+   "group": "birds",
+   "records": 1,
+   "last": "8 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Grey wagtail",
+   "latin": "Motacilla cinerea",
+   "group": "birds",
+   "records": 1,
+   "last": "19 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Eurasian blackcap",
+   "latin": "Sylvia atricapilla",
+   "group": "birds",
+   "records": 1,
+   "last": "9 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Lesser spotted woodpecker",
+   "latin": "Dryobates minor",
+   "group": "birds",
+   "records": 1,
+   "last": "13 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Northern pintail",
+   "latin": "Anas acuta",
+   "group": "birds",
+   "records": 1,
+   "last": "15 Nov 2024",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "White-tailed eagle",
+   "latin": "Haliaeetus albicilla",
+   "group": "birds",
+   "records": 1,
+   "last": "22 Nov 2023",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Common pheasant",
+   "latin": "Phasianus colchicus",
+   "group": "birds",
+   "records": 1,
+   "last": "27 Nov 2023",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Coal tit",
+   "latin": "Periparus ater",
+   "group": "birds",
+   "records": 1,
+   "last": "17 Nov 2023",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Bohemian waxwing",
+   "latin": "Bombycilla garrulus",
+   "group": "birds",
+   "records": 1,
+   "last": "1 Nov 2023",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "European golden plover",
+   "latin": "Pluvialis apricaria",
+   "group": "birds",
+   "records": 1,
+   "last": "16 Nov 2023",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Twite",
+   "latin": "Linaria flavirostris",
+   "group": "birds",
+   "records": 1,
+   "last": "17 Nov 2023",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Rough-legged buzzard",
+   "latin": "Buteo lagopus",
+   "group": "birds",
+   "records": 1,
+   "last": "6 Nov 2022",
+   "spots": [
+    1
+   ]
+  },
+  {
+   "name": "Barnacle goose",
+   "latin": "Branta leucopsis",
+   "group": "birds",
+   "records": 1,
+   "last": "1 Nov 2022",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Barn owl",
+   "latin": "Tyto alba",
+   "group": "birds",
+   "records": 1,
+   "last": "6 Nov 2020",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "West European hedgehog",
+   "latin": "Erinaceus europaeus",
+   "group": "mammals",
+   "records": 1,
+   "last": "8 Nov 2025",
+   "spots": [
+    5
+   ]
+  },
+  {
+   "name": "Red fox",
+   "latin": "Vulpes vulpes",
+   "group": "mammals",
+   "records": 1,
+   "last": "21 Nov 2025",
+   "spots": [
+    1
+   ]
+  }
+ ]
+};

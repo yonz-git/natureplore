@@ -20,6 +20,7 @@ import { InSeasonList } from "@/components/InSeasonList";
 import { PhotoGallery, type Photo } from "@/components/PhotoGallery";
 import { GroupFilter } from "@/components/GroupFilter";
 import { RECORDED_COUNTS } from "@/lib/records";
+import { recordedOf } from "@/lib/recorded";
 import { YearChart } from "@/components/YearChart";
 import { organismPhoto } from "@/lib/photos";
 import { GROUPS, recordsOf, spotsOf, type Group, type Route } from "@/lib/routes";
@@ -547,8 +548,8 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
               </div>
               <GroupFilter counts={counts} picked={picked} onPick={pick} onAll={() => setPickedOn({ route: route.id, groups: [] })} />
               <InSeasonList routeId={route.id} groups={picked} />
-              {/* A8 has the records of Grumsin beech forest only */}
-              {route.id === "grumsin" ? (
+              {/* A8, for every route with GBIF records (lib/recorded.ts) */}
+              {recordedOf(route.id) ? (
                 <Link href={`/map/route/${route.id}/recorded`} className="btn btn-secondary btn-chev">
                   See everything recorded
                   <ChevronIcon size={18} />
