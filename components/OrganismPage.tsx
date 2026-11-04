@@ -51,6 +51,20 @@ function Actions({ o }: { o: Organism }) {
 }
 
 /** `walk` is set when the page was opened from the walk: the tab bar stays hidden, as on the walk. */
+/** A "Where it's recorded" line, "Tegeler Fließ valley path. Nov, last recorded 7 Nov 2021", with the date on
+    a line of its own: "Last recorded 7 Nov 2021" under the route and months. */
+function lastOnItsLine(line: string) {
+  const at = line.lastIndexOf(", last recorded ");
+  if (at < 0) return line;
+  return (
+    <>
+      {line.slice(0, at)}
+      <br />
+      Last recorded {line.slice(at + ", last recorded ".length)}
+    </>
+  );
+}
+
 /** `route`, when the page was opened from a route, keeps "More <group>" to that route's organisms */
 export default function OrganismPage({ o, back, walk = false, route }: { o: Organism; back: { href: string; label: string }; walk?: boolean; route?: string }) {
   const photo = organismPhoto(`${o.name} ${o.close}`.trim());
@@ -101,11 +115,13 @@ export default function OrganismPage({ o, back, walk = false, route }: { o: Orga
           ) : (
             <div className="org-box org-record">
               <p className="org-record-title">{o.record.title}</p>
-              {o.record.lines.map((l) => (
-                <p key={l} className="org-small">
-                  {l}
-                </p>
-              ))}
+              <ul className="org-record-lines">
+                {o.record.lines.map((l) => (
+                  <li key={l} className="org-small">
+                    {l}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
 
@@ -140,7 +156,7 @@ export default function OrganismPage({ o, back, walk = false, route }: { o: Orga
                         <b>
                           Spot {w.n}, {w.name}
                         </b>
-                        <span>{w.line}</span>
+                        <span>{lastOnItsLine(w.line)}</span>
                       </span>
                       <ChevronIcon size={18} />
                     </Link>

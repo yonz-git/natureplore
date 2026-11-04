@@ -120,8 +120,25 @@ img.org-photo { width: 100%; display: block; box-sizing: border-box; object-fit:
   text-decoration: none;
 }
 .org-record-title { margin: 0; font-size: var(--text-body-lg); line-height: var(--text-body-lg--line-height); font-weight: 400; }
-.org-record .org-small { margin-top: 0.3375rem; }
-.org-record .org-small + .org-small { margin-top: 0.16875rem; }
+/* the record lines, one bullet each: a soft dot hung in the margin, so a wrapped line starts under the
+   words, not under the dot, and the dot centred on the first line's lowercase letters (half its x-height
+   above the baseline) */
+.org-record-lines { margin: 0.3375rem 0 0; padding: 0; list-style: none; }
+.org-record-lines > li { --dot: 0.3125rem; position: relative; margin: 0; padding-left: 0.875rem; }
+.org-record-lines > li + li { margin-top: 0.3375rem; }
+.org-record-lines > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  /* down to the x-height's middle: the line's half-leading ((line height - 1) / 2 em, the line height
+     a unitless ratio), then the baseline at about 0.8em, the x-height band centred 0.25em above it */
+  top: calc((var(--text-body-lg--line-height) - 1) * 0.5em + 0.55em - var(--dot) / 2);
+  width: var(--dot);
+  height: var(--dot);
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+}
 
 /* the months, shared by B4, L3 and the walk: white 30% when in season, this month in mist (lime is
    for controls only) */
