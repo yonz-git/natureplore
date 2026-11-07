@@ -1,20 +1,12 @@
-// The actions of Flow C: C3 the September clean-up (and C4, registered for it), C5 supporting the
-// group that rewets Linum meadow, and C7 buying peat-free compost. Each answers a claim. Copy from
-// the redesign canvas; the figures are sample content and say so. Registering for the clean-up and
-// saving the everyday practice are kept on the device in lib/saved.ts, as `action:<id>`.
-
 export type Fact = { icon: "calendar" | "pin" | "people" | "walk" | "bag" | "check" | "globe"; text: string };
 export type Benefit = "Habitat condition" | "Biodiversity" | "Carbon";
 
 type Base = {
   id: string;
-  /** the tag over the title, and its icon */
   kind: string;
   kindIcon: "people" | "leaf" | "bag";
   title: string;
-  /** the closing words that take the lime on the title */
   close: string;
-  /** the claim it answers: its back target when nothing else is known, and "See the claim" */
   claimId: string;
   changes?: string;
   benefits: Benefit[];
@@ -154,10 +146,6 @@ export const ACTIONS: Record<string, Action> = {
 
 export const actionById = (id: string): Action | undefined => ACTIONS[id];
 
-/**
- * The row an action gets in a claim's "What you can do", in Saved and on Learn (D0). Learn prints
- * the longer form: when and where, then what it does.
- */
 export const ACTION_ROWS: Record<string, { title: string; line: string; date?: [string, string]; where: string; does: string }> = {
   "clean-up": {
     title: "Join the September clean-up",
@@ -180,5 +168,4 @@ export const ACTION_ROWS: Record<string, { title: string; line: string; date?: [
   },
 };
 
-/** Learn's order: soonest first, then everyday habits. */
 export const LEARN_ACTIONS = ["clean-up", "rewet", "peat-free"];

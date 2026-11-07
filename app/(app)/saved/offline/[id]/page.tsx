@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { OfflineRoute } from "@/components/SavedPages";
 import { SUGGESTIONS } from "@/lib/suggestions";
 
-// E2 · One downloaded route: what it includes, Refresh, Remove from this device.
+// E2 · One downloaded route
 
 export function generateStaticParams() {
   return SUGGESTIONS.map((s) => ({ id: s.id }));

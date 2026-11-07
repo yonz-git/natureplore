@@ -1,11 +1,6 @@
 "use client";
 
-// C4 · Registered: am I signed up? A sheet over the clean-up with the details, Add to calendar,
-// and where the registration is kept. Nothing was sent anywhere, so nothing says it was emailed.
-// Back to the claim goes to the claim the clean-up answers; close returns to the clean-up (C3);
-// Cancel registration takes it off the device and returns there too. Opened without a
-// registration (from an old link, or after cancelling), it says so and offers the clean-up.
-// Boards: C4, phone, tablet and desktop.
+// C4 · Registered
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,7 +10,6 @@ import { CalendarIcon, CheckIcon, CloseIcon } from "@/components/Icons";
 import type { CleanUp } from "@/lib/actions";
 import { useSaved } from "@/lib/saved";
 
-/** A calendar file for the clean-up, made here: nothing is fetched and nothing is sent. */
 function addToCalendar(a: CleanUp) {
   const ics = [
     "BEGIN:VCALENDAR",

@@ -1,8 +1,5 @@
 "use client";
 
-// Pieces the Flow C pages share: the back control, the tag and benefit pills, the stat tile, the
-// fact list, share, and the dialog frame the source (C2) and the registration (C4) open in.
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
@@ -32,11 +29,6 @@ const TAG_ICON = { down: DownIcon, up: UpIcon, leaf: LeafIcon, water: WaterIcon 
 const FACT_ICON = { calendar: CalendarIcon, pin: PinIcon, people: PeopleIcon, walk: WalkIcon, bag: BagIcon, check: CheckIcon, globe: GlobeIcon } as const;
 const BENEFIT_ICON: Record<Benefit, typeof WaterIcon> = { "Habitat condition": WaterIcon, Biodiversity: LeafIcon, Carbon: CarbonIcon };
 
-/**
- * The rows of "What you can do": a date tile for the clean-up, an icon for the rest. On a claim
- * (C1) and in Saved a row has one line; on Learn (D0) the long form adds when and where, then what
- * it does. Each opens its action and remembers the page it was opened from.
- */
 export function ActionRows({ ids, long = false }: { ids: string[]; long?: boolean }) {
   return (
     <ul className="fb-card fb-rows cp-rows">
@@ -76,7 +68,6 @@ export function ActionRows({ ids, long = false }: { ids: string[]; long?: boolea
   );
 }
 
-/** Round back control over the photograph on the phone, a text link at the top of the sheet from 64rem. */
 export function BackTop({ href, label, share }: { href: string; label: string; share?: string }) {
   return (
     <div className="org-top">
@@ -98,7 +89,6 @@ export function ShareButton({ title, className, label = false }: { title: string
       if (navigator.share) await navigator.share({ title, url: location.href });
       else await navigator.clipboard.writeText(location.href);
     } catch {
-      // the person closed the share sheet
     }
   };
   return (
@@ -170,7 +160,6 @@ export function Facts({ items }: { items: Fact[] }) {
   );
 }
 
-/** A stat value with its figures a weight up from the words and units around them ("3 h 00"). */
 export function StatValue({ value }: { value: string }) {
   return (
     <b>
@@ -187,16 +176,12 @@ export function Stat({ label, value, unit, note }: { label: string; value: strin
         <StatValue value={value} />
         {unit && <small>{unit}</small>}
       </span>
-      {/* what the figure means in plain words, and how it was found */}
+      {}
       {note && <p className="cp-stat-note">{note}</p>}
     </div>
   );
 }
 
-/**
- * A modal sheet over a dimmed page: the source of a claim (C2) and the registration (C4). Focus
- * goes to its title, Tab stays inside, Escape closes it.
- */
 export function Dialog({ labelledBy, close, children }: { labelledBy: string; close: string; children: React.ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
   const router = useRouter();

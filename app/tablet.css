@@ -1,58 +1,31 @@
-/* Tablet: from 35.75rem (572px) wide and at least 36rem tall (narrower keeps the phone layout), up to the desktop at 64rem. The screens follow
-   the tablet boards on the redesign canvas, not the IA brief's "list left, map right everywhere":
-   only the suggestions (A5, A4) and search (A2, A3) become a column down the left beside the map,
-   as their boards draw them. Every other screen keeps the phone's shape, with the board's 48 side
-   padding on its sheet, reading text capped at the measure, and buttons hugging their label, centred. A
-   phone turned sideways is under 36rem tall, so it keeps the phone layout.
-
-   The panel is the phone's own sheet, docked: it keeps its glass and its list, and the search bar
-   stays floating over the map above it, the same relation as on the phone. Nothing here animates
-   an ancestor of glass; the pinned bar moves by its own `translate`. Values are tokens from
-   docs/design.md (sheet-tablet, measure, pin-tablet, panel-tablet). */
-
 @media (min-width: 35.75rem) and (max-width: 63.99rem) and (min-height: 36rem) {
-  /* ── buttons: hug their label as on the desktop, centred ───────────────────────────────────── */
-
   .btn,
   .b1-pin .btn,
   .a8-more .btn { align-self: center; width: auto; }
 
-  /* ── A5, A4: the sheet docks to the left as a panel, the map fills the rest ──────────────── */
-
   .sg .ms-bar { right: auto; width: var(--spacing-panel-tablet); }
   .sg .ms-sheet {
-    /* as far above the nav (0.75rem) as it sits under the switch */
     inset: calc(var(--top-chrome) + 4.5rem) auto 5.625rem var(--spacing-screen-phone);
     width: var(--spacing-panel-tablet);
-    /* top as the sides, 1.5rem */
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
     scroll-padding-bottom: 1.5rem;
     border-bottom: 0.5px solid var(--color-glass-edge);
     border-radius: var(--radius-card);
   }
-  /* the map is always beside the list, so there is nothing to open or switch to */
-  /* tighter head: switch to title 1.35rem, title to region 0.4725rem, region to first card 1.2rem */
   .sg .ms-sheet { --sg-gap: 1.35rem; }
   .sg-scope { margin-bottom: 0.4725rem; }
   .sg .sg-list { margin-top: calc(1.2rem - 1.35rem); }
-  /* wider cards: the panel's sides and each card's padding a fifth less */
   .sg .ms-sheet { padding-inline: 1.2rem; }
   .sug { padding: 0.4rem; }
-  /* the title to the first card: 0.75rem, as on the desktop (its -1rem bottom margin left 3px here) */
   .sg .ms-title { margin-bottom: -0.45rem; }
-  /* the place line and title 2px in from the panel's padding, not the desktop's 0.6vw */
   .sg-head { margin-left: 2px; }
   .sg .ms-grab,
   .sg .ms-handle,
   .sg .sg-toggle { display: none; }
 
-  /* ── A2, A3: search keeps a column on the left, over the dimmed map, as on its board ──────── */
-
   .sr .ms-bar,
   .sr .ms-sheet { width: var(--spacing-panel-tablet); }
-
-  /* ── B1: docked to the left as a panel, as the suggestions are, so the route stays on the map ── */
 
   .b1 .ms-sheet {
     inset: calc(var(--top-chrome) + 4.5rem) auto 5.625rem var(--spacing-screen-phone);
@@ -64,14 +37,10 @@
     border-radius: var(--radius-card);
     transition: translate 600ms var(--ease-move);
   }
-  /* the section chips bleed exactly the panel's 1.2rem sides, no further, or the panel scrolls sideways */
   .b1 .fb-strip { margin: 0 -1.2rem; padding-inline: 1.2rem; }
   .b1 .ms-grab,
   .b1 .ms-handle { display: none; }
-  /* the pinned bar sits under the panel, its width */
   .b1-pin { left: var(--spacing-screen-phone); right: auto; width: var(--spacing-panel-tablet); transition: translate 600ms var(--ease-move); }
-  /* the round button on the panel's edge slides the panel off to the left and brings it back; it
-     travels with the panel and turns to point the way the panel will go */
   .b1-dock {
     position: fixed;
     z-index: 3;
@@ -91,34 +60,23 @@
   .ms.is-tucked .b1-dock svg { rotate: 0deg; }
   .ms.is-tucked .ms-sheet,
   .b1.is-tucked .b1-pin { translate: calc(-100% - var(--spacing-screen-phone) - 1rem) 0; }
-  /* the suggestions' list slides the same way; the search and switch above it stay, since moving their
-     bar would make it a backdrop root and switch their frost off */
   .sg .ms-sheet { transition: translate 600ms var(--ease-move); }
 
-  /* ── L4: B1's shape, the spot capped, Previous and Next in a 362 pair ────────────────────── */
-
-  /* the spot needs about 31rem, so on a tablet the map strip takes the rest */
   .walk { --sheet-top: max(min(34rem, 100dvh - 31rem), var(--top-chrome) + 4rem); }
   .walk .walk-sheet { padding-left: var(--spacing-sheet-tablet); padding-right: var(--spacing-sheet-tablet); }
   .walk-spot { max-width: var(--spacing-measure); }
   .walk-nav { max-width: var(--spacing-pin-tablet); margin-left: auto; margin-right: auto; }
 
-  /* ── pages: B4, B5, C1 to C7, D0 to D4, E1, A8, L3 ──────────────────────────────────────── */
-
   .org-sheet,
   .saved-sheet,
   .cp-dialog-sheet { padding-left: var(--spacing-sheet-tablet); padding-right: var(--spacing-sheet-tablet); }
-  /* every sheet stands 3vw in from each side, as on the desktop (app/organism.css); 1.5vw on the phone */
   .org-sheet,
   .saved-sheet,
   .cp-dialog-sheet { margin-left: 3vw; margin-right: 3vw; }
-  /* Learn: the title stands as far below the sheet's top as it does in from its left */
   .ln-home .org-sheet { padding-top: var(--spacing-sheet-tablet); }
-  /* A8: the sheet is only as wide as its content, centred as on the desktop, so no empty strip on the right */
   .a8 .saved-sheet { max-width: min(var(--spacing-measure) + 2 * var(--spacing-sheet-tablet), 100% - 6vw); margin-left: auto; margin-right: auto; }
   .ms-sheet,
   .ms-sheet.is-short { left: 3vw; right: 3vw; }
-  /* reading text at the measure, left-aligned; photographs, stat tiles and maps keep the width */
   :is(.org-main, .org-side, .saved-sheet, .cp-dialog-sheet) > :not(.org-photo, .cp-photo, .dc-hero, .cp-stats) {
     max-width: var(--spacing-measure);
   }

@@ -1,22 +1,11 @@
-// The welcome's opening line under the mouse (components/WelcomeHero.tsx), after
-// guillaumezhu.com/contact: the line is drawn once into a texture, and a shader shifts its pixels
-// along the way the mouse is moving, most at the mouse and fading out over RADIUS, so the letters
-// smear and stretch after it and flow back once it stops.
-// The letters are drawn where the DOM has them, one by one, so the picture sits exactly on the text
-// it replaces. A canvas draws the face fuller than the page's thin font smoothing does, so the
-// picture only stands in while the line is actually being pulled: at rest the real letters show,
-// and the line never looks bolder than it is. Returns null where WebGL is not available; the DOM
-// text then simply stays.
-
-const GAIN = 3; // px of pull per px the mouse moved in a frame, at full strength
-const INTENSITY = 0.5; // the reference's effect at half strength, enough to see over the photograph
-const RADIUS = 0.3; // of the window's height, how far from the mouse the pull reaches
-const PAD = 60; // px of room above and below the line for the pixels to be pulled into
+const GAIN = 3;
+const INTENSITY = 0.5;
+const RADIUS = 0.3;
+const PAD = 60;
 
 const VERT = `attribute vec2 p; varying vec2 uv;
 void main() { uv = p * 0.5 + 0.5; gl_Position = vec4(p, 0.0, 1.0); }`;
 
-// every length here is in CSS pixels, y up
 const FRAG = `precision highp float;
 uniform sampler2D text; uniform vec2 size, mouse, velocity; uniform float radius;
 varying vec2 uv;
@@ -40,7 +29,6 @@ export function warpText(line: HTMLElement, chars: HTMLElement[]) {
     pointerEvents: "none",
     visibility: "hidden",
   });
-  // the picture or the letters, never both: the picture only while the line is being pulled
   let live = false;
   const show = (on: boolean) => {
     if (on === live) return;
@@ -75,7 +63,6 @@ export function warpText(line: HTMLElement, chars: HTMLElement[]) {
   const u = (name: string) => gl.getUniformLocation(prog, name);
   const uSize = u("size"), uMouse = u("mouse"), uVelocity = u("velocity"), uRadius = u("radius");
 
-  // the line, drawn into the texture where the DOM lays each letter out
   let w = 0, h = 0;
   const draw = () => {
     const box = canvas.getBoundingClientRect();
@@ -98,7 +85,6 @@ export function warpText(line: HTMLElement, chars: HTMLElement[]) {
     const glyph = m.fontBoundingBoxAscent + m.fontBoundingBoxDescent;
     for (const c of chars) {
       const r = c.getBoundingClientRect();
-      // CSS centres the font's own box in the line box, so the baseline sits this far down
       const base = r.top - box.top + (r.height - glyph) / 2 + m.fontBoundingBoxAscent;
       ctx.fillText(c.textContent ?? "", r.left - box.left, base);
     }
@@ -124,7 +110,6 @@ export function warpText(line: HTMLElement, chars: HTMLElement[]) {
     strength += ((on ? 1 : 0) - strength) * (on ? 0.15 : 0.03);
     const pull = strength * INTENSITY;
     const moved = Math.abs(vx * pull) + Math.abs(vy * pull) >= 0.05;
-    // nothing to move and already drawn still: leave the frame as it is, and the real letters on show
     if (drawn && !moved) return show(false);
     drawn = true;
     const box = canvas.getBoundingClientRect();

@@ -1,11 +1,3 @@
-// The natureplore logo as the intro builds it, one piece per animal and letter (board "Logo 3-2",
-// used by A0 · Welcome, logo applied). Every piece is clipped from one shared fill, #fieldfill: the
-// gradient, three drifting blobs and /img/intro-shade.webp, the edge shading and grain baked from the
-// SVG filters the board used, so nothing is filtered live. The colours are the marker tokens, the
-// "You are here" tag and dot: primary to primary-deep for the fill, marker for the shading.
-// The shape is the same as components/Logo.tsx; the timeline in lib/intro-timeline.ts moves it.
-// Generated from the standalone intro page, edit it as data.
-
 export const INTRO_LOGO_SVG = `<svg viewBox="0 0 1729.5 425.2" role="img" aria-label="natureplore" class="intro-logo"><defs>
 <linearGradient id="field" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1729.5" y2="425.2"><stop offset="0" style="stop-color: var(--logo-lime)"></stop><stop offset="1" style="stop-color: var(--logo-lime-deep)"></stop></linearGradient>
 <radialGradient id="blob-dark"><stop offset="0" style="stop-color: var(--color-marker)" stop-opacity="0.85"></stop><stop offset="1" style="stop-color: var(--color-marker)" stop-opacity="0"></stop></radialGradient>

@@ -1,11 +1,5 @@
 "use client";
 
-// Flow E, the pages under Saved (E1 is SavedScreen): E4 organisms, E5 documentaries, E6 your
-// actions, E7 recent searches, E8 downloaded routes with E2 the sheet of one, and E3
-// notifications. Everything is kept on this device; there are no accounts, so the sign-in parts
-// of the boards are left out. Each page is the D2 page shape: back over the photograph, a glass
-// sheet, one column capped at the measure. Boards: E2 to E8, phone, tablet and desktop.
-
 import Link from "next/link";
 import { useState } from "react";
 
@@ -19,8 +13,6 @@ import { organismPhoto, PHOTOS } from "@/lib/photos";
 import { useRecent } from "@/lib/recent";
 import { useSaved } from "@/lib/saved";
 import { SUGGESTIONS } from "@/lib/suggestions";
-
-/* ── the page shape ─────────────────────────────────────────────────────────────────────────── */
 
 function Page({
   id,
@@ -64,15 +56,12 @@ function Empty({ children }: { children: React.ReactNode }) {
   return <p className="saved-empty se-empty">{children}</p>;
 }
 
-/* ── E4, E5: a kept list with Edit, remove several, and Undo ──────────────────────────────────── */
-
 type Item = {
   key: string;
   lead: React.ReactNode;
   title: string;
   line: React.ReactNode;
   href: string;
-  /** when given, the row opens in place (E4) instead of going to href */
   detail?: React.ReactNode;
 };
 
@@ -209,8 +198,6 @@ function EditButton({ editing, set, show }: { editing: boolean; set: (v: boolean
   );
 }
 
-/* ── E4 · Saved organisms ───────────────────────────────────────────────────────────────────── */
-
 export function SavedOrganisms() {
   const { ids } = useSaved();
   const [editing, setEditing] = useState(false);
@@ -267,8 +254,6 @@ export function SavedOrganisms() {
   );
 }
 
-/* ── E5 · Saved documentaries ───────────────────────────────────────────────────────────────── */
-
 export function SavedDocs() {
   const { ids } = useSaved();
   const [editing, setEditing] = useState(false);
@@ -307,8 +292,6 @@ export function SavedDocs() {
     </Page>
   );
 }
-
-/* ── E6 · Your actions ──────────────────────────────────────────────────────────────────────── */
 
 export function YourActions() {
   const { ids } = useSaved();
@@ -352,8 +335,6 @@ export function YourActions() {
   );
 }
 
-/* ── E7 · Recent searches ───────────────────────────────────────────────────────────────────── */
-
 export function RecentSearches() {
   const recent = useRecent();
   const [all, setAll] = useState(false);
@@ -391,8 +372,6 @@ export function RecentSearches() {
     </Page>
   );
 }
-
-/* ── E8 · Downloaded routes, and E2, one of them ───────────────────────────────────────────── */
 
 const SIZE = "38 MB";
 
@@ -444,7 +423,6 @@ export function OfflineRoute({ id }: { id: string }) {
   const { isSaved, toggle } = useSaved();
   const [asked, setAsked] = useState(false);
   const [fresh, setFresh] = useState(false);
-  // focus moves to the control that replaced the pressed one
   const [gone, setGone] = useState(false);
   const route = SUGGESTIONS.find((s) => s.id === id);
   if (!route) return null;
@@ -520,8 +498,6 @@ export function OfflineRoute({ id }: { id: string }) {
   );
 }
 
-/* ── E3 · Notifications ─────────────────────────────────────────────────────────────────────── */
-
 export function Notifications() {
   const { isSaved } = useSaved();
   const registered = isSaved("action:clean-up");
@@ -556,12 +532,8 @@ export function Notifications() {
   );
 }
 
-/* ── Credits: who made the icons, photographs, map and type the app uses ──────────────────────── */
-
 type Credit = { what: string; who: string; href: string };
 
-// Lordicon's free icons are used on the condition that Lordicon is credited with a link. Each line
-// names the icon as Lordicon lists it.
 const ICON_CREDITS: Credit[] = [
   { what: "Squirrel on the welcome button", who: "Lordicon, wired outline 1208 squirrel", href: "https://lordicon.com" },
   { what: "Herbs, the plants group", who: "Lordicon, wired 585 herbs, with its hover-pinch motion", href: "https://lordicon.com" },
@@ -598,14 +570,11 @@ function CreditRows({ rows }: { rows: Credit[] }) {
 }
 
 export function Credits() {
-  // every photograph with a known photographer (lib/photos.ts), named after what it shows
   const photos = Object.entries(PHOTOS).map(([key, p]) => ({
     what: key.split("/")[1].replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase()),
     who: `${p.by}, Unsplash`,
     href: p.page,
   }));
-  // the welcome's mist and waterfall and the forest behind the app, all from Unsplash, photographers
-  // not recorded when they were downloaded
   photos.push({ what: "Mist, waterfall and forest behind the app", who: "Unsplash", href: "https://unsplash.com" });
   return (
     <Page id="credits-title" pre="Thanks and" close="credits" back="/learn" intro="The icons, photographs, map and type this app is made with, and the people and projects behind them.">

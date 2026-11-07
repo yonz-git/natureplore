@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import SearchScreen from "@/components/SearchScreen";
 
-// A2 · Search, routes and organisms, and A3 · Search, no match. The query is in the address, so a
-// search can be shared and the back button walks through the searches the person made.
+// A2, A3 · Search
 
 export const metadata: Metadata = { title: "Search regions and organisms" };
 

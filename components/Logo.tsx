@@ -1,11 +1,3 @@
-// The natureplore logo: the symbol and the wordmark as one shape, taking its colour from the
-// element around it. Board "A0 · Welcome, desktop, version 4" on page 2 of the screen designs.
-// Sized by its own height in rem, set where it is used; the width follows the viewBox.
-// With `symbol` it is the plant, the bird and the mushroom alone, the mark the welcome keeps in its
-// corner once the wordmark has gone (components/WelcomeLogo.tsx).
-
-// the squirrel diving onto the "a" of the wordmark, also the one that crosses the welcome's button
-// (components/CtaSquirrel.tsx). Its box in the viewBox: x 686 to 759, y 53 to 140.
 export const SQUIRREL =
   "M725.93 57.79C716.69 53.81 705.07 53 695.79 57.82C682.77 64.62 678.1 79.46 688.49 91.18C700.64 104.95 715.25 97.2 730.37 106.19C742.45 113.41 718.84 112.58 727.89 122.52C727.56 122.6 724.24 123.54 723.44 120.04C723.44 124.05 723.45 125.83 725.99 127.18C728.47 128.51 738.27 123.25 744.59 130.24C747.32 133.26 745.7 135.32 748.75 137.15C750.31 138.1 752.4 139.5 752.4 139.5C751.23 138.33 753.64 136.22 751.16 133.52C753.06 132.5 751.32 140.88 758.67 137.15C758.07 136.51 758.61 135.71 758.67 134.92C759.24 132.23 758.89 128.42 755.89 127.75C756.56 126.45 757.07 126.53 757.8 126.53C754.41 123.93 752.76 128.86 751.16 127.26C749.55 125.65 751.14 121.7 745.53 118.26C740.07 114.92 736.58 118.06 735.97 118.61C747.18 109.24 749.82 68.33 725.93 57.79ZM756.28 133.33C756.94 133.09 757.48 134.02 756.75 134.28C755.59 134.68 755.62 133.58 756.28 133.33Z";
 

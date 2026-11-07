@@ -1,12 +1,6 @@
 "use client";
 
-// L4 · Walk: where am I, and what is at this spot? A map strip with the route line, the numbered
-// spots and the person's position (no directions), over a solid sheet that is the spot block.
-// "More about this spot" opens the rest of the spot page in place. Previous and next are buttons,
-// not swipes, and the markers on the map open their spot too. End walk goes to Saved. It opens on
-// spot 1, with the map on that spot and its marker drawn larger, and the map follows the sheet from
-// spot to spot. The sheet is solid, not glass, so it reads outdoors. From 64rem the sheet is a solid panel down the left.
-// Board: L4 · Walk, phone.
+// L4 · Walk
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,8 +12,6 @@ import { ClaimCard, MonthGrid, RecordedToo, SpotBlock } from "@/components/SpotP
 import { routeById, spotsOf } from "@/lib/routes";
 import { routeDetail } from "@/lib/spots";
 
-// The route is looked up here by its id, not passed from the page: a prop from the server is a new
-// object on every step of the walk, and a new route would make the map build itself again.
 export default function WalkScreen({ routeId, n }: { routeId: string; n: number }) {
   const route = routeById(routeId)!;
   const detail = routeDetail(routeId)!;
@@ -28,12 +20,10 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
   const total = detail.spots.length;
   const spot = detail.spots[n - 1];
   const here = `/walk/${route.id}`;
-  // "More about this spot" belongs to the spot it was opened on, so the next spot opens folded
   const [openOn, setOpenOn] = useState<number | null>(null);
   const open = openOn === n;
 
   const marks = useMemo(() => spotsOf(route), [route]);
-  // a memo so the map is built once; the spot shown is marked by `current`, not by a new set of points
   const points = useMemo<MapPoint[]>(() => {
     return [
       { id: "start", lat: route.lat, lon: route.lon, label: `${route.oneWay ? "Start" : "Start and finish"}, ${route.from}`, start: true, startText: route.oneWay ? "Start" : undefined },
@@ -51,7 +41,6 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
   }, [marks, route, here]);
   const line = useMemo(() => route.path ?? marks.map((s) => [s.lat, s.lon] as [number, number]), [route, marks]);
 
-  // the map opens on the spot the sheet shows (`focus`, read once it is built) and follows it after
   const at = marks[n - 1];
   const focus = { lat: at.lat, lon: at.lon, zoom: 15 };
   const first = useRef(true);
@@ -64,9 +53,6 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
   }, [at]);
 
   const go = (to: number) => router.replace(`${here}?spot=${to}`, { scroll: false });
-  // Previous and next stay the same two buttons from spot to spot, so keyboard focus stays on the
-  // one that was pressed. Next names the spot it goes to, as on L3; at either end the button says
-  // so and does nothing, rather than vanishing.
   const nav = (
     <nav aria-label="Spots" className="fb-nav walk-nav">
       <button
@@ -89,8 +75,6 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
   );
 
   return (
-    // the walk sits outside the tabbed layout, so the whole screen is the page's main landmark:
-    // the map's spot markers and the top controls belong to it too
     <main className="ms walk" aria-labelledby="walk-route">
       <RegionMap
         className="a1-map"
@@ -109,7 +93,7 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
         <Link href="/you" className="walk-end glass glass-pill">
           End walk
         </Link>
-        {/* locate, on the phone and tablet only: the desktop map shows the whole route beside the panel */}
+        {}
         <button
           type="button"
           className="walk-locate round glass glass-pin"
@@ -133,7 +117,7 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
               titleId="walk-title"
               organismHref={(id) => `/map/organism/${id}?from=walk&route=${routeId}&spot=${n}`}
             />
-            {/* one toggle that stays in place, so focus is not lost when the rest of the spot opens */}
+            {}
             <button type="button" className="btn btn-secondary walk-toggle" aria-expanded={open} aria-controls="walk-more" onClick={() => setOpenOn(open ? null : n)}>
               {open ? "Show less" : "More about this spot"}
             </button>

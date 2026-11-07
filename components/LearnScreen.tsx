@@ -1,11 +1,6 @@
 "use client";
 
-// D0 · Learn, the Learn tab: three sections with chips that jump to them. Impact holds the claim
-// cards, grouped by protected site, each with its first action (C1a, C1b, C6); What you can do
-// lists the actions, soonest first, then everyday habits (C3, C5, C7); Documentaries shows three
-// and opens the collection (D2). On the phone one glass sheet under the top; from 64rem a wide
-// sheet under the nav, the claims two to a row and the documentaries three.
-// Boards: D0, phone, tablet and desktop.
+// D0 · Learn
 
 import Link from "next/link";
 import { useRef, useState } from "react";
@@ -47,7 +42,6 @@ function SectionHead({ id, title, close, line, children }: { id: string; title?:
   );
 }
 
-// The jump chips, as on the route page: the chip for the section under them is the current one.
 function JumpChips({ className, current, onJump }: { className?: string; current: Section; onJump: (e: React.MouseEvent, id: Section) => void }) {
   return (
     <nav className={`chips ln-jump${className ? ` ${className}` : ""}`} aria-label="Jump to a section">
@@ -60,11 +54,6 @@ function JumpChips({ className, current, onJump }: { className?: string; current
   );
 }
 
-// The title and the place, and under 64rem the jump chips. Under 64rem they sit above the sheet on
-// the photograph, always in view while the sheet scrolls under them; from 64rem the title and place
-// are the top of the wide sheet and the chips stay at the top of the window as the page scrolls.
-// Drawn in both places, one hidden at each size, because inside the glass a fixed header would be
-// held by the sheet's backdrop filter rather than the screen.
 function LearnHead({ className, children }: { className: string; children?: React.ReactNode }) {
   return (
     <div className={className}>
@@ -77,7 +66,6 @@ function LearnHead({ className, children }: { className: string; children?: Reac
   );
 }
 
-/** the scroller at this size: the sheet under 64rem, the whole page from 64rem */
 const scrollerOf = (root: HTMLElement) => {
   const sheet = root.querySelector<HTMLElement>(".org-sheet")!;
   return getComputedStyle(sheet).overflowY === "auto" ? sheet : root;
@@ -90,16 +78,12 @@ export default function LearnScreen() {
   const jumping = useRef(false);
   const jumps = useRef(0);
 
-  // where a section's heading lands after a jump: 1.5rem under the stuck chips from 64rem, 1.5rem under
-  // the sheet's top edge below that
   const landing = (box: HTMLElement) => {
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
     const stick = box.querySelector<HTMLElement>(".ln-stick");
     if (stick?.offsetParent) return box.getBoundingClientRect().top + parseFloat(getComputedStyle(stick).top) + stick.offsetHeight + 1.5 * rem;
     return scrollerOf(box).getBoundingClientRect().top + 1.5 * rem;
   };
-  // a section's heading where it rests: measured from the section, which never moves, since what it
-  // holds is still rising into place (.ln-part > * in app/flow-d.css) as it comes into view
   const headTop = (id: Section) => {
     const part = document.getElementById(`sec-${id}`)?.closest<HTMLElement>(".ln-part");
     const head = part?.firstElementChild;
@@ -110,16 +94,12 @@ export default function LearnScreen() {
     const box = root.current;
     if (!box) return;
     const scroller = scrollerOf(box);
-    // from 64rem what scrolls under the stuck chips is cut away and fades in below them, as on the
-    // route page; each block after the chips is masked on its own, since a mask on the sheet would cut
-    // the chips too
     const stick = box.querySelector<HTMLElement>(".ln-stick");
     if (stick?.offsetParent) {
       const bottom = stick.getBoundingClientRect().bottom;
       for (let el = stick.nextElementSibling as HTMLElement | null; el; el = el.nextElementSibling as HTMLElement | null)
         el.style.setProperty("--cut", `${bottom - el.getBoundingClientRect().top}px`);
     }
-    // while a chip's jump is scrolling, the chip that was tapped stays current
     if (jumping.current) return;
     const line = landing(box) + 1;
     let id: Section = SECTIONS[0][0];
@@ -127,12 +107,10 @@ export default function LearnScreen() {
       const top = headTop(s);
       if (top !== null && top <= line) id = s;
     }
-    // at the foot of the page the last section is current, even when it is too short to reach the line
     if (scroller.scrollTop >= scroller.scrollHeight - scroller.clientHeight - 1) id = SECTIONS[SECTIONS.length - 1][0];
     setCurrent(id);
   };
 
-  // a chip glides the page to its section, eased, and the section lands just under the chips
   const jumpTo = (e: React.MouseEvent, id: Section) => {
     const box = root.current;
     const head = headTop(id);

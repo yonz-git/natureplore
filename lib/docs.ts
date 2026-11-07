@@ -1,10 +1,3 @@
-// The documentaries of Flow D: curated links, with what each covers and where it can be watched.
-// Watching happens on the maker's site, so nothing here plays a film. The titles are invented and
-// the makers are placeholders, as on the boards ("Maker name"); the page fields past the
-// list line are written for the one documentary the D3 board shows and the one D4 shows, and the
-// rest open the same page with what is known. Saving one to watch later keeps it on the device
-// in lib/saved.ts, as `doc:<id>`.
-
 import type { Fact } from "@/lib/actions";
 import { PHOTOS, type Photo } from "@/lib/photos";
 
@@ -17,14 +10,11 @@ export type Doc = {
   title: string;
   year: string;
   minutes: number;
-  /** what it covers, the end of its list line: "2021, 52 min, wetland drainage in northern Germany" */
   covers: string;
   access: Access;
-  /** false for a documentary that cannot be watched where the person is: D4, not D3 */
   available: boolean;
   region: Region;
   topics: Topic[];
-  /** the route it belongs to, for "On your saved routes" */
   routeId?: string;
   photo: Photo;
   maker: string;
@@ -33,7 +23,6 @@ export type Doc = {
   why?: string;
   species?: { name: string; kind: string; latin: string; line: string; photo: Photo }[];
   routes?: { name: string; line: string; href: string }[];
-  /** D4: why it cannot be watched here, and what on the same subject can */
   unavailable?: string;
   related?: string[];
 };
@@ -157,10 +146,8 @@ export const DOCS: Doc[] = [
 
 export const docById = (id: string): Doc | undefined => DOCS.find((d) => d.id === id);
 
-/** "2021, 52 min, wetland drainage in northern Germany" */
 export const docLine = (d: Doc) => `${d.year}, ${d.minutes} min, ${d.covers}`;
 
-/** Where to watch, for a documentary whose page has no board of its own: what its access says. */
 export function watchFacts(d: Doc): Fact[] {
   if (d.watch) return d.watch;
   const where =
@@ -172,7 +159,6 @@ export function watchFacts(d: Doc): Fact[] {
   return [{ icon: "check", text: where }];
 }
 
-/** The six shown on Learn (D0): the board's three, then the rest that can be watched here, a second row from 64rem. */
 export const LEARN_DOCS = ["drainage", "migration", "tegel", "peatland", "fungi", "orchids"];
 
 export const REGIONS: Region[] = ["Brandenburg", "Northern Germany", "Europe"];

@@ -1,14 +1,6 @@
 "use client";
 
-// D3 · Documentary detail, and D4 · Not available here. D3: what the film covers, where and until
-// when it can be watched, why it is in Natureplore, the species it covers and the routes where
-// they are in season. Watching opens the maker's site, which the prototype does not link; saving
-// to watch later keeps it on the device, in Saved. D4: a documentary that cannot be watched where
-// the person is says so and why, links to no copy, and offers what on the same subject can be.
-// On the phone a sheet over the photograph; from 64rem a wide sheet in two columns, where to watch
-// (D3) or the alternatives (D4) in the right one. Back returns to the page it was opened from,
-// the collection when nothing is known.
-// Boards: D3 and D4, phone, tablet and desktop.
+// D3 · Documentary detail
 
 import Link from "next/link";
 
@@ -19,7 +11,6 @@ import { backLabel, useBack } from "@/lib/back";
 import { type Doc, docById, watchFacts } from "@/lib/docs";
 import { useSaved } from "@/lib/saved";
 
-/** "When the meadow dries" with its last word in the lime of the titles */
 function Title({ id, text }: { id: string; text: string }) {
   const cut = text.lastIndexOf(" ");
   return (
@@ -68,7 +59,7 @@ function WatchBox({ doc }: { doc: Doc }) {
           <span className="sr-only">, not linked in the prototype, the documentary is sample content</span>
         </button>
         <p className="org-small">Opens outside Natureplore. Not linked in the prototype.</p>
-        {/* one button that stays mounted, so focus stays on it when it changes */}
+        {}
         <button type="button" className="btn btn-secondary" aria-pressed={saved} onClick={() => toggle(key)}>
           <BookmarkIcon size={19} filled={saved} />
           {saved ? "Saved to watch later" : "Save to watch later"}
@@ -88,7 +79,7 @@ function Available({ doc }: { doc: Doc }) {
         <Hero doc={doc} />
         <Title id="doc-title" text={doc.title} />
         <p className="org-small cp-reviewed">{doc.maker}</p>
-        {/* a long access, "Subscription service", takes a row of its own rather than breaking */}
+        {}
         <div className={`cp-stats${doc.access.length > 8 ? " dc-stats-long" : ""}`}>
           <Stat label="Year" value={doc.year} />
           <Stat label="Length" value={String(doc.minutes)} unit="min" />
@@ -115,7 +106,7 @@ function Available({ doc }: { doc: Doc }) {
             <h2 className="org-h2">
               Species this <em>covers</em>
             </h2>
-            {/* the species is named, not linked: its page is not part of this flow */}
+            {}
             <ul className="fb-card fb-rows cp-rows">
               {doc.species.map((s) => (
                 <li key={s.name}>

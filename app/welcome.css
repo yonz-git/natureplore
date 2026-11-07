@@ -1,9 +1,3 @@
-/* The opening, and the scroll from it into A0 · Welcome (components/Welcome.tsx).
-   The page is laid out as A0 (app/welcome2.css). This file adds the green field, the intro
-   (words blur in one by one, two rules wipe in) and the scroll choreography: every A0 position
-   is the "from" of an animation scrubbed by the scroll, so at the end of the scroll nothing is left but A0.
-   Colours are tokens only. */
-
 @keyframes a0-word {
   from { opacity: 0; filter: blur(0.875rem); transform: translateY(0.625rem); }
   to { opacity: 1; filter: blur(0); transform: translateY(0); }
@@ -13,14 +7,12 @@
   to { opacity: 1; filter: blur(0); transform: translateY(0); }
 }
 
-/* the ground sways slowly, like air moving through the mist */
 @keyframes a0-ground {
   0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
   45% { transform: translate3d(-3%, 1.5%, 0) rotate(-1.2deg) scale(1.04); }
   100% { transform: translate3d(2%, -2%, 0) rotate(0.8deg) scale(1.06); }
 }
 
-/* scrubbed by the scroll, each one only names the end it is not in */
 @keyframes a0s-leave { from { opacity: 1; } }
 @keyframes a0s-hide { to { visibility: hidden; } }
 
@@ -30,13 +22,10 @@
   --a0-rise: 1.5rem;
   --a0-cx: 50%;
   --a0-cy: 78%;
-  /* the whole stage. Container units measure the content box, and on the phone the stage has padding
-     (--top-chrome above, the screen inset at the sides), so it is added back. No padding on desktop. */
   --a0-w: calc(100cqw + var(--spacing-inset-screen) * 2);
   --a0-h: calc(100cqh + var(--top-chrome));
 }
 
-/* the opening's ground, under the waterfall photograph */
 .a0-field {
   display: none;
   position: absolute;
@@ -46,7 +35,6 @@
   pointer-events: none;
   background: var(--color-ground);
 }
-/* the ground: sun through mist and tall grass, swaying slowly, under the grain */
 .a0-field::before {
   content: "";
   position: absolute;
@@ -54,8 +42,6 @@
   background: url(/img/intro-mist.webp) center / cover no-repeat;
   animation: a0-ground 26s ease-in-out infinite alternate;
 }
-/* the photograph showing through around the mouse (components/WelcomeReveal.tsx), under the liquid layer.
-   The mask makes the circle soft all the way out, there is no edge to see. */
 .a0-reveal {
   position: absolute;
   left: 0;
@@ -89,10 +75,6 @@
   mix-blend-mode: soft-light;
 }
 
-/* The logo. Without the scroll choreography it is simply in its corner, the place A0 keeps it and
-   the box components/WelcomeLogo.tsx sends it to; the scroll media query below puts it in the middle
-   of the page instead and hands it to the scroll. The corner is as far from the top as from the
-   left, at every size: the chrome's one edge inset, as the nav's. */
 .a0-mark,
 .a0-mark-corner {
   position: absolute;
@@ -102,23 +84,16 @@
   width: auto;
   pointer-events: none;
 }
-/* the corner holds the symbol alone, the wordmark dissolves before the flight
-   (components/WelcomeLogo.tsx) */
 .a0-mark-corner { aspect-ratio: 283.81 / 265.34; }
-/* the built logo's lime (components/intro-logo.ts): the brand lime into its deeper step */
 .a0-mark {
   --logo-lime: var(--color-primary);
   --logo-lime-deep: var(--color-primary-deep);
 }
-/* The built logo carries the fill's dark shading, which sits right over the symbol's corner and made
-   it dull up there. As it lands it crossfades into a clean symbol in the button's lime, in the same
-   box, so the corner symbol matches Start Natureploring. */
 .a0-mark { transition: opacity 700ms ease; }
 .a0-mark-lit { opacity: 0; transition: opacity 700ms ease; }
 .a0-open .a0-mark { opacity: 0; }
 .a0-open .a0-mark-lit { opacity: 1; }
 .a0-mark-corner { color: var(--color-primary); }
-/* the tablet keeps the desktop's corner symbol size, 2.125rem tall */
 @media (min-width: 35.75rem) {
   .a0-mark,
   .a0-mark-corner { height: 2.125rem; }
@@ -126,7 +101,6 @@
 .a0-mark-corner svg { display: block; height: 100%; width: auto; }
 .a0-mark .intro-logo { height: 100%; width: auto; filter: none; }
 .a0-mark-slot { visibility: hidden; }
-/* the patterned drawing (lib/welcome-progress.ts, PATTERN_IMG) is lit already: no brightening */
 .a0s .a0-mark[data-pattern] .intro-logo { filter: drop-shadow(0 0.1634em 0.449em rgb(0 0 0 / 0.35)); }
 
 .a0-cue {
@@ -137,17 +111,12 @@
   opacity: 0;
   pointer-events: none;
   text-align: center;
-  /* the title step at every width, size and weight, so the one instruction on the page is easy
-     to read */
   font-size: var(--text-body-lg);
   line-height: var(--text-body-lg--line-height);
   font-weight: var(--text-title--font-weight);
 }
 .a0-cue span { display: inline-block; }
 
-/* the mushroom under the cue, and the ground it pushes up out of. It keeps its own place on the page
-   rather than the cue's, because the scroll fades the cue away and sends the mushroom to the logo
-   (components/WelcomeCue.tsx). */
 .a0-mush {
   position: absolute;
   left: 0;
@@ -158,50 +127,24 @@
   margin: 0 auto;
   overflow: hidden;
   pointer-events: none;
-  /* already the logo's lime it is going to join */
   color: var(--color-primary);
 }
 .a0-mush[data-out] { overflow: visible; }
 .a0-mush svg { display: block; width: 100%; height: auto; }
 
-/* The one line the page opens on, in the middle of the screen. It belongs to the scroll opening only:
-   without it the page is A0, which has the whole sentence in its own place. */
 .a0-hero { display: none; }
 
-/* the opening, once on load: the line writes itself letter by letter
-   (components/WelcomeHero.tsx), and the cue arrives under it as "all" starts to appear: the 12th
-   letter, 11 staggers of 60ms in. FIRST in components/WelcomeCue.tsx follows this delay. */
 .a0s .a0-cue span { animation: a0-arrive 800ms var(--a0-ease) 660ms both; }
-/* The letters start when the page's script does, which can be a few hundred ms after this stylesheet,
-   so with scripting the cue holds until WelcomeCue, mounting on the same frame as the line, sets
-   data-go: the 660ms then count from the same moment as the letters. */
 @media (scripting: enabled) {
   .a0s .a0-cue:not([data-go]) span { animation-play-state: paused; }
 }
 
-/* The scroll choreography. components/WelcomeScroll.tsx writes --a0-p on each of these elements: the
-   scroll progress from 0 to 1, eased so the page glides after the scroll instead of stepping with it.
-   Every animation here is paused and one second long, and its delay places it: an element with
-   --a0-s 0.06 and --a0-e 0.55 plays its second between 6% and 55% of the scroll.
-   A person who asked for reduced motion, or a browser without scripting, gets A0 as a still page. */
 @property --a0-p { syntax: "<number>"; inherits: false; initial-value: 0; }
 
 @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
-  /* The scroll is the background's: the photograph opens across it, and the logo takes over from
-     there on its own clock (components/WelcomeLogo.tsx). The page is this tall so that the circle
-     opens over a long scroll rather than a flick of the wheel. */
   .a0s { height: 350vh; }
-  /* No scrollbar while the opening plays. Where the system draws one beside the page (a Mac with a
-     mouse, Windows) it took 15px off the width, and at a0-done, with nothing left to scroll, it went
-     and gave them back: everything placed from the middle moved 7.5px right on the frame the symbol
-     landed, so the symbol jumped beside the lit one fading in over it. */
   html:has(.a0s) { scrollbar-width: none; }
   html:has(.a0s)::-webkit-scrollbar { display: none; }
-  /* Once it has all played, the page is A0 and nothing else: no scroller, nothing above it to go
-     back to (components/WelcomeLogo.tsx sets a0-done on the frame the logo lands). Everything the
-     scroll was driving is put in its finished state here, because the scroll position itself is gone:
-     the field and the opening line have been left behind, and the photograph is simply the
-     background, the same as A0 has it (app/welcome2.css). */
   .a0s.a0-done { height: auto; }
   .a0s.a0-done .a02 { position: relative; }
   .a0s.a0-done :is(.a0-field, .a0-hero, .a0-cue, .a0-mush) { display: none; }
@@ -232,12 +175,6 @@
     animation-delay: calc((var(--a0-s) - var(--a0-p)) / (var(--a0-e) - var(--a0-s)) * 1s);
   }
   .a0s .a0-field { animation-name: a0s-hide; --a0-s: 0.97; --a0-e: 0.98; }
-  /* once the field is covered the liquid layer steps out of it, which is what pauses its simulation */
-  /* The photograph opens in a circle between --a0-s and --a0-e of the scroll. The lens is that circle at
-     its final size, 150% of hypot(w, h) / sqrt(2), enough to clear every corner. WelcomeScroll scales
-     the lens up from nothing and scales the photograph inside it by the inverse so it stays put. Only
-     transforms change, so nothing is repainted while the circle grows. No rim: the circle's edge simply
-     fades out, a soft band over its outer quarter that grows with it. */
   .a0s .a0-lens {
     --a0-s: 0.04;
     --a0-e: 0.95;
@@ -257,20 +194,10 @@
     top: 50%;
     width: var(--a0-w);
     height: var(--a0-h);
-    /* placed and counter-scaled around the centre by components/WelcomeScroll.tsx alone: a CSS
-       translate here was added on top of it and slid the photograph off the right of the screen */
   }
   .a0s :is(.a0-lens, .a02-photo) { will-change: transform; }
-  .a0s .a0-lens { visibility: hidden; } /* until WelcomeScroll places it */
+  .a0s .a0-lens { visibility: hidden; }
 
-  /* The logo builds in the middle of the page and travels to the corner slot, both worked out by
-     components/WelcomeLogo.tsx. The width is the intro board's: the logo as it would be drawn in a
-     frame covering the window, eased back on a narrow screen just enough to stay whole. Its font
-     size is one board rem at that width, so the shadow inside it grows with it. */
-  /* No will-change here. The lens behind it sits at z-index -1, and a promoted layer over that took
-     the whole page's paint with it: the photograph, the words and the card all came out black. */
-  /* until components/WelcomeLogo.tsx starts the timeline, the markup is the whole logo, which would
-     flash on the page as it loads */
   .a0s .a0-mark:not([data-ready]) { visibility: hidden; }
   .a0s .a0-mark {
     --a0-mark-w: min(max(39.27cqw, 62.83cqh), max(min(39.27cqw, 62.83cqh), 85.67cqw));
@@ -278,11 +205,8 @@
     left: 50%;
     height: auto;
     width: var(--a0-mark-w);
-    /* centred on that point by components/WelcomeLogo.tsx (xPercent, yPercent): GSAP takes a CSS
-       translate into its own x and y the first time it moves the logo, which threw the landing off */
     font-size: calc(var(--a0-mark-w) / 35.34);
   }
-  /* tablet and desktop: 15% smaller, still centred; the phone keeps the full width */
   @media (min-width: 35.75rem) {
     .a0s .a0-mark {
       --a0-mark-w: calc(min(max(39.27cqw, 62.83cqh), max(min(39.27cqw, 62.83cqh), 85.67cqw)) * 0.85);
@@ -297,35 +221,22 @@
     transition: filter 700ms ease;
   }
 
-
-  /* The opening line and the cue go first, as the photograph starts to open behind them. What is
-     left of the scroll opens the photograph, and nothing else waits on it. */
   .a0s .a0-cue { animation-name: a0s-leave; --a0-s: 0; --a0-e: 0.08; }
-  /* the line is gone before the logo starts building over it (WELCOME_START, 0.17) */
   .a0s .a0-hero { animation-name: a0s-leave; --a0-s: 0.02; --a0-e: 0.16; }
 
-  /* A0 arrives on the frame the logo lands in its corner, one layer after another, and the route
-     draws itself over the photograph (components/WelcomeLogo.tsx sets a0-open, and
-     components/WelcomeRoute.tsx draws the route when it sees it) */
   .a0s :is(.a02-h1, .a02-lead, .a02-cta) { opacity: 0; }
   .a0s .a02-route { visibility: hidden; }
-  /* backwards, not both: once it has arrived nothing of the animation stays applied, so the
-     button's hover and press are free to run */
   .a0s.a0-open :is(.a02-h1, .a02-lead, .a02-cta) {
     opacity: 1;
     animation: a0-arrive 800ms var(--a0-ease) backwards;
   }
   .a0s.a0-open .a02-lead { animation-delay: 120ms; }
-  /* the button arrives, then starts to breathe (app/welcome2.css) */
   .a0s.a0-open .a02-cta {
     animation: a0-arrive 800ms var(--a0-ease) 240ms backwards, a02-cta-glow 4.8s ease-in-out 1040ms infinite;
   }
-  /* its fill waits for the open too, so fill and halo breathe together */
   .a0s .a02-cta::before { animation: none; }
   .a0s.a0-open .a02-cta::before { animation: a02-cta-fill 4.8s ease-in-out 1040ms infinite; }
 
-  /* a soft dark veil behind the opening line, so the white letters hold over the brightest mist;
-     inside the line, so it leaves with it */
   .a0s .a0-hero::before {
     content: "";
     position: absolute;
@@ -334,7 +245,6 @@
     background: radial-gradient(closest-side, color-mix(in srgb, var(--color-ground) 60%, transparent), transparent);
     pointer-events: none;
   }
-  /* the opening line, centred on the screen, in the display face */
   .a0s .a0-hero {
     display: block;
     position: absolute;
@@ -352,7 +262,6 @@
     letter-spacing: var(--text-display--letter-spacing);
     white-space: nowrap;
   }
-  /* on a phone it is two lines, "Natureplore" over "all around", at the full display size */
   @media (max-width: 35.74rem) {
     .a0s .a0-hero { font-size: var(--text-display); line-height: var(--text-display--line-height); }
   }
@@ -360,7 +269,6 @@
     .a0-hero-br { display: none; }
   }
 
-  /* a link that takes keyboard focus must be visible: jump to the end state */
   .a0s:has(a:focus-visible) :is(*, *::after) { animation: none !important; }
   .a0s:has(a:focus-visible) :is(.a0-lens, .a02-photo) { transform: none !important; visibility: visible !important; }
 
@@ -387,8 +295,7 @@
 }
 
 @media (min-width: 64rem) {
-  /* the desktop corner: the same inset from the top and the left as on the phone, a size larger */
   .a0-mark,
   .a0-mark-corner { height: 2.125rem; }
-  .a0-mark-corner { height: 2.44375rem; } /* the corner symbol 15% larger than the tablet's */
+  .a0-mark-corner { height: 2.44375rem; }
 }

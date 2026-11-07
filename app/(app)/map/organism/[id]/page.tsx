@@ -6,9 +6,7 @@ import { organismById } from "@/lib/organisms";
 import { routeById } from "@/lib/routes";
 import { spotOf } from "@/lib/spots";
 
-// B4 · Organism, and B5 when its location is generalised. Back returns where the page was opened:
-// the walk on the spot it showed (B4-walk, `?from=walk&route=&spot=`), or the route with that spot open
-// (`?spot=`, with or without `from=route`).
+// B4, B5 · Organism
 
 export async function generateMetadata({ params }: PageProps<"/map/organism/[id]">): Promise<Metadata> {
   const { id } = await params;
@@ -21,10 +19,7 @@ export default async function Organism({ params, searchParams }: PageProps<"/map
   const { from, spot, route } = await searchParams;
   const o = organismById(id);
   if (!o) notFound();
-  // the spot in the link is a Linum spot: only a species recorded there goes back to it
   const at = o.where?.some((w) => (w.route ?? "linum") === "linum" && w.n === Number(spot)) ? spotOf("linum", Number(spot)) : undefined;
-  // opened from a route's tiles (`?route=`) or its records (`?from=recorded&route=`): back is that route, not
-  // the one the species was last recorded on
   const source = typeof route === "string" ? routeById(route) : undefined;
   const opened = source
     ? from === "recorded"
@@ -34,7 +29,6 @@ export default async function Organism({ params, searchParams }: PageProps<"/map
         }
       : { href: `/map/route/${source.id}`, label: `Back to ${source.name}` }
     : undefined;
-  // opened from a walk: back to that route's walk, on the spot it showed
   const walkRoute = source?.id ?? "linum";
   const walkSpot = spotOf(walkRoute, Number(spot));
   const back =

@@ -1,9 +1,5 @@
-// The real line of the routes that have one, as [lat, lon] in walking order. Traced along
-// OpenStreetMap tracks and paths (© OpenStreetMap contributors, ODbL). A route without a line here
-// is drawn through its spots until its own line is mapped.
+// Traced along OpenStreetMap tracks and paths (© OpenStreetMap contributors, ODbL)
 
-// Linum wet meadows: from the Dorfkirche Linum out along the canal path, round the Teichland fish ponds
-// past both bird hides, and back across the meadows into the village. Built by .design/linum-route/line.py.
 export const LINUM_LINE: [number, number][] = [
   [52.75773, 12.88274],
   [52.75755, 12.88334],
@@ -108,8 +104,6 @@ export const LINUM_LINE: [number, number][] = [
   [52.75773, 12.88274],
 ];
 
-// Grumsin beech forest: the Oranges Buchenblatt ("Wildnispfad") waymarked trail, OSM relation 10982790,
-// from the Altkünkendorf car park round to Wolletzsee and back. Built by .design/grumsin-route/line.py.
 export const GRUMSIN_LINE: [number, number][] = [
   [53.01235, 13.87507],
   [53.01225, 13.87541],
@@ -348,9 +342,6 @@ export const GRUMSIN_LINE: [number, number][] = [
   [53.01235, 13.87507],
 ];
 
-// Tegeler Fließ valley path: from S-Bahn Hermsdorf down the Fließ valley to the Wolfsteich, past the Hermsdorfer See, over the Eichwerdersteg, along the
-// Holzstegweg boardwalk and the Fließ through the Eichwerder meadows to Alt-Lübars, point to point. Routed over
-// OpenStreetMap paths by .design/tegel-route/line.py.
 export const TEGEL_LINE: [number, number][] = [
   [52.61804, 13.30750],
   [52.61805, 13.30764],
@@ -438,9 +429,6 @@ export const TEGEL_LINE: [number, number][] = [
   [52.61973, 13.35703],
 ];
 
-// Tempelhofer Feld: from the Columbiadamm main entrance (Tor 5) round the old airfield on its own paths and
-// runways, past the Allmende-Kontor gardens and the fenced meadows. Routed over OpenStreetMap paths by
-// .design/tempelhof-route/line.py.
 export const TEMPELHOF_LINE: [number, number][] = [
   [52.48228, 13.40724],
   [52.48108, 13.40671],

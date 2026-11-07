@@ -1,16 +1,4 @@
-// Photographs from Unsplash (unsplash.com/license: free to use, no permission needed), downloaded
-// 29 Sep, 17 Oct, 18 Oct and 4 Nov 2026 for the prototype and chosen by eye for the species. Each carries its
-// photographer and page, so a credit can be shown and a photo can be checked or replaced. Where no
-// free photo shows the species itself, a near relative or a look-alike stands in at a glance, so no
-// organism shows an empty frame: among them the noctule bat, the early marsh orchid, the beechwood
-// sickener, the common speedwell, the bladder ketmia, and most of the 18 Oct second round (buckthorn,
-// bog arum, woodruff, skullcap, blackcap, slippery jack, sulphur tuft, privet, cinquefoil, purslane,
-// fleabane, wild rocket, cursed crowfoot, frogbit, black horehound, white poplar, hoary alison, ground
-// ivy, water shrew, small balsam, aspen, tree of heaven and soapwort) and of the 18 Oct third round (ragged
-// robin, wood melick, beech woodwart, candlesnuff fungus, red-breasted flycatcher). Beech shares common
-// beech's photo, woodruff sweet woodruff's. In the 4 Nov round for November's species, physalis husks stand in
-// for apple of Peru, a porcini for the scarletina bolete, and a tan funnel cap for the clouded funnel;
-// shepherd's purse has no free photo yet.
+// Photographs from Unsplash (unsplash.com/license)
 
 export type Photo = { src: string; by: string; page: string };
 
@@ -191,9 +179,7 @@ export const PHOTOS: Record<string, Photo> = {
   "routes/tempelhof": { src: "/img/routes/tempelhof.jpg", by: "Unsplash", page: "https://unsplash.com/photos/a-grassy-field-with-a-water-tower-in-the-background-AoVkvse3DhM" },
 };
 
-/** An organism's photo by its common name, "Common crane" → organisms/common-crane. */
 export const organismPhoto = (name: string): Photo | undefined =>
   PHOTOS[`organisms/${name.toLowerCase().replace(/[^a-z]+/g, "-")}`];
 
-/** "Photo: Name, Unsplash" */
 export const creditLine = (p: Photo) => `Photo: ${p.by}, Unsplash`;
