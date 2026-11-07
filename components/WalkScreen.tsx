@@ -131,7 +131,7 @@ export default function WalkScreen({ routeId, n }: { routeId: string; n: number 
               total={total}
               nav={null}
               titleId="walk-title"
-              organismHref={(id) => `/map/organism/${id}?from=walk&spot=${n}`}
+              organismHref={(id) => `/map/organism/${id}?from=walk&route=${routeId}&spot=${n}`}
             />
             {/* one toggle that stays in place, so focus is not lost when the rest of the spot opens */}
             <button type="button" className="btn btn-secondary walk-toggle" aria-expanded={open} aria-controls="walk-more" onClick={() => setOpenOn(open ? null : n)}>

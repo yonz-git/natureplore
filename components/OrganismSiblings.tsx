@@ -10,7 +10,7 @@ import { useState } from "react";
 import { BackIcon, ChevronIcon } from "@/components/Icons";
 import { ORGANISMS, type Organism } from "@/lib/organisms";
 import { organismPhoto } from "@/lib/photos";
-import { RECORDED } from "@/lib/records";
+import { recordedIn } from "@/lib/season";
 import { GROUPS } from "@/lib/routes";
 
 const FIRST = 5;
@@ -43,7 +43,7 @@ function Step({ to, at = "", kicker, end, back = false }: { to?: Organism; at?: 
     links keep the route, so stepping through stays on it. Otherwise the group across every route. */
 export function OrganismSiblings({ o, route }: { o: Organism; route?: string }) {
   const [all, setAll] = useState(false);
-  const onRoute = route ? new Set((RECORDED[route] ?? []).map((r) => r.latin)) : undefined;
+  const onRoute = route ? new Set(recordedIn(route).map((r) => r.latin)) : undefined;
   const group = ORGANISMS.filter((x) => x.group === o.group && (!onRoute || onRoute.has(x.latin)));
   const at = route ? `?route=${route}` : "";
   const i = group.findIndex((x) => x.id === o.id);

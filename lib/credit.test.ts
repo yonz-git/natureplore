@@ -1,9 +1,10 @@
-// node --test lib/credit.test.ts
+// npm test
 // The rule these guard: nothing is ever shown without a name on it, and the licence label is
 // the one the source recorded.
 
 import assert from "node:assert/strict";
-import test from "node:test";
+
+import { test } from "vitest";
 
 import { creditLine, licenseLabel, observerUrl } from "./credit.ts";
 
