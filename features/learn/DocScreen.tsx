@@ -5,7 +5,7 @@
 import Link from "next/link";
 
 import { BackTop, Facts, Stat } from "@/components/CParts";
-import { DocList } from "@/components/DocParts";
+import { DocList } from "@/features/learn/DocParts";
 import { BookmarkIcon, ChevronIcon, ExternalIcon, LockIcon, MapIcon } from "@/components/Icons";
 import { backLabel, useBack } from "@/lib/back";
 import { type Doc, docById, watchFacts } from "@/lib/docs";

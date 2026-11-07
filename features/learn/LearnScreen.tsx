@@ -8,7 +8,7 @@ import { useRef, useState } from "react";
 import { ClaimCard } from "@/components/ClaimCard";
 import { RegionLine } from "@/components/RegionLine";
 import { ActionRows } from "@/components/CParts";
-import { DocList } from "@/components/DocParts";
+import { DocList } from "@/features/learn/DocParts";
 import { ChevronIcon } from "@/components/Icons";
 import { LEARN_ACTIONS } from "@/lib/actions";
 import { CLAIMS } from "@/lib/claims";

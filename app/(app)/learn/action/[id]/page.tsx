@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import ActionScreen from "@/components/ActionScreen";
+import ActionScreen from "@/features/learn/ActionScreen";
 import { actionById } from "@/lib/actions";
 
 // C3, C5 and C7 · an action
