@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import { BackIcon, BookmarkIcon, ChevronIcon, DownloadIcon, LoopIcon, OneWayIcon, WalkIcon } from "@/components/Icons";
-import { useSheet } from "@/components/SheetGrab";
+import { useSheet } from "@/components/layout/SheetGrab";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/shared/RegionMap";
 import { StatValue } from "@/components/shared/CParts";
 import { ActionRow, ClaimCard, SpotMark } from "@/components/shared/SpotParts";

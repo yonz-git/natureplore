@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import Logo from "@/components/Logo";
-import TabBar from "@/components/TabBar";
+import TabBar from "@/components/layout/TabBar";
 
 export default function AppLayout({ children }: LayoutProps<"/">) {
   return (

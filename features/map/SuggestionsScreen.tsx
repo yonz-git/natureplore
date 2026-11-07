@@ -8,7 +8,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ChevronIcon, GroupIcon, ListIcon, MapIcon, OrganismsIcon, PinIcon, RoutesIcon, SearchIcon } from "@/components/Icons";
 import { SearchField } from "@/features/map/MapParts";
 import { RegionLine } from "@/components/shared/RegionLine";
-import { useSheet } from "@/components/SheetGrab";
+import { useSheet } from "@/components/layout/SheetGrab";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/shared/RegionMap";
 import { SuggestionCard } from "@/features/map/SuggestionCard";
