@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import OrganismPage from "@/components/OrganismPage";
+import OrganismPage from "@/features/organisms/OrganismPage";
 import { organismById } from "@/lib/organisms";
 import { routeById } from "@/lib/routes";
 import { spotOf } from "@/lib/spots";

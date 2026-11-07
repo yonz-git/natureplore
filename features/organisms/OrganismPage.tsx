@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { ArrowIcon, BackIcon, BookmarkIcon, ChevronIcon, EyeOffIcon, ShareIcon } from "@/components/Icons";
 import { ActionRow, ClaimCard, MonthGrid, SpotMark } from "@/components/SpotParts";
-import { OrganismSiblings } from "@/components/OrganismSiblings";
+import { OrganismSiblings } from "@/features/organisms/OrganismSiblings";
 import type { Organism } from "@/lib/organisms";
 import { leaveFor } from "@/lib/back";
 import { docById, docLine } from "@/lib/docs";
