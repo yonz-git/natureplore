@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import SearchScreen from "@/components/SearchScreen";
+import SearchScreen from "@/features/map/SearchScreen";
 
 // A2, A3 · Search
 

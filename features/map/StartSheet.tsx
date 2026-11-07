@@ -5,8 +5,8 @@
 import Link from "next/link";
 
 import { LocationIcon } from "@/components/Icons";
-import { useLocationPrompt } from "@/components/LocationDialog";
-import { SearchField } from "@/components/MapParts";
+import { useLocationPrompt } from "@/features/map/LocationDialog";
+import { SearchField } from "@/features/map/MapParts";
 
 export default function StartSheet() {
   const { ask, prompt } = useLocationPrompt("/map");

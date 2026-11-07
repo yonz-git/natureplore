@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { BackIcon, ChevronIcon, GroupIcon, InfoIcon, PinIcon } from "@/components/Icons";
-import { SearchField } from "@/components/MapParts";
+import { SearchField } from "@/features/map/MapParts";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import RegionMap from "@/components/RegionMap";
 import { rememberSearch } from "@/lib/recent";

@@ -6,12 +6,12 @@ import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { ChevronIcon, GroupIcon, ListIcon, MapIcon, OrganismsIcon, PinIcon, RoutesIcon, SearchIcon } from "@/components/Icons";
-import { SearchField } from "@/components/MapParts";
+import { SearchField } from "@/features/map/MapParts";
 import { RegionLine } from "@/components/RegionLine";
 import { useSheet } from "@/components/SheetGrab";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
-import { SuggestionCard } from "@/components/SuggestionCard";
+import { SuggestionCard } from "@/features/map/SuggestionCard";
 import { playGroup } from "@/lib/group-motion";
 import { GROUPS, HERE, type Group } from "@/lib/routes";
 import { rememberList } from "@/lib/saved";

@@ -10,7 +10,7 @@ import {
   LoopIcon,
   OneWayIcon,
 } from "@/components/Icons";
-import { OrganismPills } from "@/components/MapParts";
+import { OrganismPills } from "@/features/map/MapParts";
 import {
   groupWord,
   MONTH,
