@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Credits } from "@/components/SavedPages";
+import { Credits } from "@/features/saved/SavedPages";
 
 export const metadata: Metadata = { title: "Credits" };
 

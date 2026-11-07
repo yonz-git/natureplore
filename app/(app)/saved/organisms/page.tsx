@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SavedOrganisms } from "@/components/SavedPages";
+import { SavedOrganisms } from "@/features/saved/SavedPages";
 
 // E4 · Saved organisms
 
