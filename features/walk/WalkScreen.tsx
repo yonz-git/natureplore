@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { BackIcon, ChevronIcon, LocationIcon } from "@/components/Icons";
-import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
-import { ClaimCard, MonthGrid, RecordedToo, SpotBlock } from "@/components/SpotParts";
+import RegionMap, { type MapHandle, type MapPoint } from "@/components/shared/RegionMap";
+import { ClaimCard, MonthGrid, RecordedToo, SpotBlock } from "@/components/shared/SpotParts";
 import { routeById, spotsOf } from "@/lib/routes";
 import { routeDetail } from "@/lib/spots";
 

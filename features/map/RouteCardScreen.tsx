@@ -7,15 +7,15 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "reac
 
 import { BackIcon, BookmarkIcon, ChevronIcon, DownloadIcon, LoopIcon, OneWayIcon, WalkIcon } from "@/components/Icons";
 import { useSheet } from "@/components/SheetGrab";
-import RegionMap, { type MapHandle, type MapPoint } from "@/components/RegionMap";
-import { StatValue } from "@/components/CParts";
-import { ActionRow, ClaimCard, SpotMark } from "@/components/SpotParts";
-import { InSeasonList } from "@/components/InSeasonList";
-import { PhotoGallery, type Photo } from "@/components/PhotoGallery";
-import { GroupFilter } from "@/components/GroupFilter";
+import RegionMap, { type MapHandle, type MapPoint } from "@/components/shared/RegionMap";
+import { StatValue } from "@/components/shared/CParts";
+import { ActionRow, ClaimCard, SpotMark } from "@/components/shared/SpotParts";
+import { InSeasonList } from "@/components/shared/InSeasonList";
+import { PhotoGallery, type Photo } from "@/components/shared/PhotoGallery";
+import { GroupFilter } from "@/components/shared/GroupFilter";
 import { countsIn } from "@/lib/season";
 import { recordedOf } from "@/lib/recorded";
-import { YearChart } from "@/components/YearChart";
+import { YearChart } from "@/components/shared/YearChart";
 import { organismPhoto } from "@/lib/photos";
 import { GROUPS, recordsOf, spotsOf, type Group, type Route } from "@/lib/routes";
 import { lastList, useSaved } from "@/lib/saved";

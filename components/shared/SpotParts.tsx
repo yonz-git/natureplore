@@ -5,7 +5,7 @@ import { organismPhoto } from "@/lib/photos";
 import { MONTH_LETTERS, MONTH_NAMES, NOW, type Spot } from "@/lib/spots";
 import { MONTH } from "@/lib/suggestions";
 
-export { ClaimCard } from "@/components/ClaimCard";
+export { ClaimCard } from "@/components/shared/ClaimCard";
 
 export function MonthGrid({ months, label = "In season" }: { months: number[]; label?: string }) {
   return (

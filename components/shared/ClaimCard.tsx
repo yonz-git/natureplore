@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { ChevronIcon } from "@/components/Icons";
-import { Where } from "@/components/InSeasonList";
+import { Where } from "@/components/shared/InSeasonList";
 import { leaveFor } from "@/lib/back";
 import { PHOTOS } from "@/lib/photos";
 import type { Claim } from "@/lib/claims";

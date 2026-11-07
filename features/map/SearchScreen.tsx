@@ -8,7 +8,7 @@ import { useMemo, useState } from "react";
 import { BackIcon, ChevronIcon, GroupIcon, InfoIcon, PinIcon } from "@/components/Icons";
 import { SearchField } from "@/features/map/MapParts";
 import { useIsDesktop } from "@/lib/useIsDesktop";
-import RegionMap from "@/components/RegionMap";
+import RegionMap from "@/components/shared/RegionMap";
 import { rememberSearch } from "@/lib/recent";
 import { didYouMean, groupWord, ROUTE_POINTS, search } from "@/lib/suggestions";
 

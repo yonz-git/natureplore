@@ -5,9 +5,9 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 
-import { ClaimCard } from "@/components/ClaimCard";
-import { RegionLine } from "@/components/RegionLine";
-import { ActionRows } from "@/components/CParts";
+import { ClaimCard } from "@/components/shared/ClaimCard";
+import { RegionLine } from "@/components/shared/RegionLine";
+import { ActionRows } from "@/components/shared/CParts";
 import { DocList } from "@/features/learn/DocParts";
 import { ChevronIcon } from "@/components/Icons";
 import { LEARN_ACTIONS } from "@/lib/actions";

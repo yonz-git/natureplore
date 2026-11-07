@@ -4,7 +4,7 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 
-import { BackTop } from "@/components/CParts";
+import { BackTop } from "@/components/shared/CParts";
 import { DocList } from "@/features/learn/DocParts";
 import { BookmarkIcon } from "@/components/Icons";
 import { backLabel, useBack } from "@/lib/back";

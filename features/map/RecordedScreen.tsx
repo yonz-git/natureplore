@@ -6,8 +6,8 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { BackIcon, ChevronIcon } from "@/components/Icons";
-import { GroupFilter } from "@/components/GroupFilter";
-import { Where } from "@/components/InSeasonList";
+import { GroupFilter } from "@/components/shared/GroupFilter";
+import { Where } from "@/components/shared/InSeasonList";
 import { organismHref } from "@/lib/organisms";
 import { organismPhoto } from "@/lib/photos";
 import type { RecordedGroup } from "@/lib/recorded";
