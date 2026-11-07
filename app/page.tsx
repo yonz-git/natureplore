@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Welcome from "@/components/Welcome";
+import Welcome from "@/features/welcome/Welcome";
 
 export const metadata: Metadata = { title: "Welcome" };
 

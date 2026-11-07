@@ -1,14 +1,14 @@
 import Link from "next/link";
-import CtaSquirrel from "@/components/CtaSquirrel";
-import LetterWave from "@/components/LetterWave";
+import CtaSquirrel from "@/features/welcome/CtaSquirrel";
+import LetterWave from "@/features/welcome/LetterWave";
 import Logo from "@/components/Logo";
-import WelcomeCue from "@/components/WelcomeCue";
-import WelcomeHero from "@/components/WelcomeHero";
-import WelcomeLogo from "@/components/WelcomeLogo";
-import WelcomeReveal from "@/components/WelcomeReveal";
-import WelcomeRoute from "@/components/WelcomeRoute";
-import WelcomeScroll from "@/components/WelcomeScroll";
-import WelcomeZoom from "@/components/WelcomeZoom";
+import WelcomeCue from "@/features/welcome/WelcomeCue";
+import WelcomeHero from "@/features/welcome/WelcomeHero";
+import WelcomeLogo from "@/features/welcome/WelcomeLogo";
+import WelcomeReveal from "@/features/welcome/WelcomeReveal";
+import WelcomeRoute from "@/features/welcome/WelcomeRoute";
+import WelcomeScroll from "@/features/welcome/WelcomeScroll";
+import WelcomeZoom from "@/features/welcome/WelcomeZoom";
 
 export default function Welcome({ still = false }: { still?: boolean }) {
   return (
