@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { ChevronIcon } from "@/components/Icons";
+import { ChevronIcon } from "@/components/ui/Icons";
 import { Where } from "@/components/shared/InSeasonList";
 import { leaveFor } from "@/lib/back";
 import { PHOTOS } from "@/lib/photos";

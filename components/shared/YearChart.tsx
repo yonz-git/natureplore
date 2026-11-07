@@ -1,6 +1,6 @@
 // B1 · Through the year
 
-import { GroupIcon } from "@/components/Icons";
+import { GroupIcon } from "@/components/ui/Icons";
 import { MONTH_LETTERS, MONTH_NAMES, NOW } from "@/lib/spots";
 import { MONTH_GROUPS, MONTHS } from "@/lib/months";
 import { GROUPS } from "@/lib/routes";

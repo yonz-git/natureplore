@@ -9,7 +9,7 @@ import {
   GroupIcon,
   LoopIcon,
   OneWayIcon,
-} from "@/components/Icons";
+} from "@/components/ui/Icons";
 import { OrganismPills } from "@/features/map/MapParts";
 import {
   groupWord,

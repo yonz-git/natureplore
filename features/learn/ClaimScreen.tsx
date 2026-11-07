@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { ActionRows, BackTop, Stat, Tags } from "@/components/shared/CParts";
-import { CheckIcon, ChevronIcon, ExternalIcon, LockIcon, MapIcon } from "@/components/Icons";
+import { CheckIcon, ChevronIcon, ExternalIcon, LockIcon, MapIcon } from "@/components/ui/Icons";
 import { backLabel, useBack } from "@/lib/back";
 import type { Claim } from "@/lib/claims";
 import { PHOTOS } from "@/lib/photos";

@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { INTRO_LOGO_SVG } from "@/features/welcome/intro-logo";
-import Logo from "@/components/Logo";
+import Logo from "@/components/ui/Logo";
 import { playIntro, WELCOME_OPENING, WELCOME_PACE, WELCOME_START } from "@/lib/intro-timeline";
 import { PATTERN_IMG, followProgress } from "@/lib/welcome-progress";
 

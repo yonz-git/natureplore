@@ -5,7 +5,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-import { BackIcon, ChevronIcon, GroupIcon, InfoIcon, PinIcon } from "@/components/Icons";
+import { BackIcon, ChevronIcon, GroupIcon, InfoIcon, PinIcon } from "@/components/ui/Icons";
 import { SearchField } from "@/features/map/MapParts";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 import RegionMap from "@/components/shared/RegionMap";

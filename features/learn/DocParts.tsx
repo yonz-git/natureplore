@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { LockIcon } from "@/components/Icons";
+import { LockIcon } from "@/components/ui/Icons";
 import { leaveFor } from "@/lib/back";
 import { type Doc, docLine } from "@/lib/docs";
 

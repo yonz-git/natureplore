@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { Dialog, Facts } from "@/components/shared/CParts";
-import { CalendarIcon, CheckIcon, CloseIcon } from "@/components/Icons";
+import { CalendarIcon, CheckIcon, CloseIcon } from "@/components/ui/Icons";
 import type { CleanUp } from "@/lib/actions";
 import { useSaved } from "@/lib/saved";
 

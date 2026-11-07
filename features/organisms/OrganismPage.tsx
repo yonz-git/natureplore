@@ -4,7 +4,7 @@
 
 import Link from "next/link";
 
-import { ArrowIcon, BackIcon, BookmarkIcon, ChevronIcon, EyeOffIcon, ShareIcon } from "@/components/Icons";
+import { ArrowIcon, BackIcon, BookmarkIcon, ChevronIcon, EyeOffIcon, ShareIcon } from "@/components/ui/Icons";
 import { ActionRow, ClaimCard, MonthGrid, SpotMark } from "@/components/shared/SpotParts";
 import { OrganismSiblings } from "@/features/organisms/OrganismSiblings";
 import type { Organism } from "@/lib/organisms";

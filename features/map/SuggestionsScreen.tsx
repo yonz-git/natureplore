@@ -5,7 +5,7 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
-import { ChevronIcon, GroupIcon, ListIcon, MapIcon, OrganismsIcon, PinIcon, RoutesIcon, SearchIcon } from "@/components/Icons";
+import { ChevronIcon, GroupIcon, ListIcon, MapIcon, OrganismsIcon, PinIcon, RoutesIcon, SearchIcon } from "@/components/ui/Icons";
 import { SearchField } from "@/features/map/MapParts";
 import { RegionLine } from "@/components/shared/RegionLine";
 import { useSheet } from "@/components/layout/SheetGrab";

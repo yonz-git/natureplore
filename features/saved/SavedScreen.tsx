@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 
-import { BagIcon, BellIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, OfflineIcon, LoopIcon, OneWayIcon, SearchIcon, SettingsIcon } from "@/components/Icons";
+import { BagIcon, BellIcon, CalendarIcon, CheckCircleIcon, ChevronIcon, OfflineIcon, LoopIcon, OneWayIcon, SearchIcon, SettingsIcon } from "@/components/ui/Icons";
 import { ACTION_ROWS } from "@/lib/actions";
 import { leaveFor } from "@/lib/back";
 import { docById, docLine } from "@/lib/docs";

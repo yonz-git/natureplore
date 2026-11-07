@@ -1,4 +1,4 @@
-import { GroupIcon } from "@/components/Icons";
+import { GroupIcon } from "@/components/ui/Icons";
 import { GROUPS, type Group } from "@/lib/routes";
 
 export function GroupFilter({

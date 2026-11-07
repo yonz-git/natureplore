@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import { BackTop, Benefits, Facts, KindTag, Stat } from "@/components/shared/CParts";
-import { BookmarkIcon, CalendarIcon, CheckCircleIcon, CheckIcon, ExternalIcon } from "@/components/Icons";
+import { BookmarkIcon, CalendarIcon, CheckCircleIcon, CheckIcon, ExternalIcon } from "@/components/ui/Icons";
 import type { Action, CleanUp, Figure, Practice, Support } from "@/lib/actions";
 import { backLabel, useBack } from "@/lib/back";
 import { useSaved } from "@/lib/saved";

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { BanIcon, CheckCircleIcon, ChevronIcon } from "@/components/Icons";
+import { BanIcon, CheckCircleIcon, ChevronIcon } from "@/components/ui/Icons";
 import { organismPhoto } from "@/lib/photos";
 import { MONTH_LETTERS, MONTH_NAMES, NOW, type Spot } from "@/lib/spots";
 import { MONTH } from "@/lib/suggestions";

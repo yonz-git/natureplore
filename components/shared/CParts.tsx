@@ -20,7 +20,7 @@ import {
   UpIcon,
   WalkIcon,
   WaterIcon,
-} from "@/components/Icons";
+} from "@/components/ui/Icons";
 import { ACTION_ROWS, actionById, type Benefit, type Fact } from "@/lib/actions";
 import { leaveFor } from "@/lib/back";
 import type { Tag } from "@/lib/claims";

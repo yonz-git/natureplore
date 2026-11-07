@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { BackIcon, ChevronIcon } from "@/components/Icons";
+import { BackIcon, ChevronIcon } from "@/components/ui/Icons";
 import { ORGANISMS, type Organism } from "@/lib/organisms";
 import { organismPhoto } from "@/lib/photos";
 import { recordedIn } from "@/lib/season";

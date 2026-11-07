@@ -5,7 +5,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import { BackIcon, ChevronIcon } from "@/components/Icons";
+import { BackIcon, ChevronIcon } from "@/components/ui/Icons";
 import { GroupFilter } from "@/components/shared/GroupFilter";
 import { Where } from "@/components/shared/InSeasonList";
 import { organismHref } from "@/lib/organisms";

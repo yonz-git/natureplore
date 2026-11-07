@@ -4,7 +4,7 @@
 
 import Link from "next/link";
 
-import { LocationIcon } from "@/components/Icons";
+import { LocationIcon } from "@/components/ui/Icons";
 import { useLocationPrompt } from "@/features/map/LocationDialog";
 import { SearchField } from "@/features/map/MapParts";
 

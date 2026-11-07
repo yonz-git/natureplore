@@ -6,7 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 import { BackTop } from "@/components/shared/CParts";
 import { DocList } from "@/features/learn/DocParts";
-import { BookmarkIcon } from "@/components/Icons";
+import { BookmarkIcon } from "@/components/ui/Icons";
 import { backLabel, useBack } from "@/lib/back";
 import { type Doc, DOCS, REGIONS, type Topic, TOPICS } from "@/lib/docs";
 import { useSaved } from "@/lib/saved";

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import Link from "next/link";
 
-import { GroupIcon, PinIcon } from "@/components/Icons";
+import { GroupIcon, PinIcon } from "@/components/ui/Icons";
 import { SpotMark } from "@/components/shared/SpotParts";
 import { organismHref } from "@/lib/organisms";
 import { organismPhoto } from "@/lib/photos";

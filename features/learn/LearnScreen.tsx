@@ -9,7 +9,7 @@ import { ClaimCard } from "@/components/shared/ClaimCard";
 import { RegionLine } from "@/components/shared/RegionLine";
 import { ActionRows } from "@/components/shared/CParts";
 import { DocList } from "@/features/learn/DocParts";
-import { ChevronIcon } from "@/components/Icons";
+import { ChevronIcon } from "@/components/ui/Icons";
 import { LEARN_ACTIONS } from "@/lib/actions";
 import { CLAIMS } from "@/lib/claims";
 import { docById, LEARN_DOCS } from "@/lib/docs";

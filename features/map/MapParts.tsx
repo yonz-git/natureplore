@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { BackIcon, ClearIcon, GroupIcon, SearchIcon } from "@/components/Icons";
+import { BackIcon, ClearIcon, GroupIcon, SearchIcon } from "@/components/ui/Icons";
 import { playGroup } from "@/lib/group-motion";
 import { GROUPS, type Counts } from "@/lib/routes";
 

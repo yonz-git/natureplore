@@ -1,4 +1,4 @@
-import { PinIcon } from "@/components/Icons";
+import { PinIcon } from "@/components/ui/Icons";
 
 export function RegionLine({ children, replay, className = "" }: { children: React.ReactNode; replay?: string; className?: string }) {
   return (
