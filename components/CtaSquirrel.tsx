@@ -9,32 +9,10 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
 gsap.registerPlugin(MotionPathPlugin, MorphSVGPlugin);
 
-// The squirrel from the wordmark lives on A0's green button while the pointer is on it: it appears
-// on the ground to the left, hops onto the button, hops twice along its top, runs to the right end and sits
-// there to nibble. For as long as the pointer stays it loops: after two nibbles it leaps away and,
-// a moment later, comes back from the left and crosses again. When the pointer leaves, or the button
-// is clicked, it leaps up and away to the right as if it could fly, shrinking and fading as it goes,
-// and stays gone; a click waits for most of that leap before it opens the map.
-// It takes the button's own fill, the primary to primary-deep gradient.
-// On a touch screen there is no hover, so it comes on its own as the page lands, once the button
-// has arrived, and sits nibbling there; a tap sends it off before the map opens, as a click does.
-// Decoration only: no squirrel under reduced motion, and a click there opens the map at once.
-// Sits inside the button (.a02-cta), so its distances are the button's: x from its left edge,
-// y from its top. Styles: .a02-squirrel in app/welcome2.css.
-
-// The squirrel is the wordmark's own (components/Logo.tsx, SQUIRREL) in two pieces, cut where the
-// tail's stalk meets the body: the tail, and the body with the head. At the right end it sits up
-// and waits: the body changes shape into Lordicon's squirrel (wired-outline-1208), filled, sitting
-// upright facing right, while the tail, its shape untouched, swings down onto its back. The eye is
-// a hole that travels from the old head to the new one, and the icon's arm and haunch line is cut
-// through the sitting body the same way.
 const TAIL =
   "M725.93 57.79C716.69 53.81 705.07 53 695.79 57.82C682.77 64.62 678.1 79.46 688.49 91.18C700.64 104.95 715.25 97.2 730.37 106.19C742.45 113.41 718.84 112.58 727.89 122.52L735.97 118.61C747.18 109.24 749.82 68.33 725.93 57.79Z";
 const BODY =
   "M727.89 122.52C727.56 122.6 724.24 123.54 723.44 120.04C723.44 124.05 723.45 125.83 725.99 127.18C728.47 128.51 738.27 123.25 744.59 130.24C747.32 133.26 745.7 135.32 748.75 137.15C750.31 138.1 752.4 139.5 752.4 139.5C751.23 138.33 753.64 136.22 751.16 133.52C753.06 132.5 751.32 140.88 758.67 137.15C758.07 136.51 758.61 135.71 758.67 134.92C759.24 132.23 758.89 128.42 755.89 127.75C756.56 126.45 757.07 126.53 757.8 126.53C754.41 123.93 752.76 128.86 751.16 127.26C749.55 125.65 751.14 121.7 745.53 118.26C740.07 114.92 736.58 118.06 735.97 118.61Z";
-// The icon's body outline at rest and at the bottom of its nibble, scaled into this drawing with
-// its feet on y 140. While it sits it nibbles as that icon does: the head dips to the paws, chews
-// twice, and comes back up as the tail swishes, then a pause.
 const SITTING =
   "M745.16 127.83C745.16 127.83 745.16 127.83 745.16 127.83C749.77 127.83 749.12 133.86 749.12 135.67C749.12 135.67 752.32 135.67 752.32 135.67C753.51 135.67 754.60 136.17 755.37 136.94C756.15 137.72 756.64 138.81 756.64 140.00C756.64 140.00 739.32 140.00 739.32 140.00C724.31 140.00 723.00 116.37 736.48 116.37C744.48 116.37 744.76 110.68 744.76 110.68C744.76 110.68 745.75 102.00 745.75 102.00C745.75 102.00 749.19 107.47 749.19 107.47C756.55 108.70 755.13 111.07 757.41 114.53C756.94 117.28 753.63 118.74 750.31 118.18C750.31 118.18 750.31 118.18 750.31 118.18C749.09 118.82 748.18 120.54 747.11 122.83Z";
 const NIBBLING =
@@ -54,31 +32,27 @@ const EYE = {
   nibble: { cx: 753.26, cy: 114.85 },
   chew: { cx: 752.73, cy: 113.79 },
 };
-// where the tail goes on the sitting squirrel: turned about the foot of its stalk, onto the rump
 const TAIL_ON_RUMP = { svgOrigin: "732 121", x: -1, y: 8, rotation: -16 };
-const FEET = 140; // sitting, its feet are on this line of the drawing
-const NOSE = 757.4; // and its nose at this x
-const BOX = { x: 684, y: 51, h: 92 }; // the drawing's viewBox, which the span is sized to
+const FEET = 140;
+const NOSE = 757.4;
+const BOX = { x: 684, y: 51, h: 92 };
 
-const TILT_SIT = -38; // degrees: the drawing dives down and right, this sits it up facing right
-const TILT_RUN = -52; // stretched out along the button's top
-const TILT_LEAP = -70; // and this points its head up the leap
-// along the top: two hops, "tak tak", then a run to the right end. Each hop's distance in rem, its
-// length in seconds, how high it goes in rem, and the pause after it
+const TILT_SIT = -38;
+const TILT_RUN = -52;
+const TILT_LEAP = -70;
 const HOPS = [
   { dist: 2.25, time: 0.24, lift: 0.55, rest: 0.14 },
   { dist: 2.25, time: 0.24, lift: 0.55, rest: 0.16 },
 ];
-const RUN_SPEED = 12; // rem a second, the run after the hops
-const STRIDE = 0.1; // seconds, one bound of the run
-const STRIDE_LIFT = 0.25; // rem
-const LEAP = 0.6; // seconds, the flight away
-const OPEN_AFTER = 0.4; // seconds into the flight, a click opens the map
-// everything above is written at the pace it was drawn; the squirrel plays it this much faster
+const RUN_SPEED = 12;
+const STRIDE = 0.1;
+const STRIDE_LIFT = 0.25;
+const LEAP = 0.6;
+const OPEN_AFTER = 0.4;
 const SPEED = 2;
-const ARRIVED = 1.1; // seconds after the page lands, the button has arrived (.a02-cta in app/welcome.css)
-const NIBBLES = 2; // under the pointer, it nibbles this many times before it leaps off and comes round again
-const AGAIN = 0.7; // seconds between leaping off and coming back
+const ARRIVED = 1.1;
+const NIBBLES = 2;
+const AGAIN = 0.7;
 
 export default function CtaSquirrel() {
   const ref = useRef<HTMLSpanElement>(null);
@@ -92,10 +66,10 @@ export default function CtaSquirrel() {
       const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
       const calm = window.matchMedia("(prefers-reduced-motion: no-preference)");
       let state: "idle" | "on" | "away" = "idle";
-      let hovering = false; // the pointer is on the button, so the crossing loops
-      let round: gsap.core.Tween | null = null; // the wait before it comes back round
+      let hovering = false;
+      let round: gsap.core.Tween | null = null;
       let tl: gsap.core.Timeline | null = null;
-      let idle: gsap.core.Timeline | null = null; // the nibbling, while it sits
+      let idle: gsap.core.Timeline | null = null;
       const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
 
       const enter = contextSafe(() => {
@@ -106,12 +80,10 @@ export default function CtaSquirrel() {
         const r = rem();
         const w = button.offsetWidth;
         const h = button.offsetHeight;
-        const s = el.offsetHeight; // the squirrel's own size
-        // beside the button, its feet at the button's foot, never off the left of the screen
+        const s = el.offsetHeight;
         const ground = { x: Math.max(-3.25 * r, 0.5 * r - button.getBoundingClientRect().left), y: h - s };
-        const perch = { x: 1.25 * r, y: -s * 0.82 }; // on the top edge, toward the left end
-        const unit = s / BOX.h; // px per unit of the drawing
-        // the right end of the flat top, clear of the round end, for the standing squirrel's nose
+        const perch = { x: 1.25 * r, y: -s * 0.82 };
+        const unit = s / BOX.h;
         const end = w - 1.4 * r - (NOSE - BOX.x) * unit;
         const body = el.querySelector(".a02-squirrel-body");
         const tail = el.querySelector(".a02-squirrel-tail");
@@ -123,14 +95,12 @@ export default function CtaSquirrel() {
         gsap.set(arm, { attr: { d: ARM.sit }, opacity: 0 });
 
         gsap.set(el, { x: ground.x, y: ground.y, rotation: TILT_SIT, scale: 0.9, opacity: 0, transformOrigin: "50% 100%" });
-        // once it sits, it nibbles until the pointer leaves: in seconds as they are, not at SPEED
         const nibble = () => {
           const shape = (d: string, armD: string, eyeAt: { cx: number; cy: number }, duration: number, ease: string) => [
             [body, { morphSVG: d, duration, ease }],
             [arm, { morphSVG: armD, duration, ease }],
             [eye, { attr: eyeAt, duration, ease }],
           ] as const;
-          // under the pointer it nibbles NIBBLES times and goes round again; on a touch screen it stays
           idle = gsap.timeline({
             repeat: hovering ? NIBBLES - 1 : -1,
             repeatDelay: 1.1,
@@ -144,25 +114,20 @@ export default function CtaSquirrel() {
           at(0.58, shape(CHEWING, ARM.chew, EYE.chew, 0.12, "sine.inOut"));
           at(0.7, shape(NIBBLING, ARM.nibble, EYE.nibble, 0.12, "sine.inOut"));
           at(0.88, shape(SITTING, ARM.sit, EYE.sit, 0.34, "power2.inOut"));
-          // the tail swishes down and back as the head goes down and comes up
           idle.to(tail, { rotation: TAIL_ON_RUMP.rotation - 9, duration: 0.36, ease: "sine.inOut" }, 0.06);
           idle.to(tail, { rotation: TAIL_ON_RUMP.rotation, duration: 0.5, ease: "sine.inOut" }, 0.72);
         };
         tl = gsap
           .timeline({ onComplete: () => void (state === "on" && nibble()) })
           .timeScale(SPEED)
-          // appears where it stands
           .to(el, { opacity: 1, scale: 1, duration: 0.18, ease: "power3.out" })
-          // hops up onto the button in one arc
           .to(el, {
             motionPath: { path: [{ x: ground.x + 1.5 * r, y: perch.y - 1.75 * r }, perch], curviness: 1.2 },
             duration: 0.38,
             ease: "power1.inOut",
           })
-          // lands with a squash
           .to(el, { scaleY: 0.82, scaleX: 1.1, duration: 0.08, ease: "power2.out" })
           .to(el, { scaleY: 1, scaleX: 1, duration: 0.12, ease: "power3.out" })
-          // hops along the top, runs to the right end, and sits up there
           .to(el, { rotation: TILT_RUN, duration: 0.12, ease: "power2.out" });
         let x = perch.x;
         HOPS.forEach((hop, i) => {
@@ -172,12 +137,10 @@ export default function CtaSquirrel() {
             .to(el, { x, duration: hop.time, ease: "power1.inOut" }, `hop${i}`)
             .to(el, { y: perch.y - hop.lift * r, duration: hop.time / 2, ease: "sine.out" }, `hop${i}`)
             .to(el, { y: perch.y, duration: hop.time / 2, ease: "sine.in" }, `hop${i}+=${hop.time / 2}`)
-            // each landing a small squash
             .to(el, { scaleY: 0.86, scaleX: 1.08, duration: 0.06, ease: "power2.out" })
             .to(el, { scaleY: 1, scaleX: 1, duration: 0.1, ease: "power3.out", rotation: TILT_RUN });
-          if (hop.rest > 0.16) tl!.to({}, { duration: hop.rest - 0.16 }); // the landing took 0.16s of it
+          if (hop.rest > 0.16) tl!.to({}, { duration: hop.rest - 0.16 });
         });
-        // the run: low quick bounds at an even pace, then it sits up at the end
         const run = (end - x) / (RUN_SPEED * r);
         if (run > 0.05) {
           const strides = Math.max(1, Math.round(run / STRIDE));
@@ -189,8 +152,6 @@ export default function CtaSquirrel() {
               "run",
             );
         }
-        // at the end it sits up: the whole squirrel levels out onto its feet while the body changes
-        // into the sitting squirrel, and the tail swings down onto its rump a beat behind and settles
         tl.addLabel("sit", "-=0.06")
           .to(el, { rotation: 0, y: -(FEET - BOX.y) * unit, duration: 0.36, ease: "power2.inOut" }, "sit")
           .to(body, { morphSVG: SITTING, duration: 0.6, ease: "power2.inOut" }, "sit+=0.04")
@@ -202,8 +163,6 @@ export default function CtaSquirrel() {
           .to(el, { scaleY: 1, scaleX: 1, duration: 0.26, ease: "power3.out" }, "sit+=0.7");
       });
 
-      // leaps away up and right from wherever it is, stretching out, and is gone; with `again`, while
-      // the pointer is still on the button, it comes back round
       const leave = contextSafe((again = false) => {
         if (state !== "on") return;
         state = "away";
@@ -224,7 +183,6 @@ export default function CtaSquirrel() {
           .to(el, { scaleY: 0.88, scaleX: 1.06, duration: 0.08, ease: "power2.out" })
           .addLabel("leap")
           .to(el, { scaleY: 1.08, scaleX: 0.94, rotation: TILT_LEAP, duration: 0.16, ease: "power2.out" }, "leap")
-          // a sitting squirrel stretches back out as it goes
           .to(el.querySelector(".a02-squirrel-body"), { morphSVG: BODY, duration: 0.22, ease: "power2.out" }, "leap")
           .to(el.querySelector(".a02-squirrel-eye"), { attr: EYE.run, duration: 0.22, ease: "power2.out" }, "leap")
           .to(el.querySelector(".a02-squirrel-arm"), { opacity: 0, duration: 0.12, ease: "sine.out" }, "leap")
@@ -242,7 +200,6 @@ export default function CtaSquirrel() {
           .to(el, { opacity: 0, duration: 0.3, ease: "power1.out" }, `leap+=${LEAP - 0.3}`);
       });
 
-      // a plain click lets it fly first, then opens the map; a click to a new tab or window goes at once
       const click = contextSafe((e: MouseEvent) => {
         if (state !== "on" || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
         e.preventDefault();
@@ -251,7 +208,6 @@ export default function CtaSquirrel() {
         if (href) gsap.delayedCall((0.08 + OPEN_AFTER) / SPEED, () => router.push(href));
       });
 
-      // a mouse or pen brings it on and sends it off; a finger only taps, and the tap is the click
       const over = (e: PointerEvent) => {
         if (e.pointerType === "touch" || !fine.matches) return;
         hovering = true;
@@ -264,8 +220,6 @@ export default function CtaSquirrel() {
         leave();
       };
 
-      // A touch screen: it comes as the page lands (a0-open, set by components/WelcomeLogo.tsx),
-      // once the button has arrived. If the opening is scrolled back up before the end, it goes.
       const stage = button.closest(".a0s");
       let landing: gsap.core.Tween | null = null;
       const watch = new MutationObserver(() => {
@@ -309,16 +263,16 @@ export default function CtaSquirrel() {
     <span ref={ref} className="a02-squirrel" aria-hidden="true">
       <svg viewBox="684 51 78 92">
         <defs>
-          {/* the button's fill, laid across the squirrel the same way */}
+          {}
           <linearGradient id="a02-squirrel-fill" gradientUnits="userSpaceOnUse" x1="684" y1="51" x2="762" y2="143">
             <stop offset="0" style={{ stopColor: "var(--color-primary)" }} />
             <stop offset="1" style={{ stopColor: "var(--color-primary-deep)" }} />
           </linearGradient>
-          {/* the eye, a hole through the squirrel */}
+          {}
           <mask id="a02-squirrel-eye" maskUnits="userSpaceOnUse" x="600" y="0" width="300" height="250">
             <rect x="600" y="0" width="300" height="250" fill="#fff" />
             <circle className="a02-squirrel-eye" cx={EYE.run.cx} cy={EYE.run.cy} r={EYE_R} fill="#000" />
-            {/* the arm and haunch line of the sitting squirrel, shown only while it sits */}
+            {}
             <path
               className="a02-squirrel-arm"
               d={ARM.sit}

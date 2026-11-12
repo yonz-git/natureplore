@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SavedOrganisms } from "@/components/SavedPages";
 
-// E4 · Saved organisms, with Edit and a row that opens in place.
+// E4 · Saved organisms
 
 export const metadata: Metadata = { title: "Saved organisms" };
 

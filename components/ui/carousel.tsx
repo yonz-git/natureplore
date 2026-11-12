@@ -1,9 +1,5 @@
 "use client"
 
-// shadcn/ui Carousel (Embla), in Natureplore's look: previous and next are the round glass buttons with the
-// app's back and chevron icons, placed by the caller (no fixed offsets), and dimmed at an end as every disabled
-// control is (docs/design.md, States). Layout and motion: app/ui.css.
-
 import * as React from "react"
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
@@ -98,7 +94,6 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
-    // the first read on the next frame, not inside the effect itself (react-hooks/set-state-in-effect)
     const first = requestAnimationFrame(() => onSelect(api))
     api.on("reInit", onSelect)
     api.on("select", onSelect)

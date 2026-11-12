@@ -1,11 +1,7 @@
 import { GRUMSIN_LINE, LINUM_LINE, TEGEL_LINE, TEMPELHOF_LINE } from "@/lib/route-lines";
 
-// The routes and their spots, for B1, the route page. The suggestion cards on A5 and A4 and search
-// read lib/suggestions.ts, which follows the flow and IA redesign.
-
 export type Group = "plants" | "herbs" | "mushrooms" | "birds" | "mammals";
 
-/** The fixed order of the organism pills on every card. */
 export const GROUPS: { id: Group; label: string }[] = [
   { id: "plants", label: "Plants" },
   { id: "herbs", label: "Herbs" },
@@ -16,7 +12,6 @@ export const GROUPS: { id: Group; label: string }[] = [
 
 export type Counts = Partial<Record<Group, number>>;
 
-/** What is notable this season, the chips on A4. */
 export const SEASON = [
   { id: "fungi", label: "Autumn fungi" },
   { id: "meadow", label: "Late meadow flowers" },
@@ -27,36 +22,24 @@ export type SeasonId = (typeof SEASON)[number]["id"];
 export type Route = {
   id: string;
   name: string;
-  /** the second line on the rich card: the shape of the route and where it is */
   where: string;
-  /** the one line on the compact card, with the distance and time written out */
   line: string;
   km: string;
   time: string;
   spots: number;
   counts: Counts;
   season: SeasonId[];
-  /** the start of the route, where its pin sits on the map */
   lat: number;
   lon: number;
   image?: string;
-  /** the card's line on B1: the habitat, the spots and how much is recorded along it */
   summary: string;
-  /** what is worth seeing on it now, and the organism it is about when there is a page for it */
   notable: { text: string; organism?: string };
-  /** B1: where it starts, a few plain sentences about it, and its spots in walking order */
   from: string;
   description: string;
-  /** `left` puts the name on the left of its marker, where the right would cover the line */
   stops: { name: string; note: string; left?: boolean }[];
-  /** where each spot sits along the line, 0 at the start and 1 at the finish, when it is not evenly spaced */
   marks?: number[];
-  /** counts: how many species of each group GBIF has recorded within 250 m of the line, 2016 to 2025
-      (.design/gbif/counts.py), for the built routes; the sample cards keep their sample counts */
-  /** the real line, when it is mapped (lib/route-lines.ts), and the detail map drawn under it */
   path?: [number, number][];
   detail?: string;
-  /** one way: the line ends somewhere else, so the flag at its start reads Start, not Start and finish */
   oneWay?: boolean;
 };
 
@@ -183,13 +166,8 @@ export const ROUTES: Route[] = [
   },
 ];
 
-/** A route by its id, for B1. */
 export const routeById = (id: string) => ROUTES.find((r) => r.id === id);
 
-/**
- * The spots along a route, for its pins on B1: set around the start in walking order. The
- * prototype has no route geometry yet, so they sit on a loop about three kilometres across.
- */
 export function spotsOf(route: Route) {
   if (route.path) return spotsOnPath(route.path, route.spots, route.marks);
   return Array.from({ length: route.spots }, (_, i) => {
@@ -198,7 +176,6 @@ export function spotsOf(route: Route) {
   });
 }
 
-// spots spread along the real line at even distances, clear of the start
 function spotsOnPath(path: [number, number][], count: number, given?: number[]) {
   const len = (a: [number, number], b: [number, number]) =>
     Math.hypot(a[0] - b[0], (a[1] - b[1]) * Math.cos((a[0] * Math.PI) / 180));
@@ -212,13 +189,10 @@ function spotsOnPath(path: [number, number][], count: number, given?: number[]) 
     const k = (t - cum[i - 1]) / Math.max(1e-12, cum[i] - cum[i - 1]);
     return { lat: path[i - 1][0] + k * (path[i][0] - path[i - 1][0]), lon: path[i - 1][1] + k * (path[i][1] - path[i - 1][1]) };
   };
-  // the same places the B1 boards put them
   const marks = given ?? (count === 6 ? [0.1, 0.25, 0.4, 0.55, 0.72, 0.88] : Array.from({ length: count }, (_, i) => (i + 1) / (count + 1)));
   return marks.map((f, i) => ({ n: i + 1, ...at(f) }));
 }
 
-/** The total of what is recorded along a route. */
 export const recordsOf = (c: Counts) => Object.values(c).reduce((a, b) => a + (b ?? 0), 0);
 
-/** Where the person is when they share their location: Tempelhof, as on the boards. */
 export const HERE = { lat: 52.512, lon: 13.355 };

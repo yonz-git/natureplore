@@ -1,14 +1,5 @@
 "use client";
 
-// The claim card (flow and IA redesign §2): the claim with its site and publisher, then its first
-// action printed on it. The claim opens its page (C1a, C1b, C6); the action line opens the action
-// (C3, C5). An action with no page of its own, C6's "Stay on the boardwalk", is plain text.
-// Used on B1, the spots (L3), the walk (L4) and the crane (B4). Both links remember the page they
-// were opened from, so the claim and the action go back to it. Each claim carries a photograph of
-// the kind of ground it is about (lib/photos.ts), decorative, so the card reads the same without it.
-// On the route's own card (spots), a claim seen at particular spots of the route shows them under
-// the source, behind a pin, as the in-season tiles do; elsewhere the numbers would mean nothing.
-
 import Link from "next/link";
 
 import { ChevronIcon } from "@/components/Icons";

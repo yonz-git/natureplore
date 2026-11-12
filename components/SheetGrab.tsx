@@ -1,36 +1,19 @@
 "use client";
 
-// The handle on a phone sheet, made real (A5 and B1). The sheet has three places: down, only its
-// head showing above the tab bar so the map has the screen; resting part way down, under the map,
-// where it starts; and open, just under the top controls. Dragging the handle moves it a place up or
-// down, tapping it (or Enter and Space, since it is a button) opens it from resting and brings it
-// back from open or down, and scrolling the list opens it first so the list gets the whole screen. A
-// pull down on the list, once it is at its top, moves the sheet a place down too. From 64rem the
-// list is a panel and there is no handle.
-// The sheet moves by its own transform, never an ancestor's, so its frost stays on: its top jumps
-// to the new height, then it slides from where it was, as the A5 list-and-map switch does.
-
 import { type RefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
 
-// the sheet moves only where it is a sheet: from the tablet up it docks as a panel beside the map
 const phone = () => !matchMedia("(min-width: 64rem), (min-width: 35.75rem) and (min-height: 36rem)").matches;
 const still = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/** 0 down, 1 resting, 2 open */
 type Place = 0 | 1 | 2;
 const clamp = (n: number) => Math.max(0, Math.min(2, n)) as Place;
-/** past where the sheet can go, it follows the finger at a third of the distance */
 const follow = (dy: number, at: Place) => ((at === 2 && dy < 0) || (at === 0 && dy > 0) ? dy / 3 : dy);
 
-// The sheet runs from its top to the screen's bottom edge, so moved up by a transform its bottom edge
-// would lift off the screen and show the map under it. Moved up, it grows below by as much (a
-// negative bottom margin on an absolute box adds to its height), so it always reaches the bottom.
 const shift = (el: HTMLElement, dy: number) => {
   el.style.transform = dy ? `translateY(${dy}px)` : "";
   el.style.marginBottom = dy < 0 ? `${dy}px` : "";
 };
 const sliding = new WeakMap<HTMLElement, Animation>();
-/** Slides the sheet from dy above or below where it sits back into place, still reaching the bottom. */
 const settle = (el: HTMLElement, dy: number, duration: number) => {
   sliding.get(el)?.cancel();
   shift(el, 0);
@@ -51,10 +34,8 @@ const settle = (el: HTMLElement, dy: number, duration: number) => {
 export function useSheet(ref: RefObject<HTMLElement | null>, enabled = true) {
   const [wanted, setWanted] = useState<Place>(1);
   const place: Place = enabled ? wanted : 1;
-  // where the sheet was on screen before it changed height, so it can slide from there
   const from = useRef<number | null>(null);
   const drag = useRef<{ y: number; dy: number; moved: boolean } | null>(null);
-  // how far a drag, by the handle or a pull on the list, has moved the sheet from where it sits
   const lifted = useRef(0);
   const skipClick = useRef(false);
 
@@ -72,7 +53,6 @@ export function useSheet(ref: RefObject<HTMLElement | null>, enabled = true) {
     if (!el) return;
     el.classList.remove("is-lifting");
     if (next === place) {
-      // a drag that did not go far enough: back to where the sheet is
       settle(el, lifted.current, 240);
       lifted.current = 0;
       return;
@@ -83,7 +63,6 @@ export function useSheet(ref: RefObject<HTMLElement | null>, enabled = true) {
     setWanted(next);
   };
 
-  // the touch code below runs outside React's render, so it reads the latest place and setter here
   const placeRef = useRef(place);
   const setRef = useRef(set);
   useLayoutEffect(() => {
@@ -91,8 +70,6 @@ export function useSheet(ref: RefObject<HTMLElement | null>, enabled = true) {
     setRef.current = set;
   });
 
-  // a pull down on the list itself, once it is scrolled to its top, drags the whole sheet down, as the
-  // handle does: past a short pull it goes a place down, short of that it springs back
   useEffect(() => {
     const el = ref.current;
     if (!el || !enabled) return;
@@ -103,7 +80,6 @@ export function useSheet(ref: RefObject<HTMLElement | null>, enabled = true) {
     const move = (e: TouchEvent) => {
       if (!t) return;
       const dy = e.touches[0].clientY - t.y;
-      // only a pull down from the top moves the sheet; anything else is the list scrolling
       if (!t.on && (dy <= 4 || el.scrollTop > 0)) {
         if (dy < 0) t = null;
         return;
@@ -130,7 +106,6 @@ export function useSheet(ref: RefObject<HTMLElement | null>, enabled = true) {
     };
   }, [ref, enabled]);
 
-  /** Scrolling the list opens the sheet first. */
   const onScroll = () => {
     const el = ref.current;
     if (enabled && place !== 2 && el && el.scrollTop > 8 && phone()) set(2);
@@ -158,7 +133,6 @@ export function useSheet(ref: RefObject<HTMLElement | null>, enabled = true) {
           d.dy = follow(dy, place);
           lifted.current = d.dy;
           shift(el, d.dy);
-          // pulled up from down, what is in the sheet comes back as it rises, not after it lands
           el.classList.toggle("is-lifting", place === 0 && d.dy < -4);
         }}
         onPointerUp={() => {

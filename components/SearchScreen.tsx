@@ -1,11 +1,6 @@
 "use client";
 
-// A2 · Search, regions and organisms, and A3 · Search, no match. The map searches for a place or an
-// organism, not a route: the results follow the field as it is typed in, grouped Regions then
-// Organisms. A mapped region opens its suggestions, where Routes or Organisms filters the list; an
-// organism with a page opens it, the others are plain text in the prototype. A miss names the query, offers what it probably meant and says
-// where routes are mapped. On the phone search takes the screen over a darkened map; from 64rem it
-// happens inside the same panel as the suggestions. Boards: A2 and A3, phone, tablet and desktop.
+// A2, A3 · Search
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -45,7 +40,6 @@ const disc = (icon: React.ReactNode) => <span className="row-disc">{icon}</span>
 
 export default function SearchScreen({ query }: { query: string }) {
   const [q, setQ] = useState(query);
-  // from 64rem the field and its back control sit at the top of the screen, centred, as on A5
   const desk = useIsDesktop();
   const found = useMemo(() => search(q), [q]);
   const miss = q.trim() !== "" && found.regions.length === 0 && found.organisms.length === 0;
@@ -68,7 +62,7 @@ export default function SearchScreen({ query }: { query: string }) {
       {desk && <div className="ms-search-top">{bar}</div>}
 
       <div className="ms-panel glass-desk">
-        {/* A3 has its own heading, the no-match line */}
+        {}
         {!miss && <h1 className="sr-only">Search regions and organisms</h1>}
         {!desk && <div className="ms-bar">{bar}</div>}
 

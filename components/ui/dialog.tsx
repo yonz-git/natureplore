@@ -1,10 +1,5 @@
 "use client"
 
-// shadcn/ui Dialog (Radix), in Natureplore's look: the veil is the forest scrim, the close control the round
-// glass button with the app's close icon, and the motion lives in app/ui.css, eased in and out. The content box
-// itself never animates opacity or transform, since that would switch off the frost of the glass inside it
-// (prototype CLAUDE.md); each layer animates on its own, and the box only holds the dialog open while they leave.
-
 import * as React from "react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 

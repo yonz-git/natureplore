@@ -1,11 +1,3 @@
-/* Flow B after the flow and IA redesign: the route (B1, B1-saved), the spots (L3), the walk (L4)
-   and the organism (B4, B4-walk). The shared pieces come first, the spot block, the claim card,
-   the action row and the rows, because the same element reads the same on every screen. The
-   screen shell, the panel and the buttons are in app/map.css; the organism page is
-   app/organism.css. Phone first, the panel from 64rem. Glass is app/glass.css. */
-
-/* ── the shared pieces ─────────────────────────────────────────────────────────────────────── */
-
 .fb-card {
   margin: 0;
   padding: 1.25rem;
@@ -22,27 +14,16 @@
 .fb-label { font-size: var(--text-body-lg); line-height: 1.15; font-weight: 500; color: var(--color-mist); }
 .fb-placeholder { font-size: var(--text-body-lg); line-height: 1.15; font-weight: 300; color: var(--color-on-ground-soft); }
 
-/* the spot marker, larger at the head of a spot block */
 .fb-mark.is-lg { --mark: 2.25rem; font-size: var(--text-lead); }
-/* in the spots list the marker sits on the plain sheet, not the map, so the
-   double ring that lifts it off busy map lines is dropped for a 3px lime halo, as on the welcome's
-   stops, and it is 15% smaller */
 .fb-row .spot-mark { --mark: 1.71rem; font-size: calc(var(--text-count) * 1.35 * 0.855); box-shadow: 0 0 0 0.1875rem rgb(from var(--color-primary) r g b / 0.2), 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
-/* a spot in season this month: the lime disc with a 60% halo */
 .fb-spot-row:not(.is-out) .fb-row .spot-mark { box-shadow: 0 0 0 0.1875rem rgb(from var(--color-primary) r g b / 0.6), 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
-/* a spot out of season keeps the same size, disc and halo, in a muted solid olive: the lime mixed
-   60% into the forest, so nothing behind it shows through */
 .fb-spot-row.is-out .fb-row .spot-mark { background: color-mix(in srgb, var(--color-primary) 60%, var(--color-ground)); box-shadow: 0 0 0 0.1875rem color-mix(in srgb, color-mix(in srgb, var(--color-primary) 60%, var(--color-ground)) 60%, transparent), 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
 
-/* the spots list as a walk: each marker sits on a dashed line that runs from spot to spot down to the
-   finish, with how far along the route it is under it. The line does the joining, so these rows have no
-   rules between them. */
 .fb-rows:has(.fb-at) li + li { border-top: 0; }
 .fb-at {
   flex-shrink: 0;
   align-self: stretch;
   width: 3rem;
-  /* the column reaches through the row's own padding, so the line meets the next row's */
   margin-block: -0.875rem;
   display: flex;
   flex-direction: column;
@@ -60,12 +41,9 @@
 .fb-rows > li:first-child .fb-at::before,
 .fb-spot-end .fb-at::after { visibility: hidden; }
 .fb-at-km { font-size: 1.02rem; line-height: 1.2; font-weight: 300; white-space: nowrap; color: var(--color-on-ground-soft); }
-/* the finish: the map's start flag, a light disc with the dark flag on it. No padding: the spot mark's
-   padding centres a digit on its cap height, and left on the flag it pushed the drawing 2px low */
 .fb-row .fb-mark-end { display: grid; place-items: center; padding-block: 0; background: var(--color-on-ground); color: var(--color-ground); box-shadow: 0 0.375rem 1rem rgb(6 18 9 / 0.35); }
 .fb-spot-end .fb-row { min-height: 0; }
 
-/* a heading with its closing words in the lime of the titles */
 .fb-sec { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem; scroll-margin-top: 1rem; }
 .fb-sec h2 {
   margin: 0;
@@ -85,7 +63,6 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* a row that opens something: the spot marker, two lines, what it carries, the chevron */
 .fb-rows { padding: 0.25rem 1.25rem; list-style: none; }
 .fb-rows li + li { border-top: 1px solid var(--color-divider); }
 .fb-row {
@@ -106,7 +83,6 @@ a.fb-row:active { transform: scale(0.985); }
 .fb-row > svg:last-child { flex-shrink: 0; color: var(--color-on-ground-soft); }
 .fb-row-text .fb-pill { align-self: flex-start; margin-top: 0.3375rem; }
 
-/* a label pill: outline only, never lime, because it is not a control */
 .fb-pill {
   flex-shrink: 0;
   height: 1.75rem;
@@ -116,7 +92,6 @@ a.fb-row:active { transform: scale(0.985); }
   align-items: center;
   gap: 0.375rem;
   border-radius: var(--radius-pill);
-  /* not a control: an outline only */
   border: 1px solid var(--color-inner-edge);
   font-size: var(--text-body-lg);
   font-weight: 400;
@@ -125,20 +100,12 @@ a.fb-row:active { transform: scale(0.985); }
 }
 .fb-pill svg { color: var(--color-mist); }
 .fb-pill.is-none { color: var(--color-on-ground-soft); }
-/* the legend under the proportion bar: each group's own icon in its bar colour, then its count */
-/* the group icons in every pill row take their group's colour: B1's legend, its in-season list, its year chart and the organism pills on the cards */
 :is(.fb-legend, .pill-org, .fb-in-season-tile, .fb-heat) .group-icon.is-plants { color: var(--color-group-plants); }
 :is(.fb-legend, .pill-org, .fb-in-season-tile, .fb-heat) .group-icon.is-herbs { color: var(--color-group-herbs); }
 :is(.fb-legend, .pill-org, .fb-in-season-tile, .fb-heat) .group-icon.is-mushrooms { color: var(--color-group-mushrooms); }
 :is(.fb-legend, .pill-org, .fb-in-season-tile, .fb-heat) .group-icon.is-birds { color: var(--color-group-birds); }
 :is(.fb-legend, .pill-org, .fb-in-season-tile, .fb-heat) .group-icon.is-mammals { color: var(--color-group-mammals); }
-/* centred on the ink, not the boxes: 10 from the pill's edge to the icon's drawing on the left and
-   to the last figure on the right, the figures trimmed to their cap height so they sit on the
-   pill's middle, and each icon's own empty margin inside its 24 box cancelled, measured per icon */
 .fb-legend .fb-pill { padding: 0 0.625rem; }
-/* the legend's pills are filters for the in-season tiles: a picked group in the route chips' dark forest
-   green (.fb-strip a[aria-current]), with a brighter rim; a group with nothing this month cannot be picked.
-   The green and the hover wash are layers in one shadow list, so both fade */
 .fb-legend button.fb-pill {
   position: relative;
   background: none;
@@ -148,13 +115,8 @@ a.fb-row:active { transform: scale(0.985); }
   box-shadow: inset 0 0 0 10rem rgb(from var(--color-picked) r g b / 0), inset 0 0 0 10rem rgb(255 255 255 / 0);
   transition: transform 160ms var(--ease-out), box-shadow 480ms var(--ease-move), border-color 480ms var(--ease-move);
 }
-/* 28 tall, 44 to touch */
 .fb-legend button.fb-pill::before { content: ""; position: absolute; inset: -0.5rem 0; }
 .fb-legend button.fb-pill:active { transform: scale(0.97); }
-/* the same system as the map's group toggles (.sg-group, app/flow-a.css): picked, the dark forest green at 55%
-   and a 0.5px ring in the group's own colour, in the colour of its word for All; the pills 0.25rem apart.
-   The ring is half the 1px edge, so the padding takes the difference back and a pill is as wide picked
-   as not. */
 .fb-legend button.fb-pill { --ring: currentColor; }
 .fb-legend button.fb-pill.is-plants { --ring: var(--color-group-plants); }
 .fb-legend button.fb-pill.is-herbs { --ring: var(--color-group-herbs); }
@@ -173,17 +135,13 @@ a.fb-row:active { transform: scale(0.985); }
     box-shadow: inset 0 0 0 10rem rgb(from var(--color-picked) r g b / 0), inset 0 0 0 10rem rgb(255 255 255 / 0.08);
   }
 }
-/* the tiles a pick leaves rise in */
 @media (prefers-reduced-motion: no-preference) {
   .fb-org-tiles > li { animation: fb-tile-in 420ms var(--ease-out) backwards; }
 }
 @keyframes fb-tile-in {
   from { opacity: 0; translate: 0 0.75rem; }
 }
-/* the count in the organism pills' size and weight (.pill-org b, app/map.css) */
-/* trimmed to the caps, the figures still rendered 0.5px low (measured at 4x): lifted that much */
 .fb-legend-num { display: block; position: relative; top: -0.5px; text-box: trim-both cap alphabetic; font-size: var(--text-stat-label); font-weight: var(--text-pill-count--font-weight); font-variant-numeric: tabular-nums; }
-/* the last figure's own right side bearing, so the ink, not the advance, ends 10 from the edge */
 .fb-legend-num[data-last="0"] { margin-right: -0.0577em; }
 .fb-legend-num[data-last="1"] { margin-right: -0.0891em; }
 .fb-legend-num[data-last="2"] { margin-right: -0.0378em; }
@@ -200,7 +158,6 @@ a.fb-row:active { transform: scale(0.985); }
 .fb-legend .group-icon.is-birds { margin: 0 0.0306rem 0 0.0219rem; translate: 0 -0.015rem; }
 .fb-legend .group-icon.is-mammals { margin: 0 -0.00625rem; }
 
-/* the claim card: the claim opens its page, the line under it opens the first action */
 .fb-claim {
   display: flex;
   flex-direction: column;
@@ -209,8 +166,6 @@ a.fb-row:active { transform: scale(0.985); }
   border: 0.5px solid var(--color-inner-edge);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
 }
-/* the card's width less its 0.75rem inset: stretched, as .sug-photo starts aligned and would take the file's own width;
-   its height 70% of that width at every size */
 .fb-claim-photo { align-self: stretch; width: auto; aspect-ratio: 10 / 7; margin: 0.75rem 0.75rem 0; }
 .fb-claim-photo + .fb-claim-open { padding-top: 1rem; }
 .fb-claim-open,
@@ -243,8 +198,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
 }
 .fb-claim-act > span:first-child { flex-grow: 1; }
 
-
-/* the action row: a marked callout, what not to do here (or what to do), the line, and why */
 .fb-rule { display: flex; flex-direction: column; gap: 0.50625rem; }
 .fb-callout {
   padding: 1rem;
@@ -272,7 +225,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-rule-line { font-size: var(--text-body-lg); line-height: 1.15; font-weight: 500; text-wrap: pretty; }
 .fb-rule-why { font-size: var(--text-body-lg); line-height: 1.15; font-weight: 300; color: var(--color-on-ground-soft); text-wrap: pretty; }
 
-/* the spot block: solid, not glass, the same on the spot page and as the walk sheet */
 .fb-spot {
   padding: 1.5rem 1.25rem 1.25rem;
   box-sizing: border-box;
@@ -283,7 +235,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
   background: var(--color-glass-solid);
   border: 1px solid var(--color-glass-edge);
 }
-/* the number and the name read as one: the marker sits centred on the two lines beside it */
 .fb-spot-head { display: flex; align-items: center; gap: 1rem; }
 .fb-spot-head > div { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.16875rem; font-size: var(--text-body-lg); line-height: 1.15; }
 .fb-spot .fb-spot-title {
@@ -298,7 +249,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-out { margin: 0; font-size: var(--text-body-lg); line-height: 1.15; }
 .fb-look { display: flex; flex-direction: column; gap: 0.84375rem; }
 .fb-look ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.675rem; }
-/* what to look for: the organism, its photograph, what it is doing and when it was last seen */
 .fb-look-row {
   min-height: 2.75rem;
   padding: 0.625rem 0.875rem 0.625rem 0.625rem;
@@ -331,11 +281,8 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-look-link:active { transform: scale(0.985); }
 .fb-look-link > svg { flex-shrink: 0; color: var(--color-on-ground-soft); }
 
-/* previous and next: buttons, not swipes */
 .fb-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; }
 
-/* the walk: the way on names the next spot and fills the row; the spot before is a round control.
-   At either end the button stays, dashed, and does nothing. */
 .fb-nav.walk-nav { display: flex; gap: 0.625rem; }
 .fb-nav .fb-nav-prev[aria-disabled="true"],
 .fb-nav .fb-nav-next[aria-disabled="true"] { color: var(--color-on-ground-soft); background: none; border-style: dashed; box-shadow: none; cursor: default; }
@@ -372,21 +319,13 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-nav-prev:active,
 .fb-nav-next:active { transform: scale(0.97); }
 
-/* ── B1 ────────────────────────────────────────────────────────────────────────────────────── */
-
 .b1 .ms-sheet { padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); scroll-padding-bottom: calc(var(--spacing-tabbar-clearance) + 5rem); }
 .b1 .ms-sheet > section { flex-shrink: 0; display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
 
-/* a hairline between the route's head and the section chips: 2.5rem over it, 1.25rem from it to the
-   chips (the sheet's gap plus the strip's 0.75rem top padding, taken back here) */
 .b1-rule { flex-shrink: 0; width: 100%; margin: 1.25rem 0 -0.75rem; border: 0; border-top: 1px solid var(--color-divider); }
 
-/* jump to a section: chips that scroll sideways, bleeding to the sheet's edges. It stays at the top
-   of the sheet as the sections scroll under it, with no band behind the chips; a section it jumps to
-   lands just under it */
 .fb-strip {
   position: sticky;
-  /* stuck, the chips sit at the top edge of the sheet's scroll area, the strip's top padding above it */
   top: -0.75rem;
   z-index: 2;
   flex-shrink: 0;
@@ -398,61 +337,41 @@ a.fb-claim-act:active { transform: scale(0.985); }
   scrollbar-width: none;
 }
 .fb-strip::-webkit-scrollbar { display: none; }
-/* the chips to the first section's title, measured by the title's ink: the same 2.5rem as the facts card
-   above the rule is from the rule. The strip's padding (1rem) and the sheet's gap (1.25rem) are part of
-   it, and the title's caps start 0.1725rem inside its box, so the section's margin takes the rest. */
 .b1 .ms-sheet > .fb-strip + section { margin-top: calc(2.5rem - 1rem - 1.25rem - 0.1725rem); }
-/* the chips stuck at the top of the sheet take the handle's place: the handle fades away while they are */
 .b1 .ms-sheet .ms-grab .ms-handle { transition: opacity 400ms var(--ease-move), background-color var(--hover-fade) var(--ease-hover); }
 .b1 .ms-sheet.is-pinned .ms-grab .ms-handle { opacity: 0; }
 .b1 .ms-sheet.is-pinned .ms-grab { pointer-events: none; }
-/* on the phone and tablet the stuck chips sit above the sheet's top fade (the grab's frost, z 5 in
-   app/map.css), or the fade would wash them out */
 @media (max-width: 63.99rem) { .fb-strip { z-index: 6; } }
-/* 96% of the 2.75rem chip, its padding and its type, so it scales with the reader's font size */
 .fb-strip a {
   position: relative;
   flex-shrink: 0;
   height: 2.64rem;
   padding: 0 0.96rem;
-  /* the label and its hidden bold twin share one cell, so the chip holds the bold width and the
-     label sits on the true centre */
   display: grid;
   place-items: center;
   border-radius: var(--radius-pill);
   background:
     linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%),
     var(--color-glass-fill);
-  /* a 1px edge with the fill stopped inside it, the same rim as the current chip's, so every chip
-     reads the same height */
   border: 1px solid var(--color-inner-edge);
   background-clip: padding-box;
-  /* the sections scroll under the chips with no band behind them, so each chip blurs what passes */
   backdrop-filter: blur(1.875rem) saturate(1.4);
   color: var(--color-on-ground);
   font-size: 1.152rem;
   line-height: 1;
   text-decoration: none;
-  /* the current chip's green is an inset fill over the glass, so moving it from chip to chip fades one
-     out as the next fades in, smoothly, instead of jumping */
   box-shadow: inset 0 0 0 10rem rgb(from var(--color-picked) r g b / 0);
   transition: transform 160ms var(--ease-out), box-shadow 480ms var(--ease-move), border-color 480ms var(--ease-move), color 480ms var(--ease-move);
 }
-/* the chip is 2.2rem, its tap area stays 2.75rem */
 .fb-strip a::before { content: ""; position: absolute; inset: -0.055rem 0; }
 .fb-strip a:active { transform: scale(0.97); }
-/* a section the route has nothing for: the chip stays as it is, only its label is muted */
 .fb-strip a[aria-disabled="true"] { opacity: 1; cursor: default; color: rgb(from var(--color-on-ground) r g b / 0.4); }
 .fb-strip a[aria-disabled="true"]:active { transform: none; }
-/* the current section's chip in the heavier weight; each chip holds that width so none nudges */
 .fb-strip a > span { grid-area: 1 / 1; }
 .fb-strip a::after { content: attr(data-text); grid-area: 1 / 1; visibility: hidden; font-weight: 500; }
-/* the current section's chip in the picked group toggle's dark forest green (app/flow-a.css) */
 .fb-strip a[aria-current] {
   font-weight: 500;
   box-shadow: inset 0 0 0 10rem rgb(from var(--color-picked) r g b / 0.72);
-  /* on the dark fill the shared 14% edge all but vanishes and the chip reads a pixel or two shorter:
-     a brighter rim keeps its outline as clear as the light chips' */
   border-color: rgb(255 255 255 / 0.3);
 }
 @media (prefers-reduced-transparency: reduce) {
@@ -460,24 +379,15 @@ a.fb-claim-act:active { transform: scale(0.985); }
   .fb-strip a[aria-current] { background: var(--color-ground); }
 }
 .fb-sec { scroll-margin-top: 4.5rem; }
-/* hidden behind the chips, fading in over the strip's bottom padding and 1rem below it; --cut is how
-   far the strip's foot runs into the block (components/RouteCardScreen.tsx) */
 :is(.fb-strip, .ln-stick) ~ * { mask-image: linear-gradient(to bottom, transparent calc(var(--cut, -100px) - 1rem), #000 calc(var(--cut, -100px) + 1rem)); }
 
-
 .fb-recorded { gap: 0.75rem; }
-/* the heading, bar and pills are one summary, held close; the tiles and the button below it stand apart */
 .fb-recorded .fb-in-season { margin-top: 0.75rem; }
 .fb-recorded .btn { margin-top: 0.75rem; width: auto; align-self: center; }
 .fb-legend { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.25rem; }
 
-
-/* when each group is active (components/YearChart.tsx): a heatmap, a row a group in its own colour, a column a
-   month, each cell in one of four shades of the row's colour against its busiest month, an empty month a faint
-   outline. This month's cells carry a light ring and its letter is bright. */
 .fb-heat { margin: 0; gap: 0.875rem; }
 .fb-heat table { table-layout: fixed; border-collapse: separate; border-spacing: 0.1875rem; margin: -0.1875rem; width: calc(100% + 0.375rem); }
-/* the rows are named by their icons alone: the column is the icon and a gap before the first month */
 .fb-heat thead td { width: 2rem; }
 .fb-heat thead th { padding-bottom: 0.125rem; font-size: 0.8rem; line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); text-align: center; }
 .fb-heat thead th.is-now { color: var(--color-on-ground); font-weight: 500; }
@@ -486,7 +396,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
   line-height: 1;
   text-align: left;
 }
-/* the group's icon in its colour names the row; the name itself is for screen readers and the tooltip */
 .fb-heat tbody th svg { display: block; }
 .fb-heat td { padding: 0; }
 .fb-heat tr.is-plants { --c: var(--color-group-plants); }
@@ -501,8 +410,6 @@ a.fb-claim-act:active { transform: scale(0.985); }
   background: color-mix(in oklab, var(--c, var(--color-on-ground)) var(--k), transparent);
   box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.12);
 }
-/* each square carries its count: sized to the square (52% of its width fits three digits), centred on the
-   digits' own height, light on the darker steps and dark on the two brightest, dim at zero */
 .fb-heat tbody .fb-heat-cell { container-type: inline-size; display: grid; place-items: center; }
 .fb-heat-n {
   font-size: 52cqi;
@@ -521,12 +428,9 @@ a.fb-claim-act:active { transform: scale(0.985); }
 .fb-heat-cell[data-step="3"] { --k: 74%; }
 .fb-heat-cell[data-step="4"] { --k: 100%; }
 .fb-heat td.is-now .fb-heat-cell { box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.12), 0 0 0 1.5px rgb(from var(--color-on-ground) r g b / 0.75); }
-/* the key: four steps of the plain ink, between its two words */
 .fb-heat figcaption { display: flex; align-items: center; gap: 0.5rem; font-size: var(--text-body-lg); line-height: 1; font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-heat-key { display: flex; gap: 0.1875rem; }
 .fb-heat-key .fb-heat-cell { width: 0.875rem; }
-/* the shades come in as the chart scrolls into view, each done once it is wholly on screen, so the
-   last rows finish even when the panel cannot scroll them any higher */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .fb-heat tbody .fb-heat-cell { animation: heat-in linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
@@ -535,47 +439,37 @@ a.fb-claim-act:active { transform: scale(0.985); }
 @keyframes heat-in { from { opacity: 0; scale: 0.6; } }
 
 .fb-facts { padding: 0.375rem 1.25rem; }
-/* label and value side by side; with large text the value drops under its label instead of running off */
-/* each label centred on its value, however many lines the value takes */
 .fb-facts > div { padding: 0.75rem 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.3375rem 0.75rem; }
 .fb-facts dt { flex: 0 0 7.5rem; }
 .fb-facts dd { flex: 1 1 10rem; min-width: 0; }
 .fb-facts > div + div { border-top: 1px solid var(--color-divider); }
 .fb-facts dt { font-size: var(--text-body-lg); line-height: 1.15; font-weight: 500; color: var(--color-on-ground-soft); }
-/* four stats, the route's shape the fourth, so each tile gives up some of its side padding */
 .b1-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .b1-stats .card-stat { padding-inline: 0.375rem; }
 .b1-stats dt, .b1-stats dd { white-space: nowrap; }
-/* phones under 390: the four tiles close up and their figures step down to fit 10.2 km on one line */
 @media (max-width: 24.37rem) {
   .b1-stats { gap: 0.375rem; }
   .b1-stats .card-stat { padding-inline: 0.25rem; }
   .b1-stats dd b, .b1-stats .b1-shape dd { font-size: 1.1rem; }
 }
-/* the shape icon as tall as the figures beside it, a value cut to cap height */
 .b1-shape dd { height: 1em; align-items: center; font-size: var(--text-lead); }
 .b1-shape svg { width: 1.15em; height: 1.15em; }
 .fb-facts dd { margin: 0; font-size: var(--text-body-lg); line-height: 1.15; }
 .b1-foot { margin-top: 0.5rem; }
 
-/* Walk the route, under the stats once saved */
 .b1-walk { animation: fade-in var(--enter) var(--ease-enter) backwards; }
-/* Walk the route and Use my location: the icon at 1.3rem, close to its label, in the medium weight */
 .btn.b1-walk,
 .btn.a1-locate { gap: 0.4rem; font-weight: 600; }
 .btn.b1-walk { align-self: center; }
-/* full width on a phone; wider screens hug the label, as every button does */
-@media (max-width: 29.99rem) { /* phone-max */
+@media (max-width: 29.99rem) {
   .btn.b1-walk { width: 100%; }
 }
-/* pinned over the tab bar on the phone after a removal: Undo */
 .b1-pin {
   position: absolute;
   left: 0.75rem;
   right: 0.75rem;
   bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
   z-index: 3;
-  /* the bar fits what it holds, centred: its button hugs the label, as on the desktop */
   width: fit-content;
   max-width: calc(100% - 1.5rem);
   margin-inline: auto;
@@ -585,14 +479,10 @@ a.fb-claim-act:active { transform: scale(0.985); }
   border-radius: var(--radius-pill);
 }
 .b1-pin .btn { animation: fade-in var(--enter) var(--ease-enter) backwards; }
-/* with large text a label wraps inside its button rather than running out of the bar */
 .b1-pin .btn { min-width: 0; flex-shrink: 1; height: auto; min-height: var(--spacing-button-height); padding-top: 0.5rem; padding-bottom: 0.5rem; white-space: normal; text-align: center; }
 .b1-removed { flex-grow: 1; margin: 0; padding: 0 0.75rem; align-self: center; font-size: var(--text-body-lg); line-height: 1.15; animation: fade-in var(--enter) var(--ease-enter) backwards; }
 .b1-pin .b1-undo { padding: 0 1.5rem; }
 
-/* ── L3, a spot, opened in place in B1's spots list ─────────────────────────────────────────── */
-
-/* the row is the toggle; the detail below it opens by its own height, its content fading in */
 button.fb-row {
   width: 100%;
   border: 0;
@@ -602,7 +492,6 @@ button.fb-row {
   cursor: pointer;
 }
 button.fb-row:active { transform: scale(0.985); }
-/* the chevron points down to open and turns up once open */
 .fb-spot-row .fb-row > svg:last-child { rotate: 90deg; transition: rotate 280ms var(--ease-out); }
 .fb-spot-row.is-open .fb-row > svg:last-child { rotate: -90deg; }
 .fb-spot-row { scroll-margin-top: 1rem; }
@@ -621,17 +510,10 @@ button.fb-row:active { transform: scale(0.985); }
   transition: opacity 200ms var(--ease-out);
 }
 .fb-spot-row.is-open .fb-spot-detail { grid-template-rows: 1fr; }
-/* the space under the detail is a margin inside it, so it folds away with the rest */
 .fb-spot-detail > div > :last-child { margin-bottom: 1.125rem; }
 .fb-spot-row.is-open .fb-spot-detail > div { opacity: 1; transition: opacity 280ms var(--ease-out) 80ms; }
 
-/* ── L4, the walk ──────────────────────────────────────────────────────────────────────────── */
-
-/* the map strip gives way to the spot: what to look for and what not to do show above Previous and
-   Next without scrolling, on a 375 × 667 phone too */
 .walk { --sheet-top: max(min(24rem, 100dvh - 31rem), var(--top-chrome) + 4rem); background: var(--color-ground); }
-/* the route's name is in the pill over the map, so the spot does not repeat it, and the block sits
-   a little closer, read at a glance rather than at length */
 .walk .fb-spot-head .fb-soft:last-child { display: none; }
 .walk .fb-spot { padding: 1.125rem 1.125rem 1rem; gap: 1rem; }
 .walk .walk-top {
@@ -659,15 +541,12 @@ button.fb-row:active { transform: scale(0.985); }
   font-size: var(--text-body-lg);
   line-height: 1;
 }
-/* End walk and locate sit together on the right, the title takes the left */
 .walk-end { margin-left: auto; }
 .walk-locate { flex-shrink: 0; }
-/* wraps rather than cutting the route name off, with large text */
 .walk-title { min-width: 0; height: auto; min-height: 2.75rem; padding-block: 0.625rem; line-height: 1.2; }
 .walk-end { flex-shrink: 0; padding: 0 1.125rem; font-size: var(--text-body-lg); font-weight: 500; text-decoration: none; transition: transform 160ms var(--ease-out); }
 .walk-end:active { transform: scale(0.97); }
 
-/* the sheet is solid ground, so it reads in daylight; everything in it may move */
 .walk .walk-sheet {
   padding: 1rem 1rem calc(2.5rem + env(safe-area-inset-bottom, 0px));
   gap: 0;
@@ -676,8 +555,6 @@ button.fb-row:active { transform: scale(0.985); }
   box-shadow: 0 -1.5rem 3.75rem rgb(6 18 9 / 0.35);
 }
 .walk-spot { display: flex; flex-direction: column; gap: 1rem; animation: sheet-in var(--enter) var(--ease-enter) backwards; }
-/* previous and next are pinned to the bottom of the sheet, in reach of the thumb, and stay mounted
-   from spot to spot so keyboard focus stays on them */
 .walk-bar {
   position: absolute;
   left: 0;
@@ -689,14 +566,12 @@ button.fb-row:active { transform: scale(0.985); }
   border-top: 1px solid var(--color-divider);
 }
 .walk .walk-sheet { padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px)); scroll-padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px)); }
-/* read outdoors: the walk's secondary lines are regular weight and full white */
 .walk .fb-rule-why,
 .walk .fb-spot-head .fb-soft { font-weight: 400; color: var(--color-on-ground); }
 .walk-nav .fb-nav-prev,
 .walk-nav .fb-nav-next { background: var(--color-field-shade); border: 1px solid var(--color-inner-edge); box-shadow: none; }
 .walk-nav .fb-nav-name { font-size: var(--text-body-lg); line-height: 1.15; }
 .walk-nav .fb-nav-kicker { font-weight: 400; color: var(--color-on-ground); }
-/* More about this spot: the same small secondary button as Discover more, 20% under the standard one */
 .btn.walk-toggle {
   align-self: center;
   min-height: calc(var(--spacing-button-height) * 0.8);
@@ -710,13 +585,8 @@ button.fb-row:active { transform: scale(0.985); }
 .walk .a1-here-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .walk .walk-top > * { animation: sheet-in var(--enter) var(--ease-enter) 40ms backwards; }
 
-/* ── from 64rem ────────────────────────────────────────────────────────────────────────────── */
-
 @media (min-width: 64rem) {
-  /* the route panel's content sits 1rem in on every side: the panel adds nothing of its own */
   .b1 .ms-panel { padding: 0; }
-  /* no tab bar under the panel here: the scroll keeps the panel's own 1rem at both ends, not the phone's
-     clearance, which also kept the year chart's last rows counted as off screen */
   .b1 .ms-sheet { padding: 1rem; scroll-padding-block: 1rem; }
   .fb-backlink {
     align-self: flex-start;
@@ -728,7 +598,6 @@ button.fb-row:active { transform: scale(0.985); }
     font-size: var(--text-body-lg);
     text-decoration: none;
   }
-  /* bleeds exactly the sheet's 1rem padding (above), no further, or the sheet scrolls sideways */
   .fb-strip { margin: 0 -1rem; padding: 0.75rem 1rem 1rem; }
   .b1-pin {
     position: static;
@@ -768,13 +637,9 @@ button.fb-row:active { transform: scale(0.985); }
   .fb-spot-row .fb-row > svg:last-child { transition: none; }
 }
 
-/* B1: what is in season along the route, under the group pills, in the Organisms list's rows */
 .fb-in-season { display: flex; flex-direction: column; }
 .fb-in-season .a8-rows { margin-top: 0.25rem; }
 .fb-in-season-tile { display: grid; place-items: center; }
-/* ten tiles in two columns: the photograph, square at the tile radius, with the name on its foot over a shade so it
-   reads on any photo; under it the group and Latin name and the records at 1rem, then the pin and the spots, all
-   starting at the name's 0.625rem inset */
 .fb-org-tiles { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 0.75rem; }
 .fb-org-tiles li { position: relative; min-width: 0; display: flex; flex-direction: column; }
 .fb-org-photo { position: relative; aspect-ratio: 1; border-radius: var(--radius-tile); overflow: hidden; border: 0.5px solid var(--color-inner-edge); background: var(--color-field-shade); }
@@ -791,29 +656,19 @@ button.fb-row:active { transform: scale(0.985); }
 }
 .fb-org-tiles small { margin-top: 0.5rem; padding-left: 0.625rem; font-size: 1rem; line-height: 1.15; font-weight: 300; color: var(--color-on-ground-soft); }
 .fb-org-tiles small + small { margin-top: 0; }
-/* the pin of the region line (app/flow-a.css .sg-pin), spaced as there, then the spots it was recorded near as
-   their marks at three quarters of the map's size; it rolls in and the ring opens once the line is on screen
-   (components/InSeasonList.tsx adds is-seen), until then both wait unseen. The same line on a claim card. */
 :is(.fb-org-tiles, .fb-claim, .a8-rows) small.fb-in-season-where { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.43rem; font-size: 1.125rem; line-height: 1.15; font-weight: 400; color: var(--color-on-ground); }
-/* beside the marks the pin stands 14 tall to their 24 (its drawing fills 0.754 of its box), centred on them */
 :is(.fb-org-tiles, .fb-claim, .a8-rows) .fb-in-season-where .sg-pin { --pin: calc(0.875rem / 0.754); top: -0.075rem; margin-left: -0.239rem; margin-right: 0.06rem; }
 .fb-org-spots { margin-left: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .fb-org-spots .spot-mark { --mark: 1.5rem; font-size: calc(var(--text-count) * 1.35 * 0.75); box-shadow: 0 0 0 0.125rem rgb(from var(--color-primary) r g b / 0.6); }
 .fb-in-season-where:not(.is-seen) :is(.sg-pin-icon, .sg-pin-ring) { animation: none; opacity: 0; }
-/* on the claim card, under the source lines as far as they stand apart, then the card's 1rem to the rule */
 .fb-claim-open:has(+ .fb-in-season-where) { padding-bottom: 0; }
 .fb-claim small.fb-in-season-where { margin: 0.5rem 1.25rem 1rem; }
 
-/* a whole organism tile or row opens its page: an empty link stretched over it */
 .org-link { position: absolute; inset: 0; border-radius: var(--radius-tile); }
 
-/* the foot of an organism page (components/OrganismSiblings.tsx): the rest of its group as the records page
-   lists them, then previous and next, each naming where it goes; previous mirrors next, its arrow first */
 .org-more { padding: 0 1.25rem; }
-/* each button fitted to its name, previous at the left edge and next at the right, never past half the row */
 .org-nav { margin-top: 1.5rem; display: flex; justify-content: space-between; }
 .org-nav .fb-nav-next { flex: 0 1 auto; max-width: calc(50% - 0.3125rem); }
 .org-nav .fb-nav-next.is-back { padding: 0.5rem 1.5rem 0.5rem 1.125rem; }
-/* next reads from the right, against its arrow */
 .org-nav .fb-nav-next:not(.is-back) .fb-nav-text { align-items: flex-end; text-align: right; }
 

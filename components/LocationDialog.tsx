@@ -1,10 +1,5 @@
 "use client";
 
-// The permission prompt, asked only after the person chooses to use their location. It stands in
-// for the one the platform shows, so it reads the way each platform's does: the system alert on the
-// phone, the browser's own prompt on the desktop. Allowing goes to A4, declining stays on A5.
-// Boards: "System location dialog over A5" and "Browser location prompt over A5, desktop".
-
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -18,7 +13,6 @@ export default function LocationDialog({
 }: {
   onAllow: () => void;
   onDecline: () => void;
-  /** Escape or a click beside it closes the prompt without answering it */
   onDismiss?: () => void;
 }) {
   const desktop = useIsDesktop();
@@ -33,7 +27,6 @@ export default function LocationDialog({
     return () => document.removeEventListener("keydown", onKey);
   }, [onDismiss, desktop]);
 
-  // The platform's own words, not ours: a phone asks for this once, a browser asks per site.
   const copy = desktop
     ? {
         title: "natureplore wants to know your location",
@@ -46,8 +39,6 @@ export default function LocationDialog({
         decline: "Don’t allow",
       };
 
-  // The prompt belongs to the whole window, not to the screen under it, so it is put on the body:
-  // a screen is a fixed layer, and a dialog left inside one would sit under the tab bar.
   return createPortal(
     <>
       <button type="button" className="dialog-scrim" aria-label="Close" tabIndex={-1} onClick={onDismiss} />
@@ -88,11 +79,6 @@ export default function LocationDialog({
   );
 }
 
-/**
- * Asking for the location from any screen: `ask` shows the prompt, allowing goes to A4 and
- * declining to `declineTo`, or leaves the screen as it is when there is none. Closing the prompt
- * without answering it stays where it was.
- */
 export function useLocationPrompt(declineTo?: string) {
   const router = useRouter();
   const [open, setOpen] = useState(false);

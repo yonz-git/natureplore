@@ -1,11 +1,5 @@
 "use client";
 
-// B1's Recorded organisms card, under the month's bar and pills: what GBIF has recorded along the route this month
-// (lib/records.ts), most records first, the first ten in two columns. Each tile is the photograph with the name
-// on its foot (the group icon on a tinted tile when there is no photograph), then the group and Latin name, the
-// records, and behind a pin the spots it was recorded within 300 m of, as their numbered marks, or the one spot
-// nearest its records when it was recorded near none (.design/gbif/build.py).
-
 import { useEffect, useRef, useState } from "react";
 
 import Link from "next/link";
@@ -20,7 +14,6 @@ import { groupWord } from "@/lib/suggestions";
 
 const FIRST = 10;
 
-/** `groups`, picked on the legend's pills above, keeps only those groups; none picked keeps every group */
 export function InSeasonList({ routeId, groups = [] }: { routeId: string; groups?: Group[] }) {
   const rows = recordedIn(routeId);
   if (!rows.length) return null;
@@ -28,8 +21,8 @@ export function InSeasonList({ routeId, groups = [] }: { routeId: string; groups
 
   return (
     <div className="fb-in-season">
-      {/* headed by "In season in <month>" at the top of the card (components/RouteCardScreen.tsx) */}
-      {/* a new pick redraws the tiles, so each rises in (app/flow-b.css) */}
+      {}
+      {}
       <ul key={groups.join()} className="fb-org-tiles" aria-labelledby="in-season-label" aria-live="polite">
         {shown.map((o) => {
           const photo = organismPhoto(o.name);
@@ -63,8 +56,6 @@ export function InSeasonList({ routeId, groups = [] }: { routeId: string; groups
   );
 }
 
-/** The region line's pin on its ground ring (SuggestionsScreen), then the spots as their numbered marks. The pin
- *  rolls in and the ring opens only once the line is on screen, and plays once. Also on the claim card. */
 export function Where({ spots }: { spots: number[] }) {
   const ref = useRef<HTMLElement>(null);
   const [seen, setSeen] = useState(false);

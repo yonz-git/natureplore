@@ -1,9 +1,5 @@
 "use client";
 
-// B1's photographs, opened large: the shadcn Dialog holding the shadcn Carousel (components/ui), one photo at a
-// time, whole and uncropped, with previous, "2 of 3" and next under it. It opens on the photo that was tapped,
-// loops at the ends, and steps with a swipe, the buttons or the arrow keys. Layout and motion: app/ui.css.
-
 import { type RefObject, useEffect, useState } from "react";
 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
@@ -11,7 +7,6 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 
 export type Photo = { src: string; alt: string };
 
-/** `at` is the photo to open on, or null while the gallery is closed; `opener` gets the focus back on close */
 export function PhotoGallery({
   photos,
   title,
@@ -27,7 +22,6 @@ export function PhotoGallery({
 }) {
   const [api, setApi] = useState<CarouselApi>();
   const [shown, setShown] = useState(0);
-  // the open photo, kept while the gallery fades out so it does not jump back to the first
   const [start, setStart] = useState(0);
   if (at !== null && at !== start) setStart(at);
 
@@ -46,13 +40,11 @@ export function PhotoGallery({
     <Dialog open={at !== null} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         className="gallery"
-        // the photos open from plain buttons, not a DialogTrigger, so the focus goes back to the one tapped by hand
         onCloseAutoFocus={(e) => {
           if (!opener?.current) return;
           e.preventDefault();
           opener.current.focus();
         }}
-        // the arrow keys step wherever the focus is in the gallery, not only on the photo
         onKeyDown={(e) => {
           if (e.key === "ArrowLeft") api?.scrollPrev();
           else if (e.key === "ArrowRight") api?.scrollNext();

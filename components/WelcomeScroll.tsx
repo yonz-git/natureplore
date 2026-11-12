@@ -5,20 +5,7 @@ import { useGSAP } from "@gsap/react";
 
 import { publishProgress } from "@/lib/welcome-progress";
 
-// The welcome page's scroll progress, 0 to 1, written as --a0-p on every element app/welcome.css scrubs
-// with it. The value chases the real scroll position instead of jumping to it, so a mouse wheel's steps
-// come out as one glide. The scrolling itself stays native.
-// It also grows the circle the photograph opens in (the lens and the photograph inside it): sizes
-// and timing are in app/welcome.css, this only sets three scales, through GSAP.
-// The circle opens where the reader is looking: on the frame it starts, the centre is moved to the
-// pointer, the same place components/WelcomeReveal.tsx has been showing the photograph through. The
-// centre is held there for the whole opening, so the circle grows rather than drifts, and it is given
-// back when the scroll returns to the top, ready for wherever the pointer is the next time.
-// Without a pointer, on a touch screen or a keyboard, the centre stays where app/welcome.css puts it.
-// The same progress goes to lib/welcome-progress.ts, where components/WelcomeLogo.tsx picks it up to
-// build the logo under the scroll.
-
-const SETTLE = 140; // ms, the time constant of the chase: about 95% of the way after three of these
+const SETTLE = 140;
 
 export default function WelcomeScroll() {
   useGSAP(() => {
@@ -35,17 +22,11 @@ export default function WelcomeScroll() {
     const from = num(lens, "--a0-s");
     const to = num(lens, "--a0-e");
 
-    // where the pointer is, kept as it moves; a touch says nothing about where someone is looking
     let pointer: { x: number; y: number } | null = null;
     const remember = (e: PointerEvent) => {
       if (e.pointerType !== "touch") pointer = { x: e.clientX, y: e.clientY };
     };
 
-    // The centre of the circle, in the stage's own pixels: taken on the frame it starts to open and
-    // held until the scroll is back at the top. The photograph is placed and counter-scaled around
-    // this same point, from here rather than from the CSS, because GSAP takes an element's translate
-    // into its own transform the first time it sets one: a translate left to a custom property would
-    // be read once and then never again, and the photograph would slide as the circle grew.
     const read = (name: string, of: number) => {
       const v = getComputedStyle(root).getPropertyValue(name).trim();
       return v.endsWith("%") ? (parseFloat(v) / 100) * of : parseFloat(v) || 0;
@@ -71,15 +52,13 @@ export default function WelcomeScroll() {
       gsap.set(root, { clearProps: "--a0-cx,--a0-cy" });
     };
 
-    // when the opening has played out the page stops being a scroller (app/welcome.css, a0-done):
-    // the circle is finished with, and what it left behind is its to clear
     const finish = () => {
       gsap.set([lens, photo], { clearProps: "transform,translate,rotate,scale" });
       for (const el of [lens, photo]) el.style.visibility = "";
     };
 
-    let shown = NaN; // nothing shown yet: the first frame goes straight to where the page is
-    let last = 0; // 0 while asleep: a frame that wakes the chase has no earlier frame to measure from
+    let shown = NaN;
+    let last = 0;
     let raf = 0;
     const frame = (now: number) => {
       if (root.classList.contains("a0-done")) return finish();
@@ -107,7 +86,6 @@ export default function WelcomeScroll() {
     const wake = () => {
       if (!raf) raf = requestAnimationFrame(frame);
     };
-    // the centre is in pixels, so a window that changes size has to have it again
     const remeasure = () => {
       if (centred) centre();
       wake();
