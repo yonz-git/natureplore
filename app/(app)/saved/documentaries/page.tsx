@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SavedDocs } from "@/components/SavedPages";
+import { SavedDocs } from "@/features/saved/SavedPages";
 
 // E5 · Saved documentaries
 

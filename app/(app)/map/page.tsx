@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import SuggestionsScreen from "@/components/SuggestionsScreen";
+import SuggestionsScreen from "@/features/map/SuggestionsScreen";
 
 // A5 · Suggestions
 

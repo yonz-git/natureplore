@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { YourActions } from "@/components/SavedPages";
+import { YourActions } from "@/features/saved/SavedPages";
 
 // E6 · Your actions
 

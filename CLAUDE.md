@@ -22,6 +22,23 @@ from. The rules that are easy to get wrong:
 - Writing style for anything a person reads: plain sentences, no em dashes,
   commas or colons instead.
 
+## Code layout
+
+```
+app/                 routes and global CSS, page.tsx files stay thin
+features/<flow>/     screens and parts one flow uses: welcome, map, learn,
+                     organisms, saved, walk
+components/shared/   pieces two or more flows use
+components/layout/   app chrome: Screen, TabBar, SheetGrab
+components/ui/       small building blocks: Icons, Logo, carousel, dialog
+lib/                 domain modules and data, used across flows
+```
+
+`app` imports `features`, and `features` import `components` and `lib`. Nothing in
+`components` or `lib` imports from `features`. A piece a second flow starts to
+use moves to `components/shared/`. Keep `lib/` where it is: `../.design/gbif/`
+writes into it, and the tests and `CONTEXT.md` point at it.
+
 ## Design rules that carry across every screen
 
 Run the `/impeccable` skill for design work, and keep these whatever the task is.
@@ -57,7 +74,7 @@ Run the `/impeccable` skill for design work, and keep these whatever the task is
   a React motion helper. Hero sequences, page transitions, SVG path animation,
   canvas or map state morphing and anything driven by the scroll: GSAP. The
   welcome is the pattern for the second kind (`lib/intro-timeline.ts`,
-  `components/WelcomeLogo.tsx`, `components/WelcomeScroll.tsx`): build a
+  `features/welcome/WelcomeLogo.tsx`, `features/welcome/WelcomeScroll.tsx`): build a
   timeline, hold it, drive it.
 - **In React, GSAP goes in `useGSAP`.** From `@gsap/react`, with `scope` set to
   the component's own ref where there is one, so every tween, timeline and

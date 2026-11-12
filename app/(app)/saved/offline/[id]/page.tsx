@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { OfflineRoute } from "@/components/SavedPages";
+import { OfflineRoute } from "@/features/saved/SavedPages";
 import { SUGGESTIONS } from "@/lib/suggestions";
 
 // E2 · One downloaded route

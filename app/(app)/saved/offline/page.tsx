@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { OfflineRoutes } from "@/components/SavedPages";
+import { OfflineRoutes } from "@/features/saved/SavedPages";
 
 // E8 · Downloaded routes
 

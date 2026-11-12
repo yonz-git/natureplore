@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import WalkScreen from "@/components/WalkScreen";
+import WalkScreen from "@/features/walk/WalkScreen";
 import { routeById } from "@/lib/routes";
 import { routeDetail } from "@/lib/spots";
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import DocScreen from "@/components/DocScreen";
+import DocScreen from "@/features/learn/DocScreen";
 import { docById } from "@/lib/docs";
 
 // D3 · a documentary

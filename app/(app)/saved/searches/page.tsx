@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { RecentSearches } from "@/components/SavedPages";
+import { RecentSearches } from "@/features/saved/SavedPages";
 
 // E7 · Recent searches
 
