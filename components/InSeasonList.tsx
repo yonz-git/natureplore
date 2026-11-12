@@ -14,7 +14,7 @@ import { GroupIcon, PinIcon } from "@/components/Icons";
 import { SpotMark } from "@/components/SpotParts";
 import { organismHref } from "@/lib/organisms";
 import { organismPhoto } from "@/lib/photos";
-import { RECORDED } from "@/lib/records";
+import { recordedIn } from "@/lib/season";
 import type { Group } from "@/lib/routes";
 import { groupWord } from "@/lib/suggestions";
 
@@ -22,7 +22,7 @@ const FIRST = 10;
 
 /** `groups`, picked on the legend's pills above, keeps only those groups; none picked keeps every group */
 export function InSeasonList({ routeId, groups = [] }: { routeId: string; groups?: Group[] }) {
-  const rows = [...(RECORDED[routeId] ?? [])].sort((a, b) => b.records - a.records);
+  const rows = recordedIn(routeId);
   if (!rows.length) return null;
   const shown = rows.filter((o) => !groups.length || groups.includes(o.group)).slice(0, FIRST);
 

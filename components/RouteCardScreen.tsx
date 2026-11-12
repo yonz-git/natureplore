@@ -19,7 +19,7 @@ import { ActionRow, ClaimCard, SpotMark } from "@/components/SpotParts";
 import { InSeasonList } from "@/components/InSeasonList";
 import { PhotoGallery, type Photo } from "@/components/PhotoGallery";
 import { GroupFilter } from "@/components/GroupFilter";
-import { RECORDED_COUNTS } from "@/lib/records";
+import { countsIn } from "@/lib/season";
 import { recordedOf } from "@/lib/recorded";
 import { YearChart } from "@/components/YearChart";
 import { organismPhoto } from "@/lib/photos";
@@ -307,9 +307,10 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   const kmAt = (n: number) => ((route.marks?.[n - 1] ?? n / (route.spots + 1)) * parseFloat(route.km)).toFixed(1);
   const spots = useMemo(() => spotsOf(route), [route]);
   const save = useRouteSave(route.id);
-  const inSeasonPhotos = (suggestionById(route.id)?.inSeason ?? []).map((o) => organismPhoto(o.name)?.src).slice(0, 2);
-  const photoNames = [route.name, ...(suggestionById(route.id)?.inSeason ?? []).slice(0, 2).map((o) => o.name)];
-  const frames = [route.image, ...inSeasonPhotos].slice(0, 3);
+  // the two most recorded this month that have a photograph
+  const inSeason = (suggestionById(route.id)?.inSeason ?? []).filter((o) => organismPhoto(o.name)).slice(0, 2);
+  const photoNames = [route.name, ...inSeason.map((o) => o.name)];
+  const frames = [route.image, ...inSeason.map((o) => organismPhoto(o.name)?.src)].slice(0, 3);
   // the frames that have a photograph, in order: what the gallery steps through
   const photos: Photo[] = frames.flatMap((src, i) => (src ? [{ src, alt: photoNames[i] }] : []));
   const [gallery, setGallery] = useState<number | null>(null);
@@ -394,7 +395,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
   }, [detail]);
 
   // the card says what is in season this month: the bar, the pills and the tiles all count the prototype's month (lib/now.ts), from GBIF
-  const counts = RECORDED_COUNTS[route.id] ?? route.counts;
+  const counts = countsIn(route.id) ?? route.counts;
   // the legend's pills filter the in-season tiles to their groups; none picked shows every group. The pick
   // is kept with its route, so another route opens with every group
   const [pickedOn, setPickedOn] = useState<{ route: string; groups: Group[] }>({ route: route.id, groups: [] });
@@ -571,7 +572,7 @@ export default function RouteCardScreen({ route, spot: initialSpot }: { route: R
                 ? detail.spots.map((s) => {
                     const open = openSpot === s.n;
                     return (
-                      <li key={s.n} id={`spot-${s.n}`} className={`fb-spot-row${open ? " is-open" : ""}`}>
+                      <li key={s.n} id={`spot-${s.n}`} className={`fb-spot-row${open ? " is-open" : ""}${s.out ? " is-out" : ""}`}>
                         <button
                           type="button"
                           className="fb-row"

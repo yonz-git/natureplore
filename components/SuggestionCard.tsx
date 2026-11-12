@@ -21,12 +21,12 @@ import {
 } from "@/components/Icons";
 import { OrganismPills } from "@/components/MapParts";
 import {
-  countsOf,
   groupWord,
   MONTH,
   type Suggestion,
 } from "@/lib/suggestions";
 import { useSaved } from "@/lib/saved";
+import { countsIn } from "@/lib/season";
 import { organismPhoto } from "@/lib/photos";
 import { easeScroll } from "@/lib/ease-scroll";
 
@@ -58,7 +58,7 @@ export function GroupTile({
 export function SuggestionCard({ route }: { route: Suggestion }) {
   const { isSaved, toggle } = useSaved();
   const saved = isSaved(route.id);
-  const counts = countsOf(route);
+  const counts = countsIn(route.id);
   const router = useRouter();
   const slides = slidesOf(route);
   const track = useRef<HTMLDivElement>(null);

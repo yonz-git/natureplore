@@ -7,16 +7,15 @@
 // within 15 km of the route and at the spot itself. The words around it are written for the prototype.
 
 import { CLAIMS, type Claim } from "@/lib/claims";
-import { CAPTURE, MONTH, NOW } from "@/lib/now";
-import { RECORDED } from "@/lib/records";
+import { MONTH_NAMES, NOW } from "@/lib/now";
+import { spotIn } from "@/lib/season";
 
 // the claims live in lib/claims.ts; they are re-exported here for the screens that read spots
 export { CLAIMS, type Claim };
 
 /** The prototype's month, as an index from 0 for January (see lib/now.ts). */
-export { NOW };
+export { MONTH_NAMES, NOW };
 export const MONTH_LETTERS = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
-export const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 export type Spot = {
   n: number;
@@ -29,8 +28,6 @@ export type Spot = {
   out?: string;
   /** what `out` says after "Not in season in <month>." */
   outText?: string;
-  /** sample entries for months other than the prototype's, used only when capturing for the film */
-  captureLook?: Record<number, { name: string; what?: string; last: string; organism?: string }[]>;
   /** a restraint starts with "Don’t"; a spot without one says what to do instead */
   kind: "dont" | "do";
   line: string;
@@ -340,33 +337,8 @@ const TEMPELHOF_SPOTS: Spot[] = [
   },
 ];
 
-/** The id the organism pages give a species (.design/gbif/organism_pages.py): its name in lower case, dashed. */
-const pageId = (name: string) => name.toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-+|-+$/g, "");
-
-/** At most this many organisms to look for at one spot. */
-const LOOK = 3;
-
-/** What GBIF records at a spot this month, most records first: the organisms the route's tiles mark with this
-    spot (lib/records.ts). Only the prototype's own month has records, so a film capture of another month has none. */
-const nearNow = (routeId: string, n: number) =>
-  CAPTURE
-    ? []
-    : [...(RECORDED[routeId] ?? [])]
-        .filter((o) => o.spots.includes(n))
-        .sort((a, b) => b.records - a.records)
-        .map((o) => ({ name: o.name, last: o.last, organism: pageId(o.name) }));
-
-/** A spot as it reads in the prototype's month. It is in season when its own species is, or when anything else is
-    recorded at it this month, so a spot the tiles point to is never muted: then what to look for, its own species
-    first, or that nothing is in season there. */
-const asOfNow = (routeId: string) => (s: Spot): Spot => {
-  const own = s.months.includes(NOW) ? (CAPTURE && s.captureLook?.[NOW]) || s.look : [];
-  const near = nearNow(routeId, s.n).filter((o) => !own.some((l) => l.name === o.name));
-  return own.length || near.length
-    ? { ...s, look: [...own, ...near].slice(0, Math.max(LOOK, own.length)), out: undefined }
-    : { ...s, look: [], out: `Not in season in ${MONTH}. ${s.outText}` };
-};
-
+/** A route's spots as they read in the prototype's month (lib/season.ts). */
+const asOfNow = (routeId: string) => (s: Spot) => spotIn(routeId, s);
 
 const DETAILS: Record<string, RouteDetail> = {
   grumsin: {
@@ -415,16 +387,5 @@ const DETAILS: Record<string, RouteDetail> = {
 export const routeDetail = (id: string): RouteDetail | undefined => DETAILS[id];
 
 export const spotOf = (routeId: string, n: number) => DETAILS[routeId]?.spots.find((s) => s.n === n);
-
-/** The line under a spot's name in B1's list: what to look for, or that it is out of season. */
-export function spotLine(s: Spot) {
-  if (s.out) return `Not in season in ${MONTH}`;
-  // "Rook, Eurasian blackbird and Great tit"
-  if (s.look.length > 1) return `${s.look.slice(0, -1).map((l) => l.name).join(", ")} and ${s.look.at(-1)!.name}`;
-  // in season with no entry for this month: say what is recorded here rather than read look[0]
-  if (!s.look.length) return s.outText ?? s.name;
-  const [l] = s.look;
-  return l.what ? `${l.name}, ${l.what}` : l.name;
-}
 
 export const monthsLabel = (months: number[]) => months.map((m) => MONTH_NAMES[m]).join(", ");
