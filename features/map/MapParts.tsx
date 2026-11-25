@@ -95,7 +95,7 @@ export function OrganismPills({ counts, all = false }: { counts: Counts; all?: b
       {GROUPS.filter((g) => all || counts[g.id]).map((g) => (
         <li key={g.id} className={`pill-org${counts[g.id] ? "" : " is-none"}`}>
           <GroupIcon group={g.id} className={`is-${g.id}`} />
-          <b>{counts[g.id] ?? 0}</b>
+          <b data-first={String(counts[g.id] ?? 0)[0]} data-last={String(counts[g.id] ?? 0).slice(-1)}>{counts[g.id] ?? 0}</b>
           <span className="sr-only">{counts[g.id] ? g.label.toLowerCase() : `${g.label.toLowerCase()}, none recorded yet`}</span>
         </li>
       ))}
