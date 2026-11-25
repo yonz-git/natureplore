@@ -1,12 +1,6 @@
 "use client";
 
-// B4 · Organism, and B5 · the same with its location generalised. The photograph, the name, the
-// spot and route it was recorded at, the record, why it is here, when to look, the spots where it
-// is recorded, the impact here (the claim card and the same action row as its spot) and the
-// documentaries. A species at risk from collection shows only an area, never a point, and nothing
-// that would narrow it down again. On the phone it is a sheet under three round controls; from
-// 64rem a wide sheet in two columns. Back returns where the page was opened: the spot page, or the
-// walk on its spot (B4-walk). Boards: B4, B4-walk and B5, version 6.
+// B4, B5 · Organism
 
 import Link from "next/link";
 
@@ -29,7 +23,6 @@ function Actions({ o }: { o: Organism }) {
       if (navigator.share) await navigator.share(data);
       else await navigator.clipboard.writeText(location.href);
     } catch {
-      // the person closed the share sheet
     }
   };
   return (
@@ -50,9 +43,6 @@ function Actions({ o }: { o: Organism }) {
   );
 }
 
-/** `walk` is set when the page was opened from the walk: the tab bar stays hidden, as on the walk. */
-/** A "Where it's recorded" line, "Tegeler Fließ valley path. Nov, last recorded 7 Nov 2021", with the date on
-    a line of its own: "Last recorded 7 Nov 2021" under the route and months. */
 function lastOnItsLine(line: string) {
   const at = line.lastIndexOf(", last recorded ");
   if (at < 0) return line;
@@ -65,10 +55,8 @@ function lastOnItsLine(line: string) {
   );
 }
 
-/** `route`, when the page was opened from a route, keeps "More <group>" to that route's organisms */
 export default function OrganismPage({ o, back, walk = false, route }: { o: Organism; back: { href: string; label: string }; walk?: boolean; route?: string }) {
   const photo = organismPhoto(`${o.name} ${o.close}`.trim());
-  // nothing for the right column (no claim, impact or documentary): the sheet narrows to one column
   const side = Boolean(o.claim || o.impact || o.docs);
   const name = `${o.name} ${o.close}`.trim();
 

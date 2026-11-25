@@ -1,50 +1,19 @@
-/* Screen transitions. Next renders a fresh template per navigation, so these run once each time a
-   screen arrives, and the parts of a screen start a beat apart so it settles rather than appearing
-   all at once.
-
-   Nothing animates an ancestor of glass. Two things make an ancestor a backdrop root, and both
-   switch off backdrop-filter on everything inside it: opacity below 1, and a transform. A transform
-   is the trap, because `transform: none` in a keyframe computes to the identity matrix, which counts
-   as a transform, and `both` keeps the last keyframe applied after the animation is over. So a
-   finished fade on a wrapper leaves the glass inside it flat for good, not just while it runs.
-   Each layer animates itself instead, which keeps its own frost: an element's own transform is
-   fine, it is only an ancestor's that breaks it. */
-
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  /* every hover wash, lift and glow on a control fades in and out on this one soft curve, slow
-     enough to read as a fade and not a switch */
   --hover-fade: 320ms;
   --ease-hover: cubic-bezier(0.25, 0.1, 0.25, 1);
-  /* for something already on screen moving from A to B, like the logo flying into the welcome's
-     corner. Not --ease-in-out, that name is Tailwind's own and is used by the ease-in-out utility */
   --ease-move: cubic-bezier(0.77, 0, 0.175, 1);
-  /* Entrances. Slow and soft on purpose: a gentle start and a long, quiet landing, so a part glides
-     into place instead of snapping there. Every arrival in the app runs on these. */
   --enter: 900ms;
   --enter-slow: 1400ms;
   --ease-enter: cubic-bezier(0.4, 0, 0.2, 1);
   --enter-rise: 1.5rem;
 }
 
-/* Every rule here fills backwards only: the first keyframe holds through the delay, and once the
-   animation is over nothing of it stays applied. So no finished entrance leaves a transform or an
-   opacity on an element, and the :active press and the hover still work afterwards. The keyframes
-   move `translate` and `scale`, not `transform`, so they add to an element's own transform (the pins
-   are centred on their point with one) instead of replacing it. */
-
-/* The map screens arrive in layers, a beat apart: the map fades up first and settles, then the
-   search bar, the panel or sheet, the nav, and last the labels on the map, one after another.
-   The map itself is drawn after the page loads, so it fades in from the moment it is ready
-   (components/RegionMap.tsx sets is-ready), not from the moment the page mounts. */
 .a1-map { transition: opacity var(--enter-slow) var(--ease-enter), scale var(--enter-slow) var(--ease-enter); }
 .a1-map:not(.is-ready) { opacity: 0; scale: 1.04; }
 .screen-enter .ms-search-top,
 .screen-enter .ms-bar > :not(:has(.glass)):not(.glass),
-/* not the Organisms filters: they are shown and hidden later, and each showing would replay this
-   rise; they slide out sideways on their own (app/flow-a.css) */
 .screen-enter .ms-bar .glass:not(.sg-group) { animation: sheet-in var(--enter) var(--ease-enter) 150ms backwards; }
-/* the labels on the map wait for the map, then come one by one (--i, set by RegionMap) */
 .screen-enter .a1-pin,
 .screen-enter .a1-here,
 .screen-enter .map-route,
@@ -52,28 +21,22 @@
 .screen-enter .map-start { animation: pin-in var(--enter) var(--ease-enter) calc(450ms + var(--i, 0) * 110ms) backwards; }
 @media (max-width: 63.99rem) {
   .screen-enter .ms-sheet { animation: sheet-in var(--enter) var(--ease-enter) 250ms backwards; }
-  /* the panel's slide button comes in with the panel, not before it */
   .screen-enter .b1-dock { animation: dock-in var(--enter) var(--ease-enter) 380ms backwards; }
   .screen-enter .search .ms-sheet > * { animation: sheet-in var(--enter) var(--ease-enter) 250ms backwards; }
   .screen-enter .search .ms-sheet { animation: none; }
 }
-/* on the desktop the panel's glass rises on its own (an element's own transform keeps its frost;
-   the glass inside it is inner glass, with no blur of its own to lose), and its parts follow it */
 @media (min-width: 64rem) {
   .screen-enter .ms-panel { animation: sheet-in var(--enter) var(--ease-enter) 250ms backwards; }
   .screen-enter .ms-panel > :not(.ms-bar),
   .screen-enter .ms-panel > .ms-bar > * { animation: sheet-in var(--enter) var(--ease-enter) 380ms backwards; }
   .screen-enter .a1 .ms-panel { animation: none; }
 }
-/* A1 has no sheet and its search field is glass of its own, so its parts rise one by one instead of
-   the sheet that holds them: an animated ancestor would switch the field's frost off */
 .screen-enter .a1 .ms-sheet,
 .screen-enter .a1 .ms-panel > .ms-sheet { animation: none; }
 .screen-enter .a1 .a1-words > :not(.ms-stack),
 .screen-enter .a1 .ms-stack > :not(form, .a1-ways),
 .screen-enter .a1 .a1-ways > *,
 .screen-enter .a1 .ms-stack .field { animation: sheet-in var(--enter) var(--ease-enter) 200ms backwards; }
-/* B1's panel keeps its scroll-driven edge fade (app/flow-a.css) while it rises */
 @media (min-width: 64rem) {
   @supports (animation-timeline: scroll()) {
     .screen-enter .b1 .ms-panel > .ms-sheet {
@@ -83,16 +46,11 @@
   }
 }
 
-/* The nav arrives once, when the app first opens (it stays put between screens): it rises from the
-   bottom edge on the phone and settles down from the top on the desktop, after the screen's own
-   parts have started. */
 .tabbar-pill { animation: nav-in var(--enter) var(--ease-enter) 400ms backwards; }
 @media (min-width: 64rem) {
   .tabbar-pill { animation-name: nav-in-desk; }
 }
 
-/* every other screen is one block of content: its parts carry the animation, not the section, so a
-   glass surface anywhere inside still frosts. They come one after another, top to bottom. */
 .screen-enter > section:not(.ms, .org) > * { animation: sheet-in var(--enter) var(--ease-enter) backwards; }
 .screen-enter > section:not(.ms, .org) > :nth-child(2) { animation-delay: 90ms; }
 .screen-enter > section:not(.ms, .org) > :nth-child(3) { animation-delay: 180ms; }
@@ -100,7 +58,6 @@
 .screen-enter > section:not(.ms, .org) > :nth-child(5) { animation-delay: 360ms; }
 .screen-enter > section:not(.ms, .org) > :nth-child(n + 6) { animation-delay: 450ms; }
 
-/* the organism page: the photograph's round controls arrive, then the sheet rises over it */
 .screen-enter .org-top .round { animation: fade-in var(--enter) var(--ease-enter) 100ms backwards; }
 .screen-enter .org-sheet { animation: sheet-in var(--enter) var(--ease-enter) 200ms backwards; }
 
@@ -112,7 +69,6 @@
   from { opacity: 0; scale: 1.04; }
 }
 
-/* a fade only: the slide button keeps its own translate for centring */
 @keyframes dock-in { from { opacity: 0; } }
 @keyframes sheet-in {
   from { opacity: 0; translate: 0 var(--enter-rise); }
@@ -130,7 +86,6 @@
   from { opacity: 0; translate: 0 -0.75rem; }
 }
 
-/* reduced motion: the same order, as plain fades, shorter, and nothing moves */
 @media (prefers-reduced-motion: reduce) {
   .a1-map { transition: opacity 400ms ease; }
   .a1-map:not(.is-ready) { scale: none; }

@@ -1,6 +1,3 @@
-// npm test
-// The season through its interface, and the promises that keep the screens from disagreeing.
-
 import assert from "node:assert/strict";
 
 import { describe, test } from "vitest";
@@ -12,7 +9,6 @@ import { countsIn, everythingIn, recordedIn, spotIn } from "./season";
 import { routeDetail, type Spot } from "./spots";
 import { REGIONS, SUGGESTIONS, organismsIn } from "./suggestions";
 
-// a spot whose own species is recorded in October only, at a place the records tag
 const taggedSpot = RECORDED.grumsin.flatMap((o) => o.spots)[0];
 const octoberOnly: Spot = {
   n: taggedSpot,

@@ -1,9 +1,5 @@
 "use client";
 
-// The foot of an organism page: the other organisms of its group as the records page (A8) lists them, the
-// first five and "See all" for the rest, then previous and next in the group, as the walk steps between
-// spots. At either end the button stays, dashed, and does nothing.
-
 import Link from "next/link";
 import { useState } from "react";
 
@@ -16,7 +12,6 @@ import { GROUPS } from "@/lib/routes";
 const FIRST = 5;
 const fullName = (o: Organism) => `${o.name} ${o.close}`.trim();
 
-/** One half of previous and next: the step's name under what it is; at the end of the group it stays, dashed. */
 function Step({ to, at = "", kicker, end, back = false }: { to?: Organism; at?: string; kicker: string; end: string; back?: boolean }) {
   const body = (
     <>
@@ -39,8 +34,6 @@ function Step({ to, at = "", kicker, end, back = false }: { to?: Organism; at?: 
   );
 }
 
-/** Opened from a route (`route`), the group is that route's organisms only, as its tiles list them, and the
-    links keep the route, so stepping through stays on it. Otherwise the group across every route. */
 export function OrganismSiblings({ o, route }: { o: Organism; route?: string }) {
   const [all, setAll] = useState(false);
   const onRoute = route ? new Set(recordedIn(route).map((r) => r.latin)) : undefined;

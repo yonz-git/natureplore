@@ -1,13 +1,5 @@
 "use client";
 
-// You, the third tab: the profile on top (picture, name, notifications and settings, none of them
-// working yet), then E1 · Saved under it, what is kept on this device. Routes, each downloaded;
-// the organisms saved on B4; the clean-up registered for (C4), the practices saved (C7) and the
-// documentaries saved to watch later (D3). It reads the same store as every Save control, so a
-// route saved on A5 is here. Each section shows its first five and
-// its heading opens the whole list (E4, E6, E5); "On this device" opens recent searches (E7),
-// downloaded routes (E8) and notifications (E3). Boards: E1 · Saved, and E1 · Saved, all sections.
-
 import Link from "next/link";
 import { useEffect } from "react";
 
@@ -25,23 +17,20 @@ export default function SavedScreen() {
   const { ids } = useSaved();
   const routes = SUGGESTIONS.filter((s) => ids.includes(s.id));
   const organisms = ORGANISMS.filter((o) => ids.includes(`org:${o.id}`));
-  // the clean-up you registered for, the practices and the documentaries you saved, in the order
-  // they were kept
   const actions = ids.filter((id) => id.startsWith("action:") && ACTION_ROWS[id.slice(7)]);
   const docs = ids.filter((id) => id.startsWith("doc:") && docById(id.slice(4)));
   const recent = useRecent();
   const notes = ids.includes("action:clean-up") ? 1 : 0;
-  // a route opened from here goes back here
   useEffect(() => rememberList("/you"), []);
 
   return (
     <section className="saved" aria-labelledby="you-name">
       <div className="saved-sheet glass">
         <div className="you-head">
-          {/* the profile picture's place, a person until a picture is added */}
+          {}
           <span className="you-photo" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="currentColor">
-              {/* head and shoulders, their ink 4 to 20, centred in the 24 box */}
+              {}
               <circle cx="12" cy="8" r="4" />
               <path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7Z" />
             </svg>
@@ -78,7 +67,7 @@ export default function SavedScreen() {
                   )}
                   <span>
                     <b>{r.name}</b>
-                    {/* the distance and the route's shape as its icon, as on the map's cards, the words kept for screen readers */}
+                    {}
                     <small>
                       {r.meta.replace(/ (loop|one way) · .*$/, "")}
                       <span aria-hidden="true"> · </span>

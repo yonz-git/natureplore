@@ -1,9 +1,3 @@
-// The pieces Flow B shares, each built once (flow and IA redesign §2):
-// the spot block, the whole walk sheet and the top of the spot page; the claim card, with its
-// first action printed on it (B1, L3, L4, B4); the action row, a restraint and its mechanism
-// (L3, L4, B4); and the month grid (L3, L4, B4). The claim card lives in components/ClaimCard.tsx,
-// a client component because its links remember where they were opened from.
-
 import Link from "next/link";
 
 import { BanIcon, CheckCircleIcon, ChevronIcon } from "@/components/Icons";
@@ -14,7 +8,6 @@ import { MONTH } from "@/lib/suggestions";
 export { ClaimCard } from "@/components/ClaimCard";
 
 export function MonthGrid({ months, label = "In season" }: { months: number[]; label?: string }) {
-  // one picture with one name: the twelve letters are drawn, the months are read out
   return (
     <div
       className="fb-months"
@@ -30,7 +23,6 @@ export function MonthGrid({ months, label = "In season" }: { months: number[]; l
   );
 }
 
-/** What not to do here, or what to do: a marked callout, the line, then why it matters. */
 export function ActionRow({ spot, className = "" }: { spot: Spot; className?: string }) {
   const dont = spot.kind === "dont";
   return (
@@ -45,9 +37,7 @@ export function ActionRow({ spot, className = "" }: { spot: Spot; className?: st
   );
 }
 
-/** What to look for at a spot this month, each organism with its photo, or why nothing is in season. */
 export function SpotLook({ spot, organismHref }: { spot: Spot; organismHref?: (id: string) => string }) {
-  // in season with no entry for this month: what is recorded here, not an empty "Look for" list
   if (!spot.out && !spot.look.length) return spot.outText ? <p className="fb-out">{spot.outText}</p> : null;
   return spot.out ? (
     <p className="fb-out">{spot.out}</p>
@@ -98,10 +88,6 @@ export function SpotMark({ n, size = "md" }: { n: number; size?: "md" | "lg" }) 
   );
 }
 
-/**
- * The spot, one block. `nav` is the previous and next pair: links between spot pages on L3,
- * buttons that swap the sheet on the walk. `organismHref` says where a named organism opens.
- */
 export function SpotBlock({
   spot,
   total,
@@ -138,7 +124,6 @@ export function SpotBlock({
   );
 }
 
-/** What else is recorded at a spot: a placeholder on the boards, because §3 lists no other organisms per spot. */
 export function RecordedToo() {
   return <p className="fb-card fb-placeholder">[Other organisms recorded at this spot, with their last-recorded dates]</p>;
 }

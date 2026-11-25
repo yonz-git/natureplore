@@ -1,10 +1,3 @@
-/* The shadcn components (components/ui) in Natureplore's look, and the route photo gallery built from them
-   (components/PhotoGallery.tsx). Colours, spacing and type are the generated tokens; the controls are the
-   round glass buttons of app/map.css. Motion eases in and out (--ease-move), each layer on its own: the
-   dialog's content box holds an ancestor of glass, so it never animates opacity or transform, it only waits
-   (ui-hold) while the veil, the photo and the buttons leave, which is what keeps Radix from removing it early. */
-
-/* ── Dialog ── */
 .ui-dialog-overlay { background: rgb(from var(--color-ground) r g b / 0.94); }
 .ui-dialog-overlay[data-state="open"] { animation: ui-fade-in 400ms var(--ease-move); }
 .ui-dialog-overlay[data-state="closed"] { animation: ui-fade-out 400ms var(--ease-move) forwards; }
@@ -13,12 +6,8 @@
 .ui-dialog-content[data-state="open"] :is(.ui-dialog-close, .ui-carousel-step, .gallery-count) { animation: ui-fade-in 400ms var(--ease-move) 120ms backwards; }
 .ui-dialog-content[data-state="closed"] :is(.ui-dialog-close, .ui-carousel-step, .gallery-count) { animation: ui-fade-out 300ms var(--ease-move) forwards; }
 
-/* ── Carousel ── */
-/* at an end with nothing further, a step is dimmed as every disabled control is (docs/design.md, States) */
 .ui-carousel-step:disabled { opacity: 0.45; cursor: default; pointer-events: none; }
 
-/* ── The route photo gallery ── */
-/* the photo as large as the screen allows above its controls, centred, the close control clear above it */
 .gallery {
   display: flex;
   flex-direction: column;
@@ -26,11 +15,8 @@
   padding: var(--spacing-20) 0;
 }
 .gallery-track { width: 100%; max-width: var(--spacing-content-max); margin: 0 auto; }
-/* the photos swipe: a sideways drag is the carousel's, so the browser keeps only vertical panning and
-   pinch zoom (what Embla asks of its viewport), and a mouse sees the grab hand */
 .gallery [data-slot="carousel-content"] { touch-action: pan-y pinch-zoom; cursor: grab; }
 .gallery [data-slot="carousel-content"]:active { cursor: grabbing; }
-/* each slide carries the screen's inset as its own padding, so the strip drops shadcn's -1rem gutter */
 .gallery-strip { margin-left: 0; }
 .gallery-slide { display: flex; justify-content: center; align-items: center; padding-inline: var(--spacing-inset-screen); }
 .gallery-photo {
@@ -43,7 +29,6 @@
 }
 .ui-dialog-content[data-state="open"] .gallery-photo { animation: ui-rise 500ms var(--ease-move); }
 .ui-dialog-content[data-state="closed"] .gallery-photo { animation: ui-sink 400ms var(--ease-move) forwards; }
-/* previous, "2 of 3" and next, one centred row under the photo */
 .gallery-bar { margin-top: var(--spacing-6); display: flex; justify-content: center; align-items: center; gap: var(--spacing-4); }
 .gallery-count {
   margin: 0;
@@ -53,7 +38,6 @@
   line-height: 1.15;
   font-variant-numeric: tabular-nums;
   color: var(--color-on-ground-soft);
-  /* centred on the figures, not the line box, so "2 of 3" sits on the buttons' middle */
   text-box: trim-both cap alphabetic;
 }
 
@@ -61,7 +45,6 @@
 @keyframes ui-fade-out { to { opacity: 0; } }
 @keyframes ui-rise { from { opacity: 0; scale: 0.96; } }
 @keyframes ui-sink { to { opacity: 0; scale: 0.96; } }
-/* changes nothing on screen: it only gives the content box an animation to finish */
 @keyframes ui-hold { to { visibility: visible; } }
 
 @media (prefers-reduced-motion: reduce) {

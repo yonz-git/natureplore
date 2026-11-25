@@ -1,31 +1,19 @@
-// The claims of Flow C: C1a meadow loss, C1b water level, C6 recovering meadow, and the source
-// behind each (C2a, C2b, C2c). A claim card on B1, a spot, the walk or the crane is the top of one
-// of these, with its first action printed on it. Copy from the redesign canvas and the flow and IA
-// redesign (§4). Every figure is sample content: none has been checked against a publication, so
-// every place that shows one says so.
-
 export type Tag = { label: string; icon: "down" | "up" | "leaf" | "water" };
 
 export type Claim = {
   id: string;
   claim: string;
-  /** the claim card: the site and who published the figure, then its first action */
   scope: string;
   action: string;
-  /** the action page the card's action line opens; none when there is no page for it */
   actionId?: string;
   tags: Tag[];
-  /** the designated site: a scope label, never a link, because there is no site page */
   site: string;
   reviewed: string;
-  /** the route's spots where the claim can be seen, shown on its card behind a pin */
   spots?: number[];
-  /** the claim's figure: what was measured, the change, and what it means in plain words */
   stat: { label: string; value: string; unit: string; note: string };
   sourceLine: string;
   source: {
     title: string;
-    /** the closing words that take the lime on the title */
     close?: string;
     publisher: string;
     published: string;
@@ -33,7 +21,6 @@ export type Claim = {
     covers: string;
     paywall?: boolean;
   };
-  /** C1a and C1b list actions; C6 says what was done and how to keep it that way */
   actions?: string[];
   done?: string[];
   keep?: { line: string; why: string };
@@ -93,7 +80,6 @@ export const CLAIMS: Record<string, Claim> = {
     },
     sourceLine: "Landesamt für Umwelt Brandenburg, 2022, gauge records. True of the whole designated site.",
     source: {
-      // a placeholder on the board too: the report's title is not known yet
       title: "",
       close: "[Title of the gauge-record report]",
       publisher: "Landesamt für Umwelt Brandenburg",

@@ -1,9 +1,5 @@
 "use client";
 
-// The pieces the map screens share, so the same control reads the same on every screen and at
-// both sizes: the search field, the organism pills and the desktop map tools.
-// Layout: app/map.css. Glass: app/glass.css.
-
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -11,10 +7,6 @@ import { BackIcon, ClearIcon, GroupIcon, SearchIcon } from "@/components/Icons";
 import { playGroup } from "@/lib/group-motion";
 import { GROUPS, type Counts } from "@/lib/routes";
 
-/**
- * The search field. Submitting it opens the results, which is what A2 and A3 are, so the same
- * field searches from wherever it is typed in.
- */
 export function SearchField({
   label = "Search a region or an organism",
   defaultValue = "",
@@ -26,22 +18,18 @@ export function SearchField({
   label?: string;
   defaultValue?: string;
   autoFocus?: boolean;
-  /** resting on a glass sheet it is inner glass; floating over the map it is glass */
   inner?: boolean;
   onChange?: (value: string) => void;
-  /** a back control in the search icon's place, to leave the field (the suggestions' top row) */
   onBack?: () => void;
 }) {
   const router = useRouter();
   const [value, setValue] = useState(defaultValue);
   const [shown, setShown] = useState(0);
-  // the placeholder names one group at a time, so the field says what an organism can be
   useEffect(() => {
     if (value || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => setShown((i) => (i + 1) % GROUPS.length), 1800);
     return () => clearInterval(id);
   }, [value]);
-  // and each group plays its own motion as it rises in, the one it plays on the Organisms filters
   const hintIcons = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     const icon = hintIcons.current?.children[shown];
@@ -101,9 +89,7 @@ export function SearchField({
   );
 }
 
-/** The organism counts, always as pills in the fixed group order. A group with none is left out. */
 export function OrganismPills({ counts, all = false }: { counts: Counts; all?: boolean }) {
-  // `all` is the route card on B1, which shows every group and says so when one has none yet
   return (
     <ul className="pills" aria-label="Organisms recorded along it">
       {GROUPS.filter((g) => all || counts[g.id]).map((g) => (

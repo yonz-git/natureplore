@@ -1,13 +1,6 @@
 "use client";
 
-// C3, C5 and C7 · an action: what does this action change, here? Three kinds, one page:
-// C3 the September clean-up, a local event you register for (C4 is the registration);
-// C5 supporting the group that rewets Linum meadow, which happens on the group's own site;
-// C7 buying peat-free compost, an everyday practice you can save.
-// Each says what it changes, the benefit, the figure or that there is none, and why here, with
-// "See the claim". On the phone the action closes the page; from 64rem it sits in a card in the
-// right column, as on the C3 and C7 desktop boards. Registering and saving are kept on the device.
-// Boards: C3, C5 and C7, phone, tablet and desktop.
+// C3, C5 and C7 · an action
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -39,8 +32,6 @@ function SeeClaim({ id }: { id: string }) {
     </Link>
   );
 }
-
-// ── C3 ────────────────────────────────────────────────────────────────────────────────────────
 
 function CleanUpMain({ a, going }: { a: CleanUp; going: number }) {
   return (
@@ -105,8 +96,6 @@ function CleanUpSide({ a, registered, register }: { a: CleanUp; registered: bool
   );
 }
 
-// ── C5 ────────────────────────────────────────────────────────────────────────────────────────
-
 function SupportMain({ a }: { a: Support }) {
   return (
     <>
@@ -150,8 +139,6 @@ function SupportSide({ a }: { a: Support }) {
   );
 }
 
-// ── C7 ────────────────────────────────────────────────────────────────────────────────────────
-
 function PracticeMain({ a }: { a: Practice }) {
   return (
     <>
@@ -181,7 +168,7 @@ function PracticeMain({ a }: { a: Practice }) {
         Why <em>here</em>
       </h2>
       <p className="org-body">{a.why}</p>
-      {/* the second source was removed from C7 in the redesign; the claim holds the source */}
+      {}
       <SeeClaim id={a.claimId} />
     </>
   );
@@ -190,7 +177,7 @@ function PracticeMain({ a }: { a: Practice }) {
 function PracticeSide({ saved, toggle }: { saved: boolean; toggle: () => void }) {
   return (
     <div className="org-box cp-act">
-      {/* one button that stays mounted, so focus stays on it when it changes */}
+      {}
       <button type="button" className={`btn ${saved ? "btn-secondary" : "btn-primary"}`} aria-pressed={saved} onClick={toggle}>
         <BookmarkIcon size={19} filled={saved} />
         {saved ? "Saved" : "Save"}
@@ -202,8 +189,6 @@ function PracticeSide({ saved, toggle }: { saved: boolean; toggle: () => void })
   );
 }
 
-// ── the page ──────────────────────────────────────────────────────────────────────────────────
-
 export default function ActionScreen({ action: a }: { action: Action }) {
   const router = useRouter();
   const { isSaved, toggle } = useSaved();
@@ -212,7 +197,6 @@ export default function ActionScreen({ action: a }: { action: Action }) {
   const back = useBack(`/learn/claim/${a.claimId}`);
   const label = backLabel(back, "Back to the claim");
 
-  // after cancelling a registration, focus lands on Register, where the cancelled step began
   useEffect(() => {
     if (location.hash === "#register") document.getElementById("register")?.focus();
   }, []);
@@ -240,7 +224,6 @@ export default function ActionScreen({ action: a }: { action: Action }) {
   }
 
   return (
-    // opened from the walk, the tab bar stays hidden as it is on the walk (see app/organism.css)
     <section className={`org cp${back.startsWith("/walk") ? " is-walk" : ""}`} aria-labelledby="action-title">
       <BackTop href={back} label={label} share={a.type === "support" ? undefined : `${a.title} ${a.close}`} />
       <div className="org-sheet glass glass-top">

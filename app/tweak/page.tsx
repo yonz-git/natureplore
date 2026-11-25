@@ -1,9 +1,5 @@
 "use client";
 
-// A dev tool, not a screen: /map in a phone or desktop frame beside sliders that write CSS into the frame live,
-// so spacing and sizes can be tried before they go into the stylesheets. Copy CSS gives the rules
-// that differ from the starting values, ready to paste into app/flow-a.css, map.css or tabbar.css.
-
 import { useEffect, useRef, useState } from "react";
 
 type Control = {
@@ -11,11 +7,8 @@ type Control = {
   label: string;
   group: string;
   css: (v: string) => string;
-  /** "range" values carry a unit; "color" and "text" are written as they are */
   kind: "range" | "color" | "text" | "select";
-  /** the choices of a "select" */
   options?: string[];
-  /** which layout the rule belongs to: written inside that size's media query */
   size: Size;
   value: string;
   min?: number;
@@ -121,7 +114,6 @@ export default function Tweak() {
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [fi, setFi] = useState(1);
   const f = FRAMES[fi];
-  // a desktop frame is drawn at its real size and scaled down to the room beside the controls
   const [room, setRoom] = useState(900);
   useEffect(() => {
     const fit = () => setRoom(Math.max(320, window.innerWidth - 34 * 16));
@@ -132,14 +124,11 @@ export default function Tweak() {
   const scale = Math.min(1, room / f.w);
   const [copied, setCopied] = useState(false);
 
-  // remember the last session's values on this device
   useEffect(() => {
     try {
       const saved = JSON.parse(localStorage.getItem(STORE) ?? "null");
       if (saved) {
-        // only what was moved comes back, so new starting values show for the rest
         const kept = Object.fromEntries(Object.entries((saved.vals ?? {}) as Record<string, string>).filter(([id]) => saved.touched?.[id]));
-        // localStorage is only readable in the browser, so the saved values cannot be the initial state
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setVals((v) => ({ ...v, ...kept }));
         setTouched(saved.touched ?? {});
@@ -153,7 +142,6 @@ export default function Tweak() {
   }, [vals, touched]);
 
   const value = (c: Control) => (c.kind === "range" ? `${vals[c.id]}${c.unit}` : vals[c.id]);
-  // each size's touched rules inside its own media query, so a phone value never reaches the desktop
   const css = () =>
     (["all", "phone", "desktop"] as Size[])
       .map((sz) => {
@@ -164,7 +152,6 @@ export default function Tweak() {
       .filter(Boolean)
       .join("\n");
 
-  // write the touched rules into the frame on every change, and again whenever it navigates
   const inject = () => {
     const doc = frame.current?.contentDocument;
     if (!doc?.head) return;
@@ -192,7 +179,6 @@ export default function Tweak() {
     setTimeout(() => setCopied(false), 1400);
   };
 
-  // only the controls for the size on show, and the ones shared by every size
   const shown = CONTROLS.filter((c) => c.size === f.size || c.size === "all");
   const groups = [...new Set(shown.map((c) => c.group))];
 

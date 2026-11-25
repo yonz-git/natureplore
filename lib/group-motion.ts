@@ -1,14 +1,7 @@
-// The motion each organism group's icon plays: on the Organisms filters when they appear or are
-// pointed at, and in the search field's hint as each group takes its turn.
-
 import type { Group } from "@/lib/routes";
 
-// The group icons that move (app/flow-a.css has their pivots). The herbs: Lordicon's "hover-pinch"
-// for this drawing, rebuilt from its keyframes, the sprigs lifting and dipping back, swinging forward
-// and settling over 1.78s. The mushroom hops: squashes, springs up, lands with a squash and settles.
 type Motion = { part: string; frames: Keyframe[]; ms: number };
 const GROUP_MOTION: Partial<Record<Group, Motion[]>> = {
-  // the plant gathers on its stem, rises and opens, then sways and settles
   plants: [{
     part: ".plant-rise",
     ms: 1300,
@@ -45,7 +38,6 @@ const GROUP_MOTION: Partial<Record<Group, Motion[]>> = {
       { transform: "translateY(0) scale(1, 1)" },
     ],
   }],
-  // the paw steps: it presses down, lifts with a turn, lands and settles
   mammals: [{
     part: ".paw-step",
     ms: 900,
@@ -58,8 +50,6 @@ const GROUP_MOTION: Partial<Record<Group, Motion[]>> = {
       { transform: "translateY(0) rotate(0) scale(1)" },
     ],
   }],
-  // the bird hops with its wing beating: the body rises and tilts while the wing flaps from its
-  // shoulder, quicker than the hop
   birds: [
     {
       part: ".bird-hop",

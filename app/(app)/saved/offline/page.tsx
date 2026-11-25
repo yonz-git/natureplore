@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { OfflineRoutes } from "@/components/SavedPages";
 
-// E8 · Downloaded routes: every saved route, downloaded with it.
+// E8 · Downloaded routes
 
 export const metadata: Metadata = { title: "Downloaded routes" };
 

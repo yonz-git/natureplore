@@ -1,10 +1,6 @@
 "use client";
 
-// A8 · Recorded along this route: everything recorded within 250 m of the line, in the fixed group
-// order. The proportion bar and its legend first, the shared group filter (components/GroupFilter.tsx,
-// All first, several groups can be picked), then each group's first five with a photograph
-// photograph, and "See all" opening the rest in place. A group with nothing recorded keeps its place.
-// Rows are plain text in the prototype. Boards: A8, phone and tablet.
+// A8 · Recorded along this route
 
 import Link from "next/link";
 import { useState } from "react";
@@ -34,12 +30,10 @@ export default function RecordedScreen({
 }: {
   routeId: string;
   routeName: string;
-  /** the route's records, by group in the fixed order */
   recorded: RecordedGroup[];
 }) {
   const routeHref = `/map/route/${routeId}`;
   const [open, setOpen] = useState<Group | null>(null);
-  // the groups picked in the legend; none picked shows every group
   const [picked, setPicked] = useState<Group[]>([]);
   const pick = (g: Group) => setPicked((p) => (p.includes(g) ? p.filter((x) => x !== g) : [...p, g]));
   const shownGroups = picked.length ? recorded.filter((g) => picked.includes(g.group)) : recorded;
@@ -119,13 +113,13 @@ export default function RecordedScreen({
                           )}
                           <span className="a8-text">
                             <b>{r.name}</b>
-                            {/* the group is the section's heading, so only the Latin name */}
+                            {}
                             <small>
                               <i>{r.latin}</i>
                             </small>
                             <small>Recorded, last {r.last}.</small>
                             {!r.spots.length && <small>Along the route, at no spot</small>}
-                            {/* the spot as its pin and numbered marks, as on the route page's in-season tiles */}
+                            {}
                             {r.spots.length > 0 && <Where spots={r.spots} />}
                           </span>
                           {href && <Link href={`${href}?from=recorded&route=${routeId}`} className="org-link" aria-label={r.name} />}

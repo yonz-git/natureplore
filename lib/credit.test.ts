@@ -1,7 +1,3 @@
-// npm test
-// The rule these guard: nothing is ever shown without a name on it, and the licence label is
-// the one the source recorded.
-
 import assert from "node:assert/strict";
 
 import { test } from "vitest";

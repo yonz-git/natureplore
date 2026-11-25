@@ -1,9 +1,6 @@
 "use client";
 
-// A1 · Start sheet: the one line saying what this is, and the ways in. On the phone it is a card
-// floating over the map with search, location and Browse; declining the location prompt goes to A5,
-// the suggestions. On the desktop it is the panel.
-// Boards: "A1 · Start sheet" and "A1 · Start panel, desktop".
+// A1 · Start sheet
 
 import Link from "next/link";
 

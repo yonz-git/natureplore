@@ -1,8 +1,3 @@
-/* Flow E: the pages under Saved (E2 to E8) and the "On this device" block on E1. The page shell
-   is D2's (app/organism.css with .ln from app/flow-d.css): one column, capped at the measure.
-   Rows, cards and pills are Flow B's. Selection and counts are never lime: lime is for the one
-   primary control on the view. */
-
 .se .org-main { max-width: var(--spacing-measure); }
 .se-head { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; min-height: 2.75rem; }
 .se-head:not(:has(.se-edit)) { display: none; }
@@ -23,12 +18,10 @@
 .ln-intro + .fb-card { margin-top: 2rem; }
 .se-empty { margin-top: 0; }
 .se .fb-small { max-width: var(--spacing-measure); }
-/* a label that holds a sentence wraps inside itself with large text */
 .se .fb-pill { height: auto; min-height: 1.75rem; padding-block: 0.3125rem; white-space: normal; line-height: 1.2; }
 .se-note { display: flex; gap: 0.5rem; align-items: flex-start; margin-top: 1.6875rem; }
 .se-note svg { flex-shrink: 0; margin-top: 0.0625rem; color: var(--color-mist); }
 
-/* a row that opens in place or is picked in Edit: the row's own look, as a button */
 .se-pick { width: 100%; border: 0; background: none; font: inherit; text-align: left; cursor: pointer; }
 .se-pick:active { transform: scale(0.985); }
 .se-turn { transform: rotate(90deg); }
@@ -81,7 +74,6 @@
 .se-confirm div { display: flex; flex-wrap: wrap; align-items: center; gap: 0.675rem 1.5rem; }
 .se-confirm .cp-link { margin: 0; }
 
-/* E1: the section heads open their page; the counts are pills, not lime */
 .saved-head { margin: 2.5rem 0 0.75rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 0.75rem; }
 .saved-sheet .saved-head h2 { margin: 0; min-width: 0; }
 .saved-head a { min-height: 2.75rem; margin-right: -0.5rem; padding-inline: 0.5rem; display: inline-flex; align-items: center; font-size: var(--text-body-lg); color: var(--color-on-ground); text-underline-offset: 0.1875rem; }

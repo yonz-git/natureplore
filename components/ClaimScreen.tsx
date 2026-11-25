@@ -1,13 +1,6 @@
 "use client";
 
-// C1a, C1b and C6 · the claim: what is the claim, and what answers it? The tags, the claim with
-// its site and review date, the photograph its card carries (lib/photos.ts, credited on the credits
-// page), the figure with who published it and "Read the source" (C2), which opens the source in
-// place, then what you can do (C3, C5, C7) or, for a recovering site, what was done and how to keep
-// it that way, and the related route. On the
-// phone a sheet over the photograph; from 64rem a wide sheet in two columns, as on the C1 and C6
-// desktop boards. Back returns to the page the claim was opened from, Learn when nothing is known.
-// Boards: C1a, C1b and C6, phone, tablet and desktop.
+// C1a, C1b and C6 · the claim
 
 import Link from "next/link";
 import { useState } from "react";
@@ -25,7 +18,6 @@ export default function ClaimScreen({ claim }: { claim: Claim }) {
   const [source, setSource] = useState(false);
   const s = claim.source;
 
-  // the same photograph as the claim's card on the route, decorative
   const photo = PHOTOS[`claims/${claim.id}`];
 
   const main = (
@@ -49,10 +41,7 @@ export default function ClaimScreen({ claim }: { claim: Claim }) {
         <Stat {...claim.stat} />
       </div>
 
-      {/* C2 · the source opens in place under its line: the report, who published it, when, how and
-          what it covers, and the way to the publisher. The figures are not checked against any
-          publication yet, so the publisher's page is not linked: it would send people to a real
-          agency for a figure it never published. */}
+      {}
       <div className={`org-box cp-source${source ? " is-open" : ""}`}>
         <p>{claim.sourceLine}</p>
         <p className="org-small">Sample figure for the prototype</p>
@@ -169,7 +158,6 @@ export default function ClaimScreen({ claim }: { claim: Claim }) {
   );
 
   return (
-    // opened from the walk, the tab bar stays hidden as it is on the walk (see app/organism.css)
     <section className={`org cp${back.startsWith("/walk") ? " is-walk" : ""}`} aria-labelledby="claim-title">
       <BackTop href={back} label={label} share={claim.claim} />
       <div className="org-sheet glass glass-top">

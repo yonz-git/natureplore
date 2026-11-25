@@ -1,6 +1,3 @@
-// The group filter under a proportion bar, on the route page (B1) and its records (A8): All first, then
-// each group by its icon and count. Several groups can be picked; All, or none picked, shows every group.
-
 import { GroupIcon } from "@/components/Icons";
 import { GROUPS, type Group } from "@/lib/routes";
 

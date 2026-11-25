@@ -1,7 +1,3 @@
-// The organisms with a page of their own, B4 and B5. Content comes from the version 6 boards:
-// the common crane at Linum (B4), and the early marsh orchid, whose location is generalised
-// because it is at risk from collection and trampling (B5).
-
 import type { Group } from "@/lib/routes";
 import { namesOf } from "@/lib/organism-names";
 import { GENERATED } from "@/lib/organism-pages";
@@ -9,34 +5,24 @@ import { CLAIMS, spotOf, type Claim, type Spot } from "@/lib/spots";
 
 export type Organism = {
   id: string;
-  /** the name, and its closing words that take the lime on the title */
   name: string;
   close: string;
   group: Group;
   kind: string;
   latin: string;
-  /** the other names the route lists give it, which open the same page */
   alias?: string[];
-  /** where the page was opened from when nothing else is known: spot 4 for the crane */
   back: { href: string; label: string };
-  /** the spot and route it was recorded at, under the name */
   scope?: string;
-  /** the record: an exact place, or only an area when the location is generalised */
   record: { title: string; lines: string[] };
   generalised?: { text: string; record: string; note: string };
   why?: string;
-  /** months it is most seen, 0 for January */
   season?: number[];
   when: string;
-  /** the spots it is recorded at, in the order the spot page lists them */
   where?: { n: number; name: string; line: string; route?: string }[];
-  /** Impact here: the claim card and the action row of its spot, the same row the spot shows */
   claim?: Claim;
   rule?: Spot;
-  /** Impact here for a species without a spot, where the place stays generalised */
   impact?: { text: string; source: string };
   actions?: { title: string; sub: string }[];
-  /** documentaries about it, by id in lib/docs.ts */
   docs?: string[];
 };
 
@@ -104,15 +90,12 @@ const HAND: Organism[] = [
   },
 ];
 
-/** The hand-written pages first, then one for every species the routes list, from GBIF. */
 export const ORGANISMS: Organism[] = [...HAND, ...GENERATED.filter((g) => !HAND.some((h) => h.id === g.id))];
 
 const fold = (name: string) => name.trim().toLowerCase();
-// every name a list may write for a page, once, so a lookup is not a scan of all of them
 const BY_NAME = new Map<string, string>();
 for (const o of ORGANISMS) for (const n of namesOf(o)) BY_NAME.set(fold(n), o.id);
 
-/** The page of an organism by its common name as the lists write it ("Common crane"), when it has one. */
 export const organismHref = (name: string) => {
   const id = BY_NAME.get(fold(name));
   return id && `/map/organism/${id}`;

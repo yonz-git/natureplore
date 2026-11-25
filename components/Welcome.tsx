@@ -10,18 +10,6 @@ import WelcomeRoute from "@/components/WelcomeRoute";
 import WelcomeScroll from "@/components/WelcomeScroll";
 import WelcomeZoom from "@/components/WelcomeZoom";
 
-// The opening, then A0 · Welcome, as one page. It opens on the green field and one line,
-// "Natureplore all around", in the middle of the screen, no logo. Scrolling takes that line away as
-// the forest photograph opens in a growing circle with a glowing rim, builds the logo piece by piece
-// in the middle and sends the symbol to the top left corner (components/WelcomeLogo.tsx), and only
-// then brings in A0: the heading, the line and the green action, and the route drawn across
-// the photograph with the four things the map holds (components/WelcomeRoute.tsx).
-// With `still` it is A0 alone, nothing moves.
-// Layout: app/welcome2.css. Field, opening and scroll choreography: app/welcome.css, fed by
-// components/WelcomeScroll.tsx. Glass: app/glass.css.
-// Boards: "A0 · Welcome, version 4 (animated)" for the opening, "A0 · Welcome" and
-// "A0 · Welcome, desktop" on the redesign canvas for the page it lands on.
-
 export default function Welcome({ still = false }: { still?: boolean }) {
   return (
     <div className={still ? undefined : "a0s"}>
@@ -43,7 +31,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
             <div className="a02-photo-in" />
           </div>
         </div>
-        {/* the logo: built by the scroll, already in its corner when the page is still */}
+        {}
         {still ? (
           <div className="a0-mark-corner">
             <Logo symbol />
@@ -52,7 +40,7 @@ export default function Welcome({ still = false }: { still?: boolean }) {
           <WelcomeLogo />
         )}
 
-        {/* what the page opens on, alone in the middle of the screen until the scroll takes it away */}
+        {}
         {!still && <WelcomeHero lines={["Natureplore", "all around"]} />}
 
         <WelcomeRoute />

@@ -1,11 +1,6 @@
 "use client";
 
-// D2 · Documentaries, the collection: curated links grouped by where they are about, Brandenburg,
-// northern Germany, Europe, with chips that narrow it by subject or to the routes you saved. The
-// region search of the old board became these chips. The chip in use is kept in the address
-// (?f=), so coming back from a documentary returns to the same list. On the phone rows in a glass
-// box per group; from 64rem the same items as cards, four to a row.
-// Boards: D2, phone, tablet and desktop.
+// D2 · Documentaries
 
 import { usePathname, useSearchParams } from "next/navigation";
 
@@ -34,8 +29,6 @@ export default function DocsScreen() {
   const groups = REGIONS.map((r) => ({ region: r, docs: DOCS.filter((d) => d.region === r && keep(d)) })).filter((g) => g.docs.length);
   const count = groups.reduce((n, g) => n + g.docs.length, 0);
 
-  // replaceState rather than the router: the list changes in place, where it is scrolled to, and
-  // Next keeps useSearchParams in step with it
   const choose = (f: Filter) => window.history.replaceState(null, "", f === "all" ? pathname : `${pathname}?f=${slug(f)}`);
 
   return (

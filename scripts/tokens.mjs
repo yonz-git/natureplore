@@ -1,5 +1,3 @@
-// Generates app/tokens.css from the design system in ../docs/design.md.
-// Run: npm run tokens  (the design.md is the source of truth, never edit tokens.css)
 import { readFileSync, writeFileSync } from 'node:fs';
 import { parse } from 'yaml';
 
@@ -14,7 +12,6 @@ const push = (name, value) => lines.push(`  ${name}: ${value};`);
 
 for (const [k, v] of Object.entries(d.colors ?? {})) push(`--color-${k}`, v);
 lines.push('');
-// fills: gradients built from the colours, so each is written once and used by name
 for (const [k, v] of Object.entries(d.fills ?? {})) push(`--fill-${k}`, v);
 lines.push('');
 for (const [k, v] of Object.entries(d.fonts ?? {})) push(`--font-${k}`, v);

@@ -1,8 +1,3 @@
-// The routes in season this month, the suggestion cards on A5 and A4, and what search finds.
-// Content comes from the flow and IA redesign (.forge/briefs/flow-ia-redesign-final.md, section 3)
-// and the Flow A boards on the redesign canvas. "This month" is the prototype's month (lib/now.ts).
-// Only Grumsin beech forest loop has its route page built.
-
 import { organismHref } from "@/lib/organisms";
 import type { MapPoint } from "@/components/RegionMap";
 import type { Group } from "@/lib/routes";
@@ -17,29 +12,21 @@ export type InSeason = {
   name: string;
   latin: string;
   group: Group;
-  /** what it is doing there, when the boards say so */
   note?: string;
-  /** last recorded, as the boards write it */
   last: string;
 };
 
 export type Suggestion = {
-  /** the same id as in lib/routes.ts, so a saved route reads the same in Saved and on B1 */
   id: string;
   name: string;
   meta: string;
-  /** the short line A3 uses for "Did you mean" */
   place: string;
   spots: number;
-  /** the spots in season this month, in walking order (lib/season.ts) */
   lit: number[];
-  /** the route's photograph, from lib/photos.ts */
   image?: string;
-  /** the route page, only where it is built */
   href?: string;
   lat: number;
   lon: number;
-  /** what is recorded along it this month, most records first (lib/season.ts) */
   inSeason: InSeason[];
 };
 
@@ -91,16 +78,12 @@ const ROUTES: Omit<Suggestion, "lit" | "inSeason">[] = [
   },
 ];
 
-/** A route's spots in season this month, as its page decides them (lib/spots.ts), so the count on a card always
-    agrees with the spots its page mutes. */
 const litOf = (id: string) => routeDetail(id)?.spots.filter((s) => !s.out).map((s) => s.n) ?? [];
 
-// Sorted by the share of spots in season this month, then by name: a sort, not a recommendation.
 export const SUGGESTIONS: Suggestion[] = ROUTES.map((s) => ({ ...s, lit: litOf(s.id), inSeason: recordedIn(s.id) })).sort(
   (a, b) => b.lit.length / b.spots - a.lit.length / a.spots || a.name.localeCompare(b.name),
 );
 
-/** The four routes on the map with their names, a constant so the map is built once. */
 export const ROUTE_POINTS: MapPoint[] = SUGGESTIONS.map((s) => ({
   id: s.id,
   lat: s.lat,
@@ -113,11 +96,7 @@ export const ROUTE_POINTS: MapPoint[] = SUGGESTIONS.map((s) => ({
 
 export const suggestionById = (id: string) => SUGGESTIONS.find((s) => s.id === id);
 
-
-/** "4 of 6 spots in season in November" */
 export const inSeasonLine = (s: Suggestion) => `${s.lit.length} of ${s.spots} spots in season in ${MONTH}`;
-
-// ── search ──────────────────────────────────────────────────────────────────────────────────
 
 const fold = (x: string) =>
   x
@@ -135,18 +114,13 @@ const GROUP_WORD: Record<Group, string> = {
 };
 export const groupWord = (g: Group) => GROUP_WORD[g];
 
-// ── regions: what the map searches for, with organisms ─────────────────────────────────────
-
 export type Region = {
   id: string;
   name: string;
-  /** what kind of place and where */
   kind: string;
-  /** the routes in it, by id; none when it is not mapped yet */
   routes: string[];
 };
 
-/** The whole mapped area, the one A5 opens on. */
 export const HOME_REGION = "berlin-brandenburg";
 
 export const REGIONS: Region[] = [
@@ -162,18 +136,15 @@ export const REGIONS: Region[] = [
 
 export const regionById = (id?: string) => REGIONS.find((r) => r.id === id) ?? REGIONS[0];
 
-/** The routes in a region, in the suggestion order. */
 export const routesIn = (r: Region) => SUGGESTIONS.filter((s) => r.routes.includes(s.id));
 
 export type RegionOrganism = { organism: InSeason; routes: number; href?: string };
 
-/** What is in season in a region this month: each organism once, with the routes it is along. */
 export function organismsIn(r: Region): RegionOrganism[] {
   const found = new Map<string, RegionOrganism>();
   for (const s of routesIn(r))
     for (const o of s.inSeason) {
       const seen = found.get(o.name);
-      // recorded along several routes: the newest record is the one to show
       const newest = seen && Date.parse(seen.organism.last) > Date.parse(o.last) ? seen.organism : o;
       found.set(o.name, { organism: newest, routes: (seen?.routes ?? 0) + 1, href: organismHref(o.name) });
     }
@@ -185,8 +156,7 @@ const regionLine = (r: Region) =>
     ? `${r.kind}. ${r.routes.length} route${r.routes.length > 1 ? "s" : ""} in season in ${MONTH}`
     : `${r.kind}. Not mapped yet`;
 
-// Species whose location is generalised (B5): search is the only way to their page, and the line
-// names the protected area, never a route or a spot, so a result cannot narrow the place down.
+// B5: name the protected area only, so a result cannot narrow the place down
 const GENERALISED: { organism: InSeason; where: string; href: string }[] = [
   {
     organism: { name: "Early marsh orchid", latin: "Dactylorhiza incarnata", group: "herbs", last: "Jun 2026" },
@@ -198,10 +168,6 @@ const GENERALISED: { organism: InSeason; where: string; href: string }[] = [
 export type RegionHit = { region: Region; line: string; href?: string };
 export type OrganismHit = { organism: InSeason; line: string; href?: string };
 
-/**
- * A2: regions first, then organisms. A region opens its suggestions, where Routes or Organisms
- * filters what is listed. An organism is listed once, with how many routes it is recorded along.
- */
 export function search(query: string): { regions: RegionHit[]; organisms: OrganismHit[] } {
   const q = fold(query);
   if (!q) return { regions: [], organisms: [] };
@@ -221,7 +187,6 @@ export function search(query: string): { regions: RegionHit[]; organisms: Organi
   return { regions, organisms };
 }
 
-// the number of single letter edits between two words
 function distance(a: string, b: string) {
   const row = Array.from({ length: b.length + 1 }, (_, i) => i);
   for (let i = 1; i <= a.length; i++) {
@@ -236,7 +201,6 @@ function distance(a: string, b: string) {
   return row[b.length];
 }
 
-/** A3: what a misspelt search probably meant, a region or an organism a few letters away. */
 export function didYouMean(query: string): { regions: RegionHit[]; organisms: InSeason[] } {
   const q = fold(query);
   if (q.length < 3) return { regions: [], organisms: [] };

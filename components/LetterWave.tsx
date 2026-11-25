@@ -7,17 +7,10 @@ import { SplitText } from "gsap/SplitText";
 
 gsap.registerPlugin(SplitText);
 
-// A label whose letters ride a small wave while the pointer is on the control around it: each
-// letter bobs up and back down once, one after another from the first, so a ripple runs along the
-// word, and after a short rest it runs again for as long as the pointer stays. Leaving settles the
-// letters back onto the line.
-// Mouse and pen only, and nothing under reduced motion; there the label is plain text. A reader's
-// software gets the plain text either way, the split letters are decoration.
-
-const LIFT = 0.15; // of the font size, how high a letter rises
-const RISE = 0.4; // seconds, a letter going up (and again coming down)
-const STAGGER = 0.06; // seconds between one letter and the next
-const REST = 0.6; // seconds between one ripple ending and the next starting
+const LIFT = 0.15;
+const RISE = 0.4;
+const STAGGER = 0.06;
+const REST = 0.6;
 
 export default function LetterWave({ text }: { text: string }) {
   const ref = useRef<HTMLSpanElement>(null);

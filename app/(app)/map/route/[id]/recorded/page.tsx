@@ -5,8 +5,7 @@ import RecordedScreen from "@/components/RecordedScreen";
 import { recordedOf } from "@/lib/recorded";
 import { routeById } from "@/lib/routes";
 
-// A8 · Recorded along this route, opened from B1's "Recorded organisms": every route GBIF was fetched for
-// (lib/recorded.ts).
+// A8 · Recorded along this route
 
 export async function generateMetadata({ params }: PageProps<"/map/route/[id]/recorded">): Promise<Metadata> {
   const { id } = await params;

@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import RegionMap from "@/components/RegionMap";
 import StartSheet from "@/components/StartSheet";
 
-// A1 · Start sheet, where "Start Natureploring" on the welcome lands: Berlin and Brandenburg with
-// their route counts, and the sheet that offers search or location. Search opens A2; the location
-// prompt opens A4 when allowed and A5 when declined; Browse (desktop) opens A5.
+// A1 · Start sheet
 
 export const metadata: Metadata = { title: "Where to start" };
 

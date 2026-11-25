@@ -1,43 +1,27 @@
-// The spots of a route and what B1 says about it beyond its card, for the four routes on the map:
-// Grumsin beech forest loop, Linum wet meadows loop, Tegeler Fließ valley path and Tempelhofer Feld
-// loop. Getting there, and which claims are along it. Content is the
-// sample content of the flow and IA redesign (§3), as on the boards B1, L3-1 to L3-6, L4 and B4.
-// Each spot is about a species GBIF has recorded at that spot, with its months and last record from GBIF
-// (.design/gbif/spots_gbif.py and season.py; spots_ts.py writes the spot arrays): the months it is recorded
-// within 15 km of the route and at the spot itself. The words around it are written for the prototype.
-
 import { CLAIMS, type Claim } from "@/lib/claims";
 import { MONTH_NAMES, NOW } from "@/lib/now";
 import { spotIn } from "@/lib/season";
 
-// the claims live in lib/claims.ts; they are re-exported here for the screens that read spots
 export { CLAIMS, type Claim };
 
-/** The prototype's month, as an index from 0 for January (see lib/now.ts). */
 export { MONTH_NAMES, NOW };
 export const MONTH_LETTERS = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
 
 export type Spot = {
   n: number;
   name: string;
-  /** the months it is in season, 0 for January, and the same months written out */
   months: number[];
   when: string;
-  /** what to look for this month, or `out` when the spot is not in season */
   look: { name: string; what?: string; last: string; organism?: string }[];
   out?: string;
-  /** what `out` says after "Not in season in <month>." */
   outText?: string;
-  /** a restraint starts with "Don’t"; a spot without one says what to do instead */
   kind: "dont" | "do";
   line: string;
-  /** the mechanism: why the line matters, never an unsourced figure */
   why: string;
 };
 
 export type RouteDetail = {
   spots: Spot[];
-  /** where the spots sit along the line, from 0 at the start to 1 at the finish */
   getting: [string, string][];
   claims: Claim[];
   foot: string;
@@ -47,7 +31,6 @@ const GRUMSIN_SPOTS: Spot[] = [
   {
     n: 1,
     name: "The forest gate",
-    // GBIF: 1 record of Garrulus glandarius within 300 m of the spot, 2010 to 2025
     months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
     look: [{ name: "Eurasian jay", what: "in the old beeches", last: "24 Aug 2016" }],
@@ -59,7 +42,6 @@ const GRUMSIN_SPOTS: Spot[] = [
   {
     n: 2,
     name: "Buckow-See",
-    // GBIF: 4 records of Sitta europaea within 300 m of the spot, 2010 to 2025
     months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
     look: [{ name: "Eurasian nuthatch", what: "on the old beech trunks by the lake", last: "26 Aug 2024" }],
@@ -71,7 +53,6 @@ const GRUMSIN_SPOTS: Spot[] = [
   {
     n: 3,
     name: "Schwarzer See",
-    // GBIF: 9 records of Calla palustris within 300 m of the spot, 2010 to 2025
     months: [3,  4,  5,  6,  7,  8],
     when: "Apr to Sep",
     look: [{ name: "Bog arum", what: "in the wet edge of the bog", last: "5 Sep 2024" }],
@@ -83,7 +64,6 @@ const GRUMSIN_SPOTS: Spot[] = [
   {
     n: 4,
     name: "Fungi on the fallen beech",
-    // GBIF: 1 record of Mycena rosea within 300 m of the spot, 2010 to 2025
     months: [9],
     when: "Oct",
     look: [{ name: "Rosy bonnet", what: "in the beech leaf litter", last: "16 Oct 2022" }],
@@ -95,7 +75,6 @@ const GRUMSIN_SPOTS: Spot[] = [
   {
     n: 5,
     name: "Wolletzsee",
-    // GBIF: 1 record of Bucephala clangula within 300 m of the spot, 2010 to 2025
     months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
     look: [{ name: "Common goldeneye", what: "on the open water", last: "17 Nov 2018" }],
@@ -106,13 +85,10 @@ const GRUMSIN_SPOTS: Spot[] = [
   },
 ];
 
-// Linum: the order the line walks them (.design/linum-route/line.py), out along the canal, round the
-// fish ponds and back across the meadows to the storks
 const LINUM_SPOTS: Spot[] = [
   {
     n: 1,
     name: "The flooded ditch",
-    // GBIF: 13 records of Grus grus within 300 m of the spot, 2010 to 2025
     months: [2,  3,  4,  5,  9,  10],
     when: "Mar to Jun, Oct to Nov",
     look: [{ name: "Common crane", what: "feeding in the wet field", last: "4 Oct 2025", organism: "common-crane" }],
@@ -124,7 +100,6 @@ const LINUM_SPOTS: Spot[] = [
   {
     n: 2,
     name: "Reed edge of the fish ponds",
-    // GBIF: 12 records of Panurus biarmicus within 300 m of the spot, 2010 to 2025
     months: [2,  3,  4,  5,  6,  7,  8,  9,  10],
     when: "Mar to Nov",
     look: [{ name: "Bearded reedling", what: "calling in the reed tops", last: "22 Nov 2025" }],
@@ -136,7 +111,6 @@ const LINUM_SPOTS: Spot[] = [
   {
     n: 3,
     name: "Far corner of the ponds",
-    // GBIF: 89 records of Anser anser within 300 m of the spot, 2010 to 2025
     months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
     look: [{ name: "Greylag goose", what: "grazing on the pond banks", last: "3 Oct 2025" }],
@@ -148,7 +122,6 @@ const LINUM_SPOTS: Spot[] = [
   {
     n: 4,
     name: "The dam between the ponds",
-    // GBIF: 68 records of Grus grus within 300 m of the spot, 2010 to 2025
     months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
     look: [{ name: "Common crane", what: "flying in to roost at dusk", last: "17 Oct 2025", organism: "common-crane" }],
@@ -160,7 +133,6 @@ const LINUM_SPOTS: Spot[] = [
   {
     n: 5,
     name: "Wet meadow track",
-    // GBIF: 1 record of Caltha palustris within 300 m of the spot, 2010 to 2025
     months: [3,  4],
     when: "Apr to May",
     look: [{ name: "Marsh marigold", what: "in flower in the wet meadow", last: "5 May 2019" }],
@@ -172,7 +144,6 @@ const LINUM_SPOTS: Spot[] = [
   {
     n: 6,
     name: "Stork nests at the village edge",
-    // GBIF: 13 records of Ciconia ciconia within 300 m of the spot, 2010 to 2025
     months: [2,  3,  4,  5,  6,  7],
     when: "Mar to Aug",
     look: [{ name: "White stork", what: "on the nest", last: "3 Jun 2025" }],
@@ -183,13 +154,10 @@ const LINUM_SPOTS: Spot[] = [
   },
 ];
 
-// Tegeler Fließ: the order the line walks them (.design/tegel-route/line.py), from Hermsdorf down the valley to
-// the beaver's stretch and past the lake, over the Fließ and through the alder carr, then across the meadows to Lübars
 const TEGEL_SPOTS: Spot[] = [
   {
     n: 1,
     name: "The beaver lodge",
-    // GBIF: 1 record of Castor fiber within 300 m of the spot, 2010 to 2025
     months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
     look: [{ name: "Eurasian beaver", what: "gnawed trunks along the bank", last: "5 Jun 2025" }],
@@ -201,7 +169,6 @@ const TEGEL_SPOTS: Spot[] = [
   {
     n: 2,
     name: "Hermsdorf lake shore",
-    // GBIF: 14 records of Ardea cinerea within 300 m of the spot, 2010 to 2025
     months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
     look: [{ name: "Grey heron", what: "fishing at the reed edge", last: "11 Dec 2025" }],
@@ -213,7 +180,6 @@ const TEGEL_SPOTS: Spot[] = [
   {
     n: 3,
     name: "The Fließ bridge",
-    // GBIF: 6 records of Alcedo atthis within 300 m of the spot, 2010 to 2025
     months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
     look: [{ name: "Common kingfisher", what: "on a branch over the water", last: "28 Jul 2025" }],
@@ -225,7 +191,6 @@ const TEGEL_SPOTS: Spot[] = [
   {
     n: 4,
     name: "Alder carr boardwalk",
-    // GBIF: 6 records of Caltha palustris within 300 m of the spot, 2010 to 2025
     months: [3,  4,  5],
     when: "Apr to Jun",
     look: [{ name: "Marsh marigold", what: "in flower under the alders", last: "27 Apr 2025" }],
@@ -237,7 +202,6 @@ const TEGEL_SPOTS: Spot[] = [
   {
     n: 5,
     name: "Wet meadow bend",
-    // GBIF: 2 records of Symphytum officinale within 300 m of the spot, 2010 to 2025
     months: [3,  4,  5,  6,  7,  8],
     when: "Apr to Sep",
     look: [{ name: "Common comfrey", what: "in flower along the track", last: "20 Jul 2020" }],
@@ -249,7 +213,6 @@ const TEGEL_SPOTS: Spot[] = [
   {
     n: 6,
     name: "Old sheep pasture",
-    // GBIF: 4 records of Saponaria officinalis within 300 m of the spot, 2010 to 2025
     months: [3,  4,  5,  6,  7,  8],
     when: "Apr to Sep",
     look: [{ name: "Soapwort", what: "in flower by the pasture fence", last: "31 May 2024" }],
@@ -261,7 +224,6 @@ const TEGEL_SPOTS: Spot[] = [
   {
     n: 7,
     name: "Lübars village pond",
-    // GBIF: 3 records of Corydalis solida within 300 m of the spot, 2010 to 2025
     months: [2,  3],
     when: "Mar to Apr",
     look: [{ name: "Fumewort", what: "in flower under the trees by the pond", last: "22 Mar 2025" }],
@@ -272,13 +234,10 @@ const TEGEL_SPOTS: Spot[] = [
   },
 ];
 
-// Tempelhofer Feld: the order the loop walks them (.design/tempelhof-route/line.py), from Tor 5 east to the
-// gardens and meadows, along the south runway and back by the north meadows
 const TEMPELHOF_SPOTS: Spot[] = [
   {
     n: 1,
     name: "The community gardens",
-    // GBIF: 3 records of Buddleja davidii within 300 m of the spot, 2010 to 2025
     months: [1,  2,  3,  4,  5,  6,  7,  8,  9,  10],
     when: "Feb to Nov",
     look: [{ name: "Butterfly bush", what: "in flower by the garden beds", last: "10 Oct 2023" }],
@@ -290,7 +249,6 @@ const TEMPELHOF_SPOTS: Spot[] = [
   {
     n: 2,
     name: "The skylark meadow",
-    // GBIF: 8 records of Alauda arvensis within 300 m of the spot, 2010 to 2025
     months: [1,  2,  3,  4,  5,  6,  7,  8,  9],
     when: "Feb to Oct",
     look: [{ name: "Eurasian skylark", what: "singing high over the meadow", last: "20 Apr 2025" }],
@@ -302,7 +260,6 @@ const TEMPELHOF_SPOTS: Spot[] = [
   {
     n: 3,
     name: "Old runway edge",
-    // GBIF: 14 records of Corvus frugilegus within 300 m of the spot, 2010 to 2025
     months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
     look: [{ name: "Rook", what: "feeding in a flock on the grass", last: "13 Aug 2025" }],
@@ -314,7 +271,6 @@ const TEMPELHOF_SPOTS: Spot[] = [
   {
     n: 4,
     name: "The windsock hill",
-    // GBIF: 7 records of Vulpes vulpes within 600 m of the spot, 2010 to 2025
     months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
     look: [{ name: "Red fox", what: "crossing the field at dusk", last: "11 Oct 2018" }],
@@ -326,7 +282,6 @@ const TEMPELHOF_SPOTS: Spot[] = [
   {
     n: 5,
     name: "North meadow fence",
-    // GBIF: 40 records of Falco tinnunculus within 300 m of the spot, 2010 to 2025
     months: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  11],
     when: "All year",
     look: [{ name: "Common kestrel", what: "hovering over the long grass", last: "10 Dec 2025" }],
@@ -337,7 +292,6 @@ const TEMPELHOF_SPOTS: Spot[] = [
   },
 ];
 
-/** A route's spots as they read in the prototype's month (lib/season.ts). */
 const asOfNow = (routeId: string) => (s: Spot) => spotIn(routeId, s);
 
 const DETAILS: Record<string, RouteDetail> = {

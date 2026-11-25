@@ -1,12 +1,6 @@
 "use client";
 
-// The home of the Routes tab, in the two ways it opens:
-// A5 · Suggestions, location off: the routes in season this month in Berlin and Brandenburg,
-//   sorted by how many of their spots are in season, and "Use my location", which asks first.
-// A4 · Suggestions, near you: the same, after the location is allowed, with the person on the map.
-// On the phone the map sits above a sheet with the list, and "Show on map" swaps the list for the
-// map in place. From 64rem the list is the panel down the left and the map is always beside it.
-// Boards: A5 and A4, phone, tablet and desktop, on the redesign canvas.
+// A5, A4 · Suggestions
 
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -33,38 +27,27 @@ function pointsFor(regionId: string, near: boolean): MapPoint[] {
 
 export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { near: boolean; regionId?: string }) {
   const map = useRef<MapHandle>(null);
-  // from 64rem the search field leaves the panel for the top of the screen, centred on it
   const desk = useIsDesktop();
   const [onMap, setOnMap] = useState(false);
-  // the route card under the pointer or holding focus: its label on the map lightens to match
   const [hot, setHot] = useState<string>();
   const hotFrom = (e: React.SyntheticEvent) =>
     setHot((e.target as HTMLElement).closest<HTMLElement>("[data-route]")?.dataset.route);
-  // what the list shows for the region: its routes, or what is in season along them
   const [show, setShow] = useState<"routes" | "organisms">("routes");
   const region = regionById(regionId);
   const home = region.id === HOME_REGION;
   const routes = routesIn(region);
-  // the routes that are built open from their labels on the map; the others are sample cards
   const opens = routes.filter((r) => r.href).map((r) => r.name);
   const organisms = organismsIn(region);
-  // On Organisms, all five groups sit beside the switch as filters, the ones with nothing in season
-  // here dimmed and unpickable. None picked shows all; each one picked narrows the list to those.
   const [picked, setPicked] = useState<Group[]>([]);
-  // the organisms list shows four of each group until Discover more opens the rest
   const [more, setMore] = useState<Group[]>([]);
   const has = (g: Group) => organisms.some(({ organism }) => organism.group === g);
   const shown = picked.length ? organisms.filter(({ organism }) => picked.includes(organism.group)) : organisms;
   const pick = (g: Group) => setPicked((now) => (now.includes(g) ? now.filter((x) => x !== g) : [...now, g]));
   const groupRow = useRef<HTMLDivElement>(null);
-  // as the toggles appear the moving icons play once, a beat after they grow in, dimmed or not
   useEffect(() => {
     if (show !== "organisms") return;
     groupRow.current?.querySelectorAll<HTMLElement>("[data-group]").forEach((b, i) => playGroup(b, b.dataset.group as Group, 160 + i * 60));
   }, [show]);
-  // The lime under the picked option is one pill that slides between the two (.seg-thumb in
-  // app/flow-a.css): placed on the picked option's box, measured, and moved again whenever the option
-  // changes or a width changes. Its first placement is not animated; from then on it glides.
   const seg = useRef<HTMLDivElement>(null);
   const thumb = useRef<HTMLSpanElement>(null);
   useLayoutEffect(() => {
@@ -84,14 +67,9 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
     box.querySelectorAll(".seg-opt").forEach((o) => watch.observe(o));
     return () => watch.disconnect();
   }, [show]);
-  // the region's routes on the map, a memo so the map is built once per region
   const points = useMemo(() => pointsFor(regionId, near), [regionId, near]);
   useEffect(() => rememberList(near ? "/map/near-you" : home ? "/map" : `/map?region=${region.id}`), [near, home, region.id]);
 
-  // The sheet moves between its two heights by its own transform, never an ancestor's (that would
-  // switch off the frost): its top jumps, then it slides from where it was. The map measures the
-  // new top at once, so the labels land in the space the sheet leaves free.
-  // on the map view the sheet keeps only its head, so it has nothing to open
   const sheet = useRef<HTMLDivElement>(null);
   const grab = useSheet(sheet, !onMap);
   const from = useRef<number | null>(null);
@@ -110,9 +88,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
     from.current = sheet.current?.offsetTop ?? null;
     setOnMap(!onMap);
   };
-  // "Show on map" flies the map in, as a map app would: with the location on, to the person and the
-  // routes near them; with it off, to the route at the top of the list. "Show as a list" flies back
-  // to the overview. A layout effect, so the map measures the sheet's new top before it refits.
   const flipped = useRef(false);
   useLayoutEffect(() => {
     if (!flipped.current) {
@@ -137,7 +112,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
   const row = useRef<HTMLDivElement>(null);
   const [searching, setSearching] = useState(false);
   const [tucked, setTucked] = useState(false);
-  // Routes or Organisms, outside the sheet, after the search circle
   const segment = (
     <div role="group" aria-label="Show routes or organisms" className="seg glass glass-pill" ref={seg} inert={searching}>
       <span className="seg-thumb" ref={thumb} aria-hidden="true" />
@@ -151,8 +125,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
       </button>
     </div>
   );
-  // on Organisms, the group filters fan out in the sheet above the list; inert, not removed, while
-  // on Routes, so the toggles can fade out as well as in
   const groups = (
     <div role="group" aria-label="Filter by group" ref={groupRow} className={`sg-groups${show === "organisms" ? " is-on" : ""}`} inert={show !== "organisms"}>
       <button type="button" className="sg-group sg-all glass glass-pill" aria-pressed={picked.length === 0} onClick={() => setPicked([])}>
@@ -169,7 +141,6 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           title={has(g.id) ? g.label : `${g.label}: none in season here`}
           data-group={g.id}
           onClick={() => has(g.id) && pick(g.id)}
-          // again under a mouse or on keyboard focus, when the group can be picked
           onPointerEnter={(e) => e.pointerType === "mouse" && has(g.id) && playGroup(e.currentTarget, g.id)}
           onFocus={(e) => e.currentTarget.matches(":focus-visible") && has(g.id) && playGroup(e.currentTarget, g.id)}
         >
@@ -178,15 +149,12 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
       ))}
     </div>
   );
-  // Search is a circle at the row's start. Opened, the switch and the filters slide out and the field
-  // slides in over the row, its icon now a way back; Escape or Back slides the switch in again.
   const opened = useRef(false);
   const openSearch = () => {
     row.current?.scrollTo({ left: 0 });
     setSearching(true);
   };
   const closeSearch = () => setSearching(false);
-  // focus follows: into the field as it opens, back to the circle as it closes (not on arrival)
   useEffect(() => {
     if (searching) row.current?.querySelector<HTMLInputElement>(".sg-find input")?.focus();
     else if (opened.current) row.current?.querySelector<HTMLElement>(".sg-search")?.focus();
@@ -208,7 +176,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
     <section className={`ms sg ${near ? "a4" : "a5"}${onMap ? " is-map" : ""}${tucked ? " is-tucked" : ""}`}>
       <RegionMap className="a1-map" behind={!onMap} hot={hot} ref={map} points={points} maxZoom={home ? 9.5 : 11} />
 
-      {/* on the tablet, the round button on the panel's edge slides the list off to show the whole map, as on B1 */}
+      {}
       <button
         type="button"
         className="b1-dock round glass glass-pin"
@@ -239,10 +207,10 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
           onScroll={grab.onScroll}
         >
           {grab.grab("list")}
-          {/* on Organisms, the group filters at the top of the sheet */}
+          {}
           <div className="sg-head">
             <div>
-              {/* the pin rolls in again for each region */}
+              {}
               <RegionLine replay={region.id}>{near ? `Near you, in ${region.name}` : region.name}</RegionLine>
               <h1 id="sg-title" className="ms-title">
                 In season in <em>{MONTH}</em>
@@ -276,7 +244,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
               {routes.map((s) => (
                 <SuggestionCard key={s.id} route={s} />
               ))}
-              {/* the full list is not built in the prototype, the button says what it would open */}
+              {}
               {home && (
                 <button type="button" className="btn btn-secondary btn-chev is-closing" aria-disabled="true">
                   Show more routes
@@ -287,7 +255,7 @@ export default function SuggestionsScreen({ near, regionId = HOME_REGION }: { ne
             </div>
           ) : (
             <div className="sg-list" key="organisms">
-              {/* one card per group, in the filters' order, headed by its icon, name and species count */}
+              {}
                 {GROUPS.filter((g) => shown.some(({ organism }) => organism.group === g.id)).map((g, n) => {
                   const inGroup = shown.filter(({ organism }) => organism.group === g.id);
                   if (!inGroup.length) return null;

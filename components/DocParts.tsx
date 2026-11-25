@@ -1,11 +1,5 @@
 "use client";
 
-// The documentary item Flow D shares: the photograph with its length on it, the title, the year,
-// length and what it covers, and how it can be watched. The same item is a card on Learn (D0) and
-// in the collection from 64rem (D2), and a row in the collection on the phone, on D4 and in Saved;
-// the list around it decides which (app/flow-d.css). It opens the documentary (D3), or D4 when it
-// cannot be watched here, and remembers the page it was opened from.
-
 import Link from "next/link";
 
 import { LockIcon } from "@/components/Icons";
@@ -41,7 +35,6 @@ export function DocItem({ doc }: { doc: Doc }) {
   );
 }
 
-/** A list of documentaries: `cards` scrolls sideways on the phone, `rows` sits in one glass box. */
 export function DocList({ docs, as, label }: { docs: Doc[]; as: "cards" | "rows"; label?: string }) {
   return (
     <ul className={`dc-list is-${as}`} aria-label={label}>
