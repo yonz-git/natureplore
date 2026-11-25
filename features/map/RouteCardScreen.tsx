@@ -98,9 +98,8 @@ function SpotAt({ n, km }: { n?: number; km: string }) {
       ) : (
         <span className="spot-mark fb-mark fb-mark-end" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            {}
-            <path d="M6.5 20.5V3.5" />
-            <path d="M6.5 3.5h11l-2 4 2 4H6.5" />
+            <path d="M7 22V5" />
+            <path d="M7 5h11l-2 4 2 4H7" />
           </svg>
         </span>
       )}

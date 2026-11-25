@@ -583,9 +583,8 @@ export default function RegionMap({
             return (
               <div key={pin.id} className="map-start" style={style} role="img" aria-label={pin.label}>
                 <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  {}
-                  <path d="M6.5 20.5V3.5" />
-                  <path d="M6.5 3.5h11l-2 4 2 4H6.5" />
+                  <path d="M7 22V5" />
+                  <path d="M7 5h11l-2 4 2 4H7" />
                 </svg>
                 <span className="map-start-label" aria-hidden="true">
                   {pin.startText ?? "Start and finish"}

@@ -164,7 +164,7 @@ export default function ClaimScreen({ claim }: { claim: Claim }) {
         <div className="org-main">
           {main}
         </div>
-        <aside className="org-side">{side}</aside>
+        <aside className="org-side cp-claim-side">{side}</aside>
       </div>
     </section>
   );

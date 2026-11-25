@@ -146,8 +146,8 @@ export default function SavedScreen() {
         <h2>On this device</h2>
         <ul className="fb-card fb-rows saved-device">
           <Device href="/saved/searches" icon={<SearchIcon size={18} />} title="Recent searches" line={recent.length ? recent.slice(0, 3).map((r) => r.label).join(", ") : "Nothing yet"} n={recent.length} />
-          <Device href="/saved/offline" icon={<OfflineIcon size={18} />} title="Downloaded routes" line={routes.length ? routes.map((r) => r.name).join(", ") : "Saving a route downloads it"} n={routes.length} />
-          <Device href="/saved/notifications" icon={<CalendarIcon size={18} />} title="Notifications" line={notes ? "1 about the September clean-up" : "Only changes to something you started"} n={notes} />
+          <Device href="/saved/offline" icon={<OfflineIcon size={18} />} title="Downloaded routes" n={routes.length} />
+          <Device href="/saved/notifications" icon={<CalendarIcon size={18} />} title="Notifications" n={notes} />
         </ul>
       </div>
     </section>
@@ -163,7 +163,7 @@ function Head({ title, href, n }: { title: string; href: string; n: number }) {
   );
 }
 
-function Device({ href, icon, title, line, n }: { href: string; icon: React.ReactNode; title: string; line: string; n: number }) {
+function Device({ href, icon, title, line, n }: { href: string; icon: React.ReactNode; title: string; line?: string; n: number }) {
   return (
     <li>
       <Link href={href} className="fb-row">
@@ -172,7 +172,7 @@ function Device({ href, icon, title, line, n }: { href: string; icon: React.Reac
         </span>
         <span className="fb-row-text">
           <b>{title}</b>
-          <span>{line}</span>
+          {line && <span>{line}</span>}
         </span>
         {n > 0 && <span className="fb-pill">{n}</span>}
         <ChevronIcon size={18} />
