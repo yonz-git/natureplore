@@ -141,29 +141,27 @@
   .sg .seg-opt[aria-pressed="false"]:hover > svg { opacity: 1; }
 }
 
-@media (prefers-reduced-transparency: no-preference) {
-  .glass.glass-top,
-  .saved-sheet.glass {
+.glass.glass-top,
+.saved-sheet.glass {
+  background: var(--glass-wash), var(--color-glass-fill);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+}
+.tabbar-pill.glass,
+.seg.glass,
+.back-top.glass {
+  background: var(--fill-lime-nav);
+  backdrop-filter: blur(var(--nav-blur)) saturate(1.2);
+}
+@media (max-width: 63.99rem) {
+  .glass-phone {
     background: var(--glass-wash), var(--color-glass-fill);
     backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
   }
-  .tabbar-pill.glass,
-  .seg.glass,
-  .back-top.glass {
-    background: var(--fill-lime-nav);
-    backdrop-filter: blur(var(--nav-blur)) saturate(1.2);
-  }
-  @media (max-width: 63.99rem) {
-    .glass-phone {
-      background: var(--glass-wash), var(--color-glass-fill);
-      backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
-    }
-  }
-  @media (min-width: 64rem) {
-    .glass-desk {
-      background: var(--glass-wash), var(--color-glass-fill);
-      backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
-    }
+}
+@media (min-width: 64rem) {
+  .glass-desk {
+    background: var(--glass-wash), var(--color-glass-fill);
+    backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
   }
 }
 
@@ -172,7 +170,12 @@
   .glass-desk,
   .glass,
   .glass .glass,
-  .glass-inner {
+  .glass-inner,
+  .glass.glass-top,
+  .saved-sheet.glass,
+  .tabbar-pill.glass,
+  .seg.glass,
+  .back-top.glass {
     background: var(--color-glass-solid);
     backdrop-filter: none;
   }
