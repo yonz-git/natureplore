@@ -29,6 +29,12 @@
   --a0-inset: var(--spacing-inset-screen);
   --a0-drift-x: 2.5rem;
   --a0-drift-y: 1.875rem;
+  --a0-olive-light: color-mix(in srgb, var(--color-primary) 44%, var(--color-ground));
+  --a0-olive: color-mix(in srgb, var(--color-primary) 34%, var(--color-ground));
+  --a0-olive-deep: color-mix(in srgb, var(--color-primary-deep) 18%, var(--color-ground));
+  --a0-olive-shade: color-mix(in srgb, var(--color-primary-deep) 10%, var(--color-ground));
+  --a0-olive-mid: color-mix(in srgb, var(--color-primary) 26%, var(--color-ground));
+  --a0-olive-glow: color-mix(in srgb, var(--color-primary) 56%, var(--color-ground));
   --a0-rise: 1.5rem;
   --a0-cx: 50%;
   --a0-cy: 78%;
@@ -43,7 +49,7 @@
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
-  background: linear-gradient(160deg, var(--color-field-light) 0%, var(--color-field) 40%, var(--color-field-deep) 100%);
+  background: linear-gradient(160deg, var(--a0-olive-light) 0%, var(--a0-olive) 40%, var(--a0-olive-deep) 100%);
 }
 .a0-field::before {
   content: "";
@@ -61,10 +67,10 @@
   animation: a0-drift-a 22s ease-in-out infinite alternate;
 }
 .a0-blob-b { animation: a0-drift-b 28s ease-in-out infinite alternate; }
-.a0-blob-1 { left: -56%; top: -21%; width: 164%; background: radial-gradient(closest-side, color-mix(in srgb, var(--color-field-shade) 85%, transparent), transparent); }
+.a0-blob-1 { left: -56%; top: -21%; width: 164%; background: radial-gradient(closest-side, color-mix(in srgb, var(--a0-olive-shade) 85%, transparent), transparent); }
 .a0-blob-2 { left: 10%; top: -18%; width: 138%; aspect-ratio: 1.12; background: radial-gradient(closest-side, rgb(255 255 255 / 0.24), transparent); }
-.a0-blob-3 { left: 28%; top: 50%; width: 159%; background: radial-gradient(closest-side, color-mix(in srgb, var(--color-field-mid) 80%, transparent), transparent); }
-.a0-blob-4 { left: -46%; top: 64%; width: 138%; aspect-ratio: 1.17; background: radial-gradient(closest-side, color-mix(in srgb, var(--color-field-glow) 70%, transparent), transparent); }
+.a0-blob-3 { left: 28%; top: 50%; width: 159%; background: radial-gradient(closest-side, color-mix(in srgb, var(--a0-olive-mid) 80%, transparent), transparent); }
+.a0-blob-4 { left: -46%; top: 64%; width: 138%; aspect-ratio: 1.17; background: radial-gradient(closest-side, color-mix(in srgb, var(--a0-olive-glow) 70%, transparent), transparent); }
 .a0-reveal {
   position: absolute;
   left: 0;
