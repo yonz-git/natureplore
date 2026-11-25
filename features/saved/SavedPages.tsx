@@ -9,7 +9,7 @@ import { ACTION_ROWS } from "@/lib/actions";
 import { leaveFor } from "@/lib/back";
 import { docById, docLine } from "@/lib/docs";
 import { ORGANISMS } from "@/lib/organisms";
-import { organismPhoto, PHOTOS } from "@/lib/photos";
+import { organismPhoto, PHOTOS, photoSource } from "@/lib/photos";
 import { useRecent } from "@/lib/recent";
 import { useSaved } from "@/lib/saved";
 import { SUGGESTIONS } from "@/lib/suggestions";
@@ -572,7 +572,7 @@ function CreditRows({ rows }: { rows: Credit[] }) {
 export function Credits() {
   const photos = Object.entries(PHOTOS).map(([key, p]) => ({
     what: key.split("/")[1].replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase()),
-    who: `${p.by}, Unsplash`,
+    who: photoSource(p),
     href: p.page,
   }));
   photos.push({ what: "Mist, waterfall and forest behind the app", who: "Unsplash", href: "https://unsplash.com" });

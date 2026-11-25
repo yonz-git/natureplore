@@ -89,7 +89,6 @@ function CleanUpSide({ a, registered, register }: { a: CleanUp; registered: bool
             <CalendarIcon size={19} />
             Register for the clean-up
           </button>
-          <p className="org-small">Registering asks for nothing</p>
         </>
       )}
     </div>
