@@ -42,8 +42,6 @@
   font-weight: 400;
 }
 .sug-pills-row { display: flex; align-items: flex-end; justify-content: flex-start; gap: 0.25rem; }
-.sug-spots-photo { display: none; }
-@media (max-width: 35.74rem) { .sug-spots-photo { display: inline-flex; } }
 .sug-spots {
   height: 2rem;
   margin: 0;
@@ -122,8 +120,6 @@
   .sug-name { font-size: var(--text-lead); line-height: var(--text-lead--line-height); }
   .sug-meta { color: rgb(255 255 255 / 0.67); font-weight: 400; }
   .sug-head { align-items: flex-start; gap: calc(0.3375rem - 3px); }
-  .sug-spots-photo { margin-top: 0.25rem; }
-  .sug-spots-row { display: none; }
   .sug-open { pointer-events: auto; }
   .sug-open::after { content: none; }
 
@@ -1034,7 +1030,6 @@ img.a8-thumb { display: block; box-sizing: border-box; object-fit: cover; backgr
   .sug-meta { font-size: var(--text-body-lg); }
   .sug-head { padding-left: 0.875rem; padding-bottom: 0.875rem; }
   .sug-head { gap: 0.145rem; }
-  .sug-spots-photo { margin: 0.3rem 0; }
 }
 
 @media (max-width: 24.37rem) {

@@ -664,8 +664,9 @@ button.fb-row:active { transform: scale(0.985); }
 .org-link { position: absolute; inset: 0; border-radius: var(--radius-tile); }
 
 .org-more { padding: 0 1.25rem; }
-.org-nav { margin-top: 1.5rem; display: flex; justify-content: space-between; }
-.org-nav .fb-nav-next { flex: 0 1 auto; max-width: calc(50% - 0.3125rem); }
+.org-nav { margin-top: 1.5rem; display: flex; flex-direction: column; gap: var(--spacing-control-stack); }
+.org-nav .fb-nav-next { flex: none; width: fit-content; min-width: 50%; max-width: 100%; align-self: flex-start; }
+.org-nav .fb-nav-next:not(.is-back) { align-self: flex-end; }
 .org-nav .fb-nav-next.is-back { padding: 0.5rem 1.5rem 0.5rem 1.125rem; }
 .org-nav .fb-nav-next:not(.is-back) .fb-nav-text { align-items: flex-end; text-align: right; }
 
