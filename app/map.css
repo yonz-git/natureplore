@@ -65,11 +65,9 @@
   border: 0.5px solid var(--color-primary);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.11);
 }
-@media (prefers-reduced-transparency: no-preference) {
-  .field.glass-pill { backdrop-filter: blur(var(--glass-blur)) saturate(1.2); }
-}
+.field.glass-pill { backdrop-filter: blur(var(--glass-blur)) saturate(1.2); }
 @media (prefers-reduced-transparency: reduce) {
-  .field.glass-pill { background: var(--color-glass-solid); }
+  .field.glass-pill { background: var(--color-glass-solid); backdrop-filter: none; }
 }
 .field.glass-pill::after { display: none; }
 .field svg { flex-shrink: 0; }
