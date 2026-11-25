@@ -2,6 +2,7 @@
   --glass-blur: 0.625rem;
   --glass-wash: linear-gradient(160deg, rgb(255 255 255 / 0.08) 0%, rgb(255 255 255 / 0.026) 100%);
   --glass-wash-inner: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
+  --card-fill: linear-gradient(160deg, rgb(8 20 8 / 0.58) 0%, rgb(7 15 8 / 0.33) 100%);
 }
 
 :root {
@@ -143,8 +144,8 @@
 @media (prefers-reduced-transparency: no-preference) {
   .glass.glass-top,
   .saved-sheet.glass {
-    background: var(--color-sheet-fill);
-    backdrop-filter: blur(var(--glass-blur)) saturate(1.2);
+    background: var(--glass-wash), var(--color-glass-fill);
+    backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
   }
   .tabbar-pill.glass,
   .seg.glass,
@@ -154,14 +155,14 @@
   }
   @media (max-width: 63.99rem) {
     .glass-phone {
-      background: var(--color-sheet-fill);
-      backdrop-filter: blur(var(--glass-blur)) saturate(1.2);
+      background: var(--glass-wash), var(--color-glass-fill);
+      backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
     }
   }
   @media (min-width: 64rem) {
     .glass-desk {
-      background: var(--color-sheet-fill);
-      backdrop-filter: blur(var(--glass-blur)) saturate(1.2);
+      background: var(--glass-wash), var(--color-glass-fill);
+      backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
     }
   }
 }
