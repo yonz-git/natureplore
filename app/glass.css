@@ -2,7 +2,7 @@
   --glass-blur: 0.625rem;
   --glass-wash: linear-gradient(160deg, rgb(255 255 255 / 0.08) 0%, rgb(255 255 255 / 0.026) 100%);
   --glass-wash-inner: linear-gradient(160deg, rgb(255 255 255 / 0.14) 0%, rgb(255 255 255 / 0.04) 100%);
-  --card-fill: linear-gradient(160deg, rgb(8 20 8 / 0.58) 0%, rgb(7 15 8 / 0.33) 100%);
+  --card-fill: linear-gradient(160deg, rgb(8 20 8 / 0.464) 0%, rgb(7 15 8 / 0.264) 100%);
 }
 
 :root {
