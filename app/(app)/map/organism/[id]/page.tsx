@@ -7,7 +7,7 @@ import { routeById } from "@/lib/routes";
 import { spotOf } from "@/lib/spots";
 
 // B4 · Organism, and B5 when its location is generalised. Back returns where the page was opened:
-// the walk on the spot it showed (B4-walk, `?from=walk&spot=`), or the route with that spot open
+// the walk on the spot it showed (B4-walk, `?from=walk&route=&spot=`), or the route with that spot open
 // (`?spot=`, with or without `from=route`).
 
 export async function generateMetadata({ params }: PageProps<"/map/organism/[id]">): Promise<Metadata> {
@@ -34,11 +34,14 @@ export default async function Organism({ params, searchParams }: PageProps<"/map
         }
       : { href: `/map/route/${source.id}`, label: `Back to ${source.name}` }
     : undefined;
+  // opened from a walk: back to that route's walk, on the spot it showed
+  const walkRoute = source?.id ?? "linum";
+  const walkSpot = spotOf(walkRoute, Number(spot));
   const back =
     from === "walk"
       ? {
-          href: `/walk/linum${at ? `?spot=${at.n}` : ""}`,
-          label: at ? `Back to the walk, spot ${at.n}` : "Back to the walk",
+          href: `/walk/${walkRoute}${walkSpot ? `?spot=${walkSpot.n}` : ""}`,
+          label: walkSpot ? `Back to the walk, spot ${walkSpot.n}` : "Back to the walk",
         }
       : at
         ? {

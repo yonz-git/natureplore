@@ -3,6 +3,7 @@
 // because it is at risk from collection and trampling (B5).
 
 import type { Group } from "@/lib/routes";
+import { namesOf } from "@/lib/organism-names";
 import { GENERATED } from "@/lib/organism-pages";
 import { CLAIMS, spotOf, type Claim, type Spot } from "@/lib/spots";
 
@@ -109,7 +110,7 @@ export const ORGANISMS: Organism[] = [...HAND, ...GENERATED.filter((g) => !HAND.
 const fold = (name: string) => name.trim().toLowerCase();
 // every name a list may write for a page, once, so a lookup is not a scan of all of them
 const BY_NAME = new Map<string, string>();
-for (const o of ORGANISMS) for (const n of [`${o.name} ${o.close}`, ...(o.alias ?? [])]) BY_NAME.set(fold(n), o.id);
+for (const o of ORGANISMS) for (const n of namesOf(o)) BY_NAME.set(fold(n), o.id);
 
 /** The page of an organism by its common name as the lists write it ("Common crane"), when it has one. */
 export const organismHref = (name: string) => {

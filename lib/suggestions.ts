@@ -8,7 +8,7 @@ import type { MapPoint } from "@/components/RegionMap";
 import type { Group } from "@/lib/routes";
 
 import { MONTH } from "@/lib/now";
-import { RECORDED, RECORDED_COUNTS } from "@/lib/records";
+import { recordedIn } from "@/lib/season";
 import { routeDetail } from "@/lib/spots";
 
 export { MONTH };
@@ -31,7 +31,7 @@ export type Suggestion = {
   /** the short line A3 uses for "Did you mean" */
   place: string;
   spots: number;
-  /** the spots in season this month, in walking order: worked out from each spot's months (lib/spots.ts) */
+  /** the spots in season this month, in walking order (lib/season.ts) */
   lit: number[];
   /** the route's photograph, from lib/photos.ts */
   image?: string;
@@ -39,10 +39,11 @@ export type Suggestion = {
   href?: string;
   lat: number;
   lon: number;
+  /** what is recorded along it this month, most records first (lib/season.ts) */
   inSeason: InSeason[];
 };
 
-const ROUTES: Omit<Suggestion, "lit">[] = [
+const ROUTES: Omit<Suggestion, "lit" | "inSeason">[] = [
   {
     id: "grumsin",
     name: "Grumsin beech forest loop",
@@ -53,11 +54,6 @@ const ROUTES: Omit<Suggestion, "lit">[] = [
     href: "/map/route/grumsin",
     lat: 53.01237,
     lon: 13.8751,
-    inSeason: [
-      { name: "Porcelain fungus", latin: "Oudemansiella mucida", group: "mushrooms", note: "on the fallen beech", last: "8 Sep" },
-      { name: "Black woodpecker", latin: "Dryocopus martius", group: "birds", last: "9 Sep" },
-      { name: "Common crane", latin: "Grus grus", group: "birds", note: "on Wolletzsee at dusk", last: "10 Sep" },
-    ],
   },
   {
     id: "linum",
@@ -69,11 +65,6 @@ const ROUTES: Omit<Suggestion, "lit">[] = [
     href: "/map/route/linum",
     lat: 52.75773,
     lon: 12.88274,
-    inSeason: [
-      { name: "Common crane", latin: "Grus grus", group: "birds", note: "gathering at dusk", last: "11 Sep" },
-      { name: "Greylag goose", latin: "Anser anser", group: "birds", last: "10 Sep" },
-      { name: "Northern lapwing", latin: "Vanellus vanellus", group: "birds", last: "5 Sep" },
-    ],
   },
   {
     id: "tegel",
@@ -85,10 +76,6 @@ const ROUTES: Omit<Suggestion, "lit">[] = [
     href: "/map/route/tegel",
     lat: 52.61804,
     lon: 13.3075,
-    inSeason: [
-      { name: "Common kingfisher", latin: "Alcedo atthis", group: "birds", last: "14 Sep" },
-      { name: "Grey heron", latin: "Ardea cinerea", group: "birds", last: "18 Sep" },
-    ],
   },
 
   {
@@ -101,10 +88,6 @@ const ROUTES: Omit<Suggestion, "lit">[] = [
     href: "/map/route/tempelhof",
     lat: 52.48228,
     lon: 13.40724,
-    inSeason: [
-      { name: "Northern wheatear", latin: "Oenanthe oenanthe", group: "birds", note: "passing through", last: "15 Sep" },
-      { name: "Eurasian skylark", latin: "Alauda arvensis", group: "birds", last: "20 Sep" },
-    ],
   },
 ];
 
@@ -113,7 +96,7 @@ const ROUTES: Omit<Suggestion, "lit">[] = [
 const litOf = (id: string) => routeDetail(id)?.spots.filter((s) => !s.out).map((s) => s.n) ?? [];
 
 // Sorted by the share of spots in season this month, then by name: a sort, not a recommendation.
-export const SUGGESTIONS: Suggestion[] = ROUTES.map((s) => ({ ...s, lit: litOf(s.id) })).sort(
+export const SUGGESTIONS: Suggestion[] = ROUTES.map((s) => ({ ...s, lit: litOf(s.id), inSeason: recordedIn(s.id) })).sort(
   (a, b) => b.lit.length / b.spots - a.lit.length / a.spots || a.name.localeCompare(b.name),
 );
 
@@ -185,18 +168,14 @@ export const routesIn = (r: Region) => SUGGESTIONS.filter((s) => r.routes.includ
 export type RegionOrganism = { organism: InSeason; routes: number; href?: string };
 
 /** What is in season in a region this month: each organism once, with the routes it is along. */
-// What is recorded in September along a region's routes: the GBIF records along each built route
-// (lib/records.ts), or the few organisms a sample card names. Counted once per route.
-export const inSeasonOf = (s: Suggestion): InSeason[] => RECORDED[s.id] ?? s.inSeason;
-/** How many species of each group are recorded along a built route this month, for its pills. */
-export const countsOf = (s: Suggestion) => RECORDED_COUNTS[s.id];
-
 export function organismsIn(r: Region): RegionOrganism[] {
   const found = new Map<string, RegionOrganism>();
   for (const s of routesIn(r))
-    for (const o of inSeasonOf(s)) {
+    for (const o of s.inSeason) {
       const seen = found.get(o.name);
-      found.set(o.name, { organism: o, routes: (seen?.routes ?? 0) + 1, href: organismHref(o.name) });
+      // recorded along several routes: the newest record is the one to show
+      const newest = seen && Date.parse(seen.organism.last) > Date.parse(o.last) ? seen.organism : o;
+      found.set(o.name, { organism: newest, routes: (seen?.routes ?? 0) + 1, href: organismHref(o.name) });
     }
   return [...found.values()];
 }

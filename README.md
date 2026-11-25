@@ -8,6 +8,7 @@ npm install
 npm run dev      # http://localhost:3000
 npm run tokens   # regenerate app/tokens.css from the design system
 npm run build
+npm test         # the domain modules in lib/
 ```
 
 ## Where things come from
