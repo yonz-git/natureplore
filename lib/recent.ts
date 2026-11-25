@@ -1,8 +1,5 @@
 "use client";
 
-// E7 · Recent searches: the last eight results opened from search, kept on this device only and
-// never sent anywhere. A result opened again moves to the top instead of repeating.
-
 import { useSyncExternalStore } from "react";
 
 export type Recent = { label: string; kind: string; href: string };
@@ -31,13 +28,11 @@ function subscribe(l: () => void) {
   return () => listeners.delete(l);
 }
 
-/** Call from a search result as it is opened. */
 export function rememberSearch(r: Recent) {
   list = [r, ...read().filter((x) => x.href !== r.href)].slice(0, MAX);
   try {
     localStorage.setItem(KEY, JSON.stringify(list));
   } catch {
-    // a private window keeps it for this visit only
   }
   listeners.forEach((l) => l());
 }

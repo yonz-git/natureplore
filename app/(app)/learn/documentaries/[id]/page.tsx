@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import DocScreen from "@/components/DocScreen";
+import DocScreen from "@/features/learn/DocScreen";
 import { docById } from "@/lib/docs";
 
-// D3 · a documentary, or D4 when it cannot be watched here. Opened from Learn, the collection,
-// the organism page (B4), D4's alternatives, or Saved.
+// D3 · a documentary
 
 export async function generateMetadata({ params }: PageProps<"/learn/documentaries/[id]">): Promise<Metadata> {
   const { id } = await params;

@@ -1,13 +1,8 @@
 "use client";
 
-// What the person has saved, kept on this device. There are no accounts: saving a route keeps it
-// and downloads it here. Every Save control and E1 read the same store, so a route saved on A5 is
-// saved on A4 and on B1, and listed in Saved.
-
 import { useSyncExternalStore } from "react";
 
 const KEY = "np-saved-v2";
-// nothing is saved at first: saving on A5 is the first task of the test, and Saved shows what it kept
 const START: string[] = [];
 
 let ids: string[] | null = null;
@@ -30,14 +25,12 @@ function write(next: string[]) {
   try {
     localStorage.setItem(KEY, JSON.stringify(next));
   } catch {
-    // a private window keeps it for this visit only
   }
   listeners.forEach((l) => l());
 }
 
 function subscribe(l: () => void) {
   listeners.add(l);
-  // another tab saved or removed something: read the store again
   const onStorage = (e: StorageEvent) => {
     if (e.key !== KEY && e.key !== null) return;
     ids = null;
@@ -59,7 +52,6 @@ export function useSaved() {
       const now = read();
       write(now.includes(id) ? now.filter((x) => x !== id) : [...now, id]);
     },
-    /** Removes several at once (E4 and E5 in edit), and `restore` puts them back for Undo. */
     remove: (gone: string[]) => write(read().filter((x) => !gone.includes(x))),
     restore: (back: string[]) => write([...read(), ...back.filter((x) => !read().includes(x))]),
   };
@@ -67,12 +59,10 @@ export function useSaved() {
 
 const LIST_KEY = "np-last-list";
 
-/** The list a route was opened from, A5 or A4, so going back from it returns there. */
 export function rememberList(path: string) {
   try {
     sessionStorage.setItem(LIST_KEY, path);
   } catch {
-    // nothing to remember in a private window
   }
 }
 

@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import WalkScreen from "@/components/WalkScreen";
+import WalkScreen from "@/features/walk/WalkScreen";
 import { routeById } from "@/lib/routes";
 import { routeDetail } from "@/lib/spots";
 
-// L4 · Walk, opened from Walk the route on Saved (E1) or on a saved route (B1). It sits outside the app
-// group because the walk hides the tab bar: End walk is the way out. `?spot=` is the spot the
-// sheet shows, so the previous and next buttons, the map's markers and the way back from an
-// organism all land on the same spot. Without it the walk opens on spot 1, the first along the line
-// from the start: the prototype does not know where the person is, so it does not guess a nearer one.
+// L4 · Walk
 
 export async function generateMetadata({ params }: PageProps<"/walk/[id]">): Promise<Metadata> {
   const { id } = await params;

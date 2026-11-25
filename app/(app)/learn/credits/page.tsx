@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import { Credits } from "@/components/SavedPages";
-
-// Credits: the icons, photographs, map and type the app uses, each linked to its source. Reached
-// from the foot of Learn.
+import { Credits } from "@/features/saved/SavedPages";
 
 export const metadata: Metadata = { title: "Credits" };
 

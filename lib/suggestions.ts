@@ -1,14 +1,10 @@
-// The routes in season this month, the suggestion cards on A5 and A4, and what search finds.
-// Content comes from the flow and IA redesign (.forge/briefs/flow-ia-redesign-final.md, section 3)
-// and the Flow A boards on the redesign canvas. Prototype date: Thursday 24 September 2026, so
-// "this month" is September. Only Grumsin beech forest loop has its route page built.
-
 import { organismHref } from "@/lib/organisms";
-import type { MapPoint } from "@/components/RegionMap";
+import type { MapPoint } from "@/components/shared/RegionMap";
 import type { Group } from "@/lib/routes";
 
 import { MONTH } from "@/lib/now";
-import { RECORDED, RECORDED_COUNTS } from "@/lib/records";
+import { recordedIn } from "@/lib/season";
+import { routeDetail } from "@/lib/spots";
 
 export { MONTH };
 
@@ -16,50 +12,35 @@ export type InSeason = {
   name: string;
   latin: string;
   group: Group;
-  /** what it is doing there, when the boards say so */
   note?: string;
-  /** last recorded, as the boards write it */
   last: string;
 };
 
 export type Suggestion = {
-  /** the same id as in lib/routes.ts, so a saved route reads the same in Saved and on B1 */
   id: string;
   name: string;
   meta: string;
-  /** the short line A3 uses for "Did you mean" */
   place: string;
   spots: number;
-  /** the spots in season this month, in walking order */
   lit: number[];
-  /** the route's photograph, from lib/photos.ts */
   image?: string;
-  /** the route page, only where it is built */
   href?: string;
   lat: number;
   lon: number;
   inSeason: InSeason[];
 };
 
-// Sorted by the share of spots in season this month, then by name: a sort, not a recommendation.
-// Grumsin 4 of 5, Linum 4 of 6, Tegeler Fließ 3 of 7, Tempelhofer Feld 2 of 5.
-export const SUGGESTIONS: Suggestion[] = [
+const ROUTES: Omit<Suggestion, "lit" | "inSeason">[] = [
   {
     id: "grumsin",
     name: "Grumsin beech forest loop",
     meta: "10.2 km loop · 3 h",
     place: "10.2 km loop in Grumsin, Brandenburg",
     spots: 5,
-    lit: [1, 2, 3, 5],
     image: "/img/routes/grumsin.jpg",
     href: "/map/route/grumsin",
     lat: 53.01237,
     lon: 13.8751,
-    inSeason: [
-      { name: "Porcelain fungus", latin: "Oudemansiella mucida", group: "mushrooms", note: "on the fallen beech", last: "8 Sep" },
-      { name: "Black woodpecker", latin: "Dryocopus martius", group: "birds", last: "9 Sep" },
-      { name: "Common crane", latin: "Grus grus", group: "birds", note: "on Wolletzsee at dusk", last: "10 Sep" },
-    ],
   },
   {
     id: "linum",
@@ -67,16 +48,10 @@ export const SUGGESTIONS: Suggestion[] = [
     meta: "6.3 km loop · 1 h 50",
     place: "6.3 km loop in Linum, Brandenburg",
     spots: 6,
-    lit: [2, 3, 4],
     image: "/img/routes/linum.jpg",
     href: "/map/route/linum",
     lat: 52.75773,
     lon: 12.88274,
-    inSeason: [
-      { name: "Common crane", latin: "Grus grus", group: "birds", note: "gathering at dusk", last: "11 Sep" },
-      { name: "Greylag goose", latin: "Anser anser", group: "birds", last: "10 Sep" },
-      { name: "Northern lapwing", latin: "Vanellus vanellus", group: "birds", last: "5 Sep" },
-    ],
   },
   {
     id: "tegel",
@@ -84,15 +59,10 @@ export const SUGGESTIONS: Suggestion[] = [
     meta: "4.9 km one way · 1 h 25",
     place: "4.9 km in Reinickendorf, Berlin",
     spots: 7,
-    lit: [1, 2, 3, 5, 6],
     image: "/img/routes/tegel.jpg",
     href: "/map/route/tegel",
     lat: 52.61804,
     lon: 13.3075,
-    inSeason: [
-      { name: "Common kingfisher", latin: "Alcedo atthis", group: "birds", last: "14 Sep" },
-      { name: "Grey heron", latin: "Ardea cinerea", group: "birds", last: "18 Sep" },
-    ],
   },
 
   {
@@ -101,19 +71,19 @@ export const SUGGESTIONS: Suggestion[] = [
     meta: "5.7 km loop · 1 h 40",
     place: "5.7 km loop in Tempelhof, Berlin",
     spots: 5,
-    lit: [1, 2, 3, 4, 5],
     image: "/img/routes/tempelhof.jpg",
     href: "/map/route/tempelhof",
     lat: 52.48228,
     lon: 13.40724,
-    inSeason: [
-      { name: "Northern wheatear", latin: "Oenanthe oenanthe", group: "birds", note: "passing through", last: "15 Sep" },
-      { name: "Eurasian skylark", latin: "Alauda arvensis", group: "birds", last: "20 Sep" },
-    ],
   },
 ];
 
-/** The four routes on the map with their names, a constant so the map is built once. */
+const litOf = (id: string) => routeDetail(id)?.spots.filter((s) => !s.out).map((s) => s.n) ?? [];
+
+export const SUGGESTIONS: Suggestion[] = ROUTES.map((s) => ({ ...s, lit: litOf(s.id), inSeason: recordedIn(s.id) })).sort(
+  (a, b) => b.lit.length / b.spots - a.lit.length / a.spots || a.name.localeCompare(b.name),
+);
+
 export const ROUTE_POINTS: MapPoint[] = SUGGESTIONS.map((s) => ({
   id: s.id,
   lat: s.lat,
@@ -126,11 +96,7 @@ export const ROUTE_POINTS: MapPoint[] = SUGGESTIONS.map((s) => ({
 
 export const suggestionById = (id: string) => SUGGESTIONS.find((s) => s.id === id);
 
-
-/** "4 of 6 spots in season in September" */
 export const inSeasonLine = (s: Suggestion) => `${s.lit.length} of ${s.spots} spots in season in ${MONTH}`;
-
-// ── search ──────────────────────────────────────────────────────────────────────────────────
 
 const fold = (x: string) =>
   x
@@ -148,18 +114,13 @@ const GROUP_WORD: Record<Group, string> = {
 };
 export const groupWord = (g: Group) => GROUP_WORD[g];
 
-// ── regions: what the map searches for, with organisms ─────────────────────────────────────
-
 export type Region = {
   id: string;
   name: string;
-  /** what kind of place and where */
   kind: string;
-  /** the routes in it, by id; none when it is not mapped yet */
   routes: string[];
 };
 
-/** The whole mapped area, the one A5 opens on. */
 export const HOME_REGION = "berlin-brandenburg";
 
 export const REGIONS: Region[] = [
@@ -175,24 +136,17 @@ export const REGIONS: Region[] = [
 
 export const regionById = (id?: string) => REGIONS.find((r) => r.id === id) ?? REGIONS[0];
 
-/** The routes in a region, in the suggestion order. */
 export const routesIn = (r: Region) => SUGGESTIONS.filter((s) => r.routes.includes(s.id));
 
 export type RegionOrganism = { organism: InSeason; routes: number; href?: string };
 
-/** What is in season in a region this month: each organism once, with the routes it is along. */
-// What is recorded in September along a region's routes: the GBIF records along each built route
-// (lib/records.ts), or the few organisms a sample card names. Counted once per route.
-export const inSeasonOf = (s: Suggestion): InSeason[] => RECORDED[s.id] ?? s.inSeason;
-/** How many species of each group are recorded along a built route this month, for its pills. */
-export const countsOf = (s: Suggestion) => RECORDED_COUNTS[s.id];
-
 export function organismsIn(r: Region): RegionOrganism[] {
   const found = new Map<string, RegionOrganism>();
   for (const s of routesIn(r))
-    for (const o of inSeasonOf(s)) {
+    for (const o of s.inSeason) {
       const seen = found.get(o.name);
-      found.set(o.name, { organism: o, routes: (seen?.routes ?? 0) + 1, href: organismHref(o.name) });
+      const newest = seen && Date.parse(seen.organism.last) > Date.parse(o.last) ? seen.organism : o;
+      found.set(o.name, { organism: newest, routes: (seen?.routes ?? 0) + 1, href: organismHref(o.name) });
     }
   return [...found.values()];
 }
@@ -202,8 +156,7 @@ const regionLine = (r: Region) =>
     ? `${r.kind}. ${r.routes.length} route${r.routes.length > 1 ? "s" : ""} in season in ${MONTH}`
     : `${r.kind}. Not mapped yet`;
 
-// Species whose location is generalised (B5): search is the only way to their page, and the line
-// names the protected area, never a route or a spot, so a result cannot narrow the place down.
+// B5: name the protected area only, so a result cannot narrow the place down
 const GENERALISED: { organism: InSeason; where: string; href: string }[] = [
   {
     organism: { name: "Early marsh orchid", latin: "Dactylorhiza incarnata", group: "herbs", last: "Jun 2026" },
@@ -215,10 +168,6 @@ const GENERALISED: { organism: InSeason; where: string; href: string }[] = [
 export type RegionHit = { region: Region; line: string; href?: string };
 export type OrganismHit = { organism: InSeason; line: string; href?: string };
 
-/**
- * A2: regions first, then organisms. A region opens its suggestions, where Routes or Organisms
- * filters what is listed. An organism is listed once, with how many routes it is recorded along.
- */
 export function search(query: string): { regions: RegionHit[]; organisms: OrganismHit[] } {
   const q = fold(query);
   if (!q) return { regions: [], organisms: [] };
@@ -238,7 +187,6 @@ export function search(query: string): { regions: RegionHit[]; organisms: Organi
   return { regions, organisms };
 }
 
-// the number of single letter edits between two words
 function distance(a: string, b: string) {
   const row = Array.from({ length: b.length + 1 }, (_, i) => i);
   for (let i = 1; i <= a.length; i++) {
@@ -253,7 +201,6 @@ function distance(a: string, b: string) {
   return row[b.length];
 }
 
-/** A3: what a misspelt search probably meant, a region or an organism a few letters away. */
 export function didYouMean(query: string): { regions: RegionHit[]; organisms: InSeason[] } {
   const q = fold(query);
   if (q.length < 3) return { regions: [], organisms: [] };

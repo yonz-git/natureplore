@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { OfflineIcon } from "@/components/Icons";
-
-// Offline · First open, no connection: the routes have never loaded, so nothing is drawn rather
-// than a guess. Try again goes to A5, the suggestions. Reached by its address only in the prototype.
-// Boards: "Offline · First open, no connection", phone, tablet and desktop.
+import { OfflineIcon } from "@/components/ui/Icons";
 
 export const metadata: Metadata = { title: "No connection" };
 
