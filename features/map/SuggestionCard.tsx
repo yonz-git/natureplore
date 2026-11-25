@@ -159,7 +159,6 @@ export function SuggestionCard({ route }: { route: Suggestion }) {
             );
           })()}
         </p>
-        {counts && <p className="tag sug-spots sug-spots-photo">{route.spots} Spots</p>}
       </div>
       {counts ? (
         <div className="sug-season">

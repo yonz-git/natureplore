@@ -275,7 +275,7 @@ button.float-pill:active { transform: scale(0.97); }
 .pills { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.25rem; }
 .pill-org {
   height: 2rem;
-  padding: 0 0.5625rem 0 0.5rem;
+  padding: 0 0.5625rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -291,6 +291,32 @@ button.float-pill:active { transform: scale(0.97); }
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
+
+.pill-org .group-icon.is-plants { margin: 0 0.0497rem 0 0.0535rem; }
+.pill-org .group-icon.is-herbs { margin: 0 0.0041rem 0 -0.0519rem; }
+.pill-org .group-icon.is-mushrooms { margin: 0 -0.0699rem 0 -0.0972rem; }
+.pill-org .group-icon.is-birds { margin: 0 0.0013rem 0 0.0417rem; }
+.pill-org .group-icon.is-mammals { margin: 0 -0.0046rem 0 0.0037rem; }
+.pill-org b[data-first="0"] { margin-left: -0.0308em; }
+.pill-org b[data-first="1"] { margin-left: -0.0236em; }
+.pill-org b[data-first="2"] { margin-left: -0.0537em; }
+.pill-org b[data-first="3"] { margin-left: -0.0447em; }
+.pill-org b[data-first="4"] { margin-left: -0.0328em; }
+.pill-org b[data-first="5"] { margin-left: -0.0923em; }
+.pill-org b[data-first="6"] { margin-left: -0.0480em; }
+.pill-org b[data-first="7"] { margin-left: -0.0299em; }
+.pill-org b[data-first="8"] { margin-left: -0.0465em; }
+.pill-org b[data-first="9"] { margin-left: -0.0526em; }
+.pill-org b[data-last="0"] { margin-right: -0.0420em; }
+.pill-org b[data-last="1"] { margin-right: -0.0627em; }
+.pill-org b[data-last="2"] { margin-right: -0.0619em; }
+.pill-org b[data-last="3"] { margin-right: -0.0631em; }
+.pill-org b[data-last="4"] { margin-right: -0.0296em; }
+.pill-org b[data-last="5"] { margin-right: -0.0656em; }
+.pill-org b[data-last="6"] { margin-right: -0.0513em; }
+.pill-org b[data-last="7"] { margin-right: -0.0182em; }
+.pill-org b[data-last="8"] { margin-right: -0.0529em; }
+.pill-org b[data-last="9"] { margin-right: -0.0754em; }
 
 .pill-org.is-none { color: var(--color-on-ground-soft); }
 .pill-org.is-none b { color: var(--color-on-ground-soft); font-weight: 400; }
@@ -632,7 +658,7 @@ button.float-pill,
 .a1 .ms-stack { width: 100%; margin-top: 1.5rem; align-items: center; gap: calc(var(--spacing-control-stack) * 2); }
 .a1 .ms-stack > form { width: 100%; }
 .a1 .field > svg,
-.a1 .field-hint-search { color: var(--color-primary); }
+.a1 .field-hint-search { color: var(--color-on-ground-soft); }
 .a1 .ms-stack .btn { align-self: center; }
 .a1-ways { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: calc(var(--spacing-control-stack) / 2); width: 100%; }
 @media (max-width: 35.74rem) {
