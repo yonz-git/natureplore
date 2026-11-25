@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import RouteCardScreen from "@/components/RouteCardScreen";
+import RouteCardScreen from "@/features/map/RouteCardScreen";
 import { routeById } from "@/lib/routes";
 
 // B1 · Route card

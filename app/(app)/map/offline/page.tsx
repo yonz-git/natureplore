@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { OfflineIcon } from "@/components/Icons";
+import { OfflineIcon } from "@/components/ui/Icons";
 
 export const metadata: Metadata = { title: "No connection" };
 

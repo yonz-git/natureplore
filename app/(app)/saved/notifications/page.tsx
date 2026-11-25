@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Notifications } from "@/components/SavedPages";
+import { Notifications } from "@/features/saved/SavedPages";
 
 // E3 · Notifications
 

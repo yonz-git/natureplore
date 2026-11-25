@@ -1,5 +1,5 @@
 import { organismHref } from "@/lib/organisms";
-import type { MapPoint } from "@/components/RegionMap";
+import type { MapPoint } from "@/components/shared/RegionMap";
 import type { Group } from "@/lib/routes";
 
 import { MONTH } from "@/lib/now";

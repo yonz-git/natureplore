@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import RegisteredDialog from "@/components/RegisteredDialog";
+import RegisteredDialog from "@/features/learn/RegisteredDialog";
 import { actionById } from "@/lib/actions";
 
 // C4 · Registered

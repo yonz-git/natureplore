@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import DocsScreen from "@/components/DocsScreen";
+import DocsScreen from "@/features/learn/DocsScreen";
 
 // D2 · Documentaries
 

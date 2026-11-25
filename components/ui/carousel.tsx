@@ -5,7 +5,7 @@ import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react"
 
-import { BackIcon, ChevronIcon } from "@/components/Icons"
+import { BackIcon, ChevronIcon } from "@/components/ui/Icons"
 import { cn } from "@/lib/utils"
 
 type CarouselApi = UseEmblaCarouselType[1]

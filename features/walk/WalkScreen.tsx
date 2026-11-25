@@ -1,0 +1,148 @@
+"use client";
+
+// L4 · Walk
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+import { BackIcon, ChevronIcon, LocationIcon } from "@/components/ui/Icons";
+import RegionMap, { type MapHandle, type MapPoint } from "@/components/shared/RegionMap";
+import { ClaimCard, MonthGrid, RecordedToo, SpotBlock } from "@/components/shared/SpotParts";
+import { routeById, spotsOf } from "@/lib/routes";
+import { routeDetail } from "@/lib/spots";
+
+export default function WalkScreen({ routeId, n }: { routeId: string; n: number }) {
+  const route = routeById(routeId)!;
+  const detail = routeDetail(routeId)!;
+  const map = useRef<MapHandle>(null);
+  const router = useRouter();
+  const total = detail.spots.length;
+  const spot = detail.spots[n - 1];
+  const here = `/walk/${route.id}`;
+  const [openOn, setOpenOn] = useState<number | null>(null);
+  const open = openOn === n;
+
+  const marks = useMemo(() => spotsOf(route), [route]);
+  const points = useMemo<MapPoint[]>(() => {
+    return [
+      { id: "start", lat: route.lat, lon: route.lon, label: `${route.oneWay ? "Start" : "Start and finish"}, ${route.from}`, start: true, startText: route.oneWay ? "Start" : undefined },
+      ...marks.map((s, i) => ({
+        id: `s${s.n}`,
+        lat: s.lat,
+        lon: s.lon,
+        n: s.n,
+        out: !!detail.spots[i]?.out,
+        label: route.stops[i]?.name ?? `Spot ${s.n}`,
+        left: route.stops[i]?.left,
+        href: `${here}?spot=${s.n}`,
+      })),
+    ];
+  }, [marks, route, here]);
+  const line = useMemo(() => route.path ?? marks.map((s) => [s.lat, s.lon] as [number, number]), [route, marks]);
+
+  const at = marks[n - 1];
+  const focus = { lat: at.lat, lon: at.lon, zoom: 15 };
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    map.current?.centre(at.lat, at.lon, 15, !matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, [at]);
+
+  const go = (to: number) => router.replace(`${here}?spot=${to}`, { scroll: false });
+  const nav = (
+    <nav aria-label="Spots" className="fb-nav walk-nav">
+      <button
+        type="button"
+        className="fb-nav-prev"
+        aria-disabled={n === 1 || undefined}
+        aria-label={n > 1 ? `Spot ${n - 1}, ${detail.spots[n - 2].name}` : "First spot"}
+        onClick={() => n > 1 && go(n - 1)}
+      >
+        <BackIcon size={20} />
+      </button>
+      <button type="button" className="fb-nav-next" aria-disabled={n === total || undefined} onClick={() => n < total && go(n + 1)}>
+        <span className="fb-nav-text">
+          <span className="fb-nav-kicker">{n < total ? `Next, spot ${n + 1}` : `Spot ${n} of ${total}`}</span>
+          <span className="fb-nav-name">{n < total ? detail.spots[n].name : "Last spot"}</span>
+        </span>
+        {n < total && <ChevronIcon size={20} />}
+      </button>
+    </nav>
+  );
+
+  return (
+    <main className="ms walk" aria-labelledby="walk-route">
+      <RegionMap
+        className="a1-map"
+        ref={map}
+        points={points}
+        line={line}
+        detail={route.detail}
+        maxZoom={15}
+        mapLabel={`Map of ${route.name}`}
+        current={`s${n}`}
+        focus={focus}
+      />
+
+      <div className="walk-top">
+        <p id="walk-route" className="walk-title glass glass-pill">Walking {route.name}</p>
+        <Link href="/you" className="walk-end glass glass-pill">
+          End walk
+        </Link>
+        {}
+        <button
+          type="button"
+          className="walk-locate round glass glass-pin"
+          aria-label="Show where I am"
+          onClick={() => {
+            const two = marks[1];
+            map.current?.centre(two.lat, two.lon, 14, !matchMedia("(prefers-reduced-motion: reduce)").matches);
+          }}
+        >
+          <LocationIcon size={20} />
+        </button>
+      </div>
+
+      <div className="ms-panel walk-panel">
+        <section className="ms-sheet walk-sheet" aria-label="The spot you are at">
+          <div className="walk-spot" key={n}>
+            <SpotBlock
+              spot={spot}
+              total={total}
+              nav={null}
+              titleId="walk-title"
+              organismHref={(id) => `/map/organism/${id}?from=walk&route=${routeId}&spot=${n}`}
+            />
+            {}
+            <button type="button" className="btn btn-secondary walk-toggle" aria-expanded={open} aria-controls="walk-more" onClick={() => setOpenOn(open ? null : n)}>
+              {open ? "Show less" : "More about this spot"}
+            </button>
+            {open && (
+              <div className="walk-more" id="walk-more">
+                <h2>When</h2>
+                <MonthGrid months={spot.months} />
+                {detail.claims[0] && (
+                  <>
+                    <h2>What is happening here</h2>
+                    <ClaimCard claim={detail.claims[0]} />
+                  </>
+                )}
+                <h2>Recorded here too</h2>
+                <RecordedToo />
+              </div>
+            )}
+          </div>
+        </section>
+        <div className="walk-bar">{nav}</div>
+        <p className="sr-only" aria-live="polite">
+          Spot {n} of {total}, {spot.name}
+        </p>
+      </div>
+
+    </main>
+  );
+}

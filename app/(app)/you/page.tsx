@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import SavedScreen from "@/components/SavedScreen";
+import SavedScreen from "@/features/saved/SavedScreen";
 
 export const metadata: Metadata = { title: "You" };
 

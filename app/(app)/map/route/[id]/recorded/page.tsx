@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import RecordedScreen from "@/components/RecordedScreen";
+import RecordedScreen from "@/features/map/RecordedScreen";
 import { recordedOf } from "@/lib/recorded";
 import { routeById } from "@/lib/routes";
 

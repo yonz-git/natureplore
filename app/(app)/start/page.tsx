@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import RegionMap from "@/components/RegionMap";
-import StartSheet from "@/components/StartSheet";
+import RegionMap from "@/components/shared/RegionMap";
+import StartSheet from "@/features/map/StartSheet";
 
 // A1 · Start sheet
 

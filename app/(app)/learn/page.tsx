@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import LearnScreen from "@/components/LearnScreen";
+import LearnScreen from "@/features/learn/LearnScreen";
 
 // D0 · Learn
 
